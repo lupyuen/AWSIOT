@@ -26,10 +26,6 @@ var sourceFiles = ['test/test.js',
 
 var testInstallationId = 'testInstallationId';
 
-//client.on("error", function (err) {
-//    console.log("Error " + err);
-//});
-
 //  We are interested in this thing shadow.
 var thingShadowName = "g0_temperature_sensor";
 
@@ -37,7 +33,7 @@ var thingShadowName = "g0_temperature_sensor";
 var thingShadowState = {
     state: {
         reported: {
-            temperature: 34
+            temperature: 40
         },
         /*
         desired: {
@@ -53,6 +49,78 @@ var thingShadows = null;
 
 // Client token value returned from thingShadows.update() operation
 var clientTokenUpdate;
+
+function parseIoTFields(logEvent) {
+    // logevent.extractedFields.data contains "EVENT:UpdateThingShadow TOPICNAME:$aws/things/g0_temperature_sensor/shadow/update THINGNAME:g0_temperature_sensor"
+    // We extract the fields.  Also we remove "TRACEID:", "PRINCIPALID:", "EVENT:" from the existing fields.
+    // And fix the timestamp.
+    console.log("parseIoTFields logEvent=", JSON.stringify(logEvent, null, 2));
+    //var message = message0.replace("TRACEID:", "").replace("PRINCIPALID:", "").replace("EVENT:", "");
+    var fields = logEvent.extractedFields;
+    if (fields.traceid) fields.traceid = fields.traceid.replace("TRACEID:", "");
+    if (fields.principalid) fields.principalid = fields.principalid.replace("PRINCIPALID:", "");
+    if (fields.data) {
+        var pos = 0;
+        var lastPos = -1;
+        var lastFieldName = null;
+        for (;;) {
+            var match = matchIoTField(fields.data, pos);
+            if (match.pos < 0) break;
+            if (lastPos < 0) {
+                //  First iteration.
+                lastPos = 0;
+                pos = match.pos + 1;
+                lastFieldName = match.fieldName;
+            }
+            else {
+                //  Extract from lastPos to match.pos.
+                var nameAndValue = fields.data.substring(lastPos, match.pos);
+                var value = nameAndValue.substr(lastFieldName.length + 1).trim();
+                fields[lastFieldName.toLowerCase()] = value;
+                lastPos = match.pos;
+                lastFieldName = match.fieldName;
+                pos = match.pos + 1;
+            }
+        }
+        //  Extract the last field.
+        if (lastPos >= 0) {
+            var nameAndValue2 = fields.data.substr(lastPos);
+            var value2 = nameAndValue2.substr(lastFieldName.length + 1).trim();
+            fields[lastFieldName.toLowerCase()] = value2;
+        }
+        fields.data = "";
+    }
+}
+
+function matchIoTField(data, pos) {
+    //  event contains "EVENT:UpdateThingShadow TOPICNAME:$aws/things/g0_temperature_sensor/shadow/update THINGNAME:g0_temperature_sensor"
+    //  We return the next position on or after pos that matches an IoT field (e.g. "EVENT:"), and return the field name.
+    if (pos >= data.length) return { pos: -1, fieldName: "" };
+    var fieldNames = [
+        "CLIENTID",
+        "EVENT",
+        "MESSAGE",
+        "Status",
+        "TOPICNAME",
+        "THINGNAME",
+    ];
+    var matchPos = -1;
+    var matchFieldName = null;
+    fieldNames.forEach(function(fieldName) {
+        var fieldPos = data.indexOf(fieldName + ":", pos);
+        if (fieldPos < 0) return;
+        if (matchPos < 0 || fieldPos < matchPos) {
+            matchPos = fieldPos;
+            matchFieldName = fieldName;
+        }
+    });
+    var result = {
+        pos: matchPos,
+        fieldName: matchFieldName
+    };
+    console.log("result=", result);
+    return result;
+}
 
 describe('Test', function(){
 
@@ -80,6 +148,33 @@ describe('Test', function(){
 
     describe('Test', function(){
 
+        it('should extract fields from log event', function(done){
+            this.timeout(1000);  //  Should be completed by this milliseconds.
+
+            var logEvent = {
+                "id": "32213680228113556789767230424113197411573654761077604352",
+                "timestamp": 1444511380285,
+                "message": "2015-10-10 21:09:40.285 TRACEID:37de17b1-89e8-4230-a4d4-d04b0638f427 PRINCIPALID:g0_temperature_sensor [INFO]  EVENT:UpdateThingShadow TOPICNAME:$aws/things/g0_temperature_sensor/shadow/update THINGNAME:g0_temperature_sensor",
+                "extractedFields": {
+                    "date": "2015-10-10",
+                    "traceid": "TRACEID:37de17b1-89e8-4230-a4d4-d04b0638f427",
+                    "data": "EVENT:UpdateThingShadow TOPICNAME:$aws/things/g0_temperature_sensor/shadow/update THINGNAME:g0_temperature_sensor",
+                    "loglevel": "INFO",
+                    "principalid": "PRINCIPALID:g0_temperature_sensor",
+                    "time": "21:09:40.285"
+                }
+            };
+            parseIoTFields(logEvent);
+            assert.equal(logEvent.extractedFields.traceid, "37de17b1-89e8-4230-a4d4-d04b0638f427");
+            assert.equal(logEvent.extractedFields.principalid, "g0_temperature_sensor");
+            assert.equal(logEvent.extractedFields.event, "UpdateThingShadow");
+            assert.equal(logEvent.extractedFields.topicname, "$aws/things/g0_temperature_sensor/shadow/update");
+            assert.equal(logEvent.extractedFields.thingname, "g0_temperature_sensor");
+            console.log("logEvent=", JSON.stringify(logEvent, null, 2));
+
+            done();
+        });
+
         it('should connect to device', function(done){
             this.timeout(5000);  //  Should be completed by this milliseconds.
 
@@ -91,11 +186,13 @@ describe('Test', function(){
                 region: 'us-west-2'
             });
 
+            var firstConnect = true;
             device.on('connect', function() {
                 console.log('connect');
                 device.subscribe('topic_1');
                 device.publish('topic_2', JSON.stringify({ test_data: 1}));
-                done();
+                if (firstConnect) done();
+                firstConnect = false;
             });
 
             device.on('message', function(topic, payload) {
@@ -116,6 +213,7 @@ describe('Test', function(){
                 region: 'us-west-2'
             });
 
+            var firstConnect = true;
             thingShadows.on('connect', function() {
 
                 // After connecting to the AWS IoT platform, register interest in the
@@ -131,8 +229,9 @@ describe('Test', function(){
                 // parameters requires a delay.  See API documentation for the update
                 // method for more details.
                 setTimeout( function() {
-                   clientTokenUpdate = thingShadows.update(thingShadowName, thingShadowState);
-                   done();
+                    clientTokenUpdate = thingShadows.update(thingShadowName, thingShadowState);
+                    if (firstConnect) done();
+                    firstConnect = false;
                 }, 2000);
             });
 
