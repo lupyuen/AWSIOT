@@ -33,7 +33,8 @@ var thingShadowName = "g0_temperature_sensor";
 var thingShadowState = {
     state: {
         reported: {
-            temperature: 40
+            timestamp: new Date().toISOString(),
+            temperature: 87
         },
         /*
         desired: {
@@ -50,12 +51,11 @@ var thingShadows = null;
 // Client token value returned from thingShadows.update() operation
 var clientTokenUpdate;
 
+
 function parseIoTFields(logEvent) {
     // logevent.extractedFields.data contains "EVENT:UpdateThingShadow TOPICNAME:$aws/things/g0_temperature_sensor/shadow/update THINGNAME:g0_temperature_sensor"
     // We extract the fields.  Also we remove "TRACEID:", "PRINCIPALID:", "EVENT:" from the existing fields.
-    // And fix the timestamp.
     console.log("parseIoTFields logEvent=", JSON.stringify(logEvent, null, 2));
-    //var message = message0.replace("TRACEID:", "").replace("PRINCIPALID:", "").replace("EVENT:", "");
     var fields = logEvent.extractedFields;
     if (fields.traceid) fields.traceid = fields.traceid.replace("TRACEID:", "");
     if (fields.principalid) fields.principalid = fields.principalid.replace("PRINCIPALID:", "");
@@ -76,7 +76,7 @@ function parseIoTFields(logEvent) {
                 //  Extract from lastPos to match.pos.
                 var nameAndValue = fields.data.substring(lastPos, match.pos);
                 var value = nameAndValue.substr(lastFieldName.length + 1).trim();
-                fields[lastFieldName.toLowerCase()] = value;
+                fields[normaliseFieldName(lastFieldName)] = value;
                 lastPos = match.pos;
                 lastFieldName = match.fieldName;
                 pos = match.pos + 1;
@@ -86,7 +86,7 @@ function parseIoTFields(logEvent) {
         if (lastPos >= 0) {
             var nameAndValue2 = fields.data.substr(lastPos);
             var value2 = nameAndValue2.substr(lastFieldName.length + 1).trim();
-            fields[lastFieldName.toLowerCase()] = value2;
+            fields[normaliseFieldName(lastFieldName)] = value2;
         }
         fields.data = "";
     }
@@ -97,17 +97,22 @@ function matchIoTField(data, pos) {
     //  We return the next position on or after pos that matches an IoT field (e.g. "EVENT:"), and return the field name.
     if (pos >= data.length) return { pos: -1, fieldName: "" };
     var fieldNames = [
+        "Action",
         "CLIENTID",
         "EVENT",
+        "Matching rule found",
         "MESSAGE",
+        "Message arrived on",
+        "Message Id",
         "Status",
+        "Target Arn",
         "TOPICNAME",
         "THINGNAME",
     ];
     var matchPos = -1;
     var matchFieldName = null;
     fieldNames.forEach(function(fieldName) {
-        var fieldPos = data.indexOf(fieldName + ":", pos);
+        var fieldPos = data.toLowerCase().indexOf(fieldName.toLowerCase() + ":", pos);
         if (fieldPos < 0) return;
         if (matchPos < 0 || fieldPos < matchPos) {
             matchPos = fieldPos;
@@ -120,6 +125,10 @@ function matchIoTField(data, pos) {
     };
     console.log("result=", result);
     return result;
+}
+
+function normaliseFieldName(fieldName) {
+    return fieldName.toLowerCase().split(" ").join("_");
 }
 
 describe('Test', function(){
@@ -154,11 +163,18 @@ describe('Test', function(){
             var logEvent = {
                 "id": "32213680228113556789767230424113197411573654761077604352",
                 "timestamp": 1444511380285,
-                "message": "2015-10-10 21:09:40.285 TRACEID:37de17b1-89e8-4230-a4d4-d04b0638f427 PRINCIPALID:g0_temperature_sensor [INFO]  EVENT:UpdateThingShadow TOPICNAME:$aws/things/g0_temperature_sensor/shadow/update THINGNAME:g0_temperature_sensor",
+                "message": "2015-10-10 21:09:40.285 TRACEID:37de17b1-89e8-4230-a4d4-d04b0638f427 PRINCIPALID:g0_temperature_sensor [INFO] " +
+                    "EVENT:UpdateThingShadow TOPICNAME:$aws/things/g0_temperature_sensor/shadow/update THINGNAME:g0_temperature_sensor " +
+                    "Message ARRIVED on: $aws/things/g0_temperature_sensor/shadow/update, Action: sns, " +
+                    "Target Arn: arn:aws:sns:us-west-2:595779189490:iot_push_notification SNS " +
+                    "Message Id: ffe7c162-8b1a-5691-a73f-8ff12c45c569",
                 "extractedFields": {
                     "date": "2015-10-10",
                     "traceid": "TRACEID:37de17b1-89e8-4230-a4d4-d04b0638f427",
-                    "data": "EVENT:UpdateThingShadow TOPICNAME:$aws/things/g0_temperature_sensor/shadow/update THINGNAME:g0_temperature_sensor",
+                    "data": "EVENT:UpdateThingShadow TOPICNAME:$aws/things/g0_temperature_sensor/shadow/update THINGNAME:g0_temperature_sensor " +
+                    "Message ARRIVED on: $aws/things/g0_temperature_sensor/shadow/update, Action: sns, " +
+                    "Target Arn: arn:aws:sns:us-west-2:595779189490:iot_push_notification SNS " +
+                    "Message Id: ffe7c162-8b1a-5691-a73f-8ff12c45c569",
                     "loglevel": "INFO",
                     "principalid": "PRINCIPALID:g0_temperature_sensor",
                     "time": "21:09:40.285"

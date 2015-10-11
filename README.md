@@ -7,7 +7,7 @@ Sample Node.js app for calling AWS IoT
 
 0. Under the newly-created Thing, click "Connect a Device".  Download the *.private.pem.key and *.certificate.pem.crt files, copy to the root folder of the project.
 
-0. Create a rule named "g88_too_hot".  Use this query: SELECT * FROM '$aws/things/g0_temperature_sensor/shadow/update'
+0. Create a rule named "g88_too_hot".  Use this query: SELECT * FROM '$aws/things/+/shadow/update/accepted' WHERE state.reported.temperature > 25
 
 0. Select "SNS" as the action. Create a new topic and subscribe to it.
 
