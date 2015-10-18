@@ -1,4 +1,9 @@
-// v1.1.0
+//  This AWS Lambda function accepts a JSON input of sensor values and sends them to AWS Elasticache
+//  seach engine for indexing.  It also sends to AWS CloudWatch.  The input looks like:
+//  {"temperature":84,"timestampText":"2015-10-11T09:18:51.604Z","version":139,
+//  "xTopic":"$aws/things/g0_temperature_sensor/shadow/update/accepted","xClientToken":"myAwsClientId-0"}
+//  Make sure the role executing this Lambda function has CloudWatch PutMetricData and PutMetricAlarm permissions.
+
 var https = require('https');
 var zlib = require('zlib');
 var crypto = require('crypto');
@@ -7,6 +12,7 @@ var crypto = require('crypto');
 var AWS = require('aws-sdk');
 AWS.config.region = 'us-west-2';
 AWS.config.sslEnabled = false;
+AWS.config.logger = process.stdout;  //  Debug
 var cloudwatch = new AWS.CloudWatch();
 
 var endpoint = 'search-iot-74g6su3n4aupthnnhffmvewv2a.us-west-2.es.amazonaws.com';
@@ -17,21 +23,34 @@ exports.handler = function(input, context) {
     //  Format the sensor data into an Elasticache update request.
     var extractedFields = {};
     var action = "";
+    var device = "Unknown";
+    //  Get the device name.
+    if (input.device) {
+        device = input.device
+    }
+    else {
+        if (input.xTopic) {
+            //  We split the topic to get the device name.  The topic looks like "$aws/things/g0_temperature_sensor/shadow/update/accepted"
+            var topicArray = input.xTopic.split("/");
+            if (topicArray.length >= 3)
+                device = topicArray[2];
+        }
+        extractedFields.device = device;
+    }
+    //  Copy the keys and values and send to CloudWatch.
     for (var key in input) {
-        extractedFields[key] = input[key];
+        var value = input[key];
+        extractedFields[key] = value;
         if (action.length > 0) 
             action = action + ", ";
-        action = action + key + ": " + input[key];
+        action = action + key + ": " + value;
+        //  If the value is numeric, send the metric to CloudWatch.
+        if (key != "version" && !isNaN(value)) {
+            writeMetricToCloudWatch(device, key, value);
+        }
     }
     if (!extractedFields.action)
         extractedFields.action = action;
-    //  Set the device name.
-    if (!extractedFields.device && extractedFields.xTopic) {
-        //  We split the topic to get the device name.  The topic looks like "$aws/things/g0_temperature_sensor/shadow/update/accepted"
-        var topicArray = extractedFields.xTopic.split("/");
-        if (topicArray.length >= 3)
-            extractedFields.device = topicArray[2];
-    }
     if (!extractedFields.event)
         extractedFields.event = "RecordSensorData";
     if (!extractedFields.topicname && extractedFields.xTopic)
@@ -85,6 +104,29 @@ exports.handler = function(input, context) {
         context.succeed('Success');
     });
 };
+
+function writeMetricToCloudWatch(device, metric, value) {
+    //  Write the sensor data as a metric to CloudWatch.
+    console.log("writeMetricToCloudWatch:", device, metric, value);
+    try {
+        var params = {
+            MetricData: [{
+              MetricName: metric,
+              Timestamp: new Date(),
+              Unit: 'None',
+              Value: value
+            }],
+            Namespace: device
+        };
+        cloudwatch.putMetricData(params, function(err, data) {
+            if (err) return console.log("putMetricData error:", err, err.stack); // an error occurred
+            console.log("putMetricData: ", data);  // successful response
+        });
+    }
+    catch(err) {
+        console.log("Unable to log to CloudWatch", err);
+    }
+}
 
 function transform(payload) {
     if (payload.messageType === 'CONTROL_MESSAGE') {
