@@ -1,3 +1,4 @@
+//  Send records from AWS IoT logs in CloudWatch to Elasticache for indexing.  Modified from default AWS version.
 // v1.1.0
 var https = require('https');
 var zlib = require('zlib');

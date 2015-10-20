@@ -1,5 +1,5 @@
 //  This AWS Lambda function accepts a JSON input of sensor values and sends them to AWS Elasticache
-//  seach engine for indexing.  It also sends to AWS CloudWatch.  The input looks like:
+//  seach engine for indexing.  It also sends to AWS CloudWatch and posts a message to Slack.  The input looks like:
 //  {"temperature":84,"timestampText":"2015-10-11T09:18:51.604Z","version":139,
 //  "xTopic":"$aws/things/g0_temperature_sensor/shadow/update/accepted","xClientToken":"myAwsClientId-0"}
 //  Make sure the role executing this Lambda function has CloudWatch PutMetricData and PutMetricAlarm permissions.
@@ -55,6 +55,7 @@ exports.handler = function(input, context) {
         extractedFields.event = "RecordSensorData";
     if (!extractedFields.topicname && extractedFields.xTopic)
         extractedFields.topicname = extractedFields.xTopic;
+        
     var awslogsData = {
         "messageType": "DATA_MESSAGE",
         "owner": "595779189490",
@@ -101,7 +102,10 @@ exports.handler = function(input, context) {
         }
 
         console.log('SendSensorData Success: ' + JSON.stringify(success));
-        context.succeed('Success');
+        //  Post a Slack message to the private group of the same name e.g. g88.
+        return postToSlack(device, action, function(err, result) {
+            context.succeed('Success');
+        });
     });
 };
 
@@ -425,4 +429,48 @@ function matchIoTField(data, pos) {
 function normaliseFieldName(fieldName) {
     //  If the field name contains spaces, change them to underscore. Make the field name lowercase.
     return fieldName.toLowerCase().split(" ").join("_");
+}
+
+function postToSlack(device, action, callback) {
+    //  Post a Slack message to the private group of the same name e.g. g88.
+    //  device is assumed to begin with the group name.  action is the message.
+    if (!device) return;
+    var channel = "g88";
+    var pos = device.indexOf("_");
+    if (pos > 0)
+        channel = device.substring(0, pos);
+    var body = {
+        channel: channel,
+        username: device,
+        text: action
+    };
+    var options = {
+        hostname: "hooks.slack.com",
+        path: '/services/T09SXGWKG/B0CQ23S3V/yT89hje6TP6r81xX91GJOx9Y',
+        method: 'POST'
+    };
+    console.log("body =", JSON.stringify(body));
+    var req = https.request(options, function(res) {
+        var body = '';
+        console.log('Status:', res.statusCode);
+        console.log('Headers:', JSON.stringify(res.headers));
+        res.setEncoding('utf8');
+        res.on('data', function(chunk) {
+            body += chunk;
+            console.log(body);
+        });
+        res.on('end', function() {
+            console.log('Successfully processed HTTPS response');
+            // If we know it's JSON, parse it
+            if (res.headers['content-type'] === 'application/json') {
+                body = JSON.parse(body);
+            }
+            return callback(null, body);
+        });
+    });
+    req.on('error', function() {
+        return callback("error");
+    });
+    req.write(JSON.stringify(body));
+    req.end();
 }
