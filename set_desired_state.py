@@ -5,9 +5,8 @@
 
 import sys, os, datetime, hashlib, hmac, urllib2, json
 
-# TODO: Name of our Raspberry Pi, also known as our "Thing Name"
-# deviceName = "g88_pi"
-deviceName = "g0_temperature_sensor"
+# TODO: Name of our Raspberry Pi, also known as our "Thing Name".  Used only when running from command-line.
+deviceName = "g88_pi"
 
 
 def sign(key, msg):
@@ -127,11 +126,17 @@ def lambda_handler(event, context):
     print("AWS Lambda event: " + str(event))
     # print("AWS Lambda context: " + str(context))
     try:
-        # Construct the JSON payload to set the desired state for our device actuator, e.g. LED should be on.
+        # Get the device, attribute and value parameters from the caller (e.g. IoT Rule).
+        device = event["device"]
+        attribute = event["attribute"]
+        value = event["value"]
+
+        # Construct the JSON payload to set the desired state for our device actuator, e.g. if we desire LED
+        # to turn on, then attribute="led" and value="on"
         payload = '''{
             "state": {
                 "desired": {
-                    "led": "on",
+                    "''' + attribute + '''": "''' + value + '''",
                     "timestamp": "''' + datetime.datetime.now().isoformat() + '''"
                 }
             }
@@ -141,10 +146,9 @@ def lambda_handler(event, context):
 
         # Send the "set desired state" request to AWS IoT via a REST request over HTTPS.  We are actually updating the
         # Thing Shadow, according to AWS IoT terms.
-        result = sendAWSIoTRequest("POST", deviceName, payload)
+        result = sendAWSIoTRequest("POST", device, payload)
         print("Result of REST request:\n" +
               json.dumps(json.loads(result), indent=4, separators=(',', ': ')))
-              # str(result).replace(":{", ":\n{").replace(",", ",\n"))
     except:
         # In case of error, show the exception.
         print('REST request failed')
@@ -159,7 +163,14 @@ def lambda_handler(event, context):
 
 # The main program starts here.  If started from a command line, run the lambda function manually.
 if os.environ.get("AWS_LAMBDA_FUNCTION_NAME") is None:
-    lambda_handler({}, {})
+    # If running on command line, we set the LED attribute of the device.
+    event0 = {
+        "device": deviceName,
+        "attribute": "led",
+        "value": "on"
+    }
+    # Start the lambda function.
+    lambda_handler(event0, {})
 
 
 '''
