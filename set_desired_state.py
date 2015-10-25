@@ -120,7 +120,12 @@ def sendAWSIoTRequest(method, deviceName2, payload2):
 
 
 def lambda_handler(event, context):
-    # We write as an AWS Lambda handler so that we can run this code on the command line as well as AWS Lambda.
+    # This is the main logic of the program. We construct a JSON payload to tell AWS IoT to set our device's desired
+    # state. Then we wrap the JSON payload as a REST request and send to AWS IoT over HTTPS. The REST request needs
+    # to be signed so that the AWS IoT server can authenticate us. This code is written as an AWS Lambda handler so
+    # that we can run this code on the command line as well as AWS Lambda.
+    print("event = " + str(event))
+    print("context = " + str(context))
     try:
         # Construct the JSON payload to set the desired state for our device actuator, e.g. LED should be on.
         payload = '''{
@@ -139,16 +144,20 @@ def lambda_handler(event, context):
         result = sendAWSIoTRequest("POST", deviceName, payload)
         print("result = " + str(result))
     except:
+        # In case of error, show the exception.
         print('Request failed')
         raise
     else:
+        # If no error, return the result.
         return result
     finally:
-        print('OK')
+        # If any case, display "Done".
+        print('Done')
 
 
-# The main program starts here.  Comment this line when run in AWS Lambda.
-lambda_handler({}, {})
+# The main program starts here.  If started from a command line, run the lambda function manually.
+if os.environ.get("AWS_LAMBDA_FUNCTION_NAME") is None:
+    lambda_handler({}, {})
 
 
 '''
