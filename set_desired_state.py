@@ -30,9 +30,9 @@ def getSignatureKey(key, date_stamp, regionName, serviceName):
 def sendAWSIoTRequest(method, deviceName2, payload2):
     # Send a REST request to AWS IoT over HTTPS.  Only method "POST" is supported, which will update the Thing Shadow
     # for the specified device with the specified payload.
-    # Read AWS access key from environment.
-    access_key = os.environ.get('AWS_ACCESS_KEY_ID')
-    secret_key = os.environ.get('AWS_SECRET_ACCESS_KEY')
+    # This is the access key for user lambda_iot_user.  Somehow we can't sign using the environment access key.
+    access_key = 'AKIAIAAXOWVF3FX2XBZA'
+    secret_key = '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'
     if access_key is None or secret_key is None:
         print('No access key is available.')
         sys.exit()
@@ -119,27 +119,65 @@ def sendAWSIoTRequest(method, deviceName2, payload2):
     return result2
 
 
-# The program starts here.
-# Construct the JSON payload to set the desired state for our device actuator, e.g. LED should be on.
-payload = '''{
-    "state": {
-        "desired": {
-            "led": "on",
-            "timestamp": "''' + datetime.datetime.now().isoformat() + '''"
+def lambda_handler(event, context):
+    # We write as an AWS Lambda handler so that we can run this code on the command line as well as AWS Lambda.
+    try:
+        # Construct the JSON payload to set the desired state for our device actuator, e.g. LED should be on.
+        payload = '''{
+            "state": {
+                "desired": {
+                    "led": "on",
+                    "timestamp": "''' + datetime.datetime.now().isoformat() + '''"
+                }
+            }
         }
-    }
-}
-'''
-print("payload = " + payload)
+        '''
+        print("payload = " + payload)
 
-# Send the "set desired state" request to AWS IoT via a REST request over HTTPS.  We are actually updating the
-# Thing Shadow, according to AWS IoT terms.
-result = sendAWSIoTRequest("POST", deviceName, payload)
-print("result = " + str(result))
+        # Send the "set desired state" request to AWS IoT via a REST request over HTTPS.  We are actually updating the
+        # Thing Shadow, according to AWS IoT terms.
+        result = sendAWSIoTRequest("POST", deviceName, payload)
+        print("result = " + str(result))
+    except:
+        print('Request failed')
+        raise
+    else:
+        return result
+    finally:
+        print('OK')
+
+
+# The main program starts here.  Comment this line when run in AWS Lambda.
+lambda_handler({}, {})
 
 
 '''
 Some of the above signature settings were obtained from capturing the debug output of the AWS command line tool:
 aws --debug --region us-west-2 --profile tp-iot iot-data update-thing-shadow --thing-name g0_temperature_sensor --payload "{ \"state\": {\"desired\": { \"led\": \"on\" } } }"  output.txt && cat output.txt
 aws --debug --endpoint-url http://g89-pi.local --no-verify-ssl --region us-west-2 --profile tp-iot iot-data update-thing-shadow --thing-name g0_temperature_sensor --payload "{ \"state\": {\"desired\": { \"led\": \"on\" } } }"  output.txt && cat output.txt
+
+lambda_iot_user has the following policy:
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+            ],
+            "Resource": "arn:aws:logs:*:*:*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "iot:UpdateThingShadow"
+            ],
+            "Resource": [
+                "*"
+            ]
+        }
+    ]
+}
 '''
