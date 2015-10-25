@@ -3,7 +3,7 @@
 # This program tells AWS IoT the desired state of our device. It sends a REST request to AWS IoT over HTTPS.
 # The program here uses digital signatures to sign the REST request so that the AWS IoT server can authenticate us.
 
-import sys, os, datetime, hashlib, hmac, urllib2
+import sys, os, datetime, hashlib, hmac, urllib2, json
 
 # TODO: Name of our Raspberry Pi, also known as our "Thing Name"
 # deviceName = "g88_pi"
@@ -30,7 +30,7 @@ def getSignatureKey(key, date_stamp, regionName, serviceName):
 def sendAWSIoTRequest(method, deviceName2, payload2):
     # Send a REST request to AWS IoT over HTTPS.  Only method "POST" is supported, which will update the Thing Shadow
     # for the specified device with the specified payload.
-    # This is the access key for user lambda_iot_user.  Somehow we can't sign using the environment access key.
+    # This is the access key for user lambda_iot_user.  Somehow we can't sign using the AWS Lambda access key.
     access_key = 'AKIAIAAXOWVF3FX2XBZA'
     secret_key = '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'
     if access_key is None or secret_key is None:
@@ -60,23 +60,23 @@ def sendAWSIoTRequest(method, deviceName2, payload2):
     canonical_headers = 'host:' + host + '\n' + \
                         'user-agent:' + user_agent + '\n' + \
                         'x-amz-date:' + amz_date + '\n'
-    print("canonical_headers = " + canonical_headers)
+    print("REST request header values to be signed (canonical_headers):\n<<\n" + canonical_headers + ">>\n")
 
     # Step 5: Create the list of signed headers. This lists the headers in the canonical_headers list, delimited with
     # ";" and in alpha order. Note: The request can include any headers; canonical_headers and signed_headers include
     # those that you want to be included in the hash of the request. "Host" and "x-amz-date" are always required. For
     # IoT, user-agent is also required.
     signed_headers = 'host;user-agent;x-amz-date'
-    print("signed_headers = " + signed_headers)
+    print("REST request header fields to be signed (signed_headers): " + signed_headers)
 
     # Step 6: Create payload hash. In this example, the payload (body of the request) contains the request parameters.
     payload_hash = hashlib.sha256(payload2).hexdigest()
-    print("payload_hash = " + payload_hash)
+    print("REST payload hash: " + payload_hash)
 
     # Step 7: Combine elements to create create canonical request
     canonical_request = method + '\n' + canonical_uri + '\n' + canonical_querystring + '\n' + \
                         canonical_headers + '\n' + signed_headers + '\n' + payload_hash
-    print("canonical_request = " + canonical_request)
+    print("REST request to be signed (canonical_request):\n<<\n" + canonical_request + "\n>>\n")
 
     # ************* TASK 2: CREATE THE STRING TO SIGN*************
     # Match the algorithm to the hashing algorithm you use, either SHA-1 or SHA-256 (recommended)
@@ -84,10 +84,10 @@ def sendAWSIoTRequest(method, deviceName2, payload2):
     service = 'iotdata'
     algorithm = 'AWS4-HMAC-SHA256'
     credential_scope = date_stamp + '/' + region + '/' + service + '/' + 'aws4_request'
-    print("credential_scope = " + credential_scope)
+    print("REST credential scope: " + credential_scope)
     string_to_sign = algorithm + '\n' + amz_date + '\n' + credential_scope + '\n' + \
                      hashlib.sha256(canonical_request).hexdigest()
-    print("string_to_sign = " + string_to_sign)
+    print("REST request hash to be signed (string_to_sign):\n<<\n" + string_to_sign + "\n>>\n")
 
     # ************* TASK 3: CALCULATE THE SIGNATURE *************
     # Create the signing key using the function defined above.
@@ -99,7 +99,7 @@ def sendAWSIoTRequest(method, deviceName2, payload2):
     # Put the signature information in a header named Authorization.
     authorization_header = algorithm + ' ' + 'Credential=' + access_key + '/' + credential_scope + ', ' + \
                            'SignedHeaders=' + signed_headers + ', ' + 'Signature=' + signature
-    print("authorization_header = " + authorization_header)
+    print("REST request authorization header:\n<<\n" + authorization_header.replace(" ", "\n") + "\n>>\n")
 
     # For AWS IoT, the request should include the following. The headers must be included in the canonical_headers and
     # signed_headers values, as noted earlier. Order here is not significant.
@@ -109,11 +109,11 @@ def sendAWSIoTRequest(method, deviceName2, payload2):
                'User-Agent': user_agent,
                'X-Amz-Date': amz_date,
                'Authorization': authorization_header}
-    print("headers = " + str(headers))
+    print("REST request header values:\n<<\n" + str(headers).replace(",", ",\n") + "\n>>\n")
 
     # ************* SEND THE REQUEST *************
     url = "https://" + host + canonical_uri
-    print("url = " + url)
+    print("Sending REST request via HTTPS " + method + " to URL " + url + "...")
     request = urllib2.Request(url, payload2, headers)
     result2 = urllib2.urlopen(request).read()
     return result2
@@ -124,8 +124,8 @@ def lambda_handler(event, context):
     # state. Then we wrap the JSON payload as a REST request and send to AWS IoT over HTTPS. The REST request needs
     # to be signed so that the AWS IoT server can authenticate us. This code is written as an AWS Lambda handler so
     # that we can run this code on the command line as well as AWS Lambda.
-    print("event = " + str(event))
-    print("context = " + str(context))
+    print("AWS Lambda event: " + str(event))
+    # print("AWS Lambda context: " + str(context))
     try:
         # Construct the JSON payload to set the desired state for our device actuator, e.g. LED should be on.
         payload = '''{
@@ -137,22 +137,24 @@ def lambda_handler(event, context):
             }
         }
         '''
-        print("payload = " + payload)
+        print("REST request payload: " + payload)
 
         # Send the "set desired state" request to AWS IoT via a REST request over HTTPS.  We are actually updating the
         # Thing Shadow, according to AWS IoT terms.
         result = sendAWSIoTRequest("POST", deviceName, payload)
-        print("result = " + str(result))
+        print("Result of REST request:\n" +
+              json.dumps(json.loads(result), indent=4, separators=(',', ': ')))
+              # str(result).replace(":{", ":\n{").replace(",", ",\n"))
     except:
         # In case of error, show the exception.
-        print('Request failed')
+        print('REST request failed')
         raise
     else:
         # If no error, return the result.
         return result
     finally:
-        # If any case, display "Done".
-        print('Done')
+        # If any case, display "completed".
+        print('REST request completed')
 
 
 # The main program starts here.  If started from a command line, run the lambda function manually.
