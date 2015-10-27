@@ -2,6 +2,10 @@
 
 # This program tells AWS IoT the desired state of our device. It sends a REST request to AWS IoT over HTTPS.
 # The program here uses digital signatures to sign the REST request so that the AWS IoT server can authenticate us.
+# This program expects 3 parameters from the AWS Lambda event:
+#   device: Name of device, e.g. g88_pi
+#   attribute: Name of actuator, e.g. led
+#   value: Desired state of actuator, e.g. on
 
 import sys, os, datetime, hashlib, hmac, urllib2, json
 
@@ -115,7 +119,8 @@ def sendAWSIoTRequest(method, deviceName2, payload2):
     print("Sending REST request via HTTPS " + method + " to URL " + url + "...")
     request = urllib2.Request(url, payload2, headers)
     result2 = urllib2.urlopen(request).read()
-    return result2
+    # Parse the result as JSON and return as a dictionary.
+    return json.loads(result2)
 
 
 def lambda_handler(event, context):
@@ -127,9 +132,16 @@ def lambda_handler(event, context):
     # print("AWS Lambda context: " + str(context))
     try:
         # Get the device, attribute and value parameters from the caller (e.g. IoT Rule).
-        device = event["device"]
-        attribute = event["attribute"]
-        value = event["value"]
+        device = event.get("device")
+        attribute = event.get("attribute")
+        value = event.get("value")
+        # If the parameters were not provided, we stop.
+        if device is None:
+            raise RuntimeError("Missing parameter for device")
+        if attribute is None:
+            raise RuntimeError("Missing parameter for attribute")
+        if value is None:
+            raise RuntimeError("Missing parameter for value")
 
         # Construct the JSON payload to set the desired state for our device actuator, e.g. if we desire LED
         # to turn on, then attribute="led" and value="on"
@@ -148,7 +160,7 @@ def lambda_handler(event, context):
         # Thing Shadow, according to AWS IoT terms.
         result = sendAWSIoTRequest("POST", device, payload)
         print("Result of REST request:\n" +
-              json.dumps(json.loads(result), indent=4, separators=(',', ': ')))
+              json.dumps(result, indent=4, separators=(',', ': ')))
     except:
         # In case of error, show the exception.
         print('REST request failed')
