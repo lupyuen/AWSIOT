@@ -186,6 +186,92 @@ if os.environ.get("AWS_LAMBDA_FUNCTION_NAME") is None:
 
 
 '''
+Expose the above Lambda function through AWS API Gateway by defining a GET and a PUT method:
+(PUT is the official method, because GET is not allowed to change any state, according to REST conventions.
+But GET is useful for testing through a web browser.)
+
+Create API Gateway:
+/devices/{device}/{attribute}/{value} - GET
+
+Set content-type=application/json, which is the default content-type, if none specified
+
+Mapping Template:
+#set($inputRoot = $input.path('$'))
+{
+  ##  Get the "device", "attribute" and "value" resource fields
+  ##  from the URL and send to the Lambda function, i.e. calling
+  ##    http://.../devices/aaa/bbb/ccc
+  ##  will pass
+  ##    { "device": "aaa", "attribute": "bbb", "value": "ccc" }
+  ##  to the SetDesiredState function.
+
+  "device" : "$input.params('device')",
+  "attribute" : "$input.params('attribute')",
+  "value" : "$input.params('value')",
+
+  ##  Pass the common request fields to the Lambda function
+  ##  for debugging
+
+  "stage" : "$context.stage",
+  "request-id" : "$context.requestId",
+  "api-id" : "$context.apiId",
+  "resource-path" : "$context.resourcePath",
+  "resource-id" : "$context.resourceId",
+  "http-method" : "$context.httpMethod",
+  "source-ip" : "$context.identity.sourceIp",
+  "user-agent" : "$context.identity.userAgent",
+  "account-id" : "$context.identity.accountId",
+  "api-key" : "$context.identity.apiKey",
+  "caller" : "$context.identity.caller",
+  "user" : "$context.identity.user",
+  "user-arn" : "$context.identity.userArn"
+}
+
+To test:
+https://1xt9kv75ii.execute-api.us-west-2.amazonaws.com/prod/devices/g88_pi/led/flash1
+
+Create API Gateway:
+/devices/{device}/{attribute} - PUT
+
+Set content-type=application/json
+
+Mapping Template:
+#set($inputRoot = $input.path('$'))
+{
+  ##  Get the "device" and "attribute" resource fields
+  ##  from the URL, "value" from the request body
+  ##  and send to the Lambda function, i.e. calling
+  ##    "PUT http://.../devices/aaa/bbb" with body "ccc"
+  ##  will pass
+  ##    { "device": "aaa", "attribute": "bbb", "value": "ccc" }
+  ##  to the SetDesiredState function.
+
+  "device" : "$input.params('device')",
+  "attribute" : "$input.params('attribute')",
+  "value" : $input.json('$'),
+
+  ##  Pass the common request fields to the Lambda function
+  ##  for debugging
+
+  "stage" : "$context.stage",
+  "request-id" : "$context.requestId",
+  "api-id" : "$context.apiId",
+  "resource-path" : "$context.resourcePath",
+  "resource-id" : "$context.resourceId",
+  "http-method" : "$context.httpMethod",
+  "source-ip" : "$context.identity.sourceIp",
+  "user-agent" : "$context.identity.userAgent",
+  "account-id" : "$context.identity.accountId",
+  "api-key" : "$context.identity.apiKey",
+  "caller" : "$context.identity.caller",
+  "user" : "$context.identity.user",
+  "user-arn" : "$context.identity.userArn"
+}
+
+To test:
+PUT https://1xt9kv75ii.execute-api.us-west-2.amazonaws.com/prod/devices/g88_pi/led
+"flash1"
+
 Some of the above signature settings were obtained from capturing the debug output of the AWS command line tool:
 aws --debug --region us-west-2 --profile tp-iot iot-data update-thing-shadow --thing-name g0_temperature_sensor --payload "{ \"state\": {\"desired\": { \"led\": \"on\" } } }"  output.txt && cat output.txt
 aws --debug --endpoint-url http://g89-pi.local --no-verify-ssl --region us-west-2 --profile tp-iot iot-data update-thing-shadow --thing-name g0_temperature_sensor --payload "{ \"state\": {\"desired\": { \"led\": \"on\" } } }"  output.txt && cat output.txt
