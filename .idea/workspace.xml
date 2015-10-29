@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1d59eece-18d0-4e43-81ae-ebb01011c62b" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/set_desired_state.py" afterPath="$PROJECT_DIR$/set_desired_state.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/actuate_device_from_slack.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="AWSIOT.iws" />
@@ -24,12 +24,24 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="set_desired_state.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="set_desired_state.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/set_desired_state.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.53648067">
+            <state vertical-scroll-proportion="0.0">
               <caret line="25" column="59" selection-start-line="25" selection-start-column="59" selection-end-line="25" selection-end-column="59" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="actuate_device_from_slack.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/actuate_device_from_slack.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.59227467">
+              <caret line="33" column="40" selection-start-line="33" selection-start-column="40" selection-end-line="33" selection-end-column="40" />
+              <folding>
+                <element signature="e#146#157#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -69,6 +81,7 @@
         <option value="$PROJECT_DIR$/../RaspberryPiImage/home/pi/GrovePi/Software/Python/send_receive_sensor_data.py" />
         <option value="/Volumes/Home Directory/GrovePi/Software/Python/server.py" />
         <option value="$PROJECT_DIR$/set_desired_state.py" />
+        <option value="$PROJECT_DIR$/actuate_device_from_slack.py" />
       </list>
     </option>
   </component>
@@ -589,9 +602,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/set_desired_state.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.53648067">
+        <state vertical-scroll-proportion="0.0">
           <caret line="25" column="59" selection-start-line="25" selection-start-column="59" selection-end-line="25" selection-end-column="59" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/actuate_device_from_slack.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.59227467">
+          <caret line="33" column="40" selection-start-line="33" selection-start-column="40" selection-end-line="33" selection-end-column="40" />
+          <folding>
+            <element signature="e#146#157#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
