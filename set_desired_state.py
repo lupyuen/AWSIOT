@@ -9,25 +9,82 @@
 
 import sys, os, datetime, hashlib, hmac, urllib2, json, base64
 
+# List of device names and the replacement Slack channels for the device.
+# Used if the channel name is already taken up.
+replaceSlackChannels = {
+    "g88": "g88a"
+}
+
 # TODO: Name of our Raspberry Pi, also known as our "Thing Name".  Used only when running from command-line.
 deviceName = "g88_pi"
 
 
-def sign(key, msg):
-    # Function for signing a HTTPS request to AWS, so that AWS can authenticate us.  See:
-    # http://docs.aws.amazon.com/general/latest/gr/signature-v4-examples.html#signature-v4-examples-python
-    # Return the signature of the message, signed with the specified key.
-    return hmac.new(key, msg.encode("utf-8"), hashlib.sha256).digest()
+def lambda_handler(event, context):
+    # This is the main logic of the program. We construct a JSON payload to tell AWS IoT to set our device's desired
+    # state. Then we wrap the JSON payload as a REST request and send to AWS IoT over HTTPS. The REST request needs
+    # to be signed so that the AWS IoT server can authenticate us. This code is written as an AWS Lambda handler so
+    # that we can run this code on the command line as well as AWS Lambda.
+    print("AWS Lambda event: " + str(event))
+    try:
+        # We want to handle 3 types of input: Kinesis, IoT Rule and REST
+        if event.get('Records') is not None:
+            # If Kinesis, get the batch of records. Kinesis supports multiple records.
+            records = event.get('Records')
+        else:
+            # If IoT Rule or REST, we should expect only 1 input record.
+            records = [event]
 
+        # We loop and process every record received.
+        for record in records:
 
-def getSignatureKey(key, date_stamp, regionName, serviceName):
-    # Also used for signing the HTTPS request to AWS.
-    # Return the key to be used for signing the request.
-    kDate = sign(('AWS4' + key).encode('utf-8'), date_stamp)
-    kRegion = sign(kDate, regionName)
-    kService = sign(kRegion, serviceName)
-    kSigning = sign(kService, 'aws4_request')
-    return kSigning
+            # Kinesis data is encoded with Base-64 so we need to decode.
+            if record.get('kinesis') is not None:
+                record = base64.b64decode(record['kinesis']['data'])
+                print("Decoded payload from Kinesis: " + record)
+
+            # Get the device, attribute and value parameters from the caller (e.g. IoT Rule).
+            device = record.get("device")
+            attribute = record.get("attribute")
+            value = record.get("value")
+
+            # If the parameters were not provided, we stop.
+            if device is None:
+                raise RuntimeError("Missing parameter for device")
+            if attribute is None:
+                raise RuntimeError("Missing parameter for attribute")
+            if value is None:
+                raise RuntimeError("Missing parameter for value")
+
+            # Construct the JSON payload to set the desired state for our device actuator, e.g. if we desire LED
+            # to turn on, then attribute="led" and value="on"
+            payload = '''{
+                "state": {
+                    "desired": {
+                        "''' + attribute + '''": "''' + value + '''",
+                        "timestamp": "''' + datetime.datetime.now().isoformat() + '''"
+                    }
+                }
+            }
+            '''
+            print("REST request payload: " + payload)
+            postToSlack(device, json.dumps(json.loads(payload), indent=4))
+
+            # Send the "set desired state" request to AWS IoT via a REST request over HTTPS.  We are actually updating
+            # the Thing Shadow, according to AWS IoT terms.
+            result = sendAWSIoTRequest("POST", device, payload)
+            print("Result of REST request:\n" +
+                  json.dumps(result, indent=4, separators=(',', ': ')))
+
+    except:
+        # In case of error, show the exception.
+        print('REST request failed')
+        raise
+    else:
+        # If no error, return the result.
+        return result
+    finally:
+        # If any case, display "completed".
+        print('REST request completed')
 
 
 def sendAWSIoTRequest(method, deviceName2, payload2):
@@ -123,71 +180,54 @@ def sendAWSIoTRequest(method, deviceName2, payload2):
     return json.loads(result2)
 
 
-def lambda_handler(event, context):
-    # This is the main logic of the program. We construct a JSON payload to tell AWS IoT to set our device's desired
-    # state. Then we wrap the JSON payload as a REST request and send to AWS IoT over HTTPS. The REST request needs
-    # to be signed so that the AWS IoT server can authenticate us. This code is written as an AWS Lambda handler so
-    # that we can run this code on the command line as well as AWS Lambda.
-    print("AWS Lambda event: " + str(event))
+def sign(key, msg):
+    # Function for signing a HTTPS request to AWS, so that AWS can authenticate us.  See:
+    # http://docs.aws.amazon.com/general/latest/gr/signature-v4-examples.html#signature-v4-examples-python
+    # Return the signature of the message, signed with the specified key.
+    return hmac.new(key, msg.encode("utf-8"), hashlib.sha256).digest()
+
+
+def getSignatureKey(key, date_stamp, regionName, serviceName):
+    # Also used for signing the HTTPS request to AWS.
+    # Return the key to be used for signing the request.
+    kDate = sign(('AWS4' + key).encode('utf-8'), date_stamp)
+    kRegion = sign(kDate, regionName)
+    kService = sign(kRegion, serviceName)
+    kSigning = sign(kService, 'aws4_request')
+    return kSigning
+
+
+def postToSlack(device, action):
+    # Post a Slack message to the channel of the same name as the device e.g. #g88.
+    # device is assumed to begin with the group name.  action is the message.
+    if device is None:
+        return
+    channel = "g88a"
+    # If device is g88_pi, then post to channel #g88.
+    pos = device.find("_")
+    if pos > 0:
+        channel = device[0:pos]
+    # Map the channel name in case the channel name is unavailable.
+    if replaceSlackChannels.get(channel) is not None:
+        channel = replaceSlackChannels.get(channel)
+    # Construct the REST request to Slack.
+    body = {
+        "channel": "#" + channel,  # Public channels always start with #
+        "username": device,
+        "text": action
+    }
+    print(json.dumps(body, indent=2))
+    url = "https://hooks.slack.com/services/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"
     try:
-        # We want to handle 3 types of input: Kinesis, IoT Rule and REST
-        if event.get('Records') is not None:
-            # If Kinesis, get the batch of records. Kinesis supports multiple records.
-            records = event.get('Records')
-        else:
-            # If IoT Rule or REST, we should expect only 1 input record.
-            records = [event]
-        
-        # We loop and process every record received.
-        for record in records:
-            
-            # Kinesis data is encoded with Base-64 so we need to decode.
-            if record.get('kinesis') is not None:
-                record = base64.b64decode(record['kinesis']['data'])
-                print("Decoded payload from Kinesis: " + record)
-            
-            # Get the device, attribute and value parameters from the caller (e.g. IoT Rule).
-            device = record.get("device")
-            attribute = record.get("attribute")
-            value = record.get("value")
-            
-            # If the parameters were not provided, we stop.
-            if device is None:
-                raise RuntimeError("Missing parameter for device")
-            if attribute is None:
-                raise RuntimeError("Missing parameter for attribute")
-            if value is None:
-                raise RuntimeError("Missing parameter for value")
-    
-            # Construct the JSON payload to set the desired state for our device actuator, e.g. if we desire LED
-            # to turn on, then attribute="led" and value="on"
-            payload = '''{
-                "state": {
-                    "desired": {
-                        "''' + attribute + '''": "''' + value + '''",
-                        "timestamp": "''' + datetime.datetime.now().isoformat() + '''"
-                    }
-                }
-            }
-            '''
-            print("REST request payload: " + payload)
-    
-            # Send the "set desired state" request to AWS IoT via a REST request over HTTPS.  We are actually updating
-            # the Thing Shadow, according to AWS IoT terms.
-            result = sendAWSIoTRequest("POST", device, payload)
-            print("Result of REST request:\n" +
-                  json.dumps(result, indent=4, separators=(',', ': ')))
-                  
-    except:
-        # In case of error, show the exception.
-        print('REST request failed')
-        raise
-    else:
-        # If no error, return the result.
-        return result
-    finally:
-        # If any case, display "completed".
-        print('REST request completed')
+        # Make the REST request to Slack.
+        request = urllib2.Request(url, json.dumps(body))
+        result2 = urllib2.urlopen(request).read()
+        print("result = " + result2)
+        return result2
+    except urllib2.HTTPError, error:
+        # Show the error.
+        error_content = error.read()
+        print("error = " + error_content)
 
 
 # The main program starts here.  If started from a command line, run the lambda function manually.
