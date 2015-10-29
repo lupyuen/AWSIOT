@@ -10,7 +10,8 @@
 import sys, os, datetime, hashlib, hmac, urllib2, json, base64
 
 # List of device names and the replacement Slack channels for the device.
-# Used if the channel name is already taken up.
+# Used if the channel name is already taken up.  Sync this with ActuateDeviceFromSlack and
+# SendSensorDataToElasticsearch.
 replaceSlackChannels = {
     "g88": "g88a"
 }
@@ -39,8 +40,8 @@ def lambda_handler(event, context):
 
             # Kinesis data is encoded with Base-64 so we need to decode.
             if record.get('kinesis') is not None:
-                record = base64.b64decode(record['kinesis']['data'])
-                print("Decoded payload from Kinesis: " + record)
+                record = json.loads(base64.b64decode(record['kinesis']['data']))
+                print("Decoded payload from Kinesis: " + json.dumps(record, indent=2))
 
             # Get the device, attribute and value parameters from the caller (e.g. IoT Rule).
             device = record.get("device")
@@ -67,13 +68,14 @@ def lambda_handler(event, context):
             }
             '''
             print("REST request payload: " + payload)
-            postToSlack(device, json.dumps(json.loads(payload), indent=4))
+            post_to_slack(device, "Sending: " + json.dumps(json.loads(payload), indent=4))
 
             # Send the "set desired state" request to AWS IoT via a REST request over HTTPS.  We are actually updating
             # the Thing Shadow, according to AWS IoT terms.
-            result = sendAWSIoTRequest("POST", device, payload)
+            result = send_aws_iot_request("POST", device, payload)
             print("Result of REST request:\n" +
                   json.dumps(result, indent=4, separators=(',', ': ')))
+            post_to_slack(device, "Result: " + json.dumps(result, indent=4))
 
     except:
         # In case of error, show the exception.
@@ -87,7 +89,7 @@ def lambda_handler(event, context):
         print('REST request completed')
 
 
-def sendAWSIoTRequest(method, deviceName2, payload2):
+def send_aws_iot_request(method, device_name2, payload2):
     # Send a REST request to AWS IoT over HTTPS.  Only method "POST" is supported, which will update the Thing Shadow
     # for the specified device with the specified payload.
     # This is the access key for user lambda_iot_user.  Somehow we can't sign using the AWS Lambda access key.
@@ -108,7 +110,7 @@ def sendAWSIoTRequest(method, deviceName2, payload2):
     # Step 1 is to define the verb (GET, POST, etc.)--already done.
 
     # Step 2: Create canonical URI--the part of the URI from domain to query string (use '/' if no path)
-    canonical_uri = '/things/' + deviceName2 + '/shadow'
+    canonical_uri = '/things/' + device_name2 + '/shadow'
 
     # Step 3: Create the canonical query string.
     canonical_querystring = ''
@@ -151,7 +153,7 @@ def sendAWSIoTRequest(method, deviceName2, payload2):
 
     # ************* TASK 3: CALCULATE THE SIGNATURE *************
     # Create the signing key using the function defined above.
-    signing_key = getSignatureKey(secret_key, date_stamp, region, service)
+    signing_key = get_signature_key(secret_key, date_stamp, region, service)
     # Sign the string_to_sign using the signing_key
     signature = hmac.new(signing_key, (string_to_sign).encode('utf-8'), hashlib.sha256).hexdigest()
 
@@ -187,17 +189,17 @@ def sign(key, msg):
     return hmac.new(key, msg.encode("utf-8"), hashlib.sha256).digest()
 
 
-def getSignatureKey(key, date_stamp, regionName, serviceName):
+def get_signature_key(key, date_stamp, region_name, service_name):
     # Also used for signing the HTTPS request to AWS.
     # Return the key to be used for signing the request.
-    kDate = sign(('AWS4' + key).encode('utf-8'), date_stamp)
-    kRegion = sign(kDate, regionName)
-    kService = sign(kRegion, serviceName)
-    kSigning = sign(kService, 'aws4_request')
-    return kSigning
+    kdate = sign(('AWS4' + key).encode('utf-8'), date_stamp)
+    kregion = sign(kdate, region_name)
+    kservice = sign(kregion, service_name)
+    ksigning = sign(kservice, 'aws4_request')
+    return ksigning
 
 
-def postToSlack(device, action):
+def post_to_slack(device, action):
     # Post a Slack message to the channel of the same name as the device e.g. #g88.
     # device is assumed to begin with the group name.  action is the message.
     if device is None:
@@ -241,7 +243,6 @@ if os.environ.get("AWS_LAMBDA_FUNCTION_NAME") is None:
     # Start the lambda function.
     lambda_handler(event0, {})
 
-
 '''
 Some of the above signature settings were obtained from capturing the debug output of the AWS command line tool:
 aws --debug --region us-west-2 --profile tp-iot iot-data update-thing-shadow --thing-name g0_temperature_sensor --payload "{ \"state\": {\"desired\": { \"led\": \"on\" } } }"  output.txt && cat output.txt
@@ -264,6 +265,18 @@ lambda_iot_user has the following policy:
             "Effect": "Allow",
             "Action": [
                 "iot:UpdateThingShadow"
+            ],
+            "Resource": [
+                "*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "kinesis:GetRecords",
+                "kinesis:GetShardIterator",
+                "kinesis:DescribeStream",
+                "kinesis:ListStreams"
             ],
             "Resource": [
                 "*"

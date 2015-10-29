@@ -4,6 +4,12 @@
 //  "xTopic":"$aws/things/g0_temperature_sensor/shadow/update/accepted","xClientToken":"myAwsClientId-0"}
 //  Make sure the role executing this Lambda function has CloudWatch PutMetricData and PutMetricAlarm permissions.
 
+//  List of device names and the replacement Slack channels for the device.
+//  Used if the channel name is already taken up.  Sync this with ActuateDeviceFromSlack and SetDesiredState.
+replaceSlackChannels = {
+    "g88": "g88a"
+}
+
 var https = require('https');
 var zlib = require('zlib');
 var crypto = require('crypto');
@@ -38,17 +44,23 @@ exports.handler = function(input, context) {
         extractedFields.device = device;
     }
     //  Copy the keys and values and send to CloudWatch.
+    var actionCount = 0;
     for (var key in input) {
         var value = input[key];
         extractedFields[key] = value;
         if (action.length > 0) 
             action = action + ", ";
         action = action + key + ": " + value;
+        actionCount++;
         //  If the value is numeric, send the metric to CloudWatch.
         if (key != "version" && !isNaN(value)) {
             writeMetricToCloudWatch(device, key, value);
         }
     }
+    //  Don't index response to set desired state.
+    if (actionCount == 2)
+        return context.succeed('Ignoring response to set desired state');
+
     if (!extractedFields.action)
         extractedFields.action = action;
     if (!extractedFields.event)
@@ -439,17 +451,19 @@ function postToSlack(device, action, callback) {
     var pos = device.indexOf("_");
     if (pos > 0)
         channel = device.substring(0, pos);
+    if (replaceSlackChannels[channel])
+        channel = replaceSlackChannels[channel];
     var body = {
-        channel: channel,
+        channel: "#" + channel,
         username: device,
         text: action
     };
-    var options = {
-        hostname: "hooks.slack.com",
+	var options = {
+		hostname: "hooks.slack.com",
         path: '/services/T09SXGWKG/B0CQ23S3V/yT89hje6TP6r81xX91GJOx9Y',
-        method: 'POST'
-    };
-    console.log("body =", JSON.stringify(body));
+		method: 'POST'
+	};
+	console.log("Slack request =", JSON.stringify(body));
     var req = https.request(options, function(res) {
         var body = '';
         console.log('Status:', res.statusCode);
