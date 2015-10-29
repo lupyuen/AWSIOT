@@ -7,7 +7,7 @@
 #   attribute: Name of actuator, e.g. led
 #   value: Desired state of actuator, e.g. on
 
-import sys, os, datetime, hashlib, hmac, urllib2, json
+import sys, os, datetime, hashlib, hmac, urllib2, json, base64
 
 # TODO: Name of our Raspberry Pi, also known as our "Thing Name".  Used only when running from command-line.
 deviceName = "g88_pi"
@@ -129,38 +129,55 @@ def lambda_handler(event, context):
     # to be signed so that the AWS IoT server can authenticate us. This code is written as an AWS Lambda handler so
     # that we can run this code on the command line as well as AWS Lambda.
     print("AWS Lambda event: " + str(event))
-    # print("AWS Lambda context: " + str(context))
     try:
-        # Get the device, attribute and value parameters from the caller (e.g. IoT Rule).
-        device = event.get("device")
-        attribute = event.get("attribute")
-        value = event.get("value")
-        # If the parameters were not provided, we stop.
-        if device is None:
-            raise RuntimeError("Missing parameter for device")
-        if attribute is None:
-            raise RuntimeError("Missing parameter for attribute")
-        if value is None:
-            raise RuntimeError("Missing parameter for value")
-
-        # Construct the JSON payload to set the desired state for our device actuator, e.g. if we desire LED
-        # to turn on, then attribute="led" and value="on"
-        payload = '''{
-            "state": {
-                "desired": {
-                    "''' + attribute + '''": "''' + value + '''",
-                    "timestamp": "''' + datetime.datetime.now().isoformat() + '''"
+        # We want to handle 3 types of input: Kinesis, IoT Rule and REST
+        if event.get('Records') is not None:
+            # If Kinesis, get the batch of records. Kinesis supports multiple records.
+            records = event.get('Records')
+        else:
+            # If IoT Rule or REST, we should expect only 1 input record.
+            records = [event]
+        
+        # We loop and process every record received.
+        for record in records:
+            
+            # Kinesis data is encoded with Base-64 so we need to decode.
+            if record.get('kinesis') is not None:
+                record = base64.b64decode(record['kinesis']['data'])
+                print("Decoded payload from Kinesis: " + record)
+            
+            # Get the device, attribute and value parameters from the caller (e.g. IoT Rule).
+            device = record.get("device")
+            attribute = record.get("attribute")
+            value = record.get("value")
+            
+            # If the parameters were not provided, we stop.
+            if device is None:
+                raise RuntimeError("Missing parameter for device")
+            if attribute is None:
+                raise RuntimeError("Missing parameter for attribute")
+            if value is None:
+                raise RuntimeError("Missing parameter for value")
+    
+            # Construct the JSON payload to set the desired state for our device actuator, e.g. if we desire LED
+            # to turn on, then attribute="led" and value="on"
+            payload = '''{
+                "state": {
+                    "desired": {
+                        "''' + attribute + '''": "''' + value + '''",
+                        "timestamp": "''' + datetime.datetime.now().isoformat() + '''"
+                    }
                 }
             }
-        }
-        '''
-        print("REST request payload: " + payload)
-
-        # Send the "set desired state" request to AWS IoT via a REST request over HTTPS.  We are actually updating the
-        # Thing Shadow, according to AWS IoT terms.
-        result = sendAWSIoTRequest("POST", device, payload)
-        print("Result of REST request:\n" +
-              json.dumps(result, indent=4, separators=(',', ': ')))
+            '''
+            print("REST request payload: " + payload)
+    
+            # Send the "set desired state" request to AWS IoT via a REST request over HTTPS.  We are actually updating
+            # the Thing Shadow, according to AWS IoT terms.
+            result = sendAWSIoTRequest("POST", device, payload)
+            print("Result of REST request:\n" +
+                  json.dumps(result, indent=4, separators=(',', ': ')))
+                  
     except:
         # In case of error, show the exception.
         print('REST request failed')
@@ -186,92 +203,6 @@ if os.environ.get("AWS_LAMBDA_FUNCTION_NAME") is None:
 
 
 '''
-Expose the above Lambda function through AWS API Gateway by defining a GET and a PUT method:
-(PUT is the official method, because GET is not allowed to change any state, according to REST conventions.
-But GET is useful for testing through a web browser.)
-
-Create API Gateway:
-/devices/{device}/{attribute}/{value} - GET
-
-Set content-type=application/json, which is the default content-type, if none specified
-
-Mapping Template:
-#set($inputRoot = $input.path('$'))
-{
-  ##  Get the "device", "attribute" and "value" resource fields
-  ##  from the URL and send to the Lambda function, i.e. calling
-  ##    http://.../devices/aaa/bbb/ccc
-  ##  will pass
-  ##    { "device": "aaa", "attribute": "bbb", "value": "ccc" }
-  ##  to the SetDesiredState function.
-
-  "device" : "$input.params('device')",
-  "attribute" : "$input.params('attribute')",
-  "value" : "$input.params('value')",
-
-  ##  Pass the common request fields to the Lambda function
-  ##  for debugging
-
-  "stage" : "$context.stage",
-  "request-id" : "$context.requestId",
-  "api-id" : "$context.apiId",
-  "resource-path" : "$context.resourcePath",
-  "resource-id" : "$context.resourceId",
-  "http-method" : "$context.httpMethod",
-  "source-ip" : "$context.identity.sourceIp",
-  "user-agent" : "$context.identity.userAgent",
-  "account-id" : "$context.identity.accountId",
-  "api-key" : "$context.identity.apiKey",
-  "caller" : "$context.identity.caller",
-  "user" : "$context.identity.user",
-  "user-arn" : "$context.identity.userArn"
-}
-
-To test:
-https://1xt9kv75ii.execute-api.us-west-2.amazonaws.com/prod/devices/g88_pi/led/flash1
-
-Create API Gateway:
-/devices/{device}/{attribute} - PUT
-
-Set content-type=application/json
-
-Mapping Template:
-#set($inputRoot = $input.path('$'))
-{
-  ##  Get the "device" and "attribute" resource fields
-  ##  from the URL, "value" from the request body
-  ##  and send to the Lambda function, i.e. calling
-  ##    "PUT http://.../devices/aaa/bbb" with body "ccc"
-  ##  will pass
-  ##    { "device": "aaa", "attribute": "bbb", "value": "ccc" }
-  ##  to the SetDesiredState function.
-
-  "device" : "$input.params('device')",
-  "attribute" : "$input.params('attribute')",
-  "value" : $input.json('$'),
-
-  ##  Pass the common request fields to the Lambda function
-  ##  for debugging
-
-  "stage" : "$context.stage",
-  "request-id" : "$context.requestId",
-  "api-id" : "$context.apiId",
-  "resource-path" : "$context.resourcePath",
-  "resource-id" : "$context.resourceId",
-  "http-method" : "$context.httpMethod",
-  "source-ip" : "$context.identity.sourceIp",
-  "user-agent" : "$context.identity.userAgent",
-  "account-id" : "$context.identity.accountId",
-  "api-key" : "$context.identity.apiKey",
-  "caller" : "$context.identity.caller",
-  "user" : "$context.identity.user",
-  "user-arn" : "$context.identity.userArn"
-}
-
-To test:
-PUT https://1xt9kv75ii.execute-api.us-west-2.amazonaws.com/prod/devices/g88_pi/led
-"flash1"
-
 Some of the above signature settings were obtained from capturing the debug output of the AWS command line tool:
 aws --debug --region us-west-2 --profile tp-iot iot-data update-thing-shadow --thing-name g0_temperature_sensor --payload "{ \"state\": {\"desired\": { \"led\": \"on\" } } }"  output.txt && cat output.txt
 aws --debug --endpoint-url http://g89-pi.local --no-verify-ssl --region us-west-2 --profile tp-iot iot-data update-thing-shadow --thing-name g0_temperature_sensor --payload "{ \"state\": {\"desired\": { \"led\": \"on\" } } }"  output.txt && cat output.txt
