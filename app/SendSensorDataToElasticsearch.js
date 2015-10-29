@@ -115,7 +115,7 @@ exports.handler = function(input, context) {
 
         console.log('SendSensorData Success: ' + JSON.stringify(success));
         //  Post a Slack message to the private group of the same name e.g. g88.
-        return postToSlack(device, action, function(err, result) {
+        return postToSlack(device, "Received sensor data: `" + action + "`", function(err, result) {
             context.succeed('Success');
         });
     });

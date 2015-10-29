@@ -68,14 +68,18 @@ def lambda_handler(event, context):
             }
             '''
             print("REST request payload: " + payload)
-            post_to_slack(device, "Sending: " + json.dumps(json.loads(payload), indent=4))
+            post_to_slack(device, "Sending desired state:\n```" + json.dumps(json.loads(payload), indent=4) + "```")
 
             # Send the "set desired state" request to AWS IoT via a REST request over HTTPS.  We are actually updating
             # the Thing Shadow, according to AWS IoT terms.
             result = send_aws_iot_request("POST", device, payload)
             print("Result of REST request:\n" +
                   json.dumps(result, indent=4, separators=(',', ': ')))
-            post_to_slack(device, "Result: " + json.dumps(result, indent=4))
+            if json.dumps(result).find("metadata") > 0:
+                slackResult = "Set desired state OK"
+            else:
+                slackResult = "Set desired state failed"
+            post_to_slack(device, slackResult)
 
     except:
         # In case of error, show the exception.

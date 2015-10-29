@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="1d59eece-18d0-4e43-81ae-ebb01011c62b" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/SendSensorDataToElasticsearch.js" afterPath="$PROJECT_DIR$/app/SendSensorDataToElasticsearch.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/actuate_device_from_slack.py" afterPath="$PROJECT_DIR$/actuate_device_from_slack.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/set_desired_state.py" afterPath="$PROJECT_DIR$/set_desired_state.py" />
     </list>
     <ignored path="AWSIOT.iws" />
@@ -29,7 +28,7 @@
         <entry file="file://$PROJECT_DIR$/set_desired_state.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="15" column="2" selection-start-line="15" selection-start-column="2" selection-end-line="15" selection-end-column="2" />
+              <caret line="70" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="291" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -50,8 +49,8 @@
       <file leaf-file-name="SendSensorDataToElasticsearch.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/SendSensorDataToElasticsearch.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.75514877">
-              <caret line="61" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="490" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.40732265">
+              <caret line="118" column="39" selection-start-line="0" selection-start-column="0" selection-end-line="490" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -102,8 +101,8 @@
         <option value="$PROJECT_DIR$/../RaspberryPiImage/home/pi/GrovePi/Software/Python/send_receive_sensor_data.py" />
         <option value="/Volumes/Home Directory/GrovePi/Software/Python/server.py" />
         <option value="$PROJECT_DIR$/post_to_slack.py" />
-        <option value="$PROJECT_DIR$/set_desired_state.py" />
         <option value="$PROJECT_DIR$/actuate_device_from_slack.py" />
+        <option value="$PROJECT_DIR$/set_desired_state.py" />
         <option value="$PROJECT_DIR$/app/SendSensorDataToElasticsearch.js" />
       </list>
     </option>
@@ -706,14 +705,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/set_desired_state.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="15" column="2" selection-start-line="15" selection-start-column="2" selection-end-line="15" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/actuate_device_from_slack.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -724,10 +715,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/set_desired_state.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="70" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="291" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/SendSensorDataToElasticsearch.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.75514877">
-          <caret line="61" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="490" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.40732265">
+          <caret line="118" column="39" selection-start-line="0" selection-start-column="0" selection-end-line="490" selection-end-column="0" />
           <folding />
         </state>
       </provider>
