@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 
-# This program tells AWS IoT the desired state of our device. It sends a REST request to AWS IoT over HTTPS.
+# This program gets from AWS IoT the reported state of our device. It sends a REST request to AWS IoT over HTTPS.
 # The program here uses digital signatures to sign the REST request so that the AWS IoT server can authenticate us.
-# This program expects 3 parameters from the AWS Lambda event:
+# This program expects 2 parameters from the AWS Lambda event:
 #   device: Name of device, e.g. g88_pi
-#   attribute: Name of actuator, e.g. led
-#   value: Desired state of actuator, e.g. on
+#   attribute: (Optional) Name of actuator, e.g. led
 
 import sys, os, datetime, hashlib, hmac, urllib2, json, base64
 
@@ -21,7 +20,7 @@ deviceName = "g88_pi"
 
 
 def lambda_handler(event, context):
-    # This is the main logic of the program. We construct a JSON payload to tell AWS IoT to set our device's desired
+    # This is the main logic of the program. We construct a JSON payload to tell AWS IoT to get our device's reported
     # state. Then we wrap the JSON payload as a REST request and send to AWS IoT over HTTPS. The REST request needs
     # to be signed so that the AWS IoT server can authenticate us. This code is written as an AWS Lambda handler so
     # that we can run this code on the command line as well as AWS Lambda.
@@ -43,43 +42,32 @@ def lambda_handler(event, context):
                 record = json.loads(base64.b64decode(record['kinesis']['data']))
                 print("Decoded payload from Kinesis: " + json.dumps(record, indent=2))
 
-            # Get the device, attribute and value parameters from the caller (e.g. IoT Rule).
+            # Get the device and attribute parameters from the caller (e.g. IoT Rule).
             device = record.get("device")
             attribute = record.get("attribute")
-            value = record.get("value")
 
             # If the parameters were not provided, we stop.
             if device is None:
                 raise RuntimeError("Missing parameter for device")
-            if attribute is None:
-                raise RuntimeError("Missing parameter for attribute")
-            if value is None:
-                raise RuntimeError("Missing parameter for value")
 
-            # Construct the JSON payload to set the desired state for our device actuator, e.g. if we desire LED
-            # to turn on, then attribute="led" and value="on"
-            payload = '''{
-                "state": {
-                    "desired": {
-                        "''' + attribute + '''": "''' + value + '''",
-                        "timestamp": "''' + datetime.datetime.now().isoformat() + '''"
-                    }
-                }
-            }
-            '''
-            print("REST request payload: " + payload)
-            post_to_slack(device, "Sending desired state to device:\n```" + json.dumps(json.loads(payload), indent=4) + "```")
-
-            # Send the "set desired state" request to AWS IoT via a REST request over HTTPS.  We are actually updating
+            # Send the "get reported state" request to AWS IoT via a REST request over HTTPS.  We are actually getting
             # the Thing Shadow, according to AWS IoT terms.
-            result = send_aws_iot_request("POST", device, payload)
+            result = send_aws_iot_request("GET", device, "")
             print("Result of REST request:\n" +
                   json.dumps(result, indent=4, separators=(',', ': ')))
-            if json.dumps(result).find("metadata") > 0:
-                slackResult = "Device has set desired state successfully"
+            state = result.get("state")
+            if state is None:
+                return None
+            reported_state = state.get("reported")
+            if reported_state is None:
+                return None
+            if attribute is None:
+                # If no attribute specified, we return the entire reported state.
+                result = reported_state
             else:
-                slackResult = "Error: Device failed to set desired state"
-            post_to_slack(device, slackResult)
+                # If attribute is specified, we return the value of the attribute.
+                value = reported_state.get(attribute)
+                result = value
 
     except:
         # In case of error, show the exception.
@@ -87,6 +75,7 @@ def lambda_handler(event, context):
         raise
     else:
         # If no error, return the result.
+        print("Returned result:\n" + json.dumps(result, indent=4))
         return result
     finally:
         # If any case, display "completed".
@@ -94,8 +83,7 @@ def lambda_handler(event, context):
 
 
 def send_aws_iot_request(method, device_name2, payload2):
-    # Send a REST request to AWS IoT over HTTPS.  Only method "POST" is supported, which will update the Thing Shadow
-    # for the specified device with the specified payload.
+    # Send a REST request to AWS IoT over HTTPS.
     # This is the access key for user lambda_iot_user.  Somehow we can't sign using the AWS Lambda access key.
     access_key = 'AKIAIAAXOWVF3FX2XBZA'
     secret_key = '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'
@@ -206,54 +194,26 @@ def get_signature_key(key, date_stamp, region_name, service_name):
     return ksigning
 
 
-def post_to_slack(device, action):
-    # Post a Slack message to the channel of the same name as the device e.g. #g88.
-    # device is assumed to begin with the group name.  action is the message.
-    if device is None:
-        return
-    channel = "g88a"
-    # If device is g88_pi, then post to channel #g88.
-    pos = device.find("_")
-    if pos > 0:
-        channel = device[0:pos]
-    # Map the channel name in case the channel name is unavailable.
-    if replaceSlackChannels.get(channel) is not None:
-        channel = replaceSlackChannels.get(channel)
-    # Construct the REST request to Slack.
-    body = {
-        "channel": "#" + channel,  # Public channels always start with #
-        "username": device,
-        "text": action
-    }
-    print(json.dumps(body, indent=2))
-    url = "https://hooks.slack.com/services/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"
-    try:
-        # Make the REST request to Slack.
-        request = urllib2.Request(url, json.dumps(body))
-        result2 = urllib2.urlopen(request).read()
-        print("result = " + result2)
-        return result2
-    except urllib2.HTTPError, error:
-        # Show the error.
-        error_content = error.read()
-        print("error = " + error_content)
-
-
 # The main program starts here.  If started from a command line, run the lambda function manually.
 if os.environ.get("AWS_LAMBDA_FUNCTION_NAME") is None:
-    # If running on command line, we set the LED attribute of the device.
+    # If running on command line, get the entire reported state of the device.
+    event0 = {
+        "device": deviceName
+    }
+    # Start the lambda function.
+    lambda_handler(event0, {})
+    # Then get the LED attribute of the reported state of the device.
     event0 = {
         "device": deviceName,
-        "attribute": "led",
-        "value": "on"
+        "attribute": "led"
     }
     # Start the lambda function.
     lambda_handler(event0, {})
 
 '''
 Some of the above signature settings were obtained from capturing the debug output of the AWS command line tool:
-aws --debug --region us-west-2 --profile tp-iot iot-data update-thing-shadow --thing-name g0_temperature_sensor --payload "{ \"state\": {\"desired\": { \"led\": \"on\" } } }"  output.txt && cat output.txt
-aws --debug --endpoint-url http://g89-pi.local --no-verify-ssl --region us-west-2 --profile tp-iot iot-data update-thing-shadow --thing-name g0_temperature_sensor --payload "{ \"state\": {\"desired\": { \"led\": \"on\" } } }"  output.txt && cat output.txt
+aws --debug --region us-west-2 --profile tp-iot iot-data get-thing-shadow --thing-name g0_temperature_sensor output.txt && cat output.txt
+aws --debug --endpoint-url http://g89-pi.local --no-verify-ssl --region us-west-2 --profile tp-iot iot-data get-thing-shadow --thing-name g0_temperature_sensor output.txt && cat output.txt
 
 lambda_iot_user has the following policy:
 {

@@ -1,5 +1,5 @@
 # AWSIOT
-Sample Node.js app for calling AWS IoT
+Sample Node.js and Python scripts for calling AWS IoT
 
 0. Go to AWS IoT Console, create a Thing named "g0_temperature_sensor".  (Will be renamed to "g88_temperature_sensor".)
 
