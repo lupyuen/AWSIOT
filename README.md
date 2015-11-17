@@ -1,5 +1,8 @@
-# AWSIOT
-Sample Node.js and Python scripts for calling AWS IoT
+# AWS IoT with Node.js and Python
+Node.js and Python scripts for AWS IoT, used in Temasek Polytechnic Smart IoT Applications course. See also
+https://github.com/lupyuen/RaspberryPiImage
+
+Getting started:
 
 0. Go to AWS IoT Console, create a Thing named "g0_temperature_sensor".  (Will be renamed to "g88_temperature_sensor".)
 
