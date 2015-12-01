@@ -78,7 +78,9 @@ def lambda_handler(event, context):
     save_events(device, device_events)
 
     # Count how many times we satisfied the trigger condition.
+    # The cutoff time is now - trigger period.
     cutoff_datetime = current_datetime - datetime.timedelta(seconds=trigger_period)
+    cutoff_datetime2 = cutoff_datetime - datetime.timedelta(seconds=trigger_period)
     events_tested = 0
     events_satisfied = 0
     period_satisfied = False
@@ -87,39 +89,40 @@ def lambda_handler(event, context):
         e_datetime = datetime.datetime.strptime(e["timestamp"], "%Y-%m-%dT%H:%M:%S.%f")
         # Event must match our attribute and must be within our past trigger period.
         if e["attribute"] == trigger_attribute:
-            if e_datetime < cutoff_datetime:
+            if e_datetime < cutoff_datetime2:
+                # If a matching attribute has exceeded twice the trigger period, then it's too old, ignore it.
+                continue
+            elif e_datetime < cutoff_datetime:
                 # If a matching attribute has exceeded the trigger period, then we have received enough events to decide.
                 period_satisfied = True
             else:
+                # This matching attribute is within the trigger period.
                 events_tested = events_tested + 1
-                # Check whether the value conditions are met.
-                if trigger_value is not None:
-                    if e["value"] == trigger_value:
-                        events_satisfied = events_satisfied + 1
-                elif trigger_upper_limit is not None:
-                    if e["value"] > trigger_upper_limit:
-                        events_satisfied = events_satisfied + 1
-                elif trigger_lower_limit is not None:
-                    if e["value"] < trigger_lower_limit:
-                        events_satisfied = events_satisfied + 1
+                # If value conditions are met, count it.
+                if trigger_value is not None and e["value"] == trigger_value:
+                    events_satisfied = events_satisfied + 1
+                elif trigger_upper_limit is not None and e["value"] > trigger_upper_limit:
+                    events_satisfied = events_satisfied + 1
+                elif trigger_lower_limit is not None and e["value"] < trigger_lower_limit:
+                    events_satisfied = events_satisfied + 1
 
     # Compute the certainty score - how many times the condition was satisfied over the trigger time period.
     certainty = 1.0 * events_satisfied / events_tested
-    print("Certainty = " + str(events_satisfied) + " / " + str(events_tested) + " = " + str(certainty))
+    msg = "Certainty = " + str(events_satisfied) + " / " + str(events_tested) + " = " + str(round(certainty, 1))
     if period_satisfied == False:
-        return "Waiting for more events until trigger_period is reached for trigger " + trigger_name
+        return "Waiting for more events until trigger_period is reached for trigger " + trigger_name + ". " + msg
     if certainty >= trigger_certainty:
-        print("Found sufficient certainty " + str(certainty) + " to start trigger " + trigger_name)
+        print("Found sufficient certainty " + str(round(certainty, 1)) + " to start trigger " + trigger_name + ". " + msg)
     else:
-        return "Certainty " + str(certainty) + " is not sufficient to start trigger " + trigger_name
+        return "Certainty " + str(round(certainty, 1)) + " is not sufficient to start trigger " + trigger_name + ". " + msg
 
     # Don't re-trigger within the trigger time period.
     if triggered_recently(device, trigger_name, trigger_period, timestamp):
-        return "Trigger " + trigger_name + " was already triggered recently. Try again later."
+        return "Trigger " + trigger_name + " was already triggered recently. Try again later. " + msg
 
     # Trigger the event by setting the reported state.  Any rules dependent on the reported state will fire.
     set_reported_state(device, trigger_name, certainty, timestamp)
-    return "Triggered " + trigger_name + " with certainty " + str(certainty)
+    return "Triggered " + trigger_name + " with certainty " + str(round(certainty, 1)) + ". " + msg
 
 
 # Return true if the trigger was triggered within the past trigger time period.
