@@ -1,9 +1,12 @@
-# This lambda function is meant to be invoked by a rule. It captures the previous sensor values,
+# ComputeFuzzyTrigger is a lambda function meant to be invoked by a rule. It captures the previous sensor values,
 # and if the conditions are met, the function will trigger a reported state update that may
 # trigger another rule. The condition includes fuzzy matching, e.g.
 # if distance sensor reports < 4 metres for past 1 min for over 80% of readings then ...
 #
 # Expected inputs for this function:
+#    device: Device ID, e.g. "g88_pi".  Usually set to "topic(3)".
+#    attribute: State.reported attribute that was just modified, e.g. "temperature".
+#    value: Value of the modified attribute.
 #    trigger_name: Name of state.reported attribute to be created when conditions are met.
 #    trigger_attribute: Attribute to be checked.
 #    trigger_value: (Optional) Trigger when value is equal to trigger_equal
@@ -13,6 +16,50 @@
 #                       then we trigger if 80% of values is equal to trigger values or exceed trigger limits.
 #    trigger_period: Check certainty over this past time period, in seconds
 #    value_map_beacon_to_class: (Optional) Trigger value is obtained by mapping beacon to class.
+# You may specify one or more of trigger_value, trigger_upper_limit and trigger_lower_limit.
+#
+# For example, say you want to check whether a parking lot is occupied, using an ultrasonic
+# distance sensor.  You want to trigger the event "state.reported.lot_is_occupied" if the
+# reported distance is under 4 metres for 80% of distance readings over the past 60 seconds.
+# You would use pass the following parameters to ComputeFuzzyTrigger:
+#    "device": <Your device ID>,
+#    "attribute": "distance",
+#    "value": <The current distance>,
+#    "trigger_name": "lot_is_occupied",
+#    "trigger_attribute": "distance",
+#    "trigger_lower_limit": 4,
+#    "trigger_period": 60,
+#    "trigger_certainty": 0.8
+#
+# To pass the above parameters to ComputeFuzzyTrigger, you could write an AWS IoT rule like:
+#     SELECT topic(3) as device,
+#            'distance' as attribute,
+#            state.reported.distance as value,
+#            'lot_is_occupied' as trigger_name,
+#            'distance' as trigger_attribute,
+#            4 as trigger_lower_limit,
+#            60 as trigger_period,
+#            0.8 as trigger_certainty
+#    FROM '$aws/things/g88_pi/shadow/update/accepted'
+#    ACTION: Call lambda function ComputeFuzzyTrigger
+#
+# Then you could write another rule that is triggered when the parking lot is deemed occupied (according to the above rule):
+#    SELECT ...
+#    FROM '$aws/things/g88_pi/shadow/update/accepted'
+#    WHERE state.reported.lot_is_occupied > 0.8
+#    ACTION: ...
+#
+# For troubleshooting: ComputeFuzzyTrigger stores the past sensor values and statuses in the AWS S3 storage.
+# You can view the files through these links:
+#   Past sensor values are stored in:
+#       https://s3-us-west-2.amazonaws.com/tp-iot/<DEVICEID>_events.json
+#       e.g. https://s3-us-west-2.amazonaws.com/tp-iot/g88_pi_events.json
+#   The result of the previous 20 calls to ComputeFuzzyTrigger are stored in:
+#       https://s3-us-west-2.amazonaws.com/tp-iot/<DEVICEID>_<TRIGGERNAME>_status.json
+#       e.g. https://s3-us-west-2.amazonaws.com/tp-iot/g88_pi_lot_is_occupied_status.json
+#
+# Status looks like:
+#   "Waiting for more events until trigger_period is reached for trigger lot_is_occupied. Certainty = 0 / 1 = 0.0"
 
 from __future__ import print_function
 import boto3, json, ast, datetime
@@ -110,19 +157,19 @@ def lambda_handler(event, context):
     certainty = 1.0 * events_satisfied / events_tested
     msg = "Certainty = " + str(events_satisfied) + " / " + str(events_tested) + " = " + str(round(certainty, 1))
     if period_satisfied == False:
-        return "Waiting for more events until trigger_period is reached for trigger " + trigger_name + ". " + msg
+        return save_status(event, "Waiting for more events until trigger_period is reached for trigger " + trigger_name + ". " + msg)
     if certainty >= trigger_certainty:
         print("Found sufficient certainty " + str(round(certainty, 1)) + " to start trigger " + trigger_name + ". " + msg)
     else:
-        return "Certainty " + str(round(certainty, 1)) + " is not sufficient to start trigger " + trigger_name + ". " + msg
+        return save_status(event, "Certainty " + str(round(certainty, 1)) + " is not sufficient to start trigger " + trigger_name + ". " + msg)
 
     # Don't re-trigger within the trigger time period.
     if triggered_recently(device, trigger_name, trigger_period, timestamp):
-        return "Trigger " + trigger_name + " was already triggered recently. Try again later. " + msg
+        return save_status(event, "Trigger " + trigger_name + " was already triggered recently. Try again later. " + msg)
 
     # Trigger the event by setting the reported state.  Any rules dependent on the reported state will fire.
     set_reported_state(device, trigger_name, certainty, timestamp)
-    return "Triggered " + trigger_name + " with certainty " + str(round(certainty, 1)) + ". " + msg
+    return save_status(event, "Triggered " + trigger_name + " with certainty " + str(round(certainty, 1)) + ". " + msg)
 
 
 # Return true if the trigger was triggered within the past trigger time period.
@@ -130,7 +177,7 @@ def triggered_recently(device2, trigger_name2, trigger_period2, timestamp2):
     if trigger_period2 < 30:
         trigger_period2 = 30  # Max 1 trigger per 30 seconds.
     # Get the last trigger timestamp from the file.
-    filename = device2 + "_trigger.json"
+    filename = device2 + "_" + trigger_name2 + "_trigger.json"
     last_trigger = retrieve_json(filename)
     if last_trigger is not None:
         last_trigger_timestamp = last_trigger["timestamp"]
@@ -140,6 +187,25 @@ def triggered_recently(device2, trigger_name2, trigger_period2, timestamp2):
             return True
     save_json(filename, {"timestamp": timestamp2})
     return False
+
+
+# Save the status of the trigger check to AWS S3 for troubleshooting.
+def save_status(event2, msg2):
+    device2 = event2["device"]
+    trigger2 = event2["trigger_name"]
+    status = event2
+    status["result"] = msg2
+    # Save the last 20 statuses.
+    filename = device2 + "_" + trigger2 + "_status.json"
+    all_status = retrieve_json(filename)
+    if all_status is None:
+        all_status = [status]
+    else:
+        all_status = all_status + [status]
+    if len(all_status) > 20:
+        all_status = all_status[20:]
+    save_json(filename, all_status)
+    return msg2
 
 
 # Save the list of events for the device. Each event includes device, attribute, value, timestamp.
