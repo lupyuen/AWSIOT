@@ -1,6 +1,8 @@
+# Version 1.1: Send message to Slack when setting desired state.
+#
 # ComputeFuzzyTrigger is a lambda function meant to be invoked by a rule. It captures the previous sensor values,
-# and if the conditions are met, the function will trigger a reported state update that may
-# trigger another rule. The condition includes fuzzy matching, e.g.
+# and if the cumulative conditions are met, the function will trigger a reported state update (that may
+# be used to trigger another rule). The condition includes fuzzy matching, e.g.
 # if distance sensor reports < 4 metres for past 1 min for over 80% of readings then ...
 #
 # Expected inputs for this function:
@@ -62,14 +64,23 @@
 #   "Waiting for more events until trigger_period is reached for trigger lot_is_occupied. Certainty = 0 / 1 = 0.0"
 
 from __future__ import print_function
-import boto3, json, ast, datetime
+import boto3, json, ast, datetime, sys, os, hashlib, hmac, urllib2, base64, pickle
 print('Loading function')
 
 # Maps beacon ID to entitlement class.
 beacon_to_class = {
     'a123': 'A',
     'a456': 'B',
-    'a789': 'C'
+    'a789': 'C',
+    'fda50693a4e24fb1afcfc6eb07647825': '1'
+}
+
+# List of device names and the replacement Slack channels for the device.
+# Used if the channel name is already taken up.  Sync this with ActuateDeviceFromSlack and
+# SendSensorDataToElasticsearch.
+replaceSlackChannels = {
+    "g88": "g88a",
+    "g29": "g29a"
 }
 
 # Log on to AWS as lambda_iot_user.
@@ -168,7 +179,7 @@ def lambda_handler(event, context):
         return save_status(event, "Trigger " + trigger_name + " was already triggered recently. Try again later. " + msg)
 
     # Trigger the event by setting the reported state.  Any rules dependent on the reported state will fire.
-    set_reported_state(device, trigger_name, certainty, timestamp)
+    set_reported_state(device, trigger_name, certainty, timestamp, msg)
     return save_status(event, "Triggered " + trigger_name + " with certainty " + str(round(certainty, 1)) + ". " + msg)
 
 
@@ -222,7 +233,7 @@ def retrieve_events(device2):
 
 
 # Update the thing's reported state. This may trigger a rule dependent on the thing's reported state.
-def set_reported_state(device2, attribute2, value2, timestamp2):
+def set_reported_state(device2, attribute2, value2, timestamp2, msg2):
     payload = {
         "state": {
             "reported": {
@@ -232,12 +243,18 @@ def set_reported_state(device2, attribute2, value2, timestamp2):
         }
     }
     print("Payload: " + json.dumps(payload))
+    post_to_slack(device2, "Setting reported state of device (" + msg2 + "):\n```" + json.dumps(payload, indent=4) + "```")
     iot_client = aws_session.client('iot-data')
     response = iot_client.update_thing_shadow(
         thingName=device2,
         payload=json.dumps(payload).encode("utf-8")
     )
     print("update_thing_shadow: ", response)
+    if str(response).find("'HTTPStatusCode': 200") > 0:
+        slackResult = "Reported state has been set successfully"
+    else:
+        slackResult = "Error: Failed to set reported state"
+    post_to_slack(device2, slackResult)
     return response
 
 
@@ -260,4 +277,38 @@ def retrieve_json(filename):
     # print("s=", s)
     result = ast.literal_eval(s)
     return result
+
+
+def post_to_slack(device, action):
+    # Post a Slack message to the channel of the same name as the device e.g. #g88.
+    # device is assumed to begin with the group name.  action is the message.
+    if device is None:
+        return
+    channel = "g88a"
+    # If device is g88_pi, then post to channel #g88.
+    pos = device.find("_")
+    if pos > 0:
+        channel = device[0:pos]
+    # Map the channel name in case the channel name is unavailable.
+    if replaceSlackChannels.get(channel) is not None:
+        channel = replaceSlackChannels.get(channel)
+    # Construct the REST request to Slack.
+    body = {
+        "channel": "#" + channel,  # Public channels always start with #
+        "username": device,
+        "text": action
+    }
+    print(json.dumps(body, indent=2))
+    url = "https://hooks.slack.com/services/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"
+    try:
+        # Make the REST request to Slack.
+        request = urllib2.Request(url, json.dumps(body))
+        result2 = urllib2.urlopen(request).read()
+        print("result = " + result2)
+        return result2
+    except urllib2.HTTPError, error:
+        # Show the error.
+        error_content = error.read()
+        print("error = " + error_content)
+
     
