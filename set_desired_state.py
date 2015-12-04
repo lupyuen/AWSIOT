@@ -61,17 +61,17 @@ def lambda_handler(event, context):
 
             # Construct the JSON payload to set the desired state for our device actuator, e.g. if we desire LED
             # to turn on, then attribute="led" and value="on"
-            payload = '''{
+            payloadObj = {
                 "state": {
                     "desired": {
-                        "''' + attribute + '''": "''' + value + '''",
-                        "timestamp": "''' + datetime.datetime.now().isoformat() + '''"
+                        attribute: value,
+                        "timestamp": datetime.datetime.now().isoformat()
                     }
                 }
             }
-            '''
+            payload = json.dumps(payloadObj);
             print("REST request payload: " + payload)
-            post_to_slack(device, "Sending desired state to device:\n```" + json.dumps(json.loads(payload), indent=4) + "```")
+            post_state_to_slack(device, payloadObj)
 
             # Send the "set desired state" request to AWS IoT via a REST request over HTTPS.  We are actually updating
             # the Thing Shadow, according to AWS IoT terms.
@@ -79,10 +79,13 @@ def lambda_handler(event, context):
             print("Result of REST request:\n" +
                   json.dumps(result, indent=4, separators=(',', ': ')))
             if json.dumps(result).find("metadata") > 0:
-                slackResult = "Device has set desired state successfully"
+                slackResult = { "color": "good",
+                    "title": "Device has set desired state successfully" }
             else:
-                slackResult = "Error: Device failed to set desired state"
-            post_to_slack(device, slackResult)
+                slackResult = { "color": "danger",
+                    "title": "Error: Device failed to set desired state" }
+            slackResult["fallback"] = slackResult["title"]
+            post_to_slack(device, [ slackResult ])
 
     except:
         # In case of error, show the exception.
@@ -205,8 +208,42 @@ def get_signature_key(key, date_stamp, region_name, service_name):
     ksigning = sign(kservice, 'aws4_request')
     return ksigning
 
+def post_state_to_slack(device, state):
+    # Post the set desired/reported state payload to the Slack channel of the
+    # same name as the device e.g. #g88.
+    state2 = state.get("state")
+    if state2 is None:
+        return
+    # Check whether we are setting the desired or reported state.
+    kind = None
+    state3 = state2.get("desired")
+    if state3 is not None:
+        kind = "desired"
+    else:
+        state3 = state2.get("reported")
+        if state3 is not None:
+            kind = "reported"
+    if kind is None:
+        return
+    fields = []
+    for key in state3:
+        fields = fields + [{
+            "title": key + ":",
+            "value": "```" + str(state3[key]) + "```",
+            "short": True
+        }]
+    attachment = {
+        "mrkdwn_in": ["text", "fields"],
+        "fallback": "Setting " + kind + " state: " + json.dumps(state),
+        "color": "warning",
+        "title": "Setting " + kind + " state",
+        "text": ":open_file_folder: _state:_ :open_file_folder: _" + kind + ":_\n" + \
+            "_:wavy_dash::wavy_dash::wavy_dash::wavy_dash::wavy_dash::wavy_dash::wavy_dash::wavy_dash::wavy_dash:_",
+        "fields": fields
+    }
+    post_to_slack(device, [attachment])
 
-def post_to_slack(device, action):
+def post_to_slack(device, textOrAttachments):
     # Post a Slack message to the channel of the same name as the device e.g. #g88.
     # device is assumed to begin with the group name.  action is the message.
     if device is None:
@@ -222,9 +259,13 @@ def post_to_slack(device, action):
     # Construct the REST request to Slack.
     body = {
         "channel": "#" + channel,  # Public channels always start with #
-        "username": device,
-        "text": action
+        "username": device
     }
+    # If message is a string, send as text. Else assume it's in Slack Attachment format.
+    if len(textOrAttachments[0]) == 1:
+        body["text"] = textOrAttachments
+    else:
+        body["attachments"] = textOrAttachments
     print(json.dumps(body, indent=2))
     url = "https://hooks.slack.com/services/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"
     try:
