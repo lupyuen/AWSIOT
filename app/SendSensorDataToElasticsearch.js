@@ -46,6 +46,7 @@ exports.handler = function(input, context) {
     }
     //  Copy the keys and values and send to CloudWatch.
     var actionCount = 0;
+    var sensorData = {};
     for (var key in input) {
         var value = input[key];
         extractedFields[key] = value;
@@ -53,6 +54,7 @@ exports.handler = function(input, context) {
             action = action + ", ";
         action = action + key + ": " + value;
         actionCount++;
+        sensorData[key] = value;
         //  If the value is numeric, send the metric to CloudWatch.
         if (key != "version" && !isNaN(value)) {
             writeMetricToCloudWatch(device, key, value);
@@ -116,7 +118,7 @@ exports.handler = function(input, context) {
 
         console.log('SendSensorData Success: ' + JSON.stringify(success));
         //  Post a Slack message to the private group of the same name e.g. g88.
-        return postToSlack(device, "Received sensor data: `" + action + "`", function(err, result) {
+        return postSensorDataToSlack(device, sensorData, function(err, result) {
             context.succeed('Success');
         });
     });
@@ -444,9 +446,73 @@ function normaliseFieldName(fieldName) {
     return fieldName.toLowerCase().split(" ").join("_");
 }
 
-function postToSlack(device, action, callback) {
+function postSensorDataToSlack(device, sensorData, callback) {
+    //  Post the sensor values to a Slack group for the device e.g. g88.
+    //  device is assumed to begin with the group name. sensorData contains
+    //  the sensor values.
+    if (!device) return;
+    var channel = "";
+    var pos = device.indexOf("_");
+    if (pos > 0)
+        channel = device.substring(0, pos);
+    var url = "http://d3gc5unrxwbvlo.cloudfront.net/_plugin/kibana/#/discover/Sensor-Data?_g=(refreshInterval:(display:'10%20seconds',section:1,value:10000),time:(from:now-1d,mode:quick,to:now))&_a=(query:(query_string:(analyze_wildcard:!t,query:'%%CHANNEL%%*')))"
+    url = url.split("%%CHANNEL%%").join(channel);
+
+    //  Clone a copy.
+    var sensorData2 = JSON.parse(JSON.stringify(sensorData));
+
+    //  Combine the less important fields.
+    var otherFields = "";
+    if (sensorData2.timestampText) {
+        otherFields = sensorData2.timestampText.substr(0, 19);
+        delete sensorData2.timestampText;
+    }
+    if (sensorData2.xTopic) {
+        otherFields = otherFields + " - " + sensorData2.xTopic;
+        delete sensorData2.xTopic;
+    }
+    if (sensorData2.version) {
+        otherFields = otherFields + " - " + sensorData2.version;
+        delete sensorData2.version;
+    }
+    //  Add each field.
+    var fields = [];
+    for (var key in sensorData2) {
+        fields.push({
+            "title": key,
+            "value": sensorData2[key] + "",
+            "short": true
+        });
+    }
+    if (otherFields.length > 0)
+        fields.push({
+            "title": "",
+            "value": "_" + otherFields + "_",
+            "short": false
+        });
+    //  Compose and send the attachment to Slack.
+    var attachment = {
+        "mrkdwn_in": ["fields"],
+        "fallback": JSON.stringify(sensorData),
+        "color": "#439FE0",
+        //"pretext": "Optional text that appears above the attachment block",
+        //"author_name": "Bobby Tables",
+        //"author_link": "http://flickr.com/bobby/",
+        //"author_icon": "http://flickr.com/icons/bobby.jpg",
+        "title": "Received sensor data (Click for more...)",
+        "title_link": url,
+        //"text": "Optional text that appears within the attachment",
+        "fields": fields,
+        //"image_url": "http://my-website.com/path/to/image.jpg",
+        //"thumb_url": "http://example.com/path/to/thumb.png"
+    };
+    postToSlack(device, [attachment], callback);
+}
+
+function postToSlack(device, textOrAttachments, callback) {
     //  Post a Slack message to the private group of the same name e.g. g88.
-    //  device is assumed to begin with the group name.  action is the message.
+    //  device is assumed to begin with the group name. text is the text
+    //  message, attachments is the Slack rich text format.
     if (!device) return;
     var channel = "g88";
     var pos = device.indexOf("_");
@@ -456,9 +522,13 @@ function postToSlack(device, action, callback) {
         channel = replaceSlackChannels[channel];
     var body = {
         channel: "#" + channel,
-        username: device,
-        text: action
+        username: device
     };
+    if (textOrAttachments[0] && textOrAttachments[0].length == 1)
+        body.text = textOrAttachments;
+    else
+        body.attachments = textOrAttachments;
+
 	var options = {
 		hostname: "hooks.slack.com",
         path: "/services/T09SXGWKG/B0EM7LDD3/o7BGhWDlrqVtnMlbdSkqisoS",
@@ -468,15 +538,15 @@ function postToSlack(device, action, callback) {
 	console.log("Slack request =", JSON.stringify(body));
     var req = https.request(options, function(res) {
         var body = '';
-        console.log('Status:', res.statusCode);
-        console.log('Headers:', JSON.stringify(res.headers));
+        //console.log('Status:', res.statusCode);
+        //console.log('Headers:', JSON.stringify(res.headers));
         res.setEncoding('utf8');
         res.on('data', function(chunk) {
             body += chunk;
-            console.log(body);
+            //console.log(body);
         });
         res.on('end', function() {
-            console.log('Successfully processed HTTPS response');
+            //console.log('Successfully processed HTTPS response');
             // If we know it's JSON, parse it
             if (res.headers['content-type'] === 'application/json') {
                 body = JSON.parse(body);
