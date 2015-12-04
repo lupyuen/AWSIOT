@@ -7,7 +7,8 @@
 //  List of device names and the replacement Slack channels for the device.
 //  Used if the channel name is already taken up.  Sync this with ActuateDeviceFromSlack and SetDesiredState.
 replaceSlackChannels = {
-    "g88": "g88a"
+    "g88": "g88a",
+    "g29": "g29a"
 }
 
 var https = require('https');
@@ -48,7 +49,7 @@ exports.handler = function(input, context) {
     for (var key in input) {
         var value = input[key];
         extractedFields[key] = value;
-        if (action.length > 0) 
+        if (action.length > 0)
             action = action + ", ";
         action = action + key + ": " + value;
         actionCount++;
@@ -67,7 +68,7 @@ exports.handler = function(input, context) {
         extractedFields.event = "RecordSensorData";
     if (!extractedFields.topicname && extractedFields.xTopic)
         extractedFields.topicname = extractedFields.xTopic;
-        
+
     var awslogsData = {
         "messageType": "DATA_MESSAGE",
         "owner": "595779189490",
@@ -86,7 +87,7 @@ exports.handler = function(input, context) {
         ]
     };
     console.log("SendSensorData awslogsData:", JSON.stringify(awslogsData));
-    
+
     // transform the input to Elasticsearch documents
     var elasticsearchBulkData = transform(awslogsData);
 
@@ -95,14 +96,14 @@ exports.handler = function(input, context) {
         console.log('Received a control message');
         context.succeed('Success');
     }
-    
+
     // post documents to Amazon Elasticsearch
     post(elasticsearchBulkData, function(error, success, statusCode, failedItems) {
-        console.log('SendSensorData Response: ' + JSON.stringify({ 
-            "statusCode": statusCode 
+        console.log('SendSensorData Response: ' + JSON.stringify({
+            "statusCode": statusCode
         }));
 
-        if (error) { 
+        if (error) {
             console.log('SendSensorData Error: ' + JSON.stringify(success, null, 2));
 
             if (failedItems && failedItems.length > 0) {
@@ -110,7 +111,7 @@ exports.handler = function(input, context) {
                     JSON.stringify(failedItems, null, 2));
             }
 
-            context.fail(e); 
+            context.fail(e);
         }
 
         console.log('SendSensorData Success: ' + JSON.stringify(success));
@@ -148,7 +149,7 @@ function transform(payload) {
     if (payload.messageType === 'CONTROL_MESSAGE') {
         return null;
     }
-    
+
     var bulkRequestBody = '';
 
     payload.logEvents.forEach(function(logEvent) {
@@ -177,9 +178,9 @@ function transform(payload) {
         action.index._index = indexName;
         action.index._type = payload.logGroup;
         action.index._id = logEvent.id;
-        
-        bulkRequestBody += [ 
-            JSON.stringify(action), 
+
+        bulkRequestBody += [
+            JSON.stringify(action),
             JSON.stringify(source),
         ].join('\n') + '\n';
     });
@@ -211,8 +212,8 @@ function buildSource(message, extractedFields) {
     }
 
     jsonSubString = extractJson(message);
-    if (jsonSubString !== null) { 
-        return JSON.parse(jsonSubString); 
+    if (jsonSubString !== null) {
+        return JSON.parse(jsonSubString);
     }
 
     return {};
@@ -248,13 +249,13 @@ function post(body, callback) {
             var info = JSON.parse(responseBody);
             var failedItems;
             var success;
-            
+
             if (response.statusCode >= 200 && response.statusCode < 299) {
                 failedItems = info.items.filter(function(x) {
                     return x.index.status >= 300;
                 });
 
-                success = { 
+                success = {
                     "attemptedItems": info.items.length,
                     "successfulItems": info.items.length - failedItems.length,
                     "failedItems": failedItems.length
@@ -284,13 +285,13 @@ function buildRequest(endpoint, body) {
     var kRegion = hmac(kDate, region);
     var kService = hmac(kRegion, service);
     var kSigning = hmac(kService, 'aws4_request');
-    
+
     var request = {
         host: endpoint,
         method: 'POST',
         path: '/_bulk',
         body: body,
-        headers: { 
+        headers: {
             'Content-Type': 'application/json',
             'Host': endpoint,
             'Content-Length': Buffer.byteLength(body),
@@ -460,7 +461,8 @@ function postToSlack(device, action, callback) {
     };
 	var options = {
 		hostname: "hooks.slack.com",
-        path: '/services/T09SXGWKG/B0CQ23S3V/yT89hje6TP6r81xX91GJOx9Y',
+        path: "/services/T09SXGWKG/B0EM7LDD3/o7BGhWDlrqVtnMlbdSkqisoS",
+        //path: '/services/T09SXGWKG/B0CQ23S3V/yT89hje6TP6r81xX91GJOx9Y',
 		method: 'POST'
 	};
 	console.log("Slack request =", JSON.stringify(body));
