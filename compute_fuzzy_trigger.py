@@ -1,3 +1,4 @@
+# Version 1.3: Improved Slack format for reported state.
 # Version 1.2: If beacon ID not found for value_map_beacon_to_class, set value to "unknown". Skip event if fields are missing.
 # Version 1.1: Send message to Slack when setting desired state.
 #
@@ -289,7 +290,7 @@ def set_reported_state(device2, attribute2, value2, timestamp2, msg2):
         }
     }
     print("Payload: " + json.dumps(payload))
-    post_to_slack(device2, "Setting reported state of device (" + msg2 + "):\n```" + json.dumps(payload, indent=4) + "```")
+    post_state_to_slack(device2, payload, msg2)
     iot_client = aws_session.client('iot-data')
     response = iot_client.update_thing_shadow(
         thingName=device2,
@@ -297,10 +298,13 @@ def set_reported_state(device2, attribute2, value2, timestamp2, msg2):
     )
     print("update_thing_shadow: ", response)
     if str(response).find("'HTTPStatusCode': 200") > 0:
-        slackResult = "Reported state has been set successfully"
+        slackResult = { "color": "good",
+            "title": "Reported state has been set successfully" }
     else:
-        slackResult = "Error: Failed to set reported state"
-    post_to_slack(device2, slackResult)
+        slackResult = { "color": "danger",
+            "title": "Error: Failed to set reported state" }
+    slackResult["fallback"] = slackResult["title"]
+    post_to_slack(device2, [ slackResult ])
     return response
 
 
@@ -325,7 +329,43 @@ def retrieve_json(filename):
     return result
 
 
-def post_to_slack(device, action):
+def post_state_to_slack(device, state, msg):
+    # Post the set desired/reported state payload to the Slack channel of the
+    # same name as the device e.g. #g88.
+    state2 = state.get("state")
+    if state2 is None:
+        return
+    # Check whether we are setting the desired or reported state.
+    kind = None
+    state3 = state2.get("desired")
+    if state3 is not None:
+        kind = "desired"
+    else:
+        state3 = state2.get("reported")
+        if state3 is not None:
+            kind = "reported"
+    if kind is None:
+        return
+    fields = []
+    for key in state3:
+        fields = fields + [{
+            "title": key + ":",
+            "value": "```" + str(state3[key]) + "```",
+            "short": True
+        }]
+    attachment = {
+        "mrkdwn_in": ["text", "fields"],
+        "fallback": "Setting " + kind + " state: " + json.dumps(state) + " - " + msg,
+        "color": "warning",
+        "title": "Setting " + kind + " state",
+        "text": ":open_file_folder: _state:_ :open_file_folder: _" + kind + ": - " + msg + "_\n" + \
+            "_:wavy_dash::wavy_dash::wavy_dash::wavy_dash::wavy_dash::wavy_dash::wavy_dash::wavy_dash::wavy_dash:_",
+        "fields": fields
+    }
+    post_to_slack(device, [attachment])
+
+
+def post_to_slack(device, textOrAttachments):
     # Post a Slack message to the channel of the same name as the device e.g. #g88.
     # device is assumed to begin with the group name.  action is the message.
     if device is None:
@@ -341,18 +381,25 @@ def post_to_slack(device, action):
     # Construct the REST request to Slack.
     body = {
         "channel": "#" + channel,  # Public channels always start with #
-        "username": device,
-        "text": action
+        "username": device
     }
-    print(json.dumps(body, indent=2))
+    # If message is a string, send as text. Else assume it's in Slack Attachment format.
+    if len(textOrAttachments[0]) == 1:
+        body["text"] = textOrAttachments
+    else:
+        body["attachments"] = textOrAttachments
+    #print(json.dumps(body, indent=2))
     url = "https://hooks.slack.com/services/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"
     try:
         # Make the REST request to Slack.
         request = urllib2.Request(url, json.dumps(body))
         result2 = urllib2.urlopen(request).read()
-        print("result = " + result2)
+        #print("result = " + result2)
         return result2
     except urllib2.HTTPError, error:
         # Show the error.
         error_content = error.read()
         print("error = " + error_content)
+
+
+    

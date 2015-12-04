@@ -208,6 +208,7 @@ def get_signature_key(key, date_stamp, region_name, service_name):
     ksigning = sign(kservice, 'aws4_request')
     return ksigning
 
+
 def post_state_to_slack(device, state):
     # Post the set desired/reported state payload to the Slack channel of the
     # same name as the device e.g. #g88.
@@ -242,6 +243,7 @@ def post_state_to_slack(device, state):
         "fields": fields
     }
     post_to_slack(device, [attachment])
+
 
 def post_to_slack(device, textOrAttachments):
     # Post a Slack message to the channel of the same name as the device e.g. #g88.
