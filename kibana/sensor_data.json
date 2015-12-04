@@ -1,0 +1,110 @@
+/*
+Columns:
+[
+  "device",
+  "distance",
+  "uuid",
+  "g15_testing",
+  "temperature",
+  "absentee",
+  "sound_level",
+  "smart_status",
+  "hp",
+  "name",
+  "sound",
+  "humidity",
+  "light_level",
+  "lot_is_occupied"
+]
+*/
+{
+  "index": "[cwl-]YYYY.MM.DD",
+  "highlight": {
+    "pre_tags": [
+      "@kibana-highlighted-field@"
+    ],
+    "post_tags": [
+      "@/kibana-highlighted-field@"
+    ],
+    "fields": {
+      "*": {}
+    },
+    "fragment_size": 2147483647
+  },
+  "filter": [
+    {
+      "meta": {
+        "disabled": false,
+        "index": "[cwl-]YYYY.MM.DD",
+        "key": "event",
+        "negate": false,
+        "value": "RecordSensorData"
+      },
+      "query": {
+        "match": {
+          "event": {
+            "query": "RecordSensorData",
+            "type": "phrase"
+          }
+        }
+      }
+    },
+    {
+      "meta": {
+        "disabled": false,
+        "index": "[cwl-]YYYY.MM.DD",
+        "key": "event",
+        "negate": true,
+        "value": "SendSensorData"
+      },
+      "query": {
+        "match": {
+          "event": {
+            "query": "SendSensorData",
+            "type": "phrase"
+          }
+        }
+      }
+    },
+    {
+      "meta": {
+        "disabled": false,
+        "index": "[cwl-]YYYY.MM.DD",
+        "key": "temperature",
+        "negate": true,
+        "value": -999
+      },
+      "query": {
+        "match": {
+          "temperature": {
+            "query": -999,
+            "type": "phrase"
+          }
+        }
+      }
+    },
+    {
+      "meta": {
+        "disabled": false,
+        "index": "[cwl-]YYYY.MM.DD",
+        "key": "humidity",
+        "negate": true,
+        "value": -999
+      },
+      "query": {
+        "match": {
+          "humidity": {
+            "query": -999,
+            "type": "phrase"
+          }
+        }
+      }
+    }
+  ],
+  "query": {
+    "query_string": {
+      "analyze_wildcard": true,
+      "query": "*"
+    }
+  }
+}

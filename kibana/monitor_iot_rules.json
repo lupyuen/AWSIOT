@@ -1,0 +1,57 @@
+{
+  "index": "[cwl-]YYYY.MM.DD",
+  "query": {
+    "query_string": {
+      "analyze_wildcard": true,
+      "query": "*"
+    }
+  },
+  "highlight": {
+    "pre_tags": [
+      "@kibana-highlighted-field@"
+    ],
+    "post_tags": [
+      "@/kibana-highlighted-field@"
+    ],
+    "fields": {
+      "*": {}
+    },
+    "fragment_size": 2147483647
+  },
+  "filter": [
+    {
+      "meta": {
+        "disabled": false,
+        "index": "[cwl-]YYYY.MM.DD",
+        "key": "@log_group",
+        "negate": true,
+        "value": "/aws/lambda/SendSensorDataToElasticsearch"
+      },
+      "query": {
+        "match": {
+          "@log_group": {
+            "query": "/aws/lambda/SendSensorDataToElasticsearch",
+            "type": "phrase"
+          }
+        }
+      }
+    },
+    {
+      "meta": {
+        "negate": true,
+        "index": "[cwl-]YYYY.MM.DD",
+        "key": "event",
+        "value": "GetThingShadow",
+        "disabled": false
+      },
+      "query": {
+        "match": {
+          "event": {
+            "query": "GetThingShadow",
+            "type": "phrase"
+          }
+        }
+      }
+    }
+  ]
+}
