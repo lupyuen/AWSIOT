@@ -110,45 +110,6 @@ def lambda_handler(event, context):
     trigger_certainty = event.get("trigger_certainty")  # Include certainty factor. If certainty factory = 0.8, then we trigger if 80% of values exceed trigger limits.
     trigger_period = event.get("trigger_period")  # Check certainty over this past time period in seconds
 
-    '''
-    occupied_state = {
-        "last_occupied": "yyyymmddhhssmm",
-        "last_unoccupied": "yyyymmddhhssmm",
-        "current_state": "occupied" / "unoccupied"
-    }
-
-    occupied_state = retrieve_json("occupied_state.json")
-    if state == "unoccupied":
-        if occupied_state.current_state == "occupied":
-            occupied_state.last_unoccupied = datetime.datetime.now().isoformat()
-            duration = 0
-        else:
-            duration = now - occupied_state.last_unoccupied
-    if state == "occupied":
-        if occupied_state.current_state == "unoccupied":
-            occupied_state.last_occupied = datetime.datetime.now().isoformat()
-        else:
-            duration = now - occupied_state.last_occupied
-
-    occupied_state.current_state = state
-    save_json("occupied_state.json", occuied_state)
-
-
-    def set_reported_state(device2, attribute2, value2, timestamp2, msg2):
-    payload = {
-        "state": {
-            "reported": {
-                "last_occupied": occupied_state.last_occupied,
-                "last_unoccupied": occupied_state.last_unoccupied,
-                "current_state": occupied_state.current_state,
-                "duration": duration,
-                attribute2: value2,
-                "timestamp": timestamp2
-            }
-        }
-    }
-    '''
-
     value_map_beacon_to_class = event.get("value_map_beacon_to_class")  # Trigger value is obtained by mapping beacon to class.
     if value_map_beacon_to_class is not None:
         # Get the class value from the beacon.
@@ -195,36 +156,44 @@ def lambda_handler(event, context):
         if e["attribute"] == trigger_attribute:
             if e_datetime < cutoff_datetime2:
                 # If a matching attribute has exceeded twice the trigger period, then it's too old, ignore it.
+                print("Not cutoff time yet")
                 continue
             elif e_datetime < cutoff_datetime:
                 # If a matching attribute has exceeded the trigger period, then we have received enough events to decide.
                 period_satisfied = True
+                print("Cut off time reached")
             else:
                 # This matching attribute is within the trigger period.
                 events_tested = events_tested + 1
+                events_satisfied = events_satisfied + 1
                 # If value conditions are met, count it.
-                if trigger_value is not None and e["value"] == trigger_value:
-                    events_satisfied = events_satisfied + 1
-                elif trigger_upper_limit is not None and e["value"] > trigger_upper_limit:
-                    events_satisfied = events_satisfied + 1
-                elif trigger_lower_limit is not None and e["value"] < trigger_lower_limit:
-                    events_satisfied = events_satisfied + 1
+                #if trigger_value is not None and e["value"] == trigger_value:
+                #    events_satisfied = events_satisfied + 1
+                #elif trigger_upper_limit is not None and e["value"] > trigger_upper_limit:
+                #    events_satisfied = events_satisfied + 1
+                #elif trigger_lower_limit is not None and e["value"] < trigger_lower_limit:
+                #    events_satisfied = events_satisfied + 1
+                print("event_tested=" + str(events_tested) + ", events_satisfied=" + str(events_satisfied))
 
     # Compute the certainty score - how many times the condition was satisfied over the trigger time period.
     certainty = 1.0 * events_satisfied / events_tested
     msg = "Certainty = " + str(events_satisfied) + " / " + str(events_tested) + " = " + str(round(certainty, 1))
     if period_satisfied == False:
+        print("return from period not over")
         return save_status(event, "Waiting for more events until trigger_period is reached for trigger " + trigger_name + ". " + msg)
     if certainty >= trigger_certainty:
         print("Found sufficient certainty " + str(round(certainty, 1)) + " to start trigger " + trigger_name + ". " + msg)
     else:
+        print("return from certainty low")
         return save_status(event, "Certainty " + str(round(certainty, 1)) + " is not sufficient to start trigger " + trigger_name + ". " + msg)
 
     # Don't re-trigger within the trigger time period.
     if triggered_recently(device, trigger_name, trigger_period, timestamp):
+        print("return triggered_recently")
         return save_status(event, "Trigger " + trigger_name + " was already triggered recently. Try again later. " + msg)
 
     # Trigger the event by setting the reported state.  Any rules dependent on the reported state will fire.
+    print("calling set_reported_state")
     set_reported_state(device, trigger_name, certainty, timestamp, msg)
     return save_status(event, "Triggered " + trigger_name + " with certainty " + str(round(certainty, 1)) + ". " + msg)
 
@@ -283,8 +252,10 @@ def set_reported_state(device2, attribute2, value2, timestamp2, msg2):
     payload = {
         "state": {
             "reported": {
-                attribute2: value2,
-                "timestamp": timestamp2
+                "g15_testing": value2,
+                "timestamp": timestamp2,
+                "Occupied": "True",
+                "Legal": "True"
             }
         }
     }
@@ -323,7 +294,6 @@ def retrieve_json(filename):
     # print("s=", s)
     result = ast.literal_eval(s)
     return result
-
 
 def post_to_slack(device, action):
     # Post a Slack message to the channel of the same name as the device e.g. #g88.
