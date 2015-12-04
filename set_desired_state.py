@@ -1,3 +1,4 @@
+
 #!/usr/bin/env python
 
 # This program tells AWS IoT the desired state of our device. It sends a REST request to AWS IoT over HTTPS.
@@ -7,13 +8,14 @@
 #   attribute: Name of actuator, e.g. led
 #   value: Desired state of actuator, e.g. on
 
-import sys, os, datetime, hashlib, hmac, urllib2, json, base64
+import sys, os, datetime, hashlib, hmac, urllib2, json, base64, pickle
 
 # List of device names and the replacement Slack channels for the device.
 # Used if the channel name is already taken up.  Sync this with ActuateDeviceFromSlack and
 # SendSensorDataToElasticsearch.
 replaceSlackChannels = {
-    "g88": "g88a"
+    "g88": "g88a",
+    "g29": "g29a"
 }
 
 # TODO: Name of our Raspberry Pi, also known as our "Thing Name".  Used only when running from command-line.
@@ -26,6 +28,7 @@ def lambda_handler(event, context):
     # to be signed so that the AWS IoT server can authenticate us. This code is written as an AWS Lambda handler so
     # that we can run this code on the command line as well as AWS Lambda.
     print("AWS Lambda event: " + json.dumps(event, indent=4))
+
     try:
         # We want to handle 3 types of input: Kinesis, IoT Rule and REST
         if event.get('Records') is not None:
@@ -180,10 +183,7 @@ def send_aws_iot_request(method, device_name2, payload2):
     # ************* SEND THE REQUEST *************
     url = "https://" + host + canonical_uri
     print("Sending REST request via HTTPS " + method + " to URL " + url + "...")
-    if payload2 == "":
-        request = urllib2.Request(url=url, headers=headers)
-    else:
-        request = urllib2.Request(url=url, headers=headers, data=payload2)
+    request = urllib2.Request(url, payload2, headers)
     result2 = urllib2.urlopen(request).read()
     # Parse the result as JSON and return as a dictionary.
     return json.loads(result2)
@@ -226,7 +226,7 @@ def post_to_slack(device, action):
         "text": action
     }
     print(json.dumps(body, indent=2))
-    url = "https://hooks.slack.com/services/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"
+    url = "https://hooks.slack.com/services/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"
     try:
         # Make the REST request to Slack.
         request = urllib2.Request(url, json.dumps(body))
@@ -271,7 +271,6 @@ lambda_iot_user has the following policy:
         {
             "Effect": "Allow",
             "Action": [
-                "iot:GetThingShadow",
                 "iot:UpdateThingShadow"
             ],
             "Resource": [
