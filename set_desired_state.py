@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python
 
 # This program tells AWS IoT the desired state of our device. It sends a REST request to AWS IoT over HTTPS.
@@ -14,8 +13,10 @@ import sys, os, datetime, hashlib, hmac, urllib2, json, base64, pickle
 # Used if the channel name is already taken up.  Sync this with ActuateDeviceFromSlack and
 # SendSensorDataToElasticsearch.
 replaceSlackChannels = {
-    "g88": "g88a",
-    "g29": "g29a"
+    "g16-pi": "g16",
+    "g16p-pi": "g16",
+    "g29": "g29a",
+    "g88": "g88a"
 }
 
 # TODO: Name of our Raspberry Pi, also known as our "Thing Name".  Used only when running from command-line.
@@ -244,7 +245,6 @@ def post_state_to_slack(device, state):
     }
     post_to_slack(device, [attachment])
 
-
 def post_to_slack(device, textOrAttachments):
     # Post a Slack message to the channel of the same name as the device e.g. #g88.
     # device is assumed to begin with the group name.  action is the message.
@@ -256,7 +256,9 @@ def post_to_slack(device, textOrAttachments):
     if pos > 0:
         channel = device[0:pos]
     # Map the channel name in case the channel name is unavailable.
-    if replaceSlackChannels.get(channel) is not None:
+    if replaceSlackChannels.get(device) is not None:
+        channel = replaceSlackChannels.get(device)
+    elif replaceSlackChannels.get(channel) is not None:
         channel = replaceSlackChannels.get(channel)
     # Construct the REST request to Slack.
     body = {
