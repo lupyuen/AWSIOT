@@ -22,12 +22,15 @@ exports.handler = function(event, context) {
     //  { "temperature": 37.1, "timestamp": "2016-01-28 01:01:01" }
     console.log('Received event:', JSON.stringify(event, null, 2));
 
-    //  We will append the sensor data to this file hosted in AWS S3 cloud storage.
+    //  We will append the sensor data to these files hosted in AWS S3 cloud storage.
+    //  The "complete" file contains all sensor data, the "latest" file contains the
+    //  latest 120 rows of data.
     var bucket = 'sensor-data-csv';
-    var key = 'sensor_data_01.csv';
+    var complete_key = 'sensor_data_complete_01.csv';
+    var latest_key = 'sensor_data_latest_01.csv';
     var params = {
         Bucket: bucket,
-        Key: key
+        Key: complete_key
     };
     console.log('Reading S3 file', params);
     s3.getObject(params, function(err, data) {
@@ -51,13 +54,14 @@ exports.handler = function(event, context) {
         appendSensorData(event, existing_data, existing_fields);
         console.log({existing_data:existing_data,existing_fields:existing_fields});
         //  Write the latest 120 values to the "latest" S3 CSV file. 
-        return writeCSVFile({ Bucket: bucket, Key: key }, existing_data, 
+        return writeCSVFile({ Bucket: bucket, Key: latest_key }, existing_data, 
             existing_fields, 120, function (err) {
             //  Ignore the error and continue.
             //  Write the complete data to the "complete" S3 CSV file.
-            return writeCSVFile({ Bucket: bucket, Key: key }, existing_data, 
-                existing_fields, -1, function (err, result) {
+            return writeCSVFile({ Bucket: bucket, Key: complete_key }, existing_data, 
+                existing_fields, -1, function (err2, result) {
                     if (err) return context.fail(err);
+                    else if (err2) return context.fail(err2);
                     return context.succeed(result);
             });
         });
@@ -97,9 +101,11 @@ function parseExistingFile(body) {
         }
         //  Transform into ["2016-01-28 01:01:01",37.1] then parse into an array.
         var line_array = JSON.parse('[' + line + ']');
-        if (line_array.length != sensor_fields.length) return console.error(
-            'Expecting ' + sensor_fields.length + ' fields but found ' +
-            line_array.length + ' fields at row ' + row_count);
+        if (line_array.length != sensor_fields.length) {
+            var err = 'Expecting ' + sensor_fields.length + ' fields but found ' +
+                line_array.length + ' fields at row ' + row_count;
+            return console.error(err);
+        }
         //  Convert the array into a dictionary and remember it.
         var line_dict = {};
         for (var i = 0; i < sensor_fields.length; i++) {
