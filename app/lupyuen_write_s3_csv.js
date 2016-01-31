@@ -53,14 +53,14 @@ exports.handler = function(event, context) {
         //  Write the latest 120 values to the "latest" S3 CSV file. 
         return writeCSVFile({ Bucket: bucket, Key: key }, existing_data, 
             existing_fields, 120, function (err) {
-                //  Ignore the error and continue.
-                //  Write the complete data to the "complete" S3 CSV file.
-                return writeCSVFile({ Bucket: bucket, Key: key }, existing_data, 
-                    existing_fields, -1, function (err, result) {
-                        if (err) return context.fail(err);
-                        return context.succeed(result);
-                    });
+            //  Ignore the error and continue.
+            //  Write the complete data to the "complete" S3 CSV file.
+            return writeCSVFile({ Bucket: bucket, Key: key }, existing_data, 
+                existing_fields, -1, function (err, result) {
+                    if (err) return context.fail(err);
+                    return context.succeed(result);
             });
+        });
     });
 };
 
@@ -142,10 +142,14 @@ function appendSensorData(event, sensor_data, sensor_fields) {
 function writeCSVFile(params, sensor_data, sensor_fields, lines_to_write, callback) {
     //  Write the sensor data and fields to the S3 CSV file indicated in params.
     //  context is the lambda context that we use to indicate to AWS whether
-    //  our function failed or succeeded.  lines_to_write is the number of data
+    //  our function failed or succeeded.  lines_to_write is the number of latest data
     //  rows to be written, excluding the header line.  If negative, write all lines.
     var body = sensor_fields.join(',') + '\n';
-    for (var i = 0; i < sensor_data.length; i++) {
+    var start_row = 0;
+    //  Compute the starting row to write, based on the number of lines to be written.
+    if (lines_to_write >= 0 && lines_to_write < sensor_data.length)
+        start_row = sensor_data.length - lines_to_write;
+    for (var i = start_row; i < sensor_data.length; i++) {
         //  Write out all rows into a string buffer, delimited by newlines.
         //  sensor_row contains a dictionary of sensor data e.g. 
         //  { "temperature": 37.1, "timestamp": "2016-01-28 01:01:01" }
