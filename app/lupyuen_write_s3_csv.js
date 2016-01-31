@@ -50,9 +50,17 @@ exports.handler = function(event, context) {
         //  Append the sensor data.  If the field names have changed, cater for the new fields.
         appendSensorData(event, existing_data, existing_fields);
         console.log({existing_data:existing_data,existing_fields:existing_fields});
-        //  Write the data to the S3 CSV file.
+        //  Write the latest 120 values to the "latest" S3 CSV file. 
         return writeCSVFile({ Bucket: bucket, Key: key }, existing_data, 
-            existing_fields, context);
+            existing_fields, 120, function (err) {
+                //  Ignore the error and continue.
+                //  Write the complete data to the "complete" S3 CSV file.
+                return writeCSVFile({ Bucket: bucket, Key: key }, existing_data, 
+                    existing_fields, -1, function (err, result) {
+                        if (err) return context.fail(err);
+                        return context.succeed(result);
+                    });
+            });
     });
 };
 
@@ -131,10 +139,11 @@ function appendSensorData(event, sensor_data, sensor_fields) {
     console.log({sensor_data:sensor_data,sensor_fields:sensor_fields});
 }
 
-function writeCSVFile(params, sensor_data, sensor_fields, context) {
+function writeCSVFile(params, sensor_data, sensor_fields, lines_to_write, callback) {
     //  Write the sensor data and fields to the S3 CSV file indicated in params.
     //  context is the lambda context that we use to indicate to AWS whether
-    //  our function failed or succeeded.
+    //  our function failed or succeeded.  lines_to_write is the number of data
+    //  rows to be written, excluding the header line.  If negative, write all lines.
     var body = sensor_fields.join(',') + '\n';
     for (var i = 0; i < sensor_data.length; i++) {
         //  Write out all rows into a string buffer, delimited by newlines.
@@ -167,10 +176,11 @@ function writeCSVFile(params, sensor_data, sensor_fields, context) {
         if (err) {
             //  We have encountered an error.  Maybe due to concurrency?
             console.log('Unable to write S3 file', write_params, err);
-            return context.fail(err);
+            return callback(err);
         }
         //  The file was updated successfully.
-        context.succeed({ total_rows: sensor_data.length, 
+        var result = context.succeed({ total_rows: sensor_data.length, 
             total_fields: sensor_fields.length });
+        return callback(null, result);
     });
 }
