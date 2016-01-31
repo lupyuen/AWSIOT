@@ -189,8 +189,8 @@ function writeCSVFile(params, sensor_data, sensor_fields, lines_to_write, callba
             return callback(err);
         }
         //  The file was updated successfully.
-        var result = context.succeed({ total_rows: sensor_data.length, 
-            total_fields: sensor_fields.length });
+        var result = { total_rows: sensor_data.length, 
+            total_fields: sensor_fields.length };
         return callback(null, result);
     });
 }
