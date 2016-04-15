@@ -4,9 +4,12 @@ Node.js and Python scripts for AWS IoT, used in Temasek Polytechnic Smart IoT Ap
 - https://github.com/lupyuen/RaspberryPiImage
 - https://www.facebook.com/photo.php?fbid=10203864039081512&set=a.1222080012259.25950.1836747147&type=3&theater
 
+Preparing the SD Card for Raspberry Pi 2 and 3:
+
 1. Full version of Raspbian Jessie: https://www.raspberrypi.org/downloads/raspbian/
 2. Full version of Noobs: https://www.raspberrypi.org/downloads/noobs/
-3. 
+3. Burn the image to SD card: https://www.raspberrypi.org/documentation/installation/installing-images/README.md
+4. 
 
 Getting started:
 
