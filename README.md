@@ -4,6 +4,10 @@ Node.js and Python scripts for AWS IoT, used in Temasek Polytechnic Smart IoT Ap
 - https://github.com/lupyuen/RaspberryPiImage
 - https://www.facebook.com/photo.php?fbid=10203864039081512&set=a.1222080012259.25950.1836747147&type=3&theater
 
+1. Full version of Raspbian Jessie: https://www.raspberrypi.org/downloads/raspbian/
+2. Full version of Noobs: https://www.raspberrypi.org/downloads/noobs/
+3. 
+
 Getting started:
 
 0. Go to AWS IoT Console, create a Thing named "g0_temperature_sensor".  (Will be renamed to "g88_temperature_sensor".)
