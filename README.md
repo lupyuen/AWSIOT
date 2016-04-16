@@ -92,13 +92,6 @@ sudo apt-get install telnet
 sudo apt-get install npm
 sudo npm config -g set python /usr/bin/python2.7
 
-0. Install webmin:
-wget "http://downloads.sourceforge.net/project/webadmin/webmin/1.791/webmin_1.791_all.deb?r=http%3A%2F%2Fwww.webmin.com%2Fstandard.html&ts=1460818733&use_mirror=jaist"
-mv webmin_1.791_all.deb\?r\=http%3A%2F%2Fwww.webmin.com%2Fstandard.html\&ts\=1460818733\&use_mirror\=jaist webmin_1.791_all.deb
-sudo dpkg -i webmin_1.791_all.deb   
-sudo apt-get install -f
-Access webmin at https://RASPBERRY_PI_NAME:10000/
-
 0. Install Ajenti: http://support.ajenti.org/topics/1116-installing-on-debian/
 sudo bash
 wget -O- https://raw.github.com/ajenti/ajenti/1.x/scripts/install-debian.sh | sh
@@ -106,6 +99,12 @@ exit
 sudo service ajenti restart
 http://RASPBERRY_PI_NAME:8000/
 Login in as root, password admin
+
+0. Add text widget
+<a href='http://raspberrypi:3000'>Open Terminal</a>
+
+0. Update /etc/ajenti/config.json, replace "raspberrypi" by hostname
+
 
 
 
