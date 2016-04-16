@@ -24,6 +24,9 @@ Do not connect Red because we are using external power
 
 0. Connect a USB keyboard, mouse and HDMI monitor. Boot and connect to wifi. 
 
+0. Download the GrovePi+ software: ???
+
+
 Getting started:
 
 0. Go to AWS IoT Console, create a Thing named "g0_temperature_sensor".  (Will be renamed to "g88_temperature_sensor".)
