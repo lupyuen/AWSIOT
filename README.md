@@ -22,6 +22,8 @@ Do not connect Red because we are using external power
 
 0. Attach the GrovePi+ Shield and sensors: http://www.seeedstudio.com/depot/GrovePi-Starter-Kit-for-Raspberry-Pi-ABB23-CE-certified-p-2572.html?cPath=122_154_151
 
+0. Connect a USB keyboard, mouse and HDMI monitor. Boot and connect to wifi. 
+
 Getting started:
 
 0. Go to AWS IoT Console, create a Thing named "g0_temperature_sensor".  (Will be renamed to "g88_temperature_sensor".)
