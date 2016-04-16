@@ -55,4 +55,9 @@ import ssl
 ssl.OPENSSL_VERSION
 Ensure that version >=1.0.1
 
+0. Set the system default to python3.4 instead of python2.x.  Python 2.x does not support TLS.
+sudo rm /usr/bin/python
+sudo ln -s /usr/bin/python3.4 /usr/bin/python
+
+
 
