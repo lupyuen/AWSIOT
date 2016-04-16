@@ -56,7 +56,7 @@ ssl.OPENSSL_VERSION
 Ensure that version >=1.0.1
 
 0. Set the system default to python3.4 instead of python2.x.  Python 2.x does not support TLS.
-vi ~/.bashrc
+vi ~/.bash_aliases
 Change to
 # Some more alias to avoid making mistakes:
 alias rm='rm -i'
