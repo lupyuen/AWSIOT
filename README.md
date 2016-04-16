@@ -60,7 +60,7 @@ sudo rm /usr/bin/python
 sudo ln -s /usr/bin/python3.4 /usr/bin/python
 
 0. Install paho, the MQTT library for Python
-pip3 install paho
+sudo pip3 install paho-mqtt
 
 
 
