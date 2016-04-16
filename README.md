@@ -80,8 +80,10 @@ sudo apt-get update
 sudo apt-get upgrade
 sudo reboot now
 
-0. Install utilities
+0. Install common tools
 sudo apt-get install telnet
+sudo apt-get install npm
+
 
 
 
