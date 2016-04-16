@@ -11,7 +11,7 @@ Preparing the SD Card for Raspberry Pi 2 and 3:
 3. Burn the image to SD card: https://www.raspberrypi.org/documentation/installation/installing-images/README.md
 4. Get the Raspberry Pi console cable: https://learn.adafruit.com/adafruits-raspberry-pi-lesson-5-using-a-console-cable?view=all
 5. Install the driver from http://www.prolific.com.tw/US/ShowProduct.aspx?p_id=229&pcid=41
-6. 
+6. Attach the GrovePi+ Shield and sensors: http://www.seeedstudio.com/depot/GrovePi-Starter-Kit-for-Raspberry-Pi-ABB23-CE-certified-p-2572.html?cPath=122_154_151
 
 Getting started:
 
