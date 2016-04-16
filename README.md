@@ -9,7 +9,9 @@ Preparing the SD Card for Raspberry Pi 2 and 3:
 1. Full version of Raspbian Jessie: https://www.raspberrypi.org/downloads/raspbian/
 2. Full version of Noobs: https://www.raspberrypi.org/downloads/noobs/
 3. Burn the image to SD card: https://www.raspberrypi.org/documentation/installation/installing-images/README.md
-4. 
+4. Get the Raspberry Pi console cable: https://learn.adafruit.com/adafruits-raspberry-pi-lesson-5-using-a-console-cable?view=all
+5. Install the driver from http://www.prolific.com.tw/US/ShowProduct.aspx?p_id=229&pcid=41
+6. 
 
 Getting started:
 
