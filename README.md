@@ -69,6 +69,11 @@ sudo apt-get purge scratch
 sudo apt-get purge nuscratch
 sudo apt-get autoremove
 
+0. Update the installed packages:
+sudo apt-get update
+sudo apt-get upgrade
+sudo reboot now
+
 
 
 
