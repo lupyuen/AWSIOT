@@ -85,6 +85,13 @@ sudo apt-get install telnet
 sudo apt-get install npm
 sudo npm config -g set python /usr/bin/python2.7
 
+0. Install webmin:
+wget "http://downloads.sourceforge.net/project/webadmin/webmin/1.791/webmin_1.791_all.deb?r=http%3A%2F%2Fwww.webmin.com%2Fstandard.html&ts=1460818733&use_mirror=jaist"
+mv webmin_1.791_all.deb\?r\=http%3A%2F%2Fwww.webmin.com%2Fstandard.html\&ts\=1460818733\&use_mirror\=jaist webmin_1.791_all.deb
+sudo dpkg -i webmin_1.791_all.deb   
+sudo apt-get install -f
+Access webmin at https://RASPBERRY_PI_NAME:10000/
+
 
 
 
