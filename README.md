@@ -83,6 +83,7 @@ sudo reboot now
 0. Install common tools
 sudo apt-get install telnet
 sudo apt-get install npm
+sudo npm config -g set python /usr/bin/python2.7
 
 
 
