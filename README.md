@@ -99,6 +99,14 @@ sudo dpkg -i webmin_1.791_all.deb
 sudo apt-get install -f
 Access webmin at https://RASPBERRY_PI_NAME:10000/
 
+0. Install Ajenti: http://support.ajenti.org/topics/1116-installing-on-debian/
+sudo bash
+wget -O- https://raw.github.com/ajenti/ajenti/1.x/scripts/install-debian.sh | sh
+exit
+sudo service ajenti restart
+http://RASPBERRY_PI_NAME:8000/
+Login in as root, password admin
+
 
 
 
