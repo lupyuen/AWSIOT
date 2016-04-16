@@ -58,8 +58,6 @@ Ensure that version >=1.0.1
 0. Set the system default to python3.4 instead of python2.x.  Python 2.x does not support TLS.
 sudo rm /usr/bin/python
 sudo ln -s /usr/bin/python3.4 /usr/bin/python
-sudo mv /usr/bin/pip /usr/bin/pip2-old
-sudo ln -s /usr/bin/pip3 /usr/bin/pip
 
 0. Install paho, the MQTT library for Python
 sudo pip install paho-mqtt
