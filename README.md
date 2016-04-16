@@ -80,6 +80,8 @@ sudo apt-get update
 sudo apt-get upgrade
 sudo reboot now
 
+0. Install utilities
+sudo apt-get install telnet
 
 
 
