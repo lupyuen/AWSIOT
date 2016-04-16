@@ -62,7 +62,9 @@ sudo ln -s /usr/bin/python3.4 /usr/bin/python
 0. Install paho, the MQTT library for Python
 sudo pip install paho-mqtt
 
-0. Remove unnecessary packages so we can set up the NOOBS image easily:
+0. Remove unnecessary packages so we can clone the NOOBS image easily:
+rm -rf ~/Documents/*
+rm -rf ~/python_games/
 sudo apt-get purge wolfram-engine
 sudo apt-get purge sonic-pi
 sudo apt-get purge scratch
