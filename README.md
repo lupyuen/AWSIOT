@@ -65,6 +65,10 @@ sudo pip install paho-mqtt
 0. Remove unnecessary packages so we can clone the NOOBS image easily:
 rm -rf ~/Documents/*
 rm -rf ~/python_games/
+rm -rf ~/GrovePi/Firmware
+rm -rf ~/GrovePi/Hardware
+rm -rf ~/GrovePi/Software/CSharp
+rm -rf ~/GrovePi/Software/Scratch
 sudo apt-get purge wolfram-engine
 sudo apt-get purge sonic-pi
 sudo apt-get purge scratch
