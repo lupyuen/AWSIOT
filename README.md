@@ -24,6 +24,8 @@ Do not connect Red because we are using external power
 
 0. Connect a USB keyboard, mouse and HDMI monitor. Boot and connect to wifi. 
 
+0. Click Menu -> Preferences -> Raspberry Pi Configuration.  Click Interfaces. Enable SSH, SPI, I2C and Serial.  Reboot.
+
 0. Download the GrovePi+ software: ???
 
 0. Run GrovePi/Script/install.sh after setting execute access right on the file
