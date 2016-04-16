@@ -56,8 +56,15 @@ ssl.OPENSSL_VERSION
 Ensure that version >=1.0.1
 
 0. Set the system default to python3.4 instead of python2.x.  Python 2.x does not support TLS.
-sudo rm /usr/bin/python
-sudo ln -s /usr/bin/python3.4 /usr/bin/python
+vi ~/.bashrc
+Change to
+# Some more alias to avoid making mistakes:
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+
+# For TP IoT: Alias python to python3 because python2 doesn't support TLS needed for AWS IoT.
+alias python=python3
 
 0. Install paho, the MQTT library for Python
 sudo pip install paho-mqtt
