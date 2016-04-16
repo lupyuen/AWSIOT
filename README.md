@@ -26,6 +26,7 @@ Do not connect Red because we are using external power
 
 0. Download the GrovePi+ software: ???
 
+0. Run GrovePi/Script/install.sh after setting execute access right on the file
 
 Getting started:
 
