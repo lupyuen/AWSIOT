@@ -198,8 +198,8 @@ Log out and log in as pi, password raspberry.
    ```
    <b>Welcome to the Ajenti Web Console</b><br>
    For monitoring and controlling your Raspberry Pi<br>
-   <a target='_blank' href='http://raspberrypi:3000'><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i class="fa fa-terminal fa-stack-1x fa-inverse"></i></span></a>
-   <a target='_blank' href='http://raspberrypi:3000'>Open Raspberry Pi Web Terminal</a>
+   <a target='_blank' href='http://g88pi.local:3000'><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i class="fa fa-terminal fa-stack-1x fa-inverse"></i></span></a>
+   <a target='_blank' href='http://g88pi.local:3000'>Open Raspberry Pi Web Terminal</a>
    ```
 
 0. Add text widget for AWS:
