@@ -215,7 +215,6 @@ Login in as root, password admin
    href='http://bit.ly/tp-iot'
    ><b>Frequently Asked Questions</b></a><br>
 
-
    ```
 
 0. TODO: Update /etc/ajenti/config.json, replace "raspberrypi" by hostname
@@ -241,6 +240,67 @@ cd /home/pi/TP-IoT
 python send_sensor_data.py
    ```
    You should see ???
+   
+0. Assign hostname: https://github.com/adafruit/Adafruit-Pi-Finder#adafruit-raspberry-pi-finder
+   ```
+sudo apt-get install avahi-daemon
+sudo apt-get install netatalk
+   ```
+   Assign local domain e.g. luppypi.local: http://www.howtogeek.com/167190/how-and-why-to-assign-the-.local-domain-to-your-raspberry-pi/
+
+0. Change hostname: http://www.howtogeek.com/167195/how-to-change-your-raspberry-pi-or-other-linux-devices-hostname/
+   ```
+sudo vi /etc/hosts
+sudo vi /etc/hostname
+   ```
+   
+0. Share Pi filesystem: http://raspberrywebserver.com/serveradmin/share-your-raspberry-pis-files-and-folders-across-a-network.html
+   ```
+sudo apt-get install samba samba-common-bin
+sudo vi /etc/samba/smb.conf
+   ```
+   Change to
+   ```
+workgroup = WORKGROUP
+wins support = yes
+   ```
+   Must use WORKGROUP not TP-IOT!
+   Change
+   ```
+[homes]
+   comment = Home Directories
+   browseable = no
+   ```
+   to
+   ```
+;[homes]
+;   comment = Home Directories
+;   browseable = no
+   ```
+   Add:
+   ```
+valid users = pi
+...
+[pihome]
+   comment= Pi Home
+   path=/home/pi
+   browseable=Yes
+   writeable=Yes
+   only guest=no
+   create mask=0777
+   directory mask=0777
+   public=no
+   read only = no
+   force user = root
+   ```
+   Set the SMB password:
+   ```
+sudo smbpasswd -a pi
+raspberry
+sudo service samba restart
+   ```
+   Must use "force user = root".
+   Must use “valid users = pi".
 
 0. TODO: Encrypt wifi password
 
