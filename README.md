@@ -32,7 +32,7 @@ Preparing the SD Card for Raspberry Pi 2 and 3:
 ```
 Edge with SDCard / Empty / Empty / Black / White / Green
 Gnd / Tx / Rx
-```Do not connect Red because we are using external power
+``` Do not connect Red because we are using external power
 
 0. Install the driver from http://www.prolific.com.tw/US/ShowProduct.aspx?p_id=229&pcid=41
 
@@ -58,7 +58,7 @@ python3 grove_buzzer.py
 python3
 import ssl
 ssl.OPENSSL_VERSION
-```Ensure that version >=1.0.1
+``` Ensure that version >=1.0.1
 
 0. Set the system default to python3.4 instead of python2.x.  Python 2.x does not support TLS.
 ```
@@ -119,25 +119,31 @@ sudo ln -s /opt/node-v5.10.1-linux-armv7l/bin/node /usr/bin/nodejs
 ```
 
 0. Install Ajenti: http://support.ajenti.org/topics/1116-installing-on-debian/
+```
 sudo bash
 wget -O- https://raw.github.com/ajenti/ajenti/1.x/scripts/install-debian.sh | sh
 exit
 sudo service ajenti restart
+``` Browse to
 http://raspberrypi:8000/
 Login in as root, password admin
 
 0. Add text widget
+```
 <a target='_blank' href='http://raspberrypi:3000'>Open Terminal</a>
+```
 
-0. Update /etc/ajenti/config.json, replace "raspberrypi" by hostname
+0. TODO: Update /etc/ajenti/config.json, replace "raspberrypi" by hostname
 
 0. Install tty.js
+```
 cd /tmp
 npm install tty.js
 sudo mkdir /opt/tty.js
 sudo cp -r node_modules /opt/tty.js
 cd /opt/tty.js
 sudo node node_modules/tty.js/bin/tty.js --daemonize
+```
 
 0. TODO: Pass token from Ajenti to tty.js
 
