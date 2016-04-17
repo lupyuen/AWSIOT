@@ -268,13 +268,16 @@ Sent to AWS IoT
 sudo apt-get install avahi-daemon
 sudo apt-get install netatalk
    ```
-   Assign local domain e.g. luppypi.local: http://www.howtogeek.com/167190/how-and-why-to-assign-the-.local-domain-to-your-raspberry-pi/
+   Assign local domain e.g. g88pi.local where g88 is the group name: http://www.howtogeek.com/167190/how-and-why-to-assign-the-.local-domain-to-your-raspberry-pi/
 
-0. Change hostname: http://www.howtogeek.com/167195/how-to-change-your-raspberry-pi-or-other-linux-devices-hostname/
+0. Change hostname to g88pi where g88 is the group name: http://www.howtogeek.com/167195/how-to-change-your-raspberry-pi-or-other-linux-devices-hostname/
    ```
 sudo vi /etc/hosts
 sudo vi /etc/hostname
+sudo /etc/init.d/hostname.sh
+sudo reboot now
    ```
+   Change raspberrypi to g88pi where g88 is the group name.
    
 0. Share Pi filesystem: http://raspberrywebserver.com/serveradmin/share-your-raspberry-pis-files-and-folders-across-a-network.html
    ```
