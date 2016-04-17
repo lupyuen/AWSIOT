@@ -298,7 +298,7 @@ wins support = yes
    ```
    to
    ```
-;[homes]
+[homes]
 ;   comment = Home Directories
 ;   browseable = no
    ```
@@ -321,7 +321,7 @@ wins support = yes
    ```
 sudo smbpasswd -a pi
 raspberry
-sudo service samba restart
+sudo service smbd restart
    ```
    Must use "force user = root".
    Must use “valid users = pi".
