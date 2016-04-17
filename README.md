@@ -204,8 +204,8 @@ Login in as root, password admin
       class="fa fa-users fa-stack-1x fa-inverse"
       title="Slack"></i></span></a>
    <a target='_blank' 
-   href='https://tp-iot.slack.com/'><b>Slack</b> 
-   for realtime collaboration</a><br>
+   href='https://tp-iot.slack.com/'
+   ><b>Slack</b> for realtime collaboration</a><br>
    
    <a target='_blank' href='http://bit.ly/tp-iot'><span 
       class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i 
