@@ -140,7 +140,19 @@ Login in as root, password admin
 
 0. Add text widget
    ```
-<a target='_blank' href='http://raspberrypi:3000'>Open Terminal</a>
+   <b>Welcome to the Ajenti Web Console</b><br>
+   For monitoring and controlling your Raspberry Pi<br>
+   <a target='_blank' href='http://raspberrypi:3000'>Open Web Terminal</a>
+   ```
+
+0. Add text widget
+   ```
+   <b>Amazon Web Services</b><br>
+   <a target='_blank' href='http://raspberrypi:3000'><b>Login to AWS</b></a>
+   <a target='_blank' href='http://raspberrypi:3000'><b>AWS IoT</b> for controlling and monitoring your IoT devices</a>
+   <a target='_blank' href='http://raspberrypi:3000'><b>DynamoDB database</b> for storage of sensor data</a>
+   <a target='_blank' href='http://raspberrypi:3000'><b>Simple Notification Service</b> for email notifications</a>
+   <a target='_blank' href='http://raspberrypi:3000'><b>Lambda</b> for executing your programs in the cloud</a>
    ```
 
 0. TODO: Update /etc/ajenti/config.json, replace "raspberrypi" by hostname
