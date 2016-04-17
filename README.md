@@ -268,6 +268,8 @@ sudo node node_modules/tty.js/bin/tty.js --daemonize
 
 0. TODO: Pass token from Ajenti to tty.js
 
+0. TODO: Configure tty.js to start automatically.
+
 0. Copy /home/pi/TP-IoT from 
 https://github.com/lupyuen/RaspberryPiImage to /home/pi/TP-IoT on the Raspberry Pi
 
