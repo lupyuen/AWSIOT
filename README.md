@@ -39,6 +39,30 @@ Node.js and Python scripts for AWS IoT, used in Temasek Polytechnic Smart IoT Ap
 
 0. Install the console cable driver from http://www.prolific.com.tw/US/ShowProduct.aspx?p_id=229&pcid=41
 
+0. On Pi 3: We must disable Bluetooth else the console cable won't work: https://www.abelectronics.co.uk/kb/article/1035/raspberry-pi-3-serial-port-usage
+   ```
+sudo apt-get update
+sudo apt-get upgrade
+sudo nano /boot/config.txt
+   ```
+   Add at the end of the file
+   ```
+dtoverlay=pi3-miniuart-bt
+   ```
+   Exit the editor saving your changes and then:
+   ```
+sudo reboot
+   ```
+   Enabling the Serial Console Rasbian Jessie after 18th March 2016 release:
+   To enable the serial console, you need to edit the /boot/cmdline.txt file
+   ```
+sudo nano /boot/cmdline.txt
+   ```
+   Change the file to the following:
+   ```
+dwc_otg.lpm_enable=0 console=tty1 console=serial0,115200 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait
+   ```
+
 0. Attach the GrovePi+ Shield and sensors: http://www.seeedstudio.com/depot/GrovePi-Starter-Kit-for-Raspberry-Pi-ABB23-CE-certified-p-2572.html?cPath=122_154_151
 
 0. Connect a USB keyboard, mouse and HDMI monitor. Boot and connect to wifi. 
