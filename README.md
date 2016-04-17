@@ -4,7 +4,7 @@ Node.js and Python scripts for AWS IoT, used in Temasek Polytechnic Smart IoT Ap
 - https://github.com/lupyuen/RaspberryPiImage
 - https://www.facebook.com/photo.php?fbid=10203864039081512&set=a.1222080012259.25950.1836747147&type=3&theater
 
-Getting started:
+## Getting started:
 
 0. Go to AWS IoT Console, create a Thing named "g0_temperature_sensor".  (Will be renamed to "g88_temperature_sensor".)
 
@@ -18,7 +18,7 @@ Getting started:
 
 0. Run this script. It should trigger an SNS email alert.
 
-Preparing the SD Card for Raspberry Pi 2 and 3:
+## Preparing the SD Card for Raspberry Pi 2 and 3:
 
 0. Full version of Raspbian Jessie: https://www.raspberrypi.org/downloads/raspbian/
 
@@ -166,6 +166,11 @@ python send_sensor_data.py
    You should see ???
 
 0. TODO: Encrypt wifi password
+
+0. TODO: Sumo Logic 
+
+0. TODO: Hoiio
+
 
 
 
