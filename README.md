@@ -94,7 +94,6 @@ sudo npm config -g set python /usr/bin/python2.7
 sudo ln -s /opt/node-v5.10.1-linux-armv7l/lib/node_modules/npm/bin/npm-cli.js /usr/bin/npm
 
 0. Install latest Node.js from https://nodejs.org/en/download/stable/ (ARMv7)
-
 wget https://nodejs.org/dist/v5.10.1/node-v5.10.1-linux-armv7l.tar.xz
 tar -xvf node-v5.10.1-linux-armv7l.tar.xz
 sudo cp -r node-v5.10.1-linux-armv7l /optsudo mv /usr/bin/nodejs /usr/bin/nodejs.v0.10.29
@@ -103,7 +102,6 @@ sudo ln -s /opt/node-v5.10.1-linux-armv7l/bin/node /usr/bin/node
 sudo ln -s /opt/node-v5.10.1-linux-armv7l/bin/node /usr/bin/nodejs
 
 0. Install Ajenti: http://support.ajenti.org/topics/1116-installing-on-debian/
-
 sudo bash
 wget -O- https://raw.github.com/ajenti/ajenti/1.x/scripts/install-debian.sh | sh
 exit
@@ -112,17 +110,19 @@ http://raspberrypi:8000/
 Login in as root, password admin
 
 0. Add text widget
-
 <a target='_blank' href='http://raspberrypi:3000'>Open Terminal</a>
 
 0. Update /etc/ajenti/config.json, replace "raspberrypi" by hostname
 
 0. Install tty.js
-
+cd /tmp
+npm install tty.js
 sudo mkdir /opt/tty.js
 sudo cp -r node_modules /opt/tty.js
 cd /opt/tty.js
 sudo node node_modules/tty.js/bin/tty.js --daemonize
+
+0. TODO: Pass token from Ajenti to tty.js
 
 
 
