@@ -32,7 +32,6 @@ Preparing the SD Card for Raspberry Pi 2 and 3:
 ```
 Edge with SDCard / Empty / Empty / Black (Gnd) / White (Tx) / Green (Rx)
 ``` 
-
 0. Do not connect Red because we are using external power
 
 0. Install the driver from http://www.prolific.com.tw/US/ShowProduct.aspx?p_id=229&pcid=41
