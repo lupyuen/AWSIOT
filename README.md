@@ -142,7 +142,7 @@ Login in as root, password admin
    ```
    <b>Welcome to the Ajenti Web Console</b><br>
    For monitoring and controlling your Raspberry Pi<br>
-   <a target='_blank' href='http://raspberrypi:3000'>Open Web Terminal</a>
+   <a target='_blank' href='http://raspberrypi:3000'>Open Raspberry Pi Web Terminal</a>
    ```
 
 0. Add text widget
