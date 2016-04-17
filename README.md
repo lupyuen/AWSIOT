@@ -149,14 +149,15 @@ Login in as root, password admin
 0. Add text widget for AWS:
    ```
    
-   <b>Amazon Web Services and common links</b><br>
+   <b>Amazon Web Services and Common Links</b><br>
    
    <a target='_blank' href='https://tp-iot.signin.aws.amazon.com/console'><span 
       class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i 
       class="fa fa-unlock-alt fa-stack-1x fa-inverse"
       title="Login to AWS"></i></span></a>
-   <a target='_blank' href='https://tp-iot.signin.aws.amazon.com/console'
-   ><b>Login to Amazon Web Services</b></a><br>
+   <a target='_blank' 
+   href='https://tp-iot.signin.aws.amazon.com/console'
+   ><b>Login to Amazon Web Services</b></a> <br>
    
    <a target='_blank' href='https://us-west-2.console.aws.amazon.com/iot/home?region=us-west-2#/dashboard'><span 
       class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i 
@@ -165,15 +166,7 @@ Login in as root, password admin
    <a target='_blank' 
    href='https://us-west-2.console.aws.amazon.com/iot/home?region=us-west-2#/dashboard'
    ><b>AWS IoT</b> for controlling your IoT devices</a><br>
-
-   <a target='_blank' href='https://us-west-2.console.aws.amazon.com/iot/home?region=us-west-2#/dashboard'><span 
-      class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i 
-      class="fa fa-envelope fa-stack-1x fa-inverse"
-      title="AWS IoT"></i></span></a>
-   <a target='_blank' 
-   href='https://us-west-2.console.aws.amazon.com/iot/home?region=us-west-2#/dashboard'
-   ><b>Simple Notification Service</b> for email alerts</a><br>
-
+   
    <a target='_blank' href='https://us-west-2.console.aws.amazon.com/sns/v2/home?region=us-west-2#/topics'><span 
       class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i 
       class="fa fa-envelope fa-stack-1x fa-inverse"
@@ -221,7 +214,8 @@ Login in as root, password admin
    <a target='_blank' 
    href='http://bit.ly/tp-iot'
    ><b>Frequently Asked Questions</b></a><br>
-   
+
+
    ```
 
 0. TODO: Update /etc/ajenti/config.json, replace "raspberrypi" by hostname
