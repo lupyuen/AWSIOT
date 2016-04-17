@@ -158,9 +158,22 @@ exit
 sudo service ajenti restart
    ``` 
 
+0. Update Ajenti config to start at port 80 instead of 8080.  Edit /etc/ajenti/config.json.  Change
+   ```
+   "port": 8000
+   ```
+   to
+   ```
+   "port": 80
+   ```
+
 0. Browse to
-http://raspberrypi:8000/.
+http://raspberrypi/.
 Login in as root, password admin
+Change the user authentication to sync with local users.  Ensure pi has all permissions.
+Log out and log in as pi, password raspberry.
+
+0. Copy index.html and auth.html from https://github.com/lupyuen/RaspberryPiImage/tree/master/usr/share/pyshared/ajenti/plugins/main/content/static to /usr/share/pyshared/ajenti/plugins/main/content/static.  This enables Font Awesome to support icons in the text widget, and hides the SSL warning messages.
 
 0. Add text widget for tty.js web terminal:
    ```
