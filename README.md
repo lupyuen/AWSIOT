@@ -31,6 +31,7 @@ Node.js and Python scripts for AWS IoT, used in Temasek Polytechnic Smart IoT Ap
 0. Connect as follows: 
    
    Edge with SDCard | Empty | Empty | Black (Gnd) | White (Tx) | Green (Rx)
+   ---|---|---|---|---|
    
 
 0. Do not connect Red because we are using external power
