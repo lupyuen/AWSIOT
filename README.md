@@ -30,8 +30,7 @@ Preparing the SD Card for Raspberry Pi 2 and 3:
 
 0. Connect as follows: 
 ```
-Edge with SDCard / Empty / Empty / Black / White / Green
-Gnd / Tx / Rx
+Edge with SDCard / Empty / Empty / Black (Gnd) / White (Tx) / Green (Rx)
 ``` 
 
 0. Do not connect Red because we are using external power
@@ -45,7 +44,9 @@ Gnd / Tx / Rx
 0. Click Menu -> Preferences -> Raspberry Pi Configuration.  Click Interfaces. Enable SSH, SPI, I2C and Serial.  Reboot.
 
 0. Download the GrovePi+ software:
+```
 sudo git clone https://github.com/DexterInd/GrovePi.git
+```
 
 0. Run GrovePi/Script/grovepi_python3_install.sh after setting execute access right on the file. Reboot.  (Note: Don't use install.sh because it caused my Raspberry Pi 3 to boot with a black screen.)
 
@@ -62,7 +63,7 @@ import ssl
 ssl.OPENSSL_VERSION
 ``` 
 
-0. Ensure that version >=1.0.1
+0. Ensure that OpenSSL version >=1.0.1
 
 0. Set the system default to python3.4 instead of python2.x.  Python 2.x does not support TLS.
 ```
