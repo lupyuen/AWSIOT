@@ -67,6 +67,19 @@ dwc_otg.lpm_enable=0 console=tty1 console=serial0,115200 root=/dev/mmcblk0p2 roo
 
 0. Connect a USB keyboard, mouse and HDMI monitor. Boot and connect to wifi. 
 
+0. Alternatively, boot with console cable and connect to wifi manually:
+   ```
+sudo vi /etc/wpa_supplicant/wpa_supplicant.conf
+   ```
+   Add:
+   ```
+network={
+    ssid="YOUR_SSID"
+    psk="YOUR_PASSWORD"
+    key_mgmt=WPA-PSK
+}
+   ```
+
 0. Click Menu -> Preferences -> Raspberry Pi Configuration.  Click Interfaces. Enable SSH, SPI, I2C and Serial.  Reboot.
 
 0. Download the GrovePi+ software:
