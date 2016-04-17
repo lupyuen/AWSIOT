@@ -79,6 +79,10 @@ network={
     key_mgmt=WPA-PSK
 }
    ```
+   Restart the network:
+   ```
+   sudo ifdown --exclude=lo -a && sudo ifup --exclude=lo -a
+   ```
 
 0. Click Menu -> Preferences -> Raspberry Pi Configuration.  Click Interfaces. Enable SSH, SPI, I2C and Serial.  Reboot.
 
