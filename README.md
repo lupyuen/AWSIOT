@@ -29,9 +29,9 @@ Preparing the SD Card for Raspberry Pi 2 and 3:
 0. Get the Raspberry Pi console cable: https://learn.adafruit.com/adafruits-raspberry-pi-lesson-5-using-a-console-cable?view=all
 
 0. Connect as follows: 
-   ```
-   Edge with SDCard / Empty / Empty / Black (Gnd) / White (Tx) / Green (Rx)
-   ``` 
+   
+   Edge with SDCard | Empty | Empty | Black (Gnd) | White (Tx) | Green (Rx)
+   
 
 0. Do not connect Red because we are using external power
 
@@ -109,17 +109,19 @@ sudo reboot now
 sudo apt-get install telnet
 sudo apt-get install npm
 sudo npm config -g set python /usr/bin/python2.7
-sudo ln -s /opt/node-v5.10.1-linux-armv7l/lib/node_modules/npm/bin/npm-cli.js /usr/bin/npm
+
    ```
 
 0. Install latest Node.js from https://nodejs.org/en/download/stable/ (ARMv7)
    ```
 wget https://nodejs.org/dist/v5.10.1/node-v5.10.1-linux-armv7l.tar.xz
 tar -xvf node-v5.10.1-linux-armv7l.tar.xz
-sudo cp -r node-v5.10.1-linux-armv7l /optsudo mv /usr/bin/nodejs /usr/bin/nodejs.v0.10.29
+sudo cp -r node-v5.10.1-linux-armv7l /opt
+sudo mv /usr/bin/nodejs /usr/bin/nodejs.v0.10.29
 sudo rm /usr/bin/node
 sudo ln -s /opt/node-v5.10.1-linux-armv7l/bin/node /usr/bin/node
 sudo ln -s /opt/node-v5.10.1-linux-armv7l/bin/node /usr/bin/nodejs
+sudo ln -s /opt/node-v5.10.1-linux-armv7l/lib/node_modules/npm/bin/npm-cli.js /usr/bin/npm
    ```
 
 0. Install Ajenti: http://support.ajenti.org/topics/1116-installing-on-debian/
@@ -141,7 +143,7 @@ Login in as root, password admin
 
 0. TODO: Update /etc/ajenti/config.json, replace "raspberrypi" by hostname
 
-0. Install tty.js
+0. Install tty.js web terminal: https://github.com/chjj/tty.js/
    ```
 cd /tmp
 npm install tty.js
@@ -156,12 +158,14 @@ sudo node node_modules/tty.js/bin/tty.js --daemonize
 0. Copy /home/pi/TP-IoT from 
 https://github.com/lupyuen/RaspberryPiImage to /home/pi/TP-IoT on the Raspberry Pi
 
-0. Run
+0. Run the sample script to send data to AWS IoT MQTT 
    ```
 cd /home/pi/TP-IoT
 python send_sensor_data.py
    ```
    You should see ???
+
+0. TODO: Encrypt wifi password
 
 
 
