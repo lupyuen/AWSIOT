@@ -82,6 +82,8 @@ network={
    Restart the network:
    ```
    sudo ifdown --exclude=lo -a && sudo ifup --exclude=lo -a
+   sudo dhclient -r
+   sudo dhclient
    ```
 
 0. Click Menu -> Preferences -> Raspberry Pi Configuration.  Click Interfaces. Enable SSH, SPI, I2C and Serial.  Reboot.
