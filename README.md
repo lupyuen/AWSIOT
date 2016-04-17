@@ -239,7 +239,29 @@ https://github.com/lupyuen/RaspberryPiImage to /home/pi/TP-IoT on the Raspberry 
 cd /home/pi/TP-IoT
 python send_sensor_data.py
    ```
-   You should see ???
+   You should see
+   ```
+pi@raspberrypi:~/TP-IoT $ python send_sensor_data.py
+Connecting to AWS IoT...
+Log: Received CONNACK (0, 0)
+Connected to AWS IoT
+Subscribing to MQTT topic $aws/things/g88_pi/shadow/update/accepted
+Log: Received SUBACK
+Sending sensor data to AWS IoT...
+{
+    "state": {
+        "reported": {
+            "sound_level": 320,
+            "light_level": 410,
+            "temperature": NaN,
+            "humidity": 0.0,
+            "timestamp": "2016-04-17T14:55:17.812605"
+        }
+    }
+}
+Log: Sending PUBLISH (dFalse, q0, r0, m2, '$aws/things/g88_pi/shadow/update', ... (145 bytes)
+Sent to AWS IoT
+   ```
    
 0. Assign hostname: https://github.com/adafruit/Adafruit-Pi-Finder#adafruit-raspberry-pi-finder
    ```
