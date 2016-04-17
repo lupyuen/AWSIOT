@@ -304,8 +304,8 @@ wins support = yes
    ```
    Add:
    ```
-valid users = pi
-...
+   valid users = pi
+   
 [pihome]
    comment= Pi Home
    path=/home/pi
