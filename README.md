@@ -51,22 +51,21 @@ sudo git clone https://github.com/DexterInd/GrovePi.git
 0. Run GrovePi/Script/grovepi_python3_install.sh after setting execute access right on the file. Reboot.  (Note: Don't use install.sh because it caused my Raspberry Pi 3 to boot with a black screen.)
 
 0. Connect the Grove buzzer to port D8.  Test by running:
-```
+   ```
 cd ~/GrovePi/Software/Python
 python3 grove_buzzer.py 
-```
+   ```
 
 0. Check that Python supports TLS.  Otherwise MQTT requests to AWS IoT will fail.
-```
+   ```
 python3
 import ssl
 ssl.OPENSSL_VERSION
-``` 
-
-0. Ensure that OpenSSL version >=1.0.1
+   ```
+   Ensure that OpenSSL version >=1.0.1
 
 0. Set the system default to python3.4 instead of python2.x.  Python 2.x does not support TLS.
-```
+   ```
 vi ~/.bash_aliases
 Change to
 # Some more alias to avoid making mistakes:
@@ -76,12 +75,12 @@ alias mv='mv -i'
 
 # For TP IoT: Alias python to python3 because python2 doesn't support TLS needed for AWS IoT.
 alias python=python3
-```
+   ```
 
 0. Install paho, the MQTT library for Python
-```
+   ```
 sudo pip3 install paho-mqtt
-```
+   ```
 
 0. Remove unnecessary packages so we can clone the NOOBS image easily:
 ```
