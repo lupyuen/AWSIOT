@@ -148,13 +148,15 @@ Login in as root, password admin
 0. Add text widget
    ```
    <b>Amazon Web Services</b><br>
-   <a target='_blank' href='http://raspberrypi:3000'><b>Login to Amazon Web Services</b></a><br>
-   <a target='_blank' href='http://raspberrypi:3000'><b>AWS IoT</b> for controlling your IoT devices</a><br>
-   <a target='_blank' href='http://raspberrypi:3000'><b>DynamoDB database</b> for storage of sensor data</a><br>
-   <a target='_blank' href='http://raspberrypi:3000'><b>Simple Notification Service</b> for email notifications</a><br>
-   <a target='_blank' href='http://raspberrypi:3000'><b>Lambda</b> for executing your programs in the cloud</a><br>
-   <a target='_blank' href='http://raspberrypi:3000'><b>Sumo Logic</b> for IoT monitoring and dashboards</a><br>
-   <a target='_blank' href='http://raspberrypi:3000'><b>Slack</b> for course updates</a><br>
+   <ul>
+   <li><a target='_blank' href='http://raspberrypi:3000'><b>Login to Amazon Web Services</b></a></li>
+   <li><a target='_blank' href='http://raspberrypi:3000'><b>AWS IoT</b> for controlling your IoT devices</a></li>
+   <li><a target='_blank' href='http://raspberrypi:3000'><b>DynamoDB database</b> for storing sensor data</a></li>
+   <li><a target='_blank' href='http://raspberrypi:3000'><b>Simple Notification Service</b> for email notifications</a></li>
+   <li><a target='_blank' href='http://raspberrypi:3000'><b>Lambda</b> for executing your programs in the cloud</a></li>
+   <li><a target='_blank' href='http://raspberrypi:3000'><b>Sumo Logic</b> for IoT monitoring and dashboards</a></li>
+   <li><a target='_blank' href='http://raspberrypi:3000'><b>Slack</b> for realtime collaboration</a></li>
+   </ul>
    ```
 
 0. TODO: Update /etc/ajenti/config.json, replace "raspberrypi" by hostname
