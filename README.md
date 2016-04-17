@@ -175,6 +175,12 @@ python send_sensor_data.py
 
 0. TODO: Hoiio
 
+0. TODO: Web Terminal vs SSH Command Line
+
+0. TODO: AWS IoT Certs
+
+0. TODO: Sumo Logic vs Elasticsearch/Kibana
+
 
 
 
