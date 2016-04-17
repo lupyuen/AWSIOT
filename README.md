@@ -148,15 +148,14 @@ Login in as root, password admin
 0. Add text widget
    ```
    <b>Amazon Web Services</b><br>
-   <ul>
-   <li><a target='_blank' href='http://raspberrypi:3000'><b>Login to Amazon Web Services</b></a></li>
-   <li><a target='_blank' href='http://raspberrypi:3000'><b>AWS IoT</b> for controlling your IoT devices</a></li>
-   <li><a target='_blank' href='http://raspberrypi:3000'><b>DynamoDB database</b> for storing sensor data</a></li>
-   <li><a target='_blank' href='http://raspberrypi:3000'><b>Simple Notification Service</b> for email notifications</a></li>
-   <li><a target='_blank' href='http://raspberrypi:3000'><b>Lambda</b> for executing your programs in the cloud</a></li>
-   <li><a target='_blank' href='http://raspberrypi:3000'><b>Sumo Logic</b> for IoT monitoring and dashboards</a></li>
-   <li><a target='_blank' href='http://raspberrypi:3000'><b>Slack</b> for realtime collaboration</a></li>
-   </ul>
+   <a target='_blank' href='https://tp-iot.signin.aws.amazon.com/console'><b>Login to Amazon Web Services</b></a><br>
+   <a target='_blank' href='https://us-west-2.console.aws.amazon.com/iot/home?region=us-west-2#/dashboard'><b>AWS IoT</b> for controlling your IoT devices</a><br>
+   <a target='_blank' href='https://us-west-2.console.aws.amazon.com/dynamodb/home?region=us-west-2#tables:'><b>DynamoDB database</b> for storing sensor data</a><br>
+   <a target='_blank' href='https://us-west-2.console.aws.amazon.com/sns/v2/home?region=us-west-2#/topics'><b>Simple Notification Service</b> for email notifications</a><br>
+   <a target='_blank' href='https://us-west-2.console.aws.amazon.com/lambda/home?region=us-west-2#/functions'><b>Lambda</b> for executing your programs in the cloud</a><br>
+   <a target='_blank' href='https://service.sumologic.com/ui/'><b>Sumo Logic</b> for IoT monitoring and dashboards</a><br>
+   <a target='_blank' href='https://tp-iot.slack.com/'><b>Slack</b> for realtime collaboration</a><br>
+   <a target='_blank' href='http://bit.ly/tp-iot'><b>Frequently Asked Questions</b></a><br>
    ```
 
 0. TODO: Update /etc/ajenti/config.json, replace "raspberrypi" by hostname
