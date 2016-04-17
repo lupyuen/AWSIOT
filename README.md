@@ -148,15 +148,32 @@ Login in as root, password admin
 
 0. Add text widget
    ```
+   
    <b>Amazon Web Services</b><br>
+   <a target='_blank' href='https://tp-iot.signin.aws.amazon.com/console'><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i class="fa fa-unlock-alt fa-stack-1x fa-inverse"></i></span></a>
    <a target='_blank' href='https://tp-iot.signin.aws.amazon.com/console'><b>Login to Amazon Web Services</b></a><br>
+   
+   <a target='_blank' href='https://us-west-2.console.aws.amazon.com/iot/home?region=us-west-2#/dashboard'><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i class="fa fa-unlock-alt fa-stack-1x fa-inverse"></i></span></a>
    <a target='_blank' href='https://us-west-2.console.aws.amazon.com/iot/home?region=us-west-2#/dashboard'><b>AWS IoT</b> for controlling your IoT devices</a><br>
-   <a target='_blank' href='https://us-west-2.console.aws.amazon.com/dynamodb/home?region=us-west-2#tables:'><b>DynamoDB database</b> for storing sensor data</a><br>
-   <a target='_blank' href='https://us-west-2.console.aws.amazon.com/sns/v2/home?region=us-west-2#/topics'><b>Simple Notification Service</b> for email notifications</a><br>
+
+   <a target='_blank' href='https://us-west-2.console.aws.amazon.com/sns/v2/home?region=us-west-2#/topics'><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i class="fa fa-unlock-alt fa-stack-1x fa-inverse"></i></span></a>
+      <a target='_blank' href='https://us-west-2.console.aws.amazon.com/sns/v2/home?region=us-west-2#/topics'><b>Simple Notification Service</b> for email alerts</a><br>
+   
+   <a target='_blank' href='https://us-west-2.console.aws.amazon.com/dynamodb/home?region=us-west-2#tables:'><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i class="fa fa-list-alt fa-stack-1x fa-inverse"></i></span></a>
+      <a target='_blank' href='https://us-west-2.console.aws.amazon.com/dynamodb/home?region=us-west-2#tables:'><b>DynamoDB database</b> for storing sensor data</a><br>
+   
+   <a target='_blank' href='https://us-west-2.console.aws.amazon.com/lambda/home?region=us-west-2#/functions'><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i class="fa fa-unlock-alt fa-stack-1x fa-inverse"></i></span></a>
    <a target='_blank' href='https://us-west-2.console.aws.amazon.com/lambda/home?region=us-west-2#/functions'><b>Lambda</b> for executing your programs in the cloud</a><br>
+   
+   <a target='_blank' href='https://service.sumologic.com/ui/'><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i class="fa fa-bar-chart fa-stack-1x fa-inverse"></i></span></a>
    <a target='_blank' href='https://service.sumologic.com/ui/'><b>Sumo Logic</b> for IoT monitoring and dashboards</a><br>
+   
+   <a target='_blank' href='https://tp-iot.slack.com/'><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i class="fa fa-unlock-alt fa-stack-1x fa-inverse"></i></span></a>
    <a target='_blank' href='https://tp-iot.slack.com/'><b>Slack</b> for realtime collaboration</a><br>
+   
+   <a target='_blank' href='http://bit.ly/tp-iot'><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i class="fa fa-unlock-alt fa-stack-1x fa-inverse"></i></span></a>
    <a target='_blank' href='http://bit.ly/tp-iot'><b>Frequently Asked Questions</b></a><br>
+   
    ```
 
 0. TODO: Update /etc/ajenti/config.json, replace "raspberrypi" by hostname
