@@ -28,8 +28,11 @@ Preparing the SD Card for Raspberry Pi 2 and 3:
 
 0. Get the Raspberry Pi console cable: https://learn.adafruit.com/adafruits-raspberry-pi-lesson-5-using-a-console-cable?view=all
 
-0. Connect as follows: Edge with SDCard / Empty / Empty / Black / White / Green
+0. Connect as follows: 
+```
+Edge with SDCard / Empty / Empty / Black / White / Green
 Gnd / Tx / Rx
+```
 Do not connect Red because we are using external power
 
 0. Install the driver from http://www.prolific.com.tw/US/ShowProduct.aspx?p_id=229&pcid=41
@@ -52,12 +55,15 @@ python3 grove_buzzer.py
 ```
 
 0. Check that Python supports TLS.  Otherwise MQTT requests to AWS IoT will fail.
+```
 python3
 import ssl
 ssl.OPENSSL_VERSION
+```
 Ensure that version >=1.0.1
 
 0. Set the system default to python3.4 instead of python2.x.  Python 2.x does not support TLS.
+```
 vi ~/.bash_aliases
 Change to
 # Some more alias to avoid making mistakes:
@@ -67,11 +73,15 @@ alias mv='mv -i'
 
 # For TP IoT: Alias python to python3 because python2 doesn't support TLS needed for AWS IoT.
 alias python=python3
+```
 
 0. Install paho, the MQTT library for Python
+```
 sudo pip install paho-mqtt
+```
 
 0. Remove unnecessary packages so we can clone the NOOBS image easily:
+```
 rm -rf ~/Documents/*
 rm -rf ~/python_games/
 rm -rf ~/GrovePi/Firmware
@@ -83,11 +93,14 @@ sudo apt-get purge sonic-pi
 sudo apt-get purge scratch
 sudo apt-get purge nuscratch
 sudo apt-get autoremove
+```
 
 0. Update the installed packages:
+```
 sudo apt-get update
 sudo apt-get upgrade
 sudo reboot now
+```
 
 0. Install common tools
 sudo apt-get install telnet
