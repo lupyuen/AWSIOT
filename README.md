@@ -304,13 +304,12 @@ wins support = yes
    ```
    Add:
    ```
-   valid users = pi
-   
 [pihome]
    comment= Pi Home
    path=/home/pi
    browseable=Yes
    writeable=Yes
+   valid users = pi
    only guest=no
    create mask=0777
    directory mask=0777
