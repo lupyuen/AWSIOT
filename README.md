@@ -161,7 +161,7 @@ Login in as root, password admin
    
    <a target='_blank' href='https://us-west-2.console.aws.amazon.com/iot/home?region=us-west-2#/dashboard'><span 
       class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i 
-      class="fa fa-cubes fa-stack-1x fa-inverse"
+      class="fa fa-cube fa-stack-1x fa-inverse"
       title="AWS IoT"></i></span></a>
    <a target='_blank' 
    href='https://us-west-2.console.aws.amazon.com/iot/home?region=us-west-2#/dashboard'
