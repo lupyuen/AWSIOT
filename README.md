@@ -32,7 +32,6 @@ Node.js and Python scripts for AWS IoT, used in Temasek Polytechnic Smart IoT Ap
    
    | Edge with SDCard | Empty | Empty | Black | White | Green |
    | --- | --- | --- | --- | --- | --- |
-
    | |  |  |  (Gnd) |  (Tx) |  (Rx) |
 
 
