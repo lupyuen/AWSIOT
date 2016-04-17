@@ -20,11 +20,11 @@ Node.js and Python scripts for AWS IoT, used in Temasek Polytechnic Smart IoT Ap
 
 ## Preparing the SD Card for Raspberry Pi 2 and 3:
 
-0. Full version of Raspbian Jessie: https://www.raspberrypi.org/downloads/raspbian/
+0. Download full version of Raspbian Jessie: https://www.raspberrypi.org/downloads/raspbian/
 
-0. Full version of Noobs: https://www.raspberrypi.org/downloads/noobs/
+0. Download full version of Noobs: https://www.raspberrypi.org/downloads/noobs/
 
-0. Burn the image to SD card: https://www.raspberrypi.org/documentation/installation/installing-images/README.md
+0. Burn the Rasbian image to SD card: https://www.raspberrypi.org/documentation/installation/installing-images/README.md
 
 0. Get the Raspberry Pi console cable: https://learn.adafruit.com/adafruits-raspberry-pi-lesson-5-using-a-console-cable?view=all
 
@@ -36,7 +36,7 @@ Node.js and Python scripts for AWS IoT, used in Temasek Polytechnic Smart IoT Ap
 
 0. Do not connect Red because we are using external power
 
-0. Install the driver from http://www.prolific.com.tw/US/ShowProduct.aspx?p_id=229&pcid=41
+0. Install the console cable driver from http://www.prolific.com.tw/US/ShowProduct.aspx?p_id=229&pcid=41
 
 0. Attach the GrovePi+ Shield and sensors: http://www.seeedstudio.com/depot/GrovePi-Starter-Kit-for-Raspberry-Pi-ABB23-CE-certified-p-2572.html?cPath=122_154_151
 
@@ -167,6 +167,8 @@ python send_sensor_data.py
    You should see ???
 
 0. TODO: Encrypt wifi password
+
+0. TODO: Setup AWS menubar
 
 0. TODO: Sumo Logic 
 
