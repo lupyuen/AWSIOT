@@ -32,8 +32,7 @@ Preparing the SD Card for Raspberry Pi 2 and 3:
 ```
 Edge with SDCard / Empty / Empty / Black / White / Green
 Gnd / Tx / Rx
-```
-Do not connect Red because we are using external power
+```Do not connect Red because we are using external power
 
 0. Install the driver from http://www.prolific.com.tw/US/ShowProduct.aspx?p_id=229&pcid=41
 
@@ -59,8 +58,7 @@ python3 grove_buzzer.py
 python3
 import ssl
 ssl.OPENSSL_VERSION
-```
-Ensure that version >=1.0.1
+```Ensure that version >=1.0.1
 
 0. Set the system default to python3.4 instead of python2.x.  Python 2.x does not support TLS.
 ```
@@ -77,7 +75,7 @@ alias python=python3
 
 0. Install paho, the MQTT library for Python
 ```
-sudo pip install paho-mqtt
+sudo pip3 install paho-mqtt
 ```
 
 0. Remove unnecessary packages so we can clone the NOOBS image easily:
@@ -103,18 +101,22 @@ sudo reboot now
 ```
 
 0. Install common tools
+```
 sudo apt-get install telnet
 sudo apt-get install npm
 sudo npm config -g set python /usr/bin/python2.7
 sudo ln -s /opt/node-v5.10.1-linux-armv7l/lib/node_modules/npm/bin/npm-cli.js /usr/bin/npm
+```
 
 0. Install latest Node.js from https://nodejs.org/en/download/stable/ (ARMv7)
+```
 wget https://nodejs.org/dist/v5.10.1/node-v5.10.1-linux-armv7l.tar.xz
 tar -xvf node-v5.10.1-linux-armv7l.tar.xz
 sudo cp -r node-v5.10.1-linux-armv7l /optsudo mv /usr/bin/nodejs /usr/bin/nodejs.v0.10.29
 sudo rm /usr/bin/node
 sudo ln -s /opt/node-v5.10.1-linux-armv7l/bin/node /usr/bin/node
 sudo ln -s /opt/node-v5.10.1-linux-armv7l/bin/node /usr/bin/nodejs
+```
 
 0. Install Ajenti: http://support.ajenti.org/topics/1116-installing-on-debian/
 sudo bash
