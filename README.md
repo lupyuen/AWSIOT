@@ -58,7 +58,9 @@ python3 grove_buzzer.py
 python3
 import ssl
 ssl.OPENSSL_VERSION
-``` Ensure that version >=1.0.1
+``` 
+
+0. Ensure that version >=1.0.1
 
 0. Set the system default to python3.4 instead of python2.x.  Python 2.x does not support TLS.
 ```
@@ -124,8 +126,10 @@ sudo bash
 wget -O- https://raw.github.com/ajenti/ajenti/1.x/scripts/install-debian.sh | sh
 exit
 sudo service ajenti restart
-``` Browse to
-http://raspberrypi:8000/
+``` 
+
+0. Browse to
+http://raspberrypi:8000/.
 Login in as root, password admin
 
 0. Add text widget
