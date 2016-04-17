@@ -149,7 +149,7 @@ Login in as root, password admin
 0. Add text widget for AWS:
    ```
    
-   <b>Amazon Web Services</b><br>
+   <b>Amazon Web Services and common links</b><br>
    <a target='_blank' href='https://tp-iot.signin.aws.amazon.com/console'><span 
       class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i 
       class="fa fa-unlock-alt fa-stack-1x fa-inverse"></i></span></a>
@@ -162,7 +162,7 @@ Login in as root, password admin
 
    <a target='_blank' href='https://us-west-2.console.aws.amazon.com/sns/v2/home?region=us-west-2#/topics'><span 
       class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i 
-      class="fa fa-unlock-alt fa-stack-1x fa-inverse"></i></span></a>
+      class="fa fa-envelope fa-stack-1x fa-inverse"></i></span></a>
    <a target='_blank' href='https://us-west-2.console.aws.amazon.com/sns/v2/home?region=us-west-2#/topics'><b>Simple Notification Service</b> for email alerts</a><br>
    
    <a target='_blank' href='https://us-west-2.console.aws.amazon.com/dynamodb/home?region=us-west-2#tables:'><span 
@@ -172,7 +172,8 @@ Login in as root, password admin
    
    <a target='_blank' href='https://us-west-2.console.aws.amazon.com/lambda/home?region=us-west-2#/functions'><span 
       class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i 
-      class="fa fa-unlock-alt fa-stack-1x fa-inverse"></i></span></a>
+      class="fa fa-cloud fa-stack-1x fa-inverse"></i><i 
+      class="fa fa-cogs fa-stack-1x"></i></span></a>
    <a target='_blank' href='https://us-west-2.console.aws.amazon.com/lambda/home?region=us-west-2#/functions'><b>Lambda</b> for executing your programs in the cloud</a><br>
    
    <a target='_blank' href='https://service.sumologic.com/ui/'><span 
