@@ -97,11 +97,11 @@ sudo bash
 wget -O- https://raw.github.com/ajenti/ajenti/1.x/scripts/install-debian.sh | sh
 exit
 sudo service ajenti restart
-http://RASPBERRY_PI_NAME:8000/
+http://raspberrypi:8000/
 Login in as root, password admin
 
 0. Add text widget
-<a href='http://raspberrypi:3000'>Open Terminal</a>
+<a target='_blank' href='http://raspberrypi:3000'>Open Terminal</a>
 
 0. Update /etc/ajenti/config.json, replace "raspberrypi" by hostname
 
