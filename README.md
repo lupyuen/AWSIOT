@@ -44,9 +44,9 @@ Preparing the SD Card for Raspberry Pi 2 and 3:
 0. Click Menu -> Preferences -> Raspberry Pi Configuration.  Click Interfaces. Enable SSH, SPI, I2C and Serial.  Reboot.
 
 0. Download the GrovePi+ software:
-```
+   ```
 sudo git clone https://github.com/DexterInd/GrovePi.git
-```
+   ```
 
 0. Run GrovePi/Script/grovepi_python3_install.sh after setting execute access right on the file. Reboot.  (Note: Don't use install.sh because it caused my Raspberry Pi 3 to boot with a black screen.)
 
