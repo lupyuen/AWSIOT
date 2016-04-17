@@ -35,7 +35,7 @@ Node.js and Python scripts for AWS IoT, used in Temasek Polytechnic Smart IoT Ap
    | |  |  |  (Gnd) |  (Tx) |  (Rx) |
 
 
-0. Do not connect Red because we are using external power
+   Do not connect Red cable because we are using external power
 
 0. Install the console cable driver from http://www.prolific.com.tw/US/ShowProduct.aspx?p_id=229&pcid=41
 
