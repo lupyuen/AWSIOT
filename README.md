@@ -30,10 +30,10 @@ Node.js and Python scripts for AWS IoT, used in Temasek Polytechnic Smart IoT Ap
 
 0. Connect as follows: 
 
-Markdown | Less | Pretty
---- | --- | ---
-*Still* | `renders` | **nicely**
-1 | 2 | 3
+   Markdown | Less | Pretty
+   --- | --- | ---
+   *Still* | `renders` | **nicely**
+   1 | 2 | 3
    
    
    | --- | --- | --- | --- | --- | --- |
