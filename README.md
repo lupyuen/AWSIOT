@@ -67,7 +67,11 @@ dwc_otg.lpm_enable=0 console=tty1 console=serial0,115200 root=/dev/mmcblk0p2 roo
 
 0. Connect a USB keyboard, mouse and HDMI monitor. Boot and connect to wifi. 
 
-0. Alternatively, boot with console cable and connect to wifi manually:
+0. Alternatively, boot with console cable, open a serial port connection from your Mac (or PC):
+   ```
+   screen /dev/tty.usbserial 115200
+   ```
+   And connect to wifi manually:
    ```
 sudo vi /etc/wpa_supplicant/wpa_supplicant.conf
    ```
