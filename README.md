@@ -439,7 +439,6 @@ network={
       group=CCMP TKIP
       eap=PEAP
       identity="YOUR_USERID"
-      password="YOUR_PASSWORD"
       password=hash:YOUR_HASHED_PASSWORD
       phase2="MSCHAPV2"
 }
