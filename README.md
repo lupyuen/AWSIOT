@@ -490,8 +490,9 @@ wlan0: CTRL-EVENT-CONNECTED - Connection to 00:1a:1e:a0:9e:80 completed [id=1 id
 
 0. TODO: Setup AWS menubar
 
-## Integrate with Sumo Logic 
+## Send Raspberry Pi logs to Sumo Logic 
 
+0. In Sumo Logic, click Manage --> Setup Wizard --> Set Up Streaming Data --> All Other Sources --> Syslog --> New Collector
 0. Install syslog-ng
    ```
    sudo apt-get install syslog-ng
@@ -503,7 +504,11 @@ wlan0: CTRL-EVENT-CONNECTED - Connection to 00:1a:1e:a0:9e:80 completed [id=1 id
 destination remote_log_server {
  udp("54.169.166.79" port(514));
  };
- log { source(src); destination(remote_log_server); };
+ log { source(s_src); destination(remote_log_server); };
+   ```
+   Restart syslog-ng:
+   ```
+   sudo service syslog-ng restart
    ```
 
 0. TODO: Hoiio
