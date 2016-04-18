@@ -394,9 +394,25 @@ sudo service smbd restart
 
    Check WPA support:
    ```
+sudo cp /etc/network/interfaces /etc/network/interfaces.old
 sudo vi /etc/network/interfaces
    ```
-   Should contain:
+   Change
+   ```
+auto lo
+iface lo inet loopback
+
+iface eth0 inet manual
+
+allow-hotplug wlan0
+iface wlan0 inet manual
+    wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+
+allow-hotplug wlan1
+iface wlan1 inet manual
+    wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+   ```
+   to
    ```
 auto lo
 
@@ -415,22 +431,6 @@ sudo vi /etc/wpa_supplicant/wpa_supplicant.conf
    ```
    Add to file:
    ```
-ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
-update_config=1
-
-network={
-      ssid="YOUR_SSID"
-      key_mgmt=WPA-EAP
-      eap=PEAP
-      identity="YOUR_USERID"
-      password="YOUR_PASSWORD"
-      ca_cert="/etc/cert/??-radius01.??.???.??.pem"
-      ca_cert="/etc/cert/entrust-ev.pem"
-      ca_cert="/etc/cert/entrust-l1k.pem"
-      ca_cert="/etc/cert/??-ca.pem"
-      phase1="peapver=0"
-      phase2="auth=MSCHAPV2"
-}
 network={
       ssid="YOUR_SSID"
       scan_ssid=1
@@ -452,9 +452,41 @@ network={
 echo -n mypasswordwithescapedspecialcharacters | iconv -t utf-16le | openssl md4
    ```
 
-   Check for errors:
+   Restart network and check for errors:
    ```
-cat /var/log/wpa_supplicant.log
+   sudo reboot
+   cat /var/log/wpa_supplicant.log
+   ```
+   You should see:
+   ```
+   Successfully initialized wpa_supplicant
+wlan0: Trying to associate with 00:1a:1e:a0:9e:c0 (SSID='???' freq=2462 MHz)
+wlan0: Association request to the driver failed
+wlan0: Associated with 00:1a:1e:a0:9e:c0
+wlan0: CTRL-EVENT-EAP-STARTED EAP authentication started
+wlan0: CTRL-EVENT-EAP-PROPOSED-METHOD vendor=0 method=25
+wlan0: CTRL-EVENT-EAP-METHOD EAP vendor 0 method 25 (PEAP) selected
+wlan0: CTRL-EVENT-EAP-PEER-CERT depth=3 subject='/C=US/O=Entrust, Inc./OU=www.entrust.net/CPS is incorporated by reference/OU=(c) 2006 Entrust, Inc./CN=Entrust Root Certification Authority'
+wlan0: CTRL-EVENT-EAP-PEER-CERT depth=3 subject='/C=US/O=Entrust, Inc./OU=www.entrust.net/CPS is incorporated by reference/OU=(c) 2006 Entrust, Inc./CN=Entrust Root Certification Authority'
+wlan0: CTRL-EVENT-EAP-PEER-CERT depth=2 subject='/C=US/O=Entrust, Inc./OU=See www.entrust.net/legal-terms/OU=(c) 2009 Entrust, Inc. - for authorized use only/CN=Entrust Root Certification Authority - G2'
+wlan0: CTRL-EVENT-EAP-PEER-CERT depth=1 subject='/C=US/O=Entrust, Inc./OU=See www.entrust.net/legal-terms/OU=(c) 2012 Entrust, Inc. - for authorized use only/CN=Entrust Certification Authority - L1K'
+wlan0: CTRL-EVENT-EAP-PEER-CERT depth=0 subject='/C=??/ST=???/L=???/O=???/CN=??-radius01.??.???.??'
+EAP-MSCHAPV2: Authentication succeeded
+EAP-TLV: TLV Result - Success - EAP-TLV/Phase2 Completed
+wlan0: CTRL-EVENT-EAP-SUCCESS EAP authentication completed successfully
+wlan0: WPA: Key negotiation completed with 00:1a:1e:a0:9e:c0 [PTK=CCMP GTK=TKIP]
+wlan0: CTRL-EVENT-CONNECTED - Connection to 00:1a:1e:a0:9e:c0 completed [id=1 id_str=]
+wlan0: CTRL-EVENT-DISCONNECTED bssid=00:1a:1e:a0:9e:c0 reason=0
+wlan0: Trying to associate with 00:1a:1e:a0:9e:80 (SSID='???' freq=2462 MHz)
+wlan0: Association request to the driver failed
+wlan0: Associated with 00:1a:1e:a0:9e:80
+wlan0: CTRL-EVENT-EAP-STARTED EAP authentication started
+wlan0: CTRL-EVENT-EAP-PROPOSED-METHOD vendor=0 method=25
+wlan0: CTRL-EVENT-EAP-METHOD EAP vendor 0 method 25 (PEAP) selected
+EAP-TLV: TLV Result - Success - EAP-TLV/Phase2 Completed
+wlan0: CTRL-EVENT-EAP-SUCCESS EAP authentication completed successfully
+wlan0: WPA: Key negotiation completed with 00:1a:1e:a0:9e:80 [PTK=CCMP GTK=TKIP]
+wlan0: CTRL-EVENT-CONNECTED - Connection to 00:1a:1e:a0:9e:80 completed [id=1 id_str=]
    ```
 
 0. TODO: Setup AWS menubar
