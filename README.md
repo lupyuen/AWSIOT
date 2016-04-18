@@ -490,7 +490,21 @@ wlan0: CTRL-EVENT-CONNECTED - Connection to 00:1a:1e:a0:9e:80 completed [id=1 id
 
 0. TODO: Setup AWS menubar
 
-0. TODO: Sumo Logic 
+## Integrate with Sumo Logic 
+
+0. Install syslog-ng
+   ```
+   sudo apt-get install syslog-ng
+   sudo vi /etc/syslog-ng/syslog-ng.conf
+   ```
+   Add Sumo Logic as a log destination:
+   ```
+   ##  Send logs to Sumo Logic log collector.
+destination remote_log_server {
+ udp("54.169.166.79" port(514));
+ };
+ log { source(src); destination(remote_log_server); };
+   ```
 
 0. TODO: Hoiio
 
