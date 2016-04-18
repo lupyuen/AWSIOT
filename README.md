@@ -388,7 +388,74 @@ sudo service smbd restart
    Must use "force user = root".
    Must use “valid users = pi".
 
-0. TODO: Encrypt wifi password
+## Encrypt wifi password and connect to WPA2 Enterprise network
+
+0. See https://www.raspberrypi.org/forums/viewtopic.php?f=36&t=44029
+
+   Check WPA support:
+   ```
+sudo vi /etc/network/interfaces
+   ```
+   Should contain:
+   ```
+auto lo
+
+iface lo inet loopback
+iface eth0 inet dhcp
+
+allow-hotplug wlan0
+
+iface wlan0 inet dhcp
+        pre-up wpa_supplicant -B -Dwext -i wlan0 -c/etc/wpa_supplicant/wpa_supplicant.conf -f /var/log/wpa_supplicant.log
+        post-down killall -q wpa_supplicant
+   ```
+   Add WPA2 Enterprise network:
+   ```
+sudo vi /etc/wpa_supplicant/wpa_supplicant.conf
+   ```
+   Add to file:
+   ```
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+
+network={
+      ssid="YOUR_SSID"
+      key_mgmt=WPA-EAP
+      eap=PEAP
+      identity="YOUR_USERID"
+      password="YOUR_PASSWORD"
+      ca_cert="/etc/cert/??-radius01.??.???.??.pem"
+      ca_cert="/etc/cert/entrust-ev.pem"
+      ca_cert="/etc/cert/entrust-l1k.pem"
+      ca_cert="/etc/cert/??-ca.pem"
+      phase1="peapver=0"
+      phase2="auth=MSCHAPV2"
+}
+network={
+      ssid="YOUR_SSID"
+      scan_ssid=1
+      key_mgmt=WPA-EAP
+      pairwise=CCMP TKIP
+      group=CCMP TKIP
+      eap=PEAP
+      identity="YOUR_USERID"
+      password="YOUR_PASSWORD"
+      password=hash:YOUR_HASHED_PASSWORD
+      phase2="MSCHAPV2"
+}
+   ```
+
+   For hashing of password: https://bbs.archlinux.org/viewtopic.php?id=144471
+   
+   YOUR_HASHED_PASSWORD is the result of
+   ```
+echo -n mypasswordwithescapedspecialcharacters | iconv -t utf-16le | openssl md4
+   ```
+
+   Check for errors:
+   ```
+cat /var/log/wpa_supplicant.log
+   ```
 
 0. TODO: Setup AWS menubar
 
