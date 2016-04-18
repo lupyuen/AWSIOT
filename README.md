@@ -514,6 +514,15 @@ destination remote_log_server {
    sudo service syslog-ng restart
    ```
 
+## Update AWS DNS when local IP address changes
+
+0. Install AWS Command Line tool
+   ```
+   sudo apt-get install awscli
+   aws configure
+   ```
+   Enter AWS access key and secret key
+
 0. TODO: Hoiio
 
 0. TODO: Web Terminal vs SSH Command Line
