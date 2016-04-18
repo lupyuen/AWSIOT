@@ -493,7 +493,10 @@ wlan0: CTRL-EVENT-CONNECTED - Connection to 00:1a:1e:a0:9e:80 completed [id=1 id
 ## Send Raspberry Pi logs to Sumo Logic 
 
 0. In Sumo Logic, click Manage --> Setup Wizard --> Set Up Streaming Data --> All Other Sources --> Syslog --> New Collector
-0. Install syslog-ng
+
+0. Install collector a EC2 Ubuntu machine (LogServer)
+
+0. On Raspeberry Pi, install syslog-ng
    ```
    sudo apt-get install syslog-ng
    sudo vi /etc/syslog-ng/syslog-ng.conf
