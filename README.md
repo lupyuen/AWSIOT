@@ -493,7 +493,9 @@ sudo cp -r node_modules /opt/tty.js
 
 0. Install the service:
    ```
-   insserv tty.js
+   sudo insserv tty.js
+   sudo service tty.js start
+   sudo service tty.js status
    ```
 
 ## Send Raspberry Pi logs to Sumo Logic 
