@@ -1,5 +1,5 @@
 //  This AWS Lambda function accepts a JSON input of sensor values and sends them to AWS Elasticache
-//  seach engine for indexing.  It also sends to AWS CloudWatch and posts a message to Slack.  The input looks like:
+//  search engine for indexing.  It also sends to AWS CloudWatch and posts a message to Slack.  The input looks like:
 //  {"temperature":84,"timestampText":"2015-10-11T09:18:51.604Z","version":139,
 //  "xTopic":"$aws/things/g0_temperature_sensor/shadow/update/accepted","xClientToken":"myAwsClientId-0"}
 //  Make sure the role executing this Lambda function has CloudWatch PutMetricData and PutMetricAlarm permissions.
@@ -7,8 +7,12 @@
 //  List of device names and the replacement Slack channels for the device.
 //  Used if the channel name is already taken up.  Sync this with ActuateDeviceFromSlack and SetDesiredState.
 replaceSlackChannels = {
+    "g16-pi": "g16",
+    "g16b-pi": "g16",
+    "g29": "g29a",
     "g88": "g88a",
-    "g29": "g29a"
+    "g28_pi":"g28",
+    "g28-pi":"g28"
 }
 
 var https = require('https');
@@ -18,8 +22,7 @@ var crypto = require('crypto');
 //  Init the AWS connection.
 var AWS = require('aws-sdk');
 AWS.config.region = 'us-west-2';
-AWS.config.sslEnabled = false;
-AWS.config.logger = process.stdout;  //  Debug
+//AWS.config.logger = process.stdout;  //  Debug
 var cloudwatch = new AWS.CloudWatch();
 
 var endpoint = 'search-iot-74g6su3n4aupthnnhffmvewv2a.us-west-2.es.amazonaws.com';
@@ -102,8 +105,8 @@ exports.handler = function(input, context) {
     // post documents to Amazon Elasticsearch
     post(elasticsearchBulkData, function(error, success, statusCode, failedItems) {
         console.log('SendSensorData Response: ' + JSON.stringify({
-            "statusCode": statusCode
-        }));
+                "statusCode": statusCode
+            }));
 
         if (error) {
             console.log('SendSensorData Error: ' + JSON.stringify(success, null, 2));
@@ -130,10 +133,10 @@ function writeMetricToCloudWatch(device, metric, value) {
     try {
         var params = {
             MetricData: [{
-              MetricName: metric,
-              Timestamp: new Date(),
-              Unit: 'None',
-              Value: value
+                MetricName: metric,
+                Timestamp: new Date(),
+                Unit: 'None',
+                Value: value
             }],
             Namespace: device
         };
@@ -182,9 +185,9 @@ function transform(payload) {
         action.index._id = logEvent.id;
 
         bulkRequestBody += [
-            JSON.stringify(action),
-            JSON.stringify(source),
-        ].join('\n') + '\n';
+                JSON.stringify(action),
+                JSON.stringify(source),
+            ].join('\n') + '\n';
     });
     return bulkRequestBody;
 }
@@ -464,7 +467,7 @@ function postSensorDataToSlack(device, sensorData, callback) {
     //  Combine the less important fields.
     var otherFields = "";
     if (sensorData2.timestampText) {
-        otherFields = sensorData2.timestampText.substr(0, 19);
+        otherFields = otherFields + " - " + sensorData2.timestampText.substr(0, 19);
         delete sensorData2.timestampText;
     }
     if (sensorData2.xTopic) {
@@ -518,7 +521,9 @@ function postToSlack(device, textOrAttachments, callback) {
     var pos = device.indexOf("_");
     if (pos > 0)
         channel = device.substring(0, pos);
-    if (replaceSlackChannels[channel])
+    if (replaceSlackChannels[device])
+        channel = replaceSlackChannels[device];
+    else if (replaceSlackChannels[channel])
         channel = replaceSlackChannels[channel];
     var body = {
         channel: "#" + channel,
@@ -529,13 +534,13 @@ function postToSlack(device, textOrAttachments, callback) {
     else
         body.attachments = textOrAttachments;
 
-	var options = {
-		hostname: "hooks.slack.com",
+    var options = {
+        hostname: "hooks.slack.com",
         path: "/services/T09SXGWKG/B0EM7LDD3/o7BGhWDlrqVtnMlbdSkqisoS",
         //path: '/services/T09SXGWKG/B0CQ23S3V/yT89hje6TP6r81xX91GJOx9Y',
-		method: 'POST'
-	};
-	console.log("Slack request =", JSON.stringify(body));
+        method: 'POST'
+    };
+    console.log("Slack request =", JSON.stringify(body));
     var req = https.request(options, function(res) {
         var body = '';
         //console.log('Status:', res.statusCode);
