@@ -173,126 +173,6 @@ sudo ln -s /opt/node-v5.10.1-linux-armv7l/bin/node /usr/bin/nodejs
 sudo ln -s /opt/node-v5.10.1-linux-armv7l/lib/node_modules/npm/bin/npm-cli.js /usr/bin/npm
    ```
 
-0. Install Ajenti: http://support.ajenti.org/topics/1116-installing-on-debian/
-   ```
-sudo bash
-wget -O- https://raw.github.com/ajenti/ajenti/1.x/scripts/install-debian.sh | sh
-exit
-sudo service ajenti restart
-   ``` 
-
-0. Update Ajenti config to start at port 80 instead of 8080.  Edit /etc/ajenti/config.json.  Change
-   ```
-   "port": 8000
-   ```
-   to
-   ```
-   "port": 80
-   ```
-
-0. Browse to
-http://raspberrypi/.
-Login in as root, password admin
-Change the user authentication to sync with local users.  Ensure pi has all permissions.
-Log out and log in as pi, password raspberry.
-
-0. Copy index.html and auth.html from https://github.com/lupyuen/RaspberryPiImage/tree/master/usr/share/pyshared/ajenti/plugins/main/content/static to /usr/share/pyshared/ajenti/plugins/main/content/static.  This enables Font Awesome to support icons in the text widget, and hides the SSL warning messages.
-
-0. Add text widget for tty.js web terminal:
-   ```
-   <b>Welcome to the Ajenti Web Console</b><br>
-   For monitoring and controlling your Raspberry Pi<br>
-   <a target='_blank' href='/terminal.html'><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i class="fa fa-terminal fa-stack-1x fa-inverse"></i></span></a>
-   <a target='_blank' href='/terminal.html'>Open Raspberry Pi Web Terminal</a>
-   ```
-
-0. Add text widget for AWS:
-   ```
-   
-   <b>Amazon Web Services and Common Links</b><br>
-   
-   <a target='_blank' href='https://tp-iot.signin.aws.amazon.com/console'><span 
-      class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i 
-      class="fa fa-unlock-alt fa-stack-1x fa-inverse"
-      title="Login to AWS"></i></span></a>
-   <a target='_blank' 
-   href='https://tp-iot.signin.aws.amazon.com/console'
-   ><b>Login to Amazon Web Services</b></a> <br>
-   
-   <a target='_blank' href='https://us-west-2.console.aws.amazon.com/iot/home?region=us-west-2#/dashboard'><span 
-      class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i 
-      class="fa fa-cube fa-stack-1x fa-inverse"
-      title="AWS IoT"></i></span></a>
-   <a target='_blank' 
-   href='https://us-west-2.console.aws.amazon.com/iot/home?region=us-west-2#/dashboard'
-   ><b>AWS IoT</b> for controlling your IoT devices</a><br>
-   
-   <a target='_blank' href='https://us-west-2.console.aws.amazon.com/sns/v2/home?region=us-west-2#/topics'><span 
-      class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i 
-      class="fa fa-envelope fa-stack-1x fa-inverse"
-      title="Simple Notification Service"></i></span></a>
-   <a target='_blank' 
-   href='https://us-west-2.console.aws.amazon.com/sns/v2/home?region=us-west-2#/topics'
-   ><b>Simple Notification Service</b> for email alerts</a><br>
-   
-   <a target='_blank' href='https://us-west-2.console.aws.amazon.com/dynamodb/home?region=us-west-2#tables:'><span 
-      class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i 
-      class="fa fa-list-alt fa-stack-1x fa-inverse"
-      title="DynamoDB"></i></span></a>
-   <a target='_blank' 
-   href='https://us-west-2.console.aws.amazon.com/dynamodb/home?region=us-west-2#tables:'
-   ><b>DynamoDB database</b> for storing sensor data</a><br>
-   
-   <a target='_blank' href='https://us-west-2.console.aws.amazon.com/lambda/home?region=us-west-2#/functions'><span 
-      class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i 
-      class="fa fa-cogs fa-stack-1x fa-inverse"
-      title="Lambda"></i></span></a>
-   <a target='_blank' 
-   href='https://us-west-2.console.aws.amazon.com/lambda/home?region=us-west-2#/functions'
-   ><b>Lambda</b> for executing your programs in the cloud</a><br>
-   
-   <a target='_blank' href='https://service.sumologic.com/ui/'><span 
-      class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i 
-      class="fa fa-bar-chart fa-stack-1x fa-inverse"
-      title="Sumo Logic"></i></span></a>
-   <a target='_blank' 
-   href='https://service.sumologic.com/ui/'
-   ><b>Sumo Logic</b> for IoT monitoring and dashboards</a><br>
-   
-   <a target='_blank' href='https://tp-iot.slack.com/'><span 
-      class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i 
-      class="fa fa-users fa-stack-1x fa-inverse"
-      title="Slack"></i></span></a>
-   <a target='_blank' 
-   href='https://tp-iot.slack.com/'
-   ><b>Slack</b> for realtime collaboration</a><br>
-   
-   <a target='_blank' href='http://bit.ly/tp-iot'><span 
-      class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i 
-      class="fa fa-life-ring fa-stack-1x fa-inverse"
-      title="FAQ"></i></span></a>
-   <a target='_blank' 
-   href='http://bit.ly/tp-iot'
-   ><b>Frequently Asked Questions</b></a><br>
-
-   ```
-
-0. TODO: Update /etc/ajenti/config.json, replace "raspberrypi" by hostname
-
-0. Install tty.js web terminal: https://github.com/chjj/tty.js/
-   ```
-cd /tmp
-npm install tty.js
-sudo mkdir /opt/tty.js
-sudo cp -r node_modules /opt/tty.js
-cd /opt/tty.js
-sudo node node_modules/tty.js/bin/tty.js --daemonize
-   ```
-
-0. TODO: Pass token from Ajenti to tty.js
-
-0. TODO: Configure tty.js to start automatically.
-
 0. Copy /home/pi/TP-IoT from 
 https://github.com/lupyuen/RaspberryPiImage to /home/pi/TP-IoT on the Raspberry Pi
 
@@ -488,7 +368,133 @@ wlan0: WPA: Key negotiation completed with 00:1a:1e:a0:9e:80 [PTK=CCMP GTK=TKIP]
 wlan0: CTRL-EVENT-CONNECTED - Connection to 00:1a:1e:a0:9e:80 completed [id=1 id_str=]
    ```
 
-0. TODO: Setup AWS menubar
+## Install Ajenti Web Console
+
+0. Install Ajenti: http://support.ajenti.org/topics/1116-installing-on-debian/
+   ```
+sudo bash
+wget -O- https://raw.github.com/ajenti/ajenti/1.x/scripts/install-debian.sh | sh
+exit
+sudo service ajenti restart
+   ``` 
+
+0. Update Ajenti config to start at port 80 instead of 8080.  Edit /etc/ajenti/config.json.  Change
+   ```
+   "port": 8000
+   ```
+   to
+   ```
+   "port": 80
+   ```
+
+0. Browse to
+http://raspberrypi/.
+Login in as root, password admin
+Change the user authentication to sync with local users.  Ensure pi has all permissions.
+Log out and log in as pi, password raspberry.
+
+0. Copy index.html, auth.html, terminal.html from https://github.com/lupyuen/RaspberryPiImage/tree/master/usr/share/pyshared/ajenti/plugins/main/content/static to /usr/lib/pymodules/python2.7/ajenti/plugins/main/content/static and /usr/share/pyshared/ajenti/plugins/main/content/static.  This enables Font Awesome to support icons in the text widget, and hides the SSL warning messages.  Also it allows launching of tty.js as our web terminal.
+
+0. Add text widget for tty.js web terminal:
+   ```
+   <b>Welcome to the Ajenti Web Console</b><br>
+   For monitoring and controlling your Raspberry Pi<br>
+   <a target='_blank' href='/terminal.html'><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i class="fa fa-terminal fa-stack-1x fa-inverse"></i></span></a>
+   <a target='_blank' href='/terminal.html'>Open Raspberry Pi Web Terminal</a>
+   ```
+
+0. Add text widget for AWS:
+   ```
+   
+   <b>Amazon Web Services and Common Links</b><br>
+   
+   <a target='_blank' href='https://tp-iot.signin.aws.amazon.com/console'><span 
+      class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i 
+      class="fa fa-unlock-alt fa-stack-1x fa-inverse"
+      title="Login to AWS"></i></span></a>
+   <a target='_blank' 
+   href='https://tp-iot.signin.aws.amazon.com/console'
+   ><b>Login to Amazon Web Services</b></a> <br>
+   
+   <a target='_blank' href='https://us-west-2.console.aws.amazon.com/iot/home?region=us-west-2#/dashboard'><span 
+      class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i 
+      class="fa fa-cube fa-stack-1x fa-inverse"
+      title="AWS IoT"></i></span></a>
+   <a target='_blank' 
+   href='https://us-west-2.console.aws.amazon.com/iot/home?region=us-west-2#/dashboard'
+   ><b>AWS IoT</b> for controlling your IoT devices</a><br>
+   
+   <a target='_blank' href='https://us-west-2.console.aws.amazon.com/sns/v2/home?region=us-west-2#/topics'><span 
+      class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i 
+      class="fa fa-envelope fa-stack-1x fa-inverse"
+      title="Simple Notification Service"></i></span></a>
+   <a target='_blank' 
+   href='https://us-west-2.console.aws.amazon.com/sns/v2/home?region=us-west-2#/topics'
+   ><b>Simple Notification Service</b> for email alerts</a><br>
+   
+   <a target='_blank' href='https://us-west-2.console.aws.amazon.com/dynamodb/home?region=us-west-2#tables:'><span 
+      class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i 
+      class="fa fa-list-alt fa-stack-1x fa-inverse"
+      title="DynamoDB"></i></span></a>
+   <a target='_blank' 
+   href='https://us-west-2.console.aws.amazon.com/dynamodb/home?region=us-west-2#tables:'
+   ><b>DynamoDB database</b> for storing sensor data</a><br>
+   
+   <a target='_blank' href='https://us-west-2.console.aws.amazon.com/lambda/home?region=us-west-2#/functions'><span 
+      class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i 
+      class="fa fa-cogs fa-stack-1x fa-inverse"
+      title="Lambda"></i></span></a>
+   <a target='_blank' 
+   href='https://us-west-2.console.aws.amazon.com/lambda/home?region=us-west-2#/functions'
+   ><b>Lambda</b> for executing your programs in the cloud</a><br>
+   
+   <a target='_blank' href='https://service.sumologic.com/ui/'><span 
+      class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i 
+      class="fa fa-bar-chart fa-stack-1x fa-inverse"
+      title="Sumo Logic"></i></span></a>
+   <a target='_blank' 
+   href='https://service.sumologic.com/ui/'
+   ><b>Sumo Logic</b> for IoT monitoring and dashboards</a><br>
+   
+   <a target='_blank' href='https://tp-iot.slack.com/'><span 
+      class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i 
+      class="fa fa-users fa-stack-1x fa-inverse"
+      title="Slack"></i></span></a>
+   <a target='_blank' 
+   href='https://tp-iot.slack.com/'
+   ><b>Slack</b> for realtime collaboration</a><br>
+   
+   <a target='_blank' href='http://bit.ly/tp-iot'><span 
+      class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i 
+      class="fa fa-life-ring fa-stack-1x fa-inverse"
+      title="FAQ"></i></span></a>
+   <a target='_blank' 
+   href='http://bit.ly/tp-iot'
+   ><b>Frequently Asked Questions</b></a><br>
+
+   ```
+
+0. TODO: Pass token from Ajenti to tty.js
+
+##  Install tty.js Web Terminal
+
+0. Install tty.js web terminal: https://github.com/chjj/tty.js/
+   ```
+cd /tmp
+npm install tty.js
+sudo mkdir /opt/tty.js
+sudo cp -r node_modules /opt/tty.js
+   ```
+   Add files run.sh, daemon.sh according to 
+   
+0. TODO: Pass token from Ajenti to tty.js
+
+0. Configure tty.js to start automatically.
+   ```
+   insserv tty.js
+   ```
+
+## TODO: Setup AWS menubar
 
 ## Send Raspberry Pi logs to Sumo Logic 
 
@@ -496,7 +502,7 @@ wlan0: CTRL-EVENT-CONNECTED - Connection to 00:1a:1e:a0:9e:80 completed [id=1 id
 
 0. Install collector a EC2 Ubuntu machine (LogServer)
 
-0. On Raspeberry Pi, install syslog-ng
+0. On Raspberry Pi, install syslog-ng
    ```
    sudo apt-get install syslog-ng
    sudo vi /etc/syslog-ng/syslog-ng.conf
