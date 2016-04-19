@@ -474,8 +474,6 @@ Log out and log in as pi, password raspberry.
 
    ```
 
-0. TODO: Pass token from Ajenti to tty.js
-
 ##  Install tty.js Web Terminal
 
 0. Install tty.js web terminal: https://github.com/chjj/tty.js/
@@ -485,16 +483,18 @@ npm install tty.js
 sudo mkdir /opt/tty.js
 sudo cp -r node_modules /opt/tty.js
    ```
-   Add files run.sh, daemon.sh according to 
-   
-0. TODO: Pass token from Ajenti to tty.js
+0. Add files run.sh, daemon.sh from https://github.com/lupyuen/RaspberryPiImage/tree/master/opt/tty.js
 
-0. Configure tty.js to start automatically.
+0. Delete /opt/tty.js/node_modules/tty.js/static/index.html. This file will be rendered after successful token authentication.
+
+0. Copy index.html and tty.js from https://github.com/lupyuen/RaspberryPiImage/tree/master/opt/tty.js/node_modules/tty.js/lib to /opt/tty.js/node_modules/tty.js/lib.  These files implement the token authentication between Ajenti and tty.js.
+   
+0. Configure tty.js as a service that starts automatically.  Copy tty.js from https://github.com/lupyuen/RaspberryPiImage/tree/master/etc/init.d to /etc/init.d.  Ensure it has execute permission.
+
+0. Install the service:
    ```
    insserv tty.js
    ```
-
-## TODO: Setup AWS menubar
 
 ## Send Raspberry Pi logs to Sumo Logic 
 
@@ -538,13 +538,15 @@ destination remote_log_server {
    * * * * * /home/pi/DNS/update_dns.sh & /home/pi/fixpermissions.sh                                                       
    ```
 
-0. TODO: Hoiio
+## TODO: Setup AWS menubar
 
-0. TODO: Web Terminal vs SSH Command Line
+## TODO: Hoiio
 
-0. TODO: AWS IoT Certs
+## TODO: Web Terminal vs SSH Command Line
 
-0. TODO: Sumo Logic vs Elasticsearch/Kibana
+## TODO: AWS IoT Certs
+
+## TODO: Sumo Logic vs Elasticsearch/Kibana
 
 
 
