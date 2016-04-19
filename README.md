@@ -393,7 +393,7 @@ Login in as root, password admin
 Change the user authentication to sync with local users.  Ensure pi has all permissions.
 Log out and log in as pi, password raspberry.
 
-0. Copy index.html, auth.html, terminal.html from https://github.com/lupyuen/RaspberryPiImage/tree/master/usr/lib/pymodules/python2.7/ajenti/plugins/main/content/static to /usr/lib/pymodules/python2.7/ajenti/plugins/main/content/static and /usr/share/pyshared/ajenti/plugins/main/content/static.  This enables Font Awesome to support icons in the text widget, and hides the SSL warning messages.  Also it allows launching of tty.js as our web terminal.
+0. Copy index.html, auth.html, terminal.html from https://github.com/lupyuen/RaspberryPiImage/tree/master/usr/share/pyshared/ajenti/plugins/main to /usr/share/pyshared/ajenti/plugins/main/content/static and /usr/lib/pymodules/python2.7/ajenti/plugins/main/content/static.  This enables Font Awesome to support icons in the text widget, and hides the SSL warning messages.  Also it allows launching of tty.js as our web terminal.
 
 0. Add text widget for tty.js web terminal:
    ```
