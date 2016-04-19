@@ -521,7 +521,16 @@ destination remote_log_server {
    sudo apt-get install awscli
    aws configure
    ```
-   Enter AWS access key and secret key
+   Enter AWS access key and secret key for AWS user update_dns with the permission ???.
+   
+   Add task to crontab:
+   ```
+   crontab -e
+   ```
+   Add:
+   ```
+   * * * * * /home/pi/DNS/update_dns.sh & /home/pi/fixpermissions.sh                                                       
+   ```
 
 0. TODO: Hoiio
 
