@@ -92,6 +92,17 @@ network={
 
 0. Click Menu -> Preferences -> Raspberry Pi Configuration.  Click Interfaces. Enable SSH, SPI, I2C and Serial.  Reboot.
 
+0. Set the locale:
+   ```
+sudo vi /etc/environment
+   ```
+   Set to this:
+   ```
+LC_CTYPE=UTF-8
+LC_ALL=en_SG.UTF-8
+LANG=en_SG.UTF-8
+   ```
+
 0. Download the GrovePi+ software:
    ```
 sudo git clone https://github.com/DexterInd/GrovePi.git
