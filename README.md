@@ -539,6 +539,12 @@ destination remote_log_server {
    ```
    * * * * * /home/pi/DNS/update_dns.sh & /home/pi/fixpermissions.sh                                                       
    ```
+## Enable Bluetooth Support
+
+0. See http://www.techradar.com/sg/how-to/computing/how-to-get-wi-fi-and-bluetooth-working-on-raspberry-pi-3-1316938
+   ```
+   sudo apt-get install bluetooth bluez blueman
+   ```
 
 ## TODO: Setup AWS menubar
 
