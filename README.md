@@ -556,6 +556,8 @@ destination remote_log_server {
    ```
    * * * * * /home/pi/DNS/update_dns.sh & /home/pi/fixpermissions.sh                                                       
    ```
+0. TODO: The IP address update fails if the clock is out of sync: https://victorhurdugaci.com/raspberry-pi-sync-date-and-time
+
 ## Enable Bluetooth Support
 
 0. See http://www.techradar.com/sg/how-to/computing/how-to-get-wi-fi-and-bluetooth-working-on-raspberry-pi-3-1316938
