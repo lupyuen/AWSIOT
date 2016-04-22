@@ -98,10 +98,16 @@ sudo vi /etc/environment
    ```
    Set to this:
    ```
-LC_CTYPE=UTF-8
+LC_CTYPE=en_SG.UTF-8
 LC_ALL=en_SG.UTF-8
 LANG=en_SG.UTF-8
    ```
+   Generate the locale files:
+   ```
+sudo dpkg-reconfigure locales
+   ```
+   Select "en_SG.UTF-8 UTF-8".
+   Set default locale for system environment to "en_SG.UTF-8".
 
 0. Download the GrovePi+ software:
    ```
