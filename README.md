@@ -557,6 +557,10 @@ destination remote_log_server {
    * * * * * /home/pi/DNS/update_dns.sh & /home/pi/fixpermissions.sh                                                       
    ```
 0. TODO: The IP address update fails if the clock is out of sync: https://victorhurdugaci.com/raspberry-pi-sync-date-and-time
+   ```
+pi@g88pi:~ $ DNS/update_dns.sh
+A client error (RequestExpired) occurred when calling the ChangeResourceRecordSets operation: Request timestamp: Wed, 20 Apr 2016 10:05:00 GMT expired.  It must be within 300 secs/ of server time.
+   ```
 
 ## Enable Bluetooth Support
 
