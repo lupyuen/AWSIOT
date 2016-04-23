@@ -238,12 +238,12 @@ sudo make install
 
 0. Automatically start pigpiod background process during boot time
    ```
-   sudo crontab -e
+   crontab -e
    ```
    Add these lines:
    ```
 # At every reboot, start the pigpiod backgroud process needed for accessing the DHT22 temperature+humidity sensor.
-@reboot pigpiod
+@reboot sudo pigpiod
    ```
    
 0. Assign hostname: https://github.com/adafruit/Adafruit-Pi-Finder#adafruit-raspberry-pi-finder
@@ -412,11 +412,11 @@ wlan0: CTRL-EVENT-CONNECTED - Connection to 00:1a:1e:a0:9e:80 completed [id=1 id
 0. Allow users to set WiFi password from Windows by running /boot/set_wifi_password_from_windows.  We should check at startup whether there is a pending update to the WiFi config.
  
    ```
-   sudo crontab -e
+   crontab -e
    ```
    Add these lines:
    ```
-   # At every reboot, check whether there are pending updates to the wifi config set by set_wifi_password
+# At every reboot, check whether there are pending updates to the wifi config set by set_wifi_password.
 @reboot /home/pi/WiFi/check_wifi_updates.sh
    ```
 
@@ -589,7 +589,10 @@ destination remote_log_server {
    ```
    Add:
    ```
-   * * * * * /home/pi/DNS/update_dns.sh & /home/pi/fixpermissions.sh                                                       
+# At every minute, fix the filesystem permissions so that pi user has access to all files in the home directory.
+# Network file access may have caused permission problems. Also update the AWS DNS with our local IP address, e.g.
+# g88pi.tp-iot.com = 1.2.3.4
+* * * * * /home/pi/fixpermissions.sh & /home/pi/DNS/update_dns.sh
    ```
 0. TODO: The IP address update fails if the clock is out of sync: https://victorhurdugaci.com/raspberry-pi-sync-date-and-time
    ```
