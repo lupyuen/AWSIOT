@@ -235,6 +235,16 @@ cd PIGPIO
 make -j4
 sudo make install
    ```
+
+0. Automatically start pigpiod background process during boot time
+   ```
+   sudo crontab -e
+   ```
+   Add these lines:
+   ```
+# At every reboot, start the pigpiod backgroud process needed for accessing the DHT22 temperature+humidity sensor.
+@reboot pigpiod
+   ```
    
 0. Assign hostname: https://github.com/adafruit/Adafruit-Pi-Finder#adafruit-raspberry-pi-finder
    ```
@@ -399,8 +409,13 @@ wlan0: WPA: Key negotiation completed with 00:1a:1e:a0:9e:80 [PTK=CCMP GTK=TKIP]
 wlan0: CTRL-EVENT-CONNECTED - Connection to 00:1a:1e:a0:9e:80 completed [id=1 id_str=]
    ```
 
+0. Allow users to set WiFi password from Windows by running /boot/set_wifi_password_from_windows.  We should check at startup whether there is a pending update to the WiFi config.
+ 
    ```
    sudo crontab -e
+   ```
+   Add these lines:
+   ```
    # At every reboot, check whether there are pending updates to the wifi config set by set_wifi_password
 @reboot /home/pi/WiFi/check_wifi_updates.sh
    ```
