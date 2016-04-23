@@ -385,6 +385,12 @@ wlan0: WPA: Key negotiation completed with 00:1a:1e:a0:9e:80 [PTK=CCMP GTK=TKIP]
 wlan0: CTRL-EVENT-CONNECTED - Connection to 00:1a:1e:a0:9e:80 completed [id=1 id_str=]
    ```
 
+   ```
+   sudo crontab -e
+   # At every reboot, check whether there are pending updates to the wifi config set by set_wifi_password
+@reboot /home/pi/WiFi/check_wifi_updates.sh
+   ```
+
 ## Install Ajenti Web Console
 
 0. Install Ajenti: http://support.ajenti.org/topics/1116-installing-on-debian/
