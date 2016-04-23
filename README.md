@@ -221,6 +221,20 @@ Sending sensor data to AWS IoT...
 Log: Sending PUBLISH (dFalse, q0, r0, m2, '$aws/things/g88_pi/shadow/update', ... (145 bytes)
 Sent to AWS IoT
    ```
+
+0. Install pigpio, which is needed by the Python script for reading data from the DHT22 temperature+humidity sensor directly without using resistors: http://abyz.co.uk/rpi/pigpio/examples.html
+
+   Instructions from http://abyz.co.uk/rpi/pigpio/download.html:
+   ```
+cd /tmp
+rm pigpio.zip
+sudo rm -rf PIGPIO
+wget abyz.co.uk/rpi/pigpio/pigpio.zip
+unzip pigpio.zip
+cd PIGPIO
+make -j4
+sudo make install
+   ```
    
 0. Assign hostname: https://github.com/adafruit/Adafruit-Pi-Finder#adafruit-raspberry-pi-finder
    ```
