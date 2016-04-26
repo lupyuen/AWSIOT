@@ -629,7 +629,18 @@ sudo mkfs.vfat /dev/mmcblk0p3
 mkdir /tmp/noobs
 sudo mount /dev/mmcblk0p3 /tmp/noobs
 ls /tmp/noobs
-sudo umount /dev/mmcblk0p3
+   ```
+
+0. Copy and compress all files according to https://github.com/raspberrypi/noobs/blob/master/README.md
+   ```
+sudo su
+cd /
+tar -cvpf /tmp/noobs/os.tar /* --exclude=proc/* --exclude=sys/* --exclude=dev/pts/* --exclude=tmp/noobs/*
+cd /boot
+tar -cvpf /tmp/noobs/boot.tar .
+cd /tmp/noobs
+xz -9 -e os.tar
+xz -9 -e boot.tar
    ```
 
 ## TODO: Setup AWS menubar
