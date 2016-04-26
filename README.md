@@ -641,7 +641,13 @@ tar -cvpf /tmp/noobs/boot.tar .
 cd /tmp/noobs
 xz -9 -e os.tar
 xz -9 -e boot.tar
+shutdown now
    ```
+0. Go to a PC.  Download and unzip full version of NOOBS to c:\NOOBS
+
+0. Edit the recovery.cmdline file in the root NOOBS directory and append silentinstall to the arguments list.
+
+0. Copy ??? to c:\NOOBS\???
 
 ## TODO: Setup AWS menubar
 
