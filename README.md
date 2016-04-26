@@ -623,6 +623,14 @@ Device         Boot   Start      End  Sectors  Size Id Type
 w to write
 sudo reboot
    ```
+0. Format as FAT32
+   ```
+sudo mkfs.vfat /dev/mmcblk0p3
+mkdir /tmp/noobs
+sudo mount /dev/mmcblk0p3 /tmp/noobs
+ls /tmp/noobs
+sudo umount /dev/mmcblk0p3
+   ```
 
 ## TODO: Setup AWS menubar
 
