@@ -562,14 +562,9 @@ destination remote_log_server {
 
 ## Update AWS DNS when local IP address changes
 
-0. Install AWS Command Line tool
-   ```
-   sudo apt-get install awscli
-   aws configure
-   ```
-   Enter AWS access key and secret key for AWS user update_dns with the permission ???.
-   
-   Add task to crontab:
+0. Copy https://github.com/lupyuen/RaspberryPiImage/blob/master/home/pi/DNS/update_dns.sh to /home/pi/DNS/update_dns.sh.  This script calls AWS API Gateway to run a Lambda function that updates the AWS DNS IP address.
+
+0. Add task to crontab:
    ```
    crontab -e
    ```
@@ -579,11 +574,6 @@ destination remote_log_server {
 # Network file access may have caused permission problems. Also update the AWS DNS with our local IP address, e.g.
 # g88pi.tp-iot.com = 1.2.3.4
 * * * * * /home/pi/DNS/fixpermissions.sh & /home/pi/DNS/update_dns.sh
-   ```
-0. TODO: The IP address update fails if the clock is out of sync: https://victorhurdugaci.com/raspberry-pi-sync-date-and-time
-   ```
-pi@g88pi:~ $ DNS/update_dns.sh
-A client error (RequestExpired) occurred when calling the ChangeResourceRecordSets operation: Request timestamp: Wed, 20 Apr 2016 10:05:00 GMT expired.  It must be within 300 secs/ of server time.
    ```
 
 ## Enable Bluetooth Support
