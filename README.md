@@ -638,9 +638,9 @@ sudo su
 mkdir /tmp/noobs
 sudo mount /dev/mmcblk0p3 /tmp/noobs
 cd /
-tar -cvpf /tmp/noobs/root.tar /* --exclude=proc/* --exclude=sys/* --exclude=dev/pts/* --exclude=tmp/noobs/*
+tar -cpf /tmp/noobs/root.tar /* --exclude=proc/* --exclude=sys/* --exclude=dev/pts/* --exclude=tmp/noobs/*
 cd /boot
-tar -cvpf /tmp/noobs/boot.tar .
+tar -cpf /tmp/noobs/boot.tar .
 cd /tmp/noobs
 xz -9 -e root.tar
 xz -9 -e boot.tar
