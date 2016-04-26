@@ -405,7 +405,19 @@ wlan0: CTRL-EVENT-CONNECTED - Connection to 00:1a:1e:a0:9e:80 completed [id=1 id
 # At every reboot, check whether there are pending updates to the wifi config set by set_wifi_password.
 @reboot /home/pi/WiFi/check_wifi_updates.sh
    ```
+0. Copy the following files from https://github.com/lupyuen/RaspberryPiImage/blob/master/boot/ to /boot.  These programs allow the user to set the Raspberry Pi wifi credentials by inserting the SD card into Windows, Mac and Linux computers.
+   ```
+set_wifi_password_from_mac
+set_wifi_password_from_pi.py
+set_wifi_password_from_windows.exe
+   ```
 
+0. set_wifi_password_from_windows.exe was created by running the following command in Windows:
+   ```
+pyinstaller --onefile set_wifi_password_from_pi.py
+   ```
+   set_wifi_password_from_mac was created by running the above command in Mac OS.
+   
 ## Install Ajenti Web Console
 
 0. Install Ajenti: http://support.ajenti.org/topics/1116-installing-on-debian/
@@ -585,10 +597,13 @@ destination remote_log_server {
 
 ## Create NOOBS image from SD card
 
+0. Copy setgroup.sh from https://github.com/lupyuen/RaspberryPiImage/blob/master/boot/setgroup.sh to /boot. This script is used after cloning to set the hostname.
+
 0. Confirm WiFi config
    ```
    sudo vi /etc/wpa_supplicant/wpa_supplicant.conf
    ```
+
 0. Create a large FAT32 LBA partition to store the NOOBS image.  Derived from https://mike632t.wordpress.com/2014/02/10/resizing-partitions/
 
    ```
