@@ -636,11 +636,11 @@ ls /tmp/noobs
    ```
 sudo su
 cd /
-tar -cvpf /tmp/noobs/os.tar /* --exclude=proc/* --exclude=sys/* --exclude=dev/pts/* --exclude=tmp/noobs/*
+tar -cvpf /tmp/noobs/root.tar /* --exclude=proc/* --exclude=sys/* --exclude=dev/pts/* --exclude=tmp/noobs/*
 cd /boot
 tar -cvpf /tmp/noobs/boot.tar .
 cd /tmp/noobs
-xz -9 -e os.tar
+xz -9 -e root.tar
 xz -9 -e boot.tar
 shutdown now
    ```
@@ -649,6 +649,8 @@ shutdown now
 0. Edit the recovery.cmdline file in the root NOOBS directory and append silentinstall to the arguments list.
 
 0. Copy ??? to c:\NOOBS\???
+
+0. Copy root.tar.xz, boot.tar.xz to c:\NOOBS\???
 
 ## TODO: Setup AWS menubar
 
