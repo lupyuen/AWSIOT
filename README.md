@@ -635,6 +635,8 @@ ls /tmp/noobs
 0. Copy and compress all files according to https://github.com/raspberrypi/noobs/blob/master/README.md
    ```
 sudo su
+mkdir /tmp/noobs
+sudo mount /dev/mmcblk0p3 /tmp/noobs
 cd /
 tar -cvpf /tmp/noobs/root.tar /* --exclude=proc/* --exclude=sys/* --exclude=dev/pts/* --exclude=tmp/noobs/*
 cd /boot
