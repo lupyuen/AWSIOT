@@ -562,9 +562,9 @@ destination remote_log_server {
 
 ## Update AWS DNS when local IP address changes
 
-0. Copy https://github.com/lupyuen/RaspberryPiImage/blob/master/home/pi/DNS/update_dns.sh to /home/pi/DNS/update_dns.sh.  This script calls AWS API Gateway to run a Lambda function that updates the AWS DNS IP address.
+0. Copy https://github.com/lupyuen/RaspberryPiImage/blob/master/home/pi/DNS/update_dns.sh to /home/pi/DNS/update_dns.sh.  This script calls AWS API Gateway to run a Lambda function UpdateDNS that updates the AWS DNS IP address: https://github.com/lupyuen/AWSIOT/blob/master/nodejs/UpdateDNS.js
 
-0. Add task to crontab:
+0. Add task to crontab to update the DNS every minute:
    ```
    crontab -e
    ```
@@ -581,6 +581,12 @@ destination remote_log_server {
 0. See http://www.techradar.com/sg/how-to/computing/how-to-get-wi-fi-and-bluetooth-working-on-raspberry-pi-3-1316938
    ```
    sudo apt-get install bluetooth bluez blueman
+   ```
+## Create NOOBS image from SD card
+
+0. Confirm WiFi config
+   ```
+   sudo vi /etc/wpa_supplicant/wpa_supplicant.conf
    ```
 
 ## TODO: Setup AWS menubar
