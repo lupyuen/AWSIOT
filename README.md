@@ -76,7 +76,7 @@ network={
    sudo dhclient
    ```
 
-0. Click Menu -> Preferences -> Raspberry Pi Configuration.  Click Interfaces. Enable SSH, SPI, I2C and Serial.  Reboot.
+0. Click Menu -> Preferences -> Raspberry Pi Configuration.  Click Interfaces. Enable SSH, SPI, I2C and Serial.  Set time zone to GMT+8.  Set keyboard to US.  Reboot.
 
 0. Set the locale:
    ```
