@@ -632,7 +632,7 @@ sudo mount /dev/mmcblk0p3 /tmp/noobs
 ls /tmp/noobs
    ```
 
-0. Copy and compress all files according to https://github.com/raspberrypi/noobs/blob/master/README.md
+0. Copy out all files according to https://github.com/raspberrypi/noobs/blob/master/README.md
    ```
 sudo su
 mkdir /tmp/noobs
@@ -641,18 +641,29 @@ cd /
 tar -cpf /tmp/noobs/root.tar /* --exclude=proc/* --exclude=sys/* --exclude=dev/pts/* --exclude=tmp/noobs/*
 cd /boot
 tar -cpf /tmp/noobs/boot.tar .
-cd /tmp/noobs
-xz -9 -e root.tar
-xz -9 -e boot.tar
 shutdown now
    ```
-0. Go to a PC.  Download and unzip full version of NOOBS to c:\NOOBS
+
+0. Compress on a PC or Mac for better performance. Insert the SD card into a powerful PC and run
+   ```
+xz -9 -e root.tar
+xz -9 -e boot.tar
+   ```
+
+0. On the PC, download and unzip full version of NOOBS to c:\TP-IoT-NOOBS
 
 0. Edit the recovery.cmdline file in the root NOOBS directory and append silentinstall to the arguments list.
 
-0. Copy ??? to c:\NOOBS\???
+0. Delete the folder C:\TP-IoT-NOOBS\os\Rasbian.  Create folder C:\TP-IoT-NOOBS\os\TP-IoT.
 
-0. Copy root.tar.xz, boot.tar.xz to c:\NOOBS\???
+0. Copy the following files from https://github.com/lupyuen/TP-IoT-NOOBS/tree/master/os/TP-IoT to C:\TP-IoT-NOOBS\os\TP-IoT\
+   ```
+os.json
+partition_setup.sh
+partitions.json
+   ```
+
+0. Copy root.tar.xz, boot.tar.xz to C:\TP-IoT-NOOBS\os\TP-IoT\
 
 ## TODO: Setup AWS menubar
 
