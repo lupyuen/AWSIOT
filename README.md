@@ -588,7 +588,7 @@ destination remote_log_server {
    ```
    sudo vi /etc/wpa_supplicant/wpa_supplicant.conf
    ```
-0. Create a large FAT32 LBA partition to store the NOOBS image
+0. Create a large FAT32 LBA partition to store the NOOBS image.  Derived from https://mike632t.wordpress.com/2014/02/10/resizing-partitions/
 
    ```
 sudo fdisk -lu
