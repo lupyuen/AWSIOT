@@ -582,6 +582,7 @@ destination remote_log_server {
    ```
    sudo apt-get install bluetooth bluez blueman
    ```
+
 ## Create NOOBS image from SD card
 
 0. Confirm WiFi config
