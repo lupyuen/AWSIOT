@@ -588,6 +588,41 @@ destination remote_log_server {
    ```
    sudo vi /etc/wpa_supplicant/wpa_supplicant.conf
    ```
+0. Create a large FAT32 LBA partition to store the NOOBS image
+
+   ```
+sudo fdisk -lu
+Device         Boot  Start     End Sectors  Size Id Type
+/dev/mmcblk0p1        8192  131071  122880   60M  c W95 FAT32 (LBA)
+/dev/mmcblk0p2      131072 7878655 7747584  3.7G 83 Linux
+   ```
+So the first sector of new partition should be 7878655 + 1 = 7878656
+   ```
+sudo fdisk /dev/mmcblk0
+
+n for new partition
+p for Primary partition type
+First sector: 7878656
+Last sector: default
+
+p to print partitions
+
+Device         Boot   Start      End  Sectors  Size Id Type
+/dev/mmcblk0p1         8192   131071   122880   60M  c W95 FAT32 (LBA)
+/dev/mmcblk0p2       131072  7878655  7747584  3.7G 83 Linux
+/dev/mmcblk0p3      7878656 31116287 23237632 11.1G 83 Linux
+
+t to change partition type
+Partition 3
+
+Device         Boot   Start      End  Sectors  Size Id Type
+/dev/mmcblk0p1         8192   131071   122880   60M  c W95 FAT32 (LBA)
+/dev/mmcblk0p2       131072  7878655  7747584  3.7G 83 Linux
+/dev/mmcblk0p3      7878656 31116287 23237632 11.1G  c W95 FAT32 (LBA)
+
+w to write
+sudo reboot
+   ```
 
 ## TODO: Setup AWS menubar
 
