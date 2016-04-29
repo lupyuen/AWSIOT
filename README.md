@@ -680,6 +680,8 @@ partitions.json
 
 0. Copy root.tar.xz, boot.tar.xz to C:\TP-IoT-NOOBS\os\TP-IoT\
 
+0. To install a new SD Card, copy the entire contents of C:\TP-IoT-NOOBS to the SD Card and boot the Pi with the SD Card.  See https://goo.gl/Vrce5E
+
 ## TODO: Setup AWS menubar
 
 ## TODO: Hoiio
