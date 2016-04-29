@@ -1,31 +1,41 @@
 #!/bin/bash
 
 echo Patching...
+shopt -s nullglob
 
 SOURCE=boot
-DEST=/media/user/boot
-echo Copying ${SOURCE}/* to ${DEST}...
-cp -r ${SOURCE}/* ${DEST}
-chmod ugo+x ${DEST}/*.sh
-chmod ugo+x ${DEST}/*.py
-chmod ugo+x ${DEST}/*.exe
-chmod ugo+x ${DEST}/set_*
+DESTFOLDERS=/media/user/${SOURCE}*
+for DEST in $DESTFOLDERS
+do
+	echo Copying ${SOURCE}/* to ${DEST}...
+	cp -r ${SOURCE}/* ${DEST}
+	chmod a+x ${DEST}/*.sh
+	chmod a+x ${DEST}/*.py
+	chmod a+x ${DEST}/*.exe
+	chmod a+x ${DEST}/set_*
+done
 
 SOURCE=RECOVERY
-DEST=/media/user/RECOVERY
-echo Copying ${SOURCE}/* to ${DEST}...
-cp -r ${SOURCE}/* ${DEST}
-chmod ugo+x ${DEST}/*.sh
-chmod ugo+x ${DEST}/*.py
-chmod ugo+x ${DEST}/*.exe
-chmod ugo+x ${DEST}/set_*
+DESTFOLDERS=/media/user/${SOURCE}*
+for DEST in $DESTFOLDERS
+do
+	echo Copying ${SOURCE}/* to ${DEST}...
+	cp -r ${SOURCE}/* ${DEST}
+	chmod a+x ${DEST}/*.sh
+	chmod a+x ${DEST}/*.py
+	chmod a+x ${DEST}/*.exe
+	chmod a+x ${DEST}/set_*
+done
 
 SOURCE=root
-DEST=/media/user/root
-echo Copying ${SOURCE}/* to ${DEST}...
-cp -r ${SOURCE}/* ${DEST}
-chmod ugo+x ${DEST}/home/pi/WiFi/*.sh
-chmod ugo+x ${DEST}/home/pi/WiFi/*.py
+DESTFOLDERS=/media/user/${SOURCE}*
+for DEST in $DESTFOLDERS
+do
+	echo Copying ${SOURCE}/* to ${DEST}...
+	cp -r ${SOURCE}/* ${DEST}
+  chmod a+x ${DEST}/home/pi/WiFi/*.sh
+  chmod a+x ${DEST}/home/pi/WiFi/*.py
+done
 
 echo Patching completed
 
