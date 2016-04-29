@@ -1,5 +1,5 @@
 # AWS IoT with Raspberry Pi, Node.js and Python
-Node.js and Python scripts for AWS IoT, used in Temasek Polytechnic Smart IoT Applications course. See also:
+Raspberry Pi, Node.js and Python scripts for AWS IoT, used in Temasek Polytechnic Smart IoT Applications course. See also:
 
 - https://github.com/lupyuen/RaspberryPiImage
 - https://www.facebook.com/photo.php?fbid=10203864039081512&set=a.1222080012259.25950.1836747147&type=3&theater
