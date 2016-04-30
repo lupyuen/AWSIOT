@@ -1,5 +1,6 @@
+//  OBSOLETE CloudWatch Logs to Amazon ES streaming
 //  Send records from AWS IoT logs in CloudWatch to Elasticache for indexing.  Modified from default AWS version.
-// v1.1.0
+//  v1.1.0
 var https = require('https');
 var zlib = require('zlib');
 var crypto = require('crypto');
@@ -12,7 +13,7 @@ exports.handler = function(input, context) {
 
     // decompress the input
     zlib.gunzip(zippedInput, function(e, buffer) {
-        if (e) { context.fail(e); }       
+        if (e) { context.fail(e); }
 
         // parse the input from JSON
         var awslogsData = JSON.parse(buffer.toString('ascii'));
@@ -25,14 +26,15 @@ exports.handler = function(input, context) {
             console.log('Received a control message');
             context.succeed('Success');
         }
-        
-        // post documents to Amazon Elasticsearch
-        post(elasticsearchBulkData, function(error, success, statusCode, failedItems) {
-            console.log('Response: ' + JSON.stringify({ 
-                "statusCode": statusCode 
-            }));
 
-            if (error) { 
+        // post documents to Amazon Elasticsearch
+        //console.log("elasticsearchBulkData =", elasticsearchBulkData);
+        post(elasticsearchBulkData, function(error, success, statusCode, failedItems) {
+            console.log('Response: ' + JSON.stringify({
+                    "statusCode": statusCode
+                }));
+
+            if (error) {
                 console.log('Error: ' + JSON.stringify(success, null, 2));
 
                 if (failedItems && failedItems.length > 0) {
@@ -40,7 +42,7 @@ exports.handler = function(input, context) {
                         JSON.stringify(failedItems, null, 2));
                 }
 
-                context.fail(e); 
+                context.fail(e);
             }
 
             console.log('Success: ' + JSON.stringify(success));
@@ -53,7 +55,7 @@ function transform(payload) {
     if (payload.messageType === 'CONTROL_MESSAGE') {
         return null;
     }
-    
+
     var bulkRequestBody = '';
 
     payload.logEvents.forEach(function(logEvent) {
@@ -82,11 +84,11 @@ function transform(payload) {
         action.index._index = indexName;
         action.index._type = payload.logGroup;
         action.index._id = logEvent.id;
-        
-        bulkRequestBody += [ 
-            JSON.stringify(action), 
-            JSON.stringify(source),
-        ].join('\n') + '\n';
+
+        bulkRequestBody += [
+                JSON.stringify(action),
+                JSON.stringify(source),
+            ].join('\n') + '\n';
     });
     return bulkRequestBody;
 }
@@ -116,8 +118,8 @@ function buildSource(message, extractedFields) {
     }
 
     jsonSubString = extractJson(message);
-    if (jsonSubString !== null) { 
-        return JSON.parse(jsonSubString); 
+    if (jsonSubString !== null) {
+        return JSON.parse(jsonSubString);
     }
 
     return {};
@@ -143,7 +145,7 @@ function isNumeric(n) {
 
 function post(body, callback) {
     var requestParams = buildRequest(endpoint, body);
-
+    //console.log("requestParams =", requestParams);
     var request = https.request(requestParams, function(response) {
         var responseBody = '';
         response.on('data', function(chunk) {
@@ -153,13 +155,13 @@ function post(body, callback) {
             var info = JSON.parse(responseBody);
             var failedItems;
             var success;
-            
+
             if (response.statusCode >= 200 && response.statusCode < 299) {
                 failedItems = info.items.filter(function(x) {
                     return x.index.status >= 300;
                 });
 
-                success = { 
+                success = {
                     "attemptedItems": info.items.length,
                     "successfulItems": info.items.length - failedItems.length,
                     "failedItems": failedItems.length
@@ -189,13 +191,13 @@ function buildRequest(endpoint, body) {
     var kRegion = hmac(kDate, region);
     var kService = hmac(kRegion, service);
     var kSigning = hmac(kService, 'aws4_request');
-    
+
     var request = {
         host: endpoint,
         method: 'POST',
         path: '/_bulk',
         body: body,
-        headers: { 
+        headers: {
             'Content-Type': 'application/json',
             'Host': endpoint,
             'Content-Length': Buffer.byteLength(body),

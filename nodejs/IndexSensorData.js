@@ -1,8 +1,28 @@
+//  Send IoT sensor data to Sumo Logic and Slack for searching and dashboards
+//  Node.js 4.3 / index.handler / lambda_basic_execution / 512 MB / 1 min / No VPC
 //  This AWS Lambda function accepts a JSON input of sensor values and sends them to Sumo Logic
 //  search engine for indexing.  It also sends to AWS CloudWatch and posts a message to Slack.  The input looks like:
 //  {"temperature":84,"timestampText":"2015-10-11T09:18:51.604Z","version":139,
 //  "xTopic":"$aws/things/g0_temperature_sensor/shadow/update/accepted","xClientToken":"myAwsClientId-0"}
+
 //  Make sure the role executing this Lambda function has CloudWatch PutMetricData and PutMetricAlarm permissions.
+//  Attach policy SendCloudWatchData to role lambda_basic_execution:
+/*
+{
+    "Version": "2012-10-17",
+    "Statement": [
+    {
+        "Sid": "SendCloudWatchData",
+        "Resource": "*",
+        "Action": [
+            "cloudwatch:PutMetricData",
+            "cloudwatch:PutMetricAlarm"
+        ],
+        "Effect": "Allow"
+    }
+]
+}
+*/
 
 'use strict';
 console.log('Loading function');
@@ -27,8 +47,8 @@ AWS.config.region = 'us-west-2';
 let cloudwatch = new AWS.CloudWatch();
 
 exports.handler = (input, context, callback) => {
-    console.log('RecordSensorData Input:', JSON.stringify(input));
-    console.log('RecordSensorData Context:', JSON.stringify(context));
+    console.log('IndexSensorData Input:', JSON.stringify(input));
+    console.log('IndexSensorData Context:', JSON.stringify(context));
     //  Format the sensor data into an Elasticache update request.
     let extractedFields = {};
     let action = '';
@@ -62,7 +82,7 @@ exports.handler = (input, context, callback) => {
     //  Don't index response to set desired state.
     if (actionCount == 2) return callback(null, 'Ignoring response to set desired state');
     if (!extractedFields.action) extractedFields.action = action;
-    if (!extractedFields.event) extractedFields.event = 'RecordSensorData';
+    if (!extractedFields.event) extractedFields.event = 'IndexSensorData';
     if (!extractedFields.topicname && extractedFields.xTopic)
         extractedFields.topicname = extractedFields.xTopic;
     let awslogsData = {
@@ -74,7 +94,7 @@ exports.handler = (input, context, callback) => {
             message: JSON.stringify(input),
             extractedFields: extractedFields
         }]};
-    console.log('RecordSensorData awslogsData:', JSON.stringify(awslogsData));
+    console.log('IndexSensorData awslogsData:', JSON.stringify(awslogsData));
     //  Transform the input to JSON messages for indexing.
     let records = transformLog(awslogsData);
     //  Skip control messages.
@@ -83,12 +103,12 @@ exports.handler = (input, context, callback) => {
     //  Post JSON messages to Sumo Logic.
     postSensorDataToSumoLogic(records, tags, (error, result) => {
         if (error) {
-            console.error('RecordSensorData Error: ', JSON.stringify(error, null, 2));
+            console.error('IndexSensorData Error: ', JSON.stringify(error, null, 2));
             //if (failedItems && failedItems.length > 0)
                 //console.log('Failed Items: ', JSON.stringify(failedItems, null, 2));
             return callback(error);
         }
-        console.log('RecordSensorData Success: ', JSON.stringify(result));
+        console.log('IndexSensorData Success: ', JSON.stringify(result));
         //  Post a Slack message to the private group of the same name e.g. g88.
         return postSensorDataToSlack(device, sensorData, () => {
             return callback(null, result);
@@ -276,12 +296,12 @@ function matchIoTField(data, pos) {
         'MESSAGE',
         'Message arrived on',
         'Message Id',
-        'RecordSensorData awslogsData',
-        'RecordSensorData Context',
-        'RecordSensorData Input',
-        'RecordSensorData logEvent',
-        'RecordSensorData Response',
-        'RecordSensorData Success',
+        'IndexSensorData awslogsData',
+        'IndexSensorData Context',
+        'IndexSensorData Input',
+        'IndexSensorData logEvent',
+        'IndexSensorData Response',
+        'IndexSensorData Success',
         'Status',
         'Target Arn',
         'THINGNAME',
@@ -434,6 +454,14 @@ function normaliseFieldName(fieldName) {
     return fieldName.toLowerCase().split(' ').join('_');
 }
 
+function isProduction() {
+    //  Return true if this is production server.
+    if (process.env.LAMBDA_TASK_ROOT) return true;
+    var environment = process.env.NODE_ENV || 'development';
+    return environment !== 'development';
+}
+
+//  Unit test cases.
 const test_input = {
     "led": "off",
     "distance": 5,
@@ -458,14 +486,15 @@ const test_context = {
     "invokedFunctionArn": "arn:aws:lambda:us-west-2:595779189490:function:SendSensorDataToElasticsearch2"
 };
 
+//  Run the unit test if we are in development environment.
 function runTest() {
     return exports.handler(test_input, test_context, function(err, result) {
-        if (console.error(err));
+        if (err) console.error(err);
         else console.output(result);
     });
 }
 
-runTest();
+if (!isProduction()) runTest();
 
 /*
 //  Promises Example for AWS
