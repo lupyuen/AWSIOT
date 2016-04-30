@@ -1,4 +1,4 @@
-//  This AWS Lambda function accepts a JSON input of sensor values and sends them to AWS Elasticache
+//  This AWS Lambda function accepts a JSON input of sensor values and sends them to Sumo Logic
 //  search engine for indexing.  It also sends to AWS CloudWatch and posts a message to Slack.  The input looks like:
 //  {"temperature":84,"timestampText":"2015-10-11T09:18:51.604Z","version":139,
 //  "xTopic":"$aws/things/g0_temperature_sensor/shadow/update/accepted","xClientToken":"myAwsClientId-0"}
@@ -66,8 +66,8 @@ exports.handler = (input, context, callback) => {
     if (!extractedFields.topicname && extractedFields.xTopic)
         extractedFields.topicname = extractedFields.xTopic;
     let awslogsData = {
-        logGroup: 'awsiot',
-        logStream: 'awsiot',
+        logGroup: device,
+        logStream: device,
         logEvents: [{
             id: context.awsRequestId,
             timestamp: 1 * (new Date()),
@@ -76,10 +76,10 @@ exports.handler = (input, context, callback) => {
         }]};
     console.log('RecordSensorData awslogsData:', JSON.stringify(awslogsData));
     //  Transform the input to JSON messages for indexing.
-    let records = transform(awslogsData);
+    let records = transformLog(awslogsData);
     //  Skip control messages.
     if (!records) return callback(null, 'Received a control message');
-    const tags = '';
+    const tags = device;
     //  Post JSON messages to Sumo Logic.
     postSensorDataToSumoLogic(records, tags, (error, result) => {
         if (error) {
@@ -96,9 +96,9 @@ exports.handler = (input, context, callback) => {
     });
 };
 
-function transform(payload) {
-    if (payload.messageType === 'CONTROL_MESSAGE')
-        return null;
+function transformLog(payload) {
+    //  Transform the log into Sumo Logic format.
+    if (payload.messageType === 'CONTROL_MESSAGE') return null;
     let bulkRequestBody = '';
     payload.logEvents.forEach(function(logEvent) {
         //  logevent.extractedFields.data contains "EVENT:UpdateThingShadow TOPICNAME:$aws/things/g0_temperature_sensor/shadow/update THINGNAME:g0_temperature_sensor"
@@ -106,28 +106,16 @@ function transform(payload) {
         parseIoTFields(logEvent);
         let timestamp = new Date(1 * logEvent.timestamp);
         let source = buildSource(logEvent.message, logEvent.extractedFields);
-        source['@id'] = logEvent.id;
-        source['@timestamp'] = new Date(1 * logEvent.timestamp).toISOString();
-        source['@message'] = logEvent.message;
-        source['@owner'] = payload.owner;
-        source['@log_group'] = payload.logGroup;
-        source['@log_stream'] = payload.logStream;
-        let action = {
-            index: {
-                _type: payload.logGroup,
-                _id: logEvent.id
-            }
-        };
-        bulkRequestBody += [
-            JSON.stringify(action),
-            JSON.stringify(source)
-        ].join('\n') + '\n';
+        source['id'] = logEvent.id;
+        source['timestamp'] = new Date(1 * logEvent.timestamp).toISOString();
+        bulkRequestBody += JSON.stringify(source) + '\n';
     });
     return bulkRequestBody;
 }
 
-function postSensorDataToSumoLogic(logs, tags, callback) {
+function postSensorDataToSumoLogic(body, tags, callback) {
     //  Post the sensor data logs to Sumo Logic via HTTPS.
+    /*
     let body = '';
     logs.forEach((rec) => {
         let log = rec.split('\n').join(' ');
@@ -135,6 +123,7 @@ function postSensorDataToSumoLogic(logs, tags, callback) {
         //console.log('***' + shiftFields(log) + '***');
         body += log + '\n';
     });
+    */
     //  Change timestamp to Sumo Logic format: "timestamp":"2016-02-08T00:19:14.325Z" -->
     //    "timestamp":"2016-02-08T00:19:14.325+0000"
     body = body.replace(/("timestamp":"[^"]+)Z"/g, '$1+0000"');
@@ -324,7 +313,7 @@ function postSensorDataToSlack(device, sensorData, callback) {
     if (pos > 0)
         channel = device.substring(0, pos);
     //http://d3gc5unrxwbvlo.cloudfront.net/_plugin/kibana/#/discover/Sensor-Data?_g=(refreshInterval:(display:'10%20seconds',section:1,value:10000),time:(from:now-1d,mode:quick,to:now))&_a=(query:(query_string:(analyze_wildcard:!t,query:'%%CHANNEL%%*')))'
-    let url = 'http://sumologic.com';
+    let url = 'http://sumologic.com';  //  TODO
     url = url.split('%%CHANNEL%%').join(channel);
     //  Clone a copy.
     let sensorData2 = JSON.parse(JSON.stringify(sensorData));
@@ -427,7 +416,7 @@ function extractJson(message) {
     return isValidJson(jsonSubString) ? jsonSubString : null;
 }
 
-function isValidJson(message: string) {
+function isValidJson(message) {
     //  Return true if this is a valid JSON string.
     try {
         JSON.parse(message);
@@ -444,6 +433,39 @@ function normaliseFieldName(fieldName) {
     //  If the field name contains spaces, change them to underscore. Make the field name lowercase.
     return fieldName.toLowerCase().split(' ').join('_');
 }
+
+const test_input = {
+    "led": "off",
+    "distance": 5,
+    "lot_is_occupied": 1,
+    "temperature": 37.5,
+    "light_level": 90,
+    "sound_level": 100,
+    "humidity": 54,
+    "timestampText": "2016-04-30T01:19:34.774045",
+    "version": 5498,
+    "xTopic": "$aws/things/g88_pi/shadow/update/accepted"
+};
+
+const test_context = {
+    "awsRequestId": "98dc0220-0eba-11e6-b84a-f75570995fc5",
+    "invokeid": "98dc0220-0eba-11e6-b84a-f75570995fc5",
+    "logGroupName": "/aws/lambda/SendSensorDataToElasticsearch2",
+    "logStreamName": "2016/04/30/[$LATEST]3f3acb23c5294fbcad74c08097c0b03e",
+    "functionName": "SendSensorDataToElasticsearch2",
+    "memoryLimitInMB": "128",
+    "functionVersion": "$LATEST",
+    "invokedFunctionArn": "arn:aws:lambda:us-west-2:595779189490:function:SendSensorDataToElasticsearch2"
+};
+
+function runTest() {
+    return exports.handler(test_input, test_context, function(err, result) {
+        if (console.error(err));
+        else console.output(result);
+    });
+}
+
+runTest();
 
 /*
 //  Promises Example for AWS

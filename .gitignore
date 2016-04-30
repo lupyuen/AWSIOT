@@ -1,5 +1,3 @@
 node_modules/*
-app/Archive*
-app/node_modules/*
-upload/*
+nodejs/node_modules/*
 *.key
