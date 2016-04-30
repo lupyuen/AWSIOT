@@ -4,9 +4,9 @@ Raspberry Pi, Node.js and Python scripts for AWS IoT, used in Temasek Polytechni
 - https://github.com/lupyuen/RaspberryPiImage
 - https://www.facebook.com/photo.php?fbid=10203864039081512&set=a.1222080012259.25950.1836747147&type=3&theater
 
-## TODO: Set up AWS IoT
+## Set up AWS IoT
 
-0. Go to AWS IoT Console, create a Thing named "g88pi".
+0. Go to AWS IoT Console, create a Thing, Name=g88pi.
 
 0. Add an attribute "temperature" and set the value to 28 (number, not string).
 
