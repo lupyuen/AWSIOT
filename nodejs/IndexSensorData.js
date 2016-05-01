@@ -66,7 +66,15 @@ exports.handler = (input, context, callback) => {
     }
     else
         extractedFields.device = device;
-    //  Copy the keys and values and send to CloudWatch.
+    //  If sensor data is located in the field "reported", move them up to top level.
+    if (input.reported) {
+        for (let key in input.reported)
+            input[key] = input.reported[key];
+        delete input.reported;
+    }
+    if (input.metadata) delete input.metadata;
+
+    //  Copy the keys and values for indexing.
     let actionCount = 0;
     let sensorData = {};
     for (let key in input) {
@@ -137,19 +145,10 @@ function transformLog(payload) {
 
 function postSensorDataToSumoLogic(body, tags, callback) {
     //  Post the sensor data logs to Sumo Logic via HTTPS.
-    /*
-    let body = '';
-    logs.forEach((rec) => {
-        let log = rec.split('\n').join(' ');
-        log = shiftFields(log);
-        //console.log('***' + shiftFields(log) + '***');
-        body += log + '\n';
-    });
-    */
     //  Change timestamp to Sumo Logic format: "timestamp":"2016-02-08T00:19:14.325Z" -->
     //    "timestamp":"2016-02-08T00:19:14.325+0000"
     body = body.replace(/("timestamp":"[^"]+)Z"/g, '$1+0000"');
-    console.log('postSensorDataToSumoLogic: body=', body);  ////
+    //console.log('postSensorDataToSumoLogic: body=', body);  ////
     const url_split = url.split('/', 4);
     const host = url_split[2];
     const path = url.substr(url.indexOf(host) + host.length);
@@ -432,6 +431,7 @@ function postToSlack(device, textOrAttachments, callback) {
 
 function extractJson(message) {
     //  If the message contains a JSON string, return the JSON.
+    if (typeof message !== 'string') return null;
     let jsonStart = message.indexOf('{');
     if (jsonStart < 0) return null;
     let jsonSubString = message.substring(jsonStart);
@@ -465,17 +465,21 @@ function isProduction() {
 
 //  Unit test cases.
 const test_input = {
-    "led": "off",
-    "distance": 5,
-    "lot_is_occupied": 1,
-    "temperature": 37.5,
-    "light_level": 90,
-    "sound_level": 100,
-    "humidity": 54,
-    "timestampText": "2016-04-30T01:19:34.774045",
-    "version": 5498,
-    "xTopic": "$aws/things/g88_pi/shadow/update/accepted"
-};
+    "timestamp": 1462090920,
+    "version": 1227,
+    "metadata": {
+        "timestamp": 1462090920
+    },
+    "reported": {
+        "sound_level": 324,
+        "timestamp": "2016-05-01T16:22:00.347743",
+        "humidity": 45,
+        "temperature": 33,
+        "light_level": 792
+    },
+    "topic": "$aws/things/g88pi/shadow/update/accepted",
+    "traceId": "4fb3ed68-ec3f-42b6-a202-4207c9c55a2a"
+}
 
 const test_context = {
     "awsRequestId": "98dc0220-0eba-11e6-b84a-f75570995fc5",

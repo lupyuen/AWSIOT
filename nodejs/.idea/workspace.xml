@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7c392364-e4dd-472f-8964-ecf49ededf90" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ExpandSensorData.js" afterPath="$PROJECT_DIR$/ExpandSensorData.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/IndexSensorData.js" afterPath="$PROJECT_DIR$/IndexSensorData.js" />
     </list>
     <ignored path="nodejs.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -53,11 +53,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="IndexSensorData.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="IndexSensorData.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/IndexSensorData.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="480">
-              <caret line="24" column="2" selection-start-line="7" selection-start-column="0" selection-end-line="24" selection-end-column="2" />
+            <state relative-caret-position="187">
+              <caret line="142" column="27" selection-start-line="142" selection-start-column="27" selection-end-line="142" selection-end-column="27" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -65,11 +65,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ExpandSensorData.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ExpandSensorData.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ExpandSensorData.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1060">
-              <caret line="89" column="18" selection-start-line="89" selection-start-column="18" selection-end-line="89" selection-end-column="18" />
+            <state relative-caret-position="280">
+              <caret line="50" column="51" selection-start-line="50" selection-start-column="51" selection-end-line="50" selection-end-column="51" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="e#5209#5292#0" expanded="false" />
@@ -166,8 +166,8 @@
         <option value="$PROJECT_DIR$/RecordSensorData.js" />
         <option value="$PROJECT_DIR$/LogsToElasticsearch_iot.js" />
         <option value="$PROJECT_DIR$/IndexAWSLogs.js" />
-        <option value="$PROJECT_DIR$/IndexSensorData.js" />
         <option value="$PROJECT_DIR$/ExpandSensorData.js" />
+        <option value="$PROJECT_DIR$/IndexSensorData.js" />
       </list>
     </option>
   </component>
@@ -413,7 +413,7 @@
       </FILE-GROUP>
     </UpdatedFiles>
   </component>
-  <component name="RunManager" selected="Node.js.ExpandSensorData.js">
+  <component name="RunManager" selected="Node.js.IndexSensorData.js">
     <configuration default="true" type="BashConfigurationType" factoryName="Bash">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="INTERPRETER_PATH" value="/bin/bash" />
@@ -518,12 +518,12 @@
       <workItem from="1461005478550" duration="434000" />
       <workItem from="1461982864104" duration="152000" />
       <workItem from="1461983263478" duration="12603000" />
-      <workItem from="1462011047774" duration="14087000" />
+      <workItem from="1462011047774" duration="15039000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="27276000" />
+    <option name="totallyTimeSpent" value="28228000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-135" y="-1368" width="1832" height="1143" extended-state="0" />
@@ -585,26 +585,26 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/IndexSensorData.js</url>
-          <line>172</line>
+          <line>171</line>
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/IndexSensorData.js</url>
-          <line>180</line>
+          <line>179</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/IndexSensorData.js</url>
-          <line>425</line>
+          <line>424</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/IndexSensorData.js</url>
-          <line>419</line>
+          <line>418</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/IndexSensorData.js</url>
-          <line>150</line>
+          <line>149</line>
           <properties />
           <option name="timeStamp" value="6" />
         </line-breakpoint>
@@ -615,6 +615,17 @@
           <option name="timeStamp" value="10" />
         </line-breakpoint>
       </breakpoints>
+      <breakpoints-dialog>
+        <breakpoints-dialog />
+      </breakpoints-dialog>
+      <default-breakpoints>
+        <breakpoint enabled="true" type="haskell-exception-breakpoint">
+          <properties />
+        </breakpoint>
+        <breakpoint enabled="true" type="javascript-exception">
+          <properties />
+        </breakpoint>
+      </default-breakpoints>
       <option name="time" value="14" />
     </breakpoint-manager>
     <watches-manager />
@@ -723,16 +734,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/IndexSensorData.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="24" column="2" selection-start-line="7" selection-start-column="0" selection-end-line="24" selection-end-column="2" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/IndexAWSLogs.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -743,8 +744,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/ExpandSensorData.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1060">
-          <caret line="89" column="18" selection-start-line="89" selection-start-column="18" selection-end-line="89" selection-end-column="18" />
+        <state relative-caret-position="280">
+          <caret line="50" column="51" selection-start-line="50" selection-start-column="51" selection-end-line="50" selection-end-column="51" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="e#5209#5292#0" expanded="false" />
@@ -772,6 +773,16 @@
             <element signature="e#30760#33433#0" expanded="false" />
             <element signature="e#33439#36008#0" expanded="false" />
             <element signature="e#36014#38583#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/IndexSensorData.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="142" column="27" selection-start-line="142" selection-start-column="27" selection-end-line="142" selection-end-column="27" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
           </folding>
         </state>
       </provider>
