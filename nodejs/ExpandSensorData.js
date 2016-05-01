@@ -1,5 +1,25 @@
-//  Send IoT sensor data to Sumo Logic and Slack for searching and dashboards
-//  Node.js 4.3 / index.handler / lambda_basic_execution / 512 MB / 1 min / No VPC
+//  Expand the sensor data field into separate fields
+//  Node.js 4.3 / index.handler / lambda_dynamo_streams / 512 MB / 30 sec / No VPC
+
+//  Make sure the role executing this Lambda function has Put access to all DynamoDB tables.
+//  Attach the following policy PutDynamoDB to role lambda_dynamo_streams:
+/*
+{
+    "Version": "2012-10-17",
+    "Statement": [
+    {
+        "Sid": "PutDynamoDB",
+        "Effect": "Allow",
+        "Action": [
+            "dynamodb:PutItem"
+        ],
+        "Resource": [
+            "*"
+        ]
+    }
+]
+}
+*/
 
 'use strict';
 console.log('Loading function');
@@ -86,16 +106,18 @@ function addRecord(table, timestamp, sensor, name, value) {
 
 function getDynamoValue(obj) {
     //  Strip off the DynamoDB atttributes and return as Javascript types.
-    if (obj.M) {
+    if (!obj) return obj;
+    else if (obj.S) return obj.S;  //  String
+    else if (obj.N) return parseFloat(obj.N);  //  Number
+    else if (obj.M) {
         //  For Maps, recursively strip off all attributes.
         let result = {};
         for (let key in obj.M)
             result[key] = getDynamoValue(obj.M[key]);
         return result;
     }
-    else if (obj.S) return obj.S;  //  String
-    else if (obj.N) return parseFloat(obj.N);  //  Number
-    return obj;
+    else
+        return obj;
 }
 
 function isProduction() {
