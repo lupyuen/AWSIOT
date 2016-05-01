@@ -3,10 +3,10 @@
 //  This AWS Lambda function accepts a JSON input of sensor values and sends them to Sumo Logic
 //  search engine for indexing.  It also sends to AWS CloudWatch and posts a message to Slack.  The input looks like:
 //  {"temperature":84,"timestampText":"2015-10-11T09:18:51.604Z","version":139,
-//  "xTopic":"$aws/things/g0_temperature_sensor/shadow/update/accepted","xClientToken":"myAwsClientId-0"}
+//  "xTopic":"$aws/things/g88pi/shadow/update/accepted","xClientToken":"myAwsClientId-0"}
 
 //  Make sure the role executing this Lambda function has CloudWatch PutMetricData and PutMetricAlarm permissions.
-//  Attach policy SendCloudWatchData to role lambda_basic_execution:
+//  Attach the following policy SendCloudWatchData to role lambda_basic_execution:
 /*
 {
     "Version": "2012-10-17",
@@ -56,11 +56,13 @@ exports.handler = (input, context, callback) => {
     //  Get the device name.
     if (input.device)
         device = input.device;
-    else if (input.xTopic) {
+    else if (input.topic) {
         //  We split the topic to get the device name.  The topic looks like "$aws/things/g0_temperature_sensor/shadow/update/accepted"
-        let topicArray = input.xTopic.split('/');
-        if (topicArray.length >= 3)
+        let topicArray = input.topic.split('/');
+        if (topicArray.length >= 3) {
             device = topicArray[2];
+            console.log(`device=${device}`);
+        }
     }
     else
         extractedFields.device = device;
