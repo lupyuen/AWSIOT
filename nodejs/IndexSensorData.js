@@ -144,7 +144,7 @@ function postSensorDataToSumoLogic(body, tags, callback) {
     //  Change timestamp to Sumo Logic format: "timestamp":"2016-02-08T00:19:14.325Z" -->
     //    "timestamp":"2016-02-08T00:19:14.325+0000"
     body = body.replace(/("timestamp":"[^"]+)Z"/g, '$1+0000"');
-    //console.log('postSensorDataToSumoLogic: body=', body);  ////
+    //console.log('postLogsToSumoLogic: body=', body);  ////
     const url_split = url.split('/', 4);
     const host = url_split[2];
     const path = url.substr(url.indexOf(host) + host.length);

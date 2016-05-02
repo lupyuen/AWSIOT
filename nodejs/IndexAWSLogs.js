@@ -5,6 +5,13 @@
 //  {"temperature":84,"timestampText":"2015-10-11T09:18:51.604Z","version":139,
 //  "xTopic":"$aws/things/g88pi/shadow/update/accepted","xClientToken":"myAwsClientId-0"}
 
+//  To configure this lambda as CloudWatch Subscription Filter:
+//  Click CloudWatch --> Logs
+//  Click checkbox for AWSIoTLogs
+//  Click Actions --> Stream to AWS Lambda
+//  Select "IndexAWSLogs"
+//  Select Log Format = Other, set Subscription Filter Pattern to blank
+
 //  Make sure the role executing this Lambda function has CloudWatch PutMetricData and PutMetricAlarm permissions.
 //  Attach the following policy SendCloudWatchData to role lambda_basic_execution:
 /*
@@ -33,9 +40,6 @@ const replaceSlackChannels = {
     'g88': 'g88a'
 };
 
-//  This Sumo Logic Collector URL is unique to us: AWS IoT Logs
-const url = 'https://endpoint1.collection.us2.sumologic.com/receiver/v1/http/ZaVnC4dhaV1GcreDc3eEvTVZ-eIA52tdPZpDMpqwc5Ltz0mYLfbzlWIVLuj2k7y16fCgoAz4XLEPYB30PGZSC3QWnnH-3HlZgUqtuSwMfZ-GTPFdf9K5vg==';
-
 const https = require('https');
 const zlib = require('zlib');
 const crypto = require('crypto');
@@ -49,6 +53,55 @@ let cloudwatch = new AWS.CloudWatch();
 exports.handler = (input, context, callback) => {
     console.log('IndexSensorData Input:', JSON.stringify(input));
     console.log('IndexSensorData Context:', JSON.stringify(context));
+
+    if (input.awslogs) {
+        //  Index the AWS Logs.  Decode input from base64.
+        //  This Sumo Logic Collector URL is unique to us: AWS IoT Logs
+        const url = 'https://endpoint1.collection.us2.sumologic.com/receiver/v1/http/ZaVnC4dhaV1GcreDc3eEvTVZ-eIA52tdPZpDMpqwc5Ltz0mYLfbzlWIVLuj2k7y16fCgoAz4XLEPYB30PGZSC3QWnnH-3HlZgUqtuSwMfZ-GTPFdf9K5vg==';
+        let zippedInput = new Buffer(input.awslogs.data, 'base64');
+        //  Decompress the input
+        zlib.gunzip(zippedInput, (e, buffer) => {
+            if (e) {
+                console.error(e);
+                return callback(e);
+            }
+            var awslogsData = JSON.parse(buffer.toString('ascii'));
+            return processLogs(url, 'awsiot', awslogsData, callback);
+        });
+    }
+    else {
+        //  Index the sensor data.
+        //  This Sumo Logic Collector URL is unique to us: Sensor Data Logs
+        const url = 'https://endpoint1.collection.us2.sumologic.com/receiver/v1/http/ZaVnC4dhaV2spqT2JdXJBek02aporY-ujTTn2eTcc3XfNomF_U94P6-YIpFZ6FIyAJqG9rNtzNK0JmP13upzBiH8FUfaSMyQmXqgfMdfSGazF6czrBHHxw==';
+        const ret = processSensorData(input, context);
+        const device = ret.device;
+        const actionCount = ret.actionCount;
+        const awslogsData = ret.awslogsData;
+        //  Don't index response to set desired state.
+        if (actionCount == 2) return callback(null, 'Ignoring response to set desired state');
+        return processLogs(url, device, awslogsData, callback);
+    }
+};
+
+function processLogs(url, tags, awslogsData, callback) {
+    //  Transform the input to JSON messages for indexing.
+    let records = transformLog(awslogsData);
+    //  Skip control messages.
+    if (!records) return callback(null, 'Received a control message');
+    //  Post JSON messages to Sumo Logic.
+    postLogsToSumoLogic(url, records, tags, (error, result) => {
+        if (error) {
+            console.error('IndexSensorData Error: ', JSON.stringify(error, null, 2));
+            //if (failedItems && failedItems.length > 0)
+            //console.log('Failed Items: ', JSON.stringify(failedItems, null, 2));
+            return callback(error);
+        }
+        console.log('IndexSensorData Success: ', JSON.stringify(result));
+        return callback(null, result);
+    });
+}
+
+function processSensorData(input, context) {
     //  Format the sensor data into a Sumo Logic update request.
     let extractedFields = {};
     let action = '';
@@ -88,9 +141,8 @@ exports.handler = (input, context, callback) => {
         if (key != 'version' && !isNaN(value))
             writeMetricToCloudWatch(device, key, value);
     }
-    //  Don't index response to set desired state.
-    if (actionCount == 2) return callback(null, 'Ignoring response to set desired state');
     if (!extractedFields.event) extractedFields.event = 'IndexSensorData';
+
     let awslogsData = {
         logGroup: device,
         logStream: device,
@@ -99,107 +151,33 @@ exports.handler = (input, context, callback) => {
             timestamp: 1 * (new Date()),
             message: JSON.stringify(input),
             extractedFields: extractedFields
-        }]};
+        }]
+    };
     console.log('IndexSensorData awslogsData:', JSON.stringify(awslogsData));
-    //  Transform the input to JSON messages for indexing.
-    let records = transformLog(awslogsData);
-    //  Skip control messages.
-    if (!records) return callback(null, 'Received a control message');
-    const tags = device;
-    //  Post JSON messages to Sumo Logic.
-    postSensorDataToSumoLogic(records, tags, (error, result) => {
-        if (error) {
-            console.error('IndexSensorData Error: ', JSON.stringify(error, null, 2));
-            //if (failedItems && failedItems.length > 0)
-            //console.log('Failed Items: ', JSON.stringify(failedItems, null, 2));
-            return callback(error);
-        }
-        console.log('IndexSensorData Success: ', JSON.stringify(result));
-        //  Post a Slack message to the private group of the same name e.g. g88.
-        return postSensorDataToSlack(device, sensorData, () => {
-            return callback(null, result);
-        });
+    //  Post a Slack message to the private group of the same name e.g. g88.
+    postSensorDataToSlack(device, sensorData, () => {
+        //return callback(null, result);
     });
-};
+    return {device: device, actionCount: actionCount, awslogsData: awslogsData};
+}
 
 function transformLog(payload) {
     //  Transform the log into Sumo Logic format.
     if (payload.messageType === 'CONTROL_MESSAGE') return null;
     let bulkRequestBody = '';
     payload.logEvents.forEach(function(logEvent) {
+        if (!logEvent.extractedFields) logEvent.extractedFields = {};
         //  logevent.extractedFields.data contains "EVENT:UpdateThingShadow TOPICNAME:$aws/things/g88pi/shadow/update THINGNAME:g88pi"
         //  We extract the fields.
         parseIoTFields(logEvent);
         let timestamp = new Date(1 * logEvent.timestamp);
         let source = buildSource(logEvent.message, logEvent.extractedFields);
-        source['id'] = logEvent.id;
+        //source['id'] = logEvent.id;  //  Ignore ID because it is very long.
         source['timestamp'] = new Date(1 * logEvent.timestamp).toISOString();
+        console.log(`transformLog: ${JSON.stringify(source, null, 2)}`);  ////
         bulkRequestBody += JSON.stringify(source) + '\n';
     });
     return bulkRequestBody;
-}
-
-function postSensorDataToSumoLogic(body, tags, callback) {
-    //  Post the sensor data logs to Sumo Logic via HTTPS.
-    //  Change timestamp to Sumo Logic format: "timestamp":"2016-02-08T00:19:14.325Z" -->
-    //    "timestamp":"2016-02-08T00:19:14.325+0000"
-    body = body.replace(/("timestamp":"[^"]+)Z"/g, '$1+0000"');
-    //console.log('postSensorDataToSumoLogic: body=', body);  ////
-    const url_split = url.split('/', 4);
-    const host = url_split[2];
-    const path = url.substr(url.indexOf(host) + host.length);
-    let request_params = {
-        host: host,
-        method: 'POST',
-        path: path,
-        body: body,
-        headers: {
-            'Content-Type': 'text/plain',
-            'Content-Length': Buffer.byteLength(body),
-            'X-Sumo-Name': tags || 'Logger'
-        }
-    };
-    let request = https.request(request_params, (response) => {
-        let response_body = '';
-        response.on('data', (chunk) => {
-            response_body += chunk;
-        });
-        response.on('end', () => {
-            if (response.statusCode < 200 || response.statusCode > 299) {
-                console.error(response.body);
-                return callback(new Error(response_body));
-            }
-            return callback(null, response_body);
-        });
-    }).on('error', (e) => {
-        console.error(e);
-        return callback(e);
-    });
-    //  Make the request and wait for callback.
-    request.end(request_params.body);
-}
-
-function writeMetricToCloudWatch(device, metric, value) {
-    //  Write the sensor data as a metric to CloudWatch.
-    console.log('writeMetricToCloudWatch:', device, metric, value);
-    try {
-        let params = {
-            MetricData: [{
-                MetricName: metric,
-                Timestamp: new Date(),
-                Unit: 'None',
-                Value: value
-            }],
-            Namespace: device
-        };
-        cloudwatch.putMetricData(params, function(err, data) {
-            if (err) return console.log('putMetricData error:', err, err.stack); // an error occurred
-            console.log('putMetricData: ', data);  // successful response
-        });
-    }
-    catch(err) {
-        console.log('Unable to log to CloudWatch', err);
-    }
 }
 
 function buildSource(message, extractedFields) {
@@ -233,6 +211,9 @@ function parseIoTFields(logEvent) {
     // We extract the fields.  Do the same for logevent.extractedFields.event.  Also we remove "TRACEID:", "PRINCIPALID:", "EVENT:" from the existing fields.
     //console.log("parseIoTFields logEvent=", JSON.stringify(logEvent, null, 2));
     let fields = logEvent.extractedFields;
+    //  Parse the message field.
+    if (logEvent.message) parseIoTData(fields, logEvent.message);
+
     if (fields.traceid) fields.traceid = fields.traceid.replace('TRACEID:', '');
     if (fields.principalid) fields.principalid = fields.principalid.replace('PRINCIPALID:', '');
     //  Parse the data field.
@@ -318,6 +299,69 @@ function matchIoTField(data, pos) {
         pos: matchPos,
         fieldName: matchFieldName
     };
+}
+
+function postLogsToSumoLogic(url, body, tags, callback) {
+    //  Post the sensor data logs to Sumo Logic via HTTPS.
+    //  Change timestamp to Sumo Logic format: "timestamp":"2016-02-08T00:19:14.325Z" -->
+    //    "timestamp":"2016-02-08T00:19:14.325+0000"
+    body = body.replace(/("timestamp":"[^"]+)Z"/g, '$1+0000"');
+    console.log(`postLogsToSumoLogic: body=${body}`);  ////
+    const url_split = url.split('/', 4);
+    const host = url_split[2];
+    const path = url.substr(url.indexOf(host) + host.length);
+    let request_params = {
+        host: host,
+        method: 'POST',
+        path: path,
+        body: body,
+        headers: {
+            'Content-Type': 'text/plain',
+            'Content-Length': Buffer.byteLength(body),
+            'X-Sumo-Name': tags || 'Logger'
+        }
+    };
+    let request = https.request(request_params, (response) => {
+        let response_body = '';
+        response.on('data', (chunk) => {
+            response_body += chunk;
+        });
+        response.on('end', () => {
+            if (response.statusCode < 200 || response.statusCode > 299) {
+                console.error(response.body);
+                return callback(new Error(response_body));
+            }
+            return callback(null, response_body);
+        });
+    }).on('error', (e) => {
+        console.error(e);
+        return callback(e);
+    });
+    //  Make the request and wait for callback.
+    request.end(request_params.body);
+}
+
+function writeMetricToCloudWatch(device, metric, value) {
+    //  Write the sensor data as a metric to CloudWatch.
+    console.log('writeMetricToCloudWatch:', device, metric, value);
+    try {
+        let params = {
+            MetricData: [{
+                MetricName: metric,
+                Timestamp: new Date(),
+                Unit: 'None',
+                Value: value
+            }],
+            Namespace: device
+        };
+        cloudwatch.putMetricData(params, function(err, data) {
+            if (err) return console.log('putMetricData error:', err, err.stack); // an error occurred
+            console.log('putMetricData: ', data);  // successful response
+        });
+    }
+    catch(err) {
+        console.log('Unable to log to CloudWatch', err);
+    }
 }
 
 function postSensorDataToSlack(device, sensorData, callback) {
@@ -461,6 +505,13 @@ function isProduction() {
 
 //  Unit test cases.
 const test_input = {
+    "awslogs": {
+        "data": "H4sIAAAAAAAAADWQW2+CMBiG/wppdimzLS1tuSOKjkTRCNsujDFFCpLIIbTOLYv/fRWz2/fw5Hu/X9AorWWlsp9egQDMwyw8rqM0DZcRmIDu1qrBylRQxgTiggho5UtXLYfu2lsn/Ezjzqy6Sj/11AxKNtaoOO9rq+lrrk9D3Zu6axf1xahBg2APVrLJC/lMH+O2UN+WNGIOIyf6Uq15JH9BXVich33IkEcxxIhxiIlgDBLuEYEh4oRiTwgusO9hSpggzGPWZMy3F5jabjSyseci4mNECUWIIjr5327xFuK7kLoQOxAHEAUUvdqIk+3CWRTPg/JUlgXMucsJJy4pC+py7EuXYMlgzugJUt/Z7uJkFm/DlS2M8519nCw2B8eJPqIkC977QhqVneu2Ss+y6G5OttnGsyRcR8GLvOmpeVh6OnaneoxMr2PJyd7iZDkmn4+9H+5/rmBKhLwBAAA="
+    }
+};
+
+/*
+const test_input = {
     "timestamp": 1462090920,
     "version": 1227,
     "metadata": {
@@ -475,7 +526,8 @@ const test_input = {
     },
     "topic": "$aws/things/g88pi/shadow/update/accepted",
     "traceId": "4fb3ed68-ec3f-42b6-a202-4207c9c55a2a"
-}
+};
+*/
 
 const test_context = {
     "awsRequestId": "98dc0220-0eba-11e6-b84a-f75570995fc5",
