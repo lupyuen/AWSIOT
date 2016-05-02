@@ -1,0 +1,10 @@
+parse regex "\"device\":\"(?<device>.*?)\"" nodrop |
+parse regex "\"event\":\"(?<event>.*?)\"" nodrop |
+parse regex "\"function\":\"(?<function>.*?)\"" nodrop |
+parse regex "\"hashkeyfield\":\"(?<hashkeyfield>.*?)\"" nodrop |
+parse regex "\"hashkeyvalue\":\"(?<hashkeyvalue>.*?)\"" nodrop |
+parse regex "\"rangekeyfield\":\"(?<rangekeyfield>.*?)\"" nodrop |
+parse regex "\"rangekeyvalue\":\"(?<rangekeyvalue>.*?)\"" nodrop |
+parse regex "\"result\":\"(?<result>.*?)\"" nodrop |
+parse regex "\"table\":\"(?<status>.*?)\"" nodrop |
+parse regex "\"topic\":\"(?<topic>.*?)\"" nodrop

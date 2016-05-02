@@ -1,0 +1,2 @@
+parse "[TTY=* ; ][PWD=* ; ][USER=* ; ][COMMAND=*]" as pi_tty, pi_pwd, pi_user, pi_command nodrop |
+parse regex " (?<device>g..pi) " nodrop

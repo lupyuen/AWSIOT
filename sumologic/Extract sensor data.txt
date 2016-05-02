@@ -1,0 +1,5 @@
+parse regex "\"device\":\"(?<device>.*?)\"" nodrop | 
+parse regex "\"temperature\":(?<temperature>.*?)," nodrop | 
+parse regex "\"humidity\":(?<humidity>.*?)," nodrop |
+parse regex "\"light_level\":(?<light_level>.*?)," nodrop |
+parse regex "\"sound_level\":(?<sound_level>.*?)," nodrop
