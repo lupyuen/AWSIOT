@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7c392364-e4dd-472f-8964-ecf49ededf90" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/IndexAWSLogs.js" afterPath="$PROJECT_DIR$/IndexAWSLogs.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/IndexSensorData.js" afterPath="$PROJECT_DIR$/IndexSensorData.js" />
     </list>
     <ignored path="nodejs.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -58,8 +56,8 @@
       <file leaf-file-name="IndexAWSLogs.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/IndexAWSLogs.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="329">
-              <caret line="279" column="35" selection-start-line="279" selection-start-column="35" selection-end-line="279" selection-end-column="35" />
+            <state relative-caret-position="640">
+              <caret line="32" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="557" selection-end-column="0" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -358,12 +356,12 @@
       <workItem from="1461982864104" duration="152000" />
       <workItem from="1461983263478" duration="12603000" />
       <workItem from="1462011047774" duration="16268000" />
-      <workItem from="1462132915347" duration="5869000" />
+      <workItem from="1462132915347" duration="7930000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="35326000" />
+    <option name="totallyTimeSpent" value="37387000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="965" extended-state="6" />
@@ -470,7 +468,7 @@
           <properties />
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="18" />
+      <option name="time" value="23" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -616,8 +614,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/IndexAWSLogs.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="329">
-          <caret line="279" column="35" selection-start-line="279" selection-start-column="35" selection-end-line="279" selection-end-column="35" />
+        <state relative-caret-position="640">
+          <caret line="32" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="557" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
