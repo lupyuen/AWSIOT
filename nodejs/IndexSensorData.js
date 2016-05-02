@@ -66,7 +66,7 @@ exports.handler = (input, context, callback) => {
                 return callback(e);
             }
             var awslogsData = JSON.parse(buffer.toString('ascii'));
-            return processLogs(url, 'awsiot', awslogsData, callback);
+            return processLogs(url, 'aws', awslogsData, callback);
         });
     }
     else {
@@ -101,12 +101,9 @@ function processLogs(url, tags, awslogsData, callback) {
     });
 }
 
-function processSensorData(input, context) {
-    //  Format the sensor data into a Sumo Logic update request.
-    let extractedFields = {};
-    let action = '';
-    let device = 'Unknown';
+function getDevice(input) {
     //  Get the device name.
+    let device = 'Unknown';
     if (input.device)
         device = input.device;
     else if (input.topic) {
@@ -117,6 +114,14 @@ function processSensorData(input, context) {
             console.log(`device=${device}`);
         }
     }
+    return device;
+}
+
+function processSensorData(input, context) {
+    //  Format the sensor data into a Sumo Logic update request.
+    let extractedFields = {};
+    let action = '';
+    let device = getDevice(input);
     extractedFields.device = device;
     //  If sensor data is located in the field "reported", move them up to top level.
     if (input.reported) {
@@ -172,9 +177,10 @@ function transformLog(payload) {
         parseIoTFields(logEvent);
         let timestamp = new Date(1 * logEvent.timestamp);
         let source = buildSource(logEvent.message, logEvent.extractedFields);
+        if (!source.device) source.device = getDevice(source);
         //source['id'] = logEvent.id;  //  Ignore ID because it is very long.
         source['timestamp'] = new Date(1 * logEvent.timestamp).toISOString();
-        console.log(`transformLog: ${JSON.stringify(source, null, 2)}`);  ////
+        console.log(`transformLog: ${logEvent.message} =>\n${JSON.stringify(source, null, 2)}`);  ////
         bulkRequestBody += JSON.stringify(source) + '\n';
     });
     return bulkRequestBody;
@@ -264,18 +270,21 @@ const fieldNames = {
     'Action': null,
     'CLIENTID': null,
     'EVENT': null,
+    'Function': null,
+    'HashKeyField': null,
+    'HashKeyValue': null,
     'Matching rule found': null,
     'MESSAGE': null,
     'Message arrived on': null,
     'Message Id': null,
-    'IndexSensorData awslogsData': null,
-    'IndexSensorData Context': null,
-    'IndexSensorData Input': null,
-    'IndexSensorData logEvent': null,
-    'IndexSensorData Response': null,
-    'IndexSensorData Success': null,
     'PRINCIPALID': 'principal',  //  Drop this field because we have Thingname.
+    'RangeKeyField': null,
+    'RangeKeyValue': null,
+    'Request ID': null,
     'Status': null,
+    'StatusCode': 'status',
+    'Status Code': 'status',
+    'Table': null,
     'Target Arn': null,
     'THINGNAME': 'device',
     'TOPICNAME': 'topic',
@@ -508,32 +517,32 @@ function isProduction() {
 }
 
 //  Unit test cases.
-/*
 //  AWS Log
 const test_input = {
     "awslogs": {
-        "data": "H4sIAAAAAAAAADWQW2+CMBiG/wppdimzLS1tuSOKjkTRCNsujDFFCpLIIbTOLYv/fRWz2/fw5Hu/X9AorWWlsp9egQDMwyw8rqM0DZcRmIDu1qrBylRQxgTiggho5UtXLYfu2lsn/Ezjzqy6Sj/11AxKNtaoOO9rq+lrrk9D3Zu6axf1xahBg2APVrLJC/lMH+O2UN+WNGIOIyf6Uq15JH9BXVich33IkEcxxIhxiIlgDBLuEYEh4oRiTwgusO9hSpggzGPWZMy3F5jabjSyseci4mNECUWIIjr5327xFuK7kLoQOxAHEAUUvdqIk+3CWRTPg/JUlgXMucsJJy4pC+py7EuXYMlgzugJUt/Z7uJkFm/DlS2M8519nCw2B8eJPqIkC977QhqVneu2Ss+y6G5OttnGsyRcR8GLvOmpeVh6OnaneoxMr2PJyd7iZDkmn4+9H+5/rmBKhLwBAAA="
+        "data": "H4sIAAAAAAAAAO2XW2/bNhTHvwph7GED7Jj3i/pkOE5nLDfYbvtQFAEtUbYwWfJEKVla9LvvUHKadK3rtgu2YJtfDPFyePg/P/IcvuttnPd25Ra3W9eLesejxejqbDKfj55Pev1eeVO4CpqFEUoZog03GJrzcvW8Kpst9IxezadlfVqufNc+rytnN2FKzKWzCpM0NXFC7BKn8VJQuxQpwSaV1FjmHKZmKTFVhqZaU6uXKUmETO2SgjnfLH1cZds6K4uTLK9d5XvR696p3SwT2y10NS0S9zs40XrwpnVhcu2KOox818sS8IRRiRWVDEtCNGGcUUEU1UYwRgmWmCjCpWCEc0m5lJJryjmlHDyoM5CnthvYKYyhBFzl3BDSv5MNzFNM5ACLAaYIs4ipiPIjGIIWs9F4Mj2OklTFBms3ENiwAYddDyymeJCkwjChY4wThy5n0/Px9HJ0ChP+qnLo9fT85OINQpOXk/NFdNks88yvW1XQ4uJyOj4fnU2iH+yNH9brrFj54UrrbTb0a5uUN8Nmm9jaoR0Ed9OnBZrXtm58hOYvxmPo7L3vfyqwxAILxQn8EcwEfCsOu8SEUG64AvmZoJJoRQk1ewVm+KDADD81gS+ab5B3aOPYbWuX/FnnYOUrhKYBWEM54xr+Fedcc0wE1VoRhg0VPIzl1EAINN0rtFIHhVbqyQh9Zus4KDprcndSNkXyPXqPT6dgC5wrhvaD+HeWUQWmURpsRwjMXFUuLqvkyrvCl9UVWLKfjQYEQRjNjOQUU2I4UM6YBqEJ4I85J5RobLAy4STsjYYWB6OhxX83GurKxsVXRiTc7IrA7c5Bc8oxptIwYyAMVBM4HZIxySQcIEmx3nfTC5j25YiIIxjyZCJyfFvYTTmKQ76cNyCx948Wk529tMnzW7SFS6pbDHXhOEJnnUrIVlV2DUbKIkJfu2IfdT5HKGmN9tHCLnN3H/MHwe4j9LP161/c7UnmcuAicddZ7Pp3rS9t3rQzYbk+mtli5e7Hfgjyfc9u/H1oF4TsDhskK2nI5+jiWMOhxoQqwZQJFYXhcP5JuISV0HDmQylBhYQ7Ae9LcwLzA3UE0MWfTh3xL6RLf5GsB7R8DNd+WD4hrrP/CW42zz/LFSUcEgGgpCiUkBrLwA9EiAjMgClIMCwkFaEBQLmfqwNZPXD1dLJ6V87/DVxlxXX5K4zM2wVR2hTtmo9FV2e2j052diHKVRGBmajriRo/uIFoDWj08DkV3fkRtU+ZeQvMMfC4KwPHZdIiR+8tI1dVZRWhotmDEddECyY4gR/XAtIdhjoc1pQmvG+IMTK8fhg0mf3XkzAHMRLmf4yeGkZAUBL4qctJbn2dxXNnq3gtvpsnxSD2PLx7mYJLTphQ4EJdRZmE60rBM8QwopmCl4bmYu+1BEQd4gmG/JM8TWazi9kHoObn8y4mJzbLm8o9Gk3BHvTVJWS69s2HYCn43GbxEVqsXReOkPtcy9GN9eiFd9U9Cb720cfRt943G5cMqjJ3w2m5OC1Xq1Cbh09yMx69Va/GKPOoKGtkm3pdVtnbnQ+uSstqEwUn7h6hgC4s78umit2DVQu/D76QSuuyXIP1H+euChVZhEYb+xbO4vn82Q491LHHMXuGJu0eu4bRziEb1G47nqGZ+62BhRBoh1i8BNAAhaWWciAUiweWcTPACXVKJGxpaPLTY50/2GWoEKqVq9GoKr5x+733b97/AU2Sk2ZUEwAA"
     }
 };
-*/
 
+/*
  //  Sensor Data
-const test_input = {
-    "timestamp": 1462090920,
-    "version": 1227,
-    "metadata": {
-        "timestamp": 1462090920
-    },
-    "reported": {
-        "sound_level": 324,
-        "timestamp": "2016-05-01T16:22:00.347743",
-        "humidity": 45,
-        "temperature": 33,
-        "light_level": 792
-    },
-    "topic": "$aws/things/g88pi/shadow/update/accepted",
-    "traceId": "4fb3ed68-ec3f-42b6-a202-4207c9c55a2a"
-};
+ const test_input = {
+ "timestamp": 1462090920,
+ "version": 1227,
+ "metadata": {
+ "timestamp": 1462090920
+ },
+ "reported": {
+ "sound_level": 324,
+ "timestamp": "2016-05-01T16:22:00.347743",
+ "humidity": 45,
+ "temperature": 33,
+ "light_level": 792
+ },
+ "topic": "$aws/things/g88pi/shadow/update/accepted",
+ "traceId": "4fb3ed68-ec3f-42b6-a202-4207c9c55a2a"
+ };
+ */
 
 const test_context = {
     "awsRequestId": "98dc0220-0eba-11e6-b84a-f75570995fc5",

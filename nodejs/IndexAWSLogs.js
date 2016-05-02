@@ -66,7 +66,7 @@ exports.handler = (input, context, callback) => {
                 return callback(e);
             }
             var awslogsData = JSON.parse(buffer.toString('ascii'));
-            return processLogs(url, 'awsiot', awslogsData, callback);
+            return processLogs(url, 'aws', awslogsData, callback);
         });
     }
     else {
