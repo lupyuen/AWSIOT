@@ -172,14 +172,14 @@ function transformLog(payload) {
     let bulkRequestBody = '';
     payload.logEvents.forEach(function(logEvent) {
         if (!logEvent.extractedFields) logEvent.extractedFields = {};
+        //  Timestamp must be first field or Sumo Logic may pick another field.
+        let timestamp = new Date(1 * logEvent.timestamp);
+        logEvent.extractedFields.timestamp = timestamp.toISOString();
         //  logevent.extractedFields.data contains "EVENT:UpdateThingShadow TOPICNAME:$aws/things/g88pi/shadow/update THINGNAME:g88pi"
         //  We extract the fields.
         parseIoTFields(logEvent);
-        let timestamp = new Date(1 * logEvent.timestamp);
         let source = buildSource(logEvent.message, logEvent.extractedFields);
-        if (!source.device) source.device = getDevice(source);
         //source['id'] = logEvent.id;  //  Ignore ID because it is very long.
-        source['timestamp'] = new Date(1 * logEvent.timestamp).toISOString();
         console.log(`transformLog: ${logEvent.message} =>\n${JSON.stringify(source, null, 2)}`);  ////
         bulkRequestBody += JSON.stringify(source) + '\n';
     });
@@ -230,6 +230,23 @@ function parseIoTFields(logEvent) {
         parseIoTData(fields, fields.event);
         delete fields.event;
     }
+    if (!fields.device) fields.device = getDevice(fields);
+    //  Try to populate the function field for easier viewing as a table.
+    switch(fields.event) {
+        case 'SNSActionFailure':
+            fields.function = fields.target_arn; break;
+        case 'MatchingRuleFound':
+            fields.function = fields.matching_rule_found; break;
+        case 'PublishOut':
+        case 'PublishEvent':
+            let topic_split = fields.topic.split('/');
+            fields.function = topic_split[topic_split.length - 1]; break;
+        case 'LambdaActionSuccess':
+            fields.status2 = fields.status;
+            if (fields.status.startsWith('202'))
+                fields.status = 'SUCCESS';
+            break;
+    }
 }
 
 function parseIoTData(fields, data) {
@@ -274,7 +291,7 @@ const fieldNames = {
     'HashKeyField': null,
     'HashKeyValue': null,
     'Matching rule found': null,
-    'MESSAGE': null,
+    'MESSAGE': 'result',  //  Conflicts with Sumo Logic's Message field.
     'Message arrived on': null,
     'Message Id': null,
     'PRINCIPALID': 'principal',  //  Drop this field because we have Thingname.
@@ -327,7 +344,7 @@ function postLogsToSumoLogic(url, body, tags, callback) {
         path: path,
         body: body,
         headers: {
-            'Content-Type': 'text/plain',
+            'Content-Type': 'application/json',
             'Content-Length': Buffer.byteLength(body),
             'X-Sumo-Name': tags || 'Logger'
         }
