@@ -33,8 +33,8 @@ const replaceSlackChannels = {
     'g88': 'g88a'
 };
 
-//  This Sumo Logic Collector URL is unique to us.
-const url = 'https://endpoint1.collection.us2.sumologic.com/receiver/v1/http/ZaVnC4dhaV1GcreDc3eEvTVZ-eIA52tdPZpDMpqwc5Ltz0mYLfbzlWIVLuj2k7y16fCgoAz4XLEPYB30PGZSC3QWnnH-3HlZgUqtuSwMfZ-GTPFdf9K5vg==';
+//  This Sumo Logic Collector URL is unique to us: Sensor Data Logs
+const url = 'https://endpoint1.collection.us2.sumologic.com/receiver/v1/http/ZaVnC4dhaV2spqT2JdXJBek02aporY-ujTTn2eTcc3XfNomF_U94P6-YIpFZ6FIyAJqG9rNtzNK0JmP13upzBiH8FUfaSMyQmXqgfMdfSGazF6czrBHHxw==';
 
 const https = require('https');
 const zlib = require('zlib');
@@ -49,7 +49,7 @@ let cloudwatch = new AWS.CloudWatch();
 exports.handler = (input, context, callback) => {
     console.log('IndexSensorData Input:', JSON.stringify(input));
     console.log('IndexSensorData Context:', JSON.stringify(context));
-    //  Format the sensor data into an Elasticache update request.
+    //  Format the sensor data into a Sumo Logic update request.
     let extractedFields = {};
     let action = '';
     let device = 'Unknown';

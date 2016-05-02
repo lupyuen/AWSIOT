@@ -33,7 +33,7 @@ const replaceSlackChannels = {
     'g88': 'g88a'
 };
 
-//  This Sumo Logic Collector URL is unique to us.
+//  This Sumo Logic Collector URL is unique to us: AWS IoT Logs
 const url = 'https://endpoint1.collection.us2.sumologic.com/receiver/v1/http/ZaVnC4dhaV1GcreDc3eEvTVZ-eIA52tdPZpDMpqwc5Ltz0mYLfbzlWIVLuj2k7y16fCgoAz4XLEPYB30PGZSC3QWnnH-3HlZgUqtuSwMfZ-GTPFdf9K5vg==';
 
 const https = require('https');
@@ -49,7 +49,7 @@ let cloudwatch = new AWS.CloudWatch();
 exports.handler = (input, context, callback) => {
     console.log('IndexSensorData Input:', JSON.stringify(input));
     console.log('IndexSensorData Context:', JSON.stringify(context));
-    //  Format the sensor data into an Elasticache update request.
+    //  Format the sensor data into a Sumo Logic update request.
     let extractedFields = {};
     let action = '';
     let device = 'Unknown';
@@ -57,7 +57,7 @@ exports.handler = (input, context, callback) => {
     if (input.device)
         device = input.device;
     else if (input.topic) {
-        //  We split the topic to get the device name.  The topic looks like "$aws/things/g88_pi/shadow/update/accepted"
+        //  We split the topic to get the device name.  The topic looks like "$aws/things/g88pi/shadow/update/accepted"
         let topicArray = input.topic.split('/');
         if (topicArray.length >= 3) {
             device = topicArray[2];
