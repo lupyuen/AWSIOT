@@ -141,6 +141,8 @@ function processSensorData(input, context) {
             action = action + ', ';
         action = action + key + ': ' + value;
         actionCount++;
+        //  Don't send non-sensor fields to Slack.
+        if (key === 'traceId') continue;
         sensorData[key] = value;
         //  If the value is numeric, send the metric to CloudWatch.
         if (key != 'version' && !isNaN(value))
@@ -392,6 +394,33 @@ function writeMetricToCloudWatch(device, metric, value) {
     }
 }
 
+//  Map group name to the search results for the group (search results -> share):
+//  e.g. g88 -> https://service.us2.sumologic.com/ui/#section/search/w3E1OOZlQuGFikPAy45ejRSyY8Q7KyUenQAMwr8h
+//           -> g88pi AND _sourceCategory=sensor | json auto "device", "temperature", "humidity", "light_level", "sound_level"
+const search_by_group = {
+    g88pi: 'https://service.us2.sumologic.com/ui/#section/search/w3E1OOZlQuGFikPAy45ejRSyY8Q7KyUenQAMwr8h',
+    g41pi: 'https://service.us2.sumologic.com/ui/#section/search/0MjlwG9w5SwXLdKwZ6ljcfLclX6aCJ8xLYG8LypB',
+    g42pi: 'https://service.us2.sumologic.com/ui/#section/search/9GRXc4aQOFJfpwYzp7A64ziFFoEAaGSP0VPbTHxq',
+    g43pi: 'https://service.us2.sumologic.com/ui/#section/search/hjrxNTwNMqS1vITSARVxW1ZirEItJT7hK0FBW9qD',
+    g44pi: 'https://service.us2.sumologic.com/ui/#section/search/UuS6ZcWUUP2bNX4PFFUVLws592hgyi0M1Dgq36zg',
+    g45pi: 'https://service.us2.sumologic.com/ui/#section/search/lg81oOIg4oTmdy8TldKpXyIROdxlHX20hr33q8DI',
+    g46pi: 'https://service.us2.sumologic.com/ui/#section/search/PYb6UR20hLg4NLN6Gf6AWbS2bXiLUiq60XiI4MUo',
+    g47pi: 'https://service.us2.sumologic.com/ui/#section/search/gs308eTeSCOl3ZYcC5cUWQ4COXau9WYtdcltQ84z',
+    g48pi: 'https://service.us2.sumologic.com/ui/#section/search/JjmJHj6rIlZaNxXpI2RH16dHla8vqSbfjAOwbLD3',
+    g49pi: 'https://service.us2.sumologic.com/ui/#section/search/wGJLcAP07a73M0U2JqkgvZnziOAzMHX0nAkw8Hzx',
+    g50pi: 'https://service.us2.sumologic.com/ui/#section/search/yFKkpZWdfCFkGSeHoMwKNKFd8aVoe8k1y1zJq42U',
+    g51pi: 'https://service.us2.sumologic.com/ui/#section/search/WIJZT4cyxKuWfXGhz483FYHEvxWU8FNBROIybAqn',
+    g52pi: 'https://service.us2.sumologic.com/ui/#section/search/40EMgkr3hyhuKQFZWgZ1f8e3mf8k4jsyI3jbMazl',
+    g53pi: 'https://service.us2.sumologic.com/ui/#section/search/JunoyDMGpDI9kHcnpM15H6SYkSFQdJmyLbBslzZ9',
+    g54pi: 'https://service.us2.sumologic.com/ui/#section/search/jrrfLIZ45BbdC2HD5qVE0Mbs8bkoAo30a7f8SOm0',
+    g55pi: 'https://service.us2.sumologic.com/ui/#section/search/8vrWu4uQP7tRjVZRKCg1fGGukI4FYPCjZ0du8jcY',
+    g56pi: 'https://service.us2.sumologic.com/ui/#section/search/R8NXsk38R0HjXgdyqTE9EB5f4r0ADxc7JlrNAaGo',
+    g57pi: 'https://service.us2.sumologic.com/ui/#section/search/Yvs4HnV2jHZ6162b6Pe4sMQFmR78DqTmYEFbIGD4',
+    g58pi: 'https://service.us2.sumologic.com/ui/#section/search/Oj38JZ78jSWg4ckVL8QV69aVoHxvcMUChUIuayZv',
+    g59pi: 'https://service.us2.sumologic.com/ui/#section/search/nQcNr41Oe5OvNaWXAJ0mPN9fSX9xbuwvAYFqVZgq',
+    g60pi: 'https://service.us2.sumologic.com/ui/#section/search/UyIEPvVSYq6PfVx8FM0qyNb6zTqVyCdTIUN1SAYB'
+};
+
 function postSensorDataToSlack(device, sensorData, callback) {
     //  Post the sensor values to a Slack group for the device e.g. g88.
     //  device is assumed to begin with the group name. sensorData contains
@@ -402,7 +431,7 @@ function postSensorDataToSlack(device, sensorData, callback) {
     if (pos > 0)
         channel = device.substring(0, pos);
     //http://d3gc5unrxwbvlo.cloudfront.net/_plugin/kibana/#/discover/Sensor-Data?_g=(refreshInterval:(display:'10%20seconds',section:1,value:10000),time:(from:now-1d,mode:quick,to:now))&_a=(query:(query_string:(analyze_wildcard:!t,query:'%%CHANNEL%%*')))'
-    let url = 'http://sumologic.com';  //  TODO
+    let url = search_by_group[device] || 'http://sumologic.com';
     url = url.split('%%CHANNEL%%').join(channel);
     //  Clone a copy.
     let sensorData2 = JSON.parse(JSON.stringify(sensorData));
@@ -412,9 +441,9 @@ function postSensorDataToSlack(device, sensorData, callback) {
         otherFields = otherFields + ' - ' + sensorData2.timestampText.substr(0, 19);
         delete sensorData2.timestampText;
     }
-    if (sensorData2.xTopic) {
-        otherFields = otherFields + ' - ' + sensorData2.xTopic;
-        delete sensorData2.xTopic;
+    if (sensorData2.topic) {
+        otherFields = otherFields + ' - ' + sensorData2.topic;
+        delete sensorData2.topic;
     }
     if (sensorData2.version) {
         otherFields = otherFields + ' - ' + sensorData2.version;
@@ -474,7 +503,7 @@ function postToSlack(device, textOrAttachments, callback) {
         method: 'POST'
     };
     console.log('Slack request =', JSON.stringify(body));
-    let req = https.request(options, (res) => {
+    let req = https.request(options, res => {
         let body = '';
         //console.log('Status:', res.statusCode);
         //console.log('Headers:', JSON.stringify(res.headers));
@@ -486,11 +515,12 @@ function postToSlack(device, textOrAttachments, callback) {
             //  If we know it's JSON, parse it
             if (res.headers['content-type'] === 'application/json')
                 body = JSON.parse(body);
+            console.log('Slack Result', body);
             return callback(null, body);
         });
     });
-    req.on('error', (e) => {
-        console.error(e);
+    req.on('error', e => {
+        console.error('Slack Error', e, e.stack);
         return callback(e);
     });
     req.write(JSON.stringify(body));
@@ -535,31 +565,31 @@ function isProduction() {
 
 //  Unit test cases.
 //  AWS Log
-const test_input = {
-    "awslogs": {
-        "data": "H4sIAAAAAAAAAO2XW2/bNhTHvwph7GED7Jj3i/pkOE5nLDfYbvtQFAEtUbYwWfJEKVla9LvvUHKadK3rtgu2YJtfDPFyePg/P/IcvuttnPd25Ra3W9eLesejxejqbDKfj55Pev1eeVO4CpqFEUoZog03GJrzcvW8Kpst9IxezadlfVqufNc+rytnN2FKzKWzCpM0NXFC7BKn8VJQuxQpwSaV1FjmHKZmKTFVhqZaU6uXKUmETO2SgjnfLH1cZds6K4uTLK9d5XvR696p3SwT2y10NS0S9zs40XrwpnVhcu2KOox818sS8IRRiRWVDEtCNGGcUUEU1UYwRgmWmCjCpWCEc0m5lJJryjmlHDyoM5CnthvYKYyhBFzl3BDSv5MNzFNM5ACLAaYIs4ipiPIjGIIWs9F4Mj2OklTFBms3ENiwAYddDyymeJCkwjChY4wThy5n0/Px9HJ0ChP+qnLo9fT85OINQpOXk/NFdNks88yvW1XQ4uJyOj4fnU2iH+yNH9brrFj54UrrbTb0a5uUN8Nmm9jaoR0Ed9OnBZrXtm58hOYvxmPo7L3vfyqwxAILxQn8EcwEfCsOu8SEUG64AvmZoJJoRQk1ewVm+KDADD81gS+ab5B3aOPYbWuX/FnnYOUrhKYBWEM54xr+Fedcc0wE1VoRhg0VPIzl1EAINN0rtFIHhVbqyQh9Zus4KDprcndSNkXyPXqPT6dgC5wrhvaD+HeWUQWmURpsRwjMXFUuLqvkyrvCl9UVWLKfjQYEQRjNjOQUU2I4UM6YBqEJ4I85J5RobLAy4STsjYYWB6OhxX83GurKxsVXRiTc7IrA7c5Bc8oxptIwYyAMVBM4HZIxySQcIEmx3nfTC5j25YiIIxjyZCJyfFvYTTmKQ76cNyCx948Wk529tMnzW7SFS6pbDHXhOEJnnUrIVlV2DUbKIkJfu2IfdT5HKGmN9tHCLnN3H/MHwe4j9LP161/c7UnmcuAicddZ7Pp3rS9t3rQzYbk+mtli5e7Hfgjyfc9u/H1oF4TsDhskK2nI5+jiWMOhxoQqwZQJFYXhcP5JuISV0HDmQylBhYQ7Ae9LcwLzA3UE0MWfTh3xL6RLf5GsB7R8DNd+WD4hrrP/CW42zz/LFSUcEgGgpCiUkBrLwA9EiAjMgClIMCwkFaEBQLmfqwNZPXD1dLJ6V87/DVxlxXX5K4zM2wVR2hTtmo9FV2e2j052diHKVRGBmajriRo/uIFoDWj08DkV3fkRtU+ZeQvMMfC4KwPHZdIiR+8tI1dVZRWhotmDEddECyY4gR/XAtIdhjoc1pQmvG+IMTK8fhg0mf3XkzAHMRLmf4yeGkZAUBL4qctJbn2dxXNnq3gtvpsnxSD2PLx7mYJLTphQ4EJdRZmE60rBM8QwopmCl4bmYu+1BEQd4gmG/JM8TWazi9kHoObn8y4mJzbLm8o9Gk3BHvTVJWS69s2HYCn43GbxEVqsXReOkPtcy9GN9eiFd9U9Cb720cfRt943G5cMqjJ3w2m5OC1Xq1Cbh09yMx69Va/GKPOoKGtkm3pdVtnbnQ+uSstqEwUn7h6hgC4s78umit2DVQu/D76QSuuyXIP1H+euChVZhEYb+xbO4vn82Q491LHHMXuGJu0eu4bRziEb1G47nqGZ+62BhRBoh1i8BNAAhaWWciAUiweWcTPACXVKJGxpaPLTY50/2GWoEKqVq9GoKr5x+733b97/AU2Sk2ZUEwAA"
-    }
-};
-
 /*
- //  Sensor Data
  const test_input = {
- "timestamp": 1462090920,
- "version": 1227,
- "metadata": {
- "timestamp": 1462090920
- },
- "reported": {
- "sound_level": 324,
- "timestamp": "2016-05-01T16:22:00.347743",
- "humidity": 45,
- "temperature": 33,
- "light_level": 792
- },
- "topic": "$aws/things/g88pi/shadow/update/accepted",
- "traceId": "4fb3ed68-ec3f-42b6-a202-4207c9c55a2a"
+ "awslogs": {
+ "data": "H4sIAAAAAAAAAO2XW2/bNhTHvwph7GED7Jj3i/pkOE5nLDfYbvtQFAEtUbYwWfJEKVla9LvvUHKadK3rtgu2YJtfDPFyePg/P/IcvuttnPd25Ra3W9eLesejxejqbDKfj55Pev1eeVO4CpqFEUoZog03GJrzcvW8Kpst9IxezadlfVqufNc+rytnN2FKzKWzCpM0NXFC7BKn8VJQuxQpwSaV1FjmHKZmKTFVhqZaU6uXKUmETO2SgjnfLH1cZds6K4uTLK9d5XvR696p3SwT2y10NS0S9zs40XrwpnVhcu2KOox818sS8IRRiRWVDEtCNGGcUUEU1UYwRgmWmCjCpWCEc0m5lJJryjmlHDyoM5CnthvYKYyhBFzl3BDSv5MNzFNM5ACLAaYIs4ipiPIjGIIWs9F4Mj2OklTFBms3ENiwAYddDyymeJCkwjChY4wThy5n0/Px9HJ0ChP+qnLo9fT85OINQpOXk/NFdNks88yvW1XQ4uJyOj4fnU2iH+yNH9brrFj54UrrbTb0a5uUN8Nmm9jaoR0Ed9OnBZrXtm58hOYvxmPo7L3vfyqwxAILxQn8EcwEfCsOu8SEUG64AvmZoJJoRQk1ewVm+KDADD81gS+ab5B3aOPYbWuX/FnnYOUrhKYBWEM54xr+Fedcc0wE1VoRhg0VPIzl1EAINN0rtFIHhVbqyQh9Zus4KDprcndSNkXyPXqPT6dgC5wrhvaD+HeWUQWmURpsRwjMXFUuLqvkyrvCl9UVWLKfjQYEQRjNjOQUU2I4UM6YBqEJ4I85J5RobLAy4STsjYYWB6OhxX83GurKxsVXRiTc7IrA7c5Bc8oxptIwYyAMVBM4HZIxySQcIEmx3nfTC5j25YiIIxjyZCJyfFvYTTmKQ76cNyCx948Wk529tMnzW7SFS6pbDHXhOEJnnUrIVlV2DUbKIkJfu2IfdT5HKGmN9tHCLnN3H/MHwe4j9LP161/c7UnmcuAicddZ7Pp3rS9t3rQzYbk+mtli5e7Hfgjyfc9u/H1oF4TsDhskK2nI5+jiWMOhxoQqwZQJFYXhcP5JuISV0HDmQylBhYQ7Ae9LcwLzA3UE0MWfTh3xL6RLf5GsB7R8DNd+WD4hrrP/CW42zz/LFSUcEgGgpCiUkBrLwA9EiAjMgClIMCwkFaEBQLmfqwNZPXD1dLJ6V87/DVxlxXX5K4zM2wVR2hTtmo9FV2e2j052diHKVRGBmajriRo/uIFoDWj08DkV3fkRtU+ZeQvMMfC4KwPHZdIiR+8tI1dVZRWhotmDEddECyY4gR/XAtIdhjoc1pQmvG+IMTK8fhg0mf3XkzAHMRLmf4yeGkZAUBL4qctJbn2dxXNnq3gtvpsnxSD2PLx7mYJLTphQ4EJdRZmE60rBM8QwopmCl4bmYu+1BEQd4gmG/JM8TWazi9kHoObn8y4mJzbLm8o9Gk3BHvTVJWS69s2HYCn43GbxEVqsXReOkPtcy9GN9eiFd9U9Cb720cfRt943G5cMqjJ3w2m5OC1Xq1Cbh09yMx69Va/GKPOoKGtkm3pdVtnbnQ+uSstqEwUn7h6hgC4s78umit2DVQu/D76QSuuyXIP1H+euChVZhEYb+xbO4vn82Q491LHHMXuGJu0eu4bRziEb1G47nqGZ+62BhRBoh1i8BNAAhaWWciAUiweWcTPACXVKJGxpaPLTY50/2GWoEKqVq9GoKr5x+733b97/AU2Sk2ZUEwAA"
+ }
  };
  */
+
+//  Sensor Data
+const test_input = {
+    "timestamp": 1462090920,
+    "version": 1227,
+    "metadata": {
+        "timestamp": 1462090920
+    },
+    "reported": {
+        "sound_level": 324,
+        "timestamp": "2016-05-01T16:22:00.347743",
+        "humidity": 45,
+        "temperature": 33,
+        "light_level": 792
+    },
+    "topic": "$aws/things/g88pi/shadow/update/accepted",
+    "traceId": "4fb3ed68-ec3f-42b6-a202-4207c9c55a2a"
+};
 
 const test_context = {
     "awsRequestId": "98dc0220-0eba-11e6-b84a-f75570995fc5",
@@ -576,7 +606,7 @@ const test_context = {
 function runTest() {
     return exports.handler(test_input, test_context, function(err, result) {
         if (err) console.error(err);
-        else console.output(result);
+        else console.log(result);
     });
 }
 
