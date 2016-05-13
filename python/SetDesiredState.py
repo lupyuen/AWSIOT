@@ -70,7 +70,7 @@ aws_session = boto3.Session(aws_access_key_id='AKIAJE7ODGU4E5RJQC5Q',
 
 def lambda_handler(event, context):
     # Look for the device with the provided device ID and set its desired state.
-    print("Received event: " + json.dumps(event, indent=2))
+    print("Received event: " + json.dumps(event))
     if event.get("channel_name") is not None:
         # This is a Slack message.
         return slack_handler(event, context)
@@ -82,7 +82,7 @@ def lambda_handler(event, context):
 def rest_handler(event, context):
     # Handle a REST command received from the REST channels except Slack.
     # Look for the device with the provided device ID and set its desired state.
-    print("Received REST event: " + json.dumps(event, indent=2))
+    print("Received REST event: " + json.dumps(event))
     device = event.get("device")
     attribute = event.get("attribute")
     value = event.get("value")
@@ -97,7 +97,7 @@ def rest_handler(event, context):
 def slack_handler(event, context):
     # Handle a user command received from Slack.
     # Look for the device with the provided device ID and set its desired state.
-    print("Received Slack event: " + json.dumps(event, indent=2))
+    print("Received Slack event: " + json.dumps(event))
 
     # Don't respond to a message that this function has posted previously,
     # because we will be stuck in a loop.
@@ -147,7 +147,7 @@ def set_desired_state(device2, attribute2, value2, timestamp2):
     post_state_to_slack(device2, payload)
 
     # Post to AWS.
-    print("\nSending to AWS: " + json.dumps(payload, indent=4, separators=(',', ': ')))
+    print("\nSending to AWS: " + json.dumps(payload))
     iot_client = aws_session.client('iot-data')  # Create a client for AWS IoT Data API.
     response = iot_client.update_thing_shadow(   #  Update the AWS IoT thing shadow, i.e. set the device state.
         thingName=device2,
@@ -158,7 +158,7 @@ def set_desired_state(device2, attribute2, value2, timestamp2):
     print("\nResponse from AWS update_thing_shadow: ", str(response))
     if response.get('payload') is not None:
         payload2 = json.loads(response.get('payload').read().decode("utf-8"))  # Parse payload text to JSON.
-        print("\nResponse Payload: ", json.dumps(payload2, indent=4, separators=(',', ': ')))  # Show formatted JSON.
+        print("\nResponse Payload: ", json.dumps(payload2))  # Show formatted JSON.
 
     # Check the AWS response for success/failure.
     if str(response).find("'HTTPStatusCode': 200") > 0:
@@ -242,7 +242,7 @@ def post_to_slack(device, textOrAttachments):
         body["text"] = textOrAttachments
     else:
         body["attachments"] = textOrAttachments
-    print("\nSending to Slack: ", json.dumps(body, indent=2))
+    print("\nSending to Slack: ", json.dumps(body))
     url = "https://hooks.slack.com/services/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"
     try:
         # Make the REST request to Slack.

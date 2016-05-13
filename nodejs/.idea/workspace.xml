@@ -3,8 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="7c392364-e4dd-472f-8964-ecf49ededf90" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/IndexAWSLogs.js" afterPath="$PROJECT_DIR$/IndexAWSLogs.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/IndexSensorData.js" afterPath="$PROJECT_DIR$/IndexSensorData.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../python/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../python/.idea/workspace.xml" />
     </list>
     <ignored path="nodejs.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -55,75 +55,27 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="IndexAWSLogs.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="IndexAWSLogs.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/IndexAWSLogs.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="13800">
-              <caret line="708" column="31" selection-start-line="708" selection-start-column="31" selection-end-line="708" selection-end-column="31" />
+            <state relative-caret-position="59">
+              <caret line="676" column="3" selection-start-line="676" selection-start-column="3" selection-end-line="676" selection-end-column="3" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
-                <element signature="e#27431#27956#0" expanded="false" />
+                <element signature="e#27419#27944#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ExpandSensorData.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ExpandSensorData.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-219">
-              <caret line="78" column="22" selection-start-line="78" selection-start-column="22" selection-end-line="78" selection-end-column="22" />
-              <folding>
-                <element signature="e#6065#6148#0" expanded="false" />
-                <element signature="e#6178#6357#0" expanded="false" />
-                <element signature="e#6455#6521#0" expanded="false" />
-                <element signature="e#6562#6627#0" expanded="false" />
-                <element signature="e#6665#6730#0" expanded="false" />
-                <element signature="e#6771#6837#0" expanded="false" />
-                <element signature="e#6876#6965#0" expanded="false" />
-                <element signature="e#7032#7119#0" expanded="false" />
-                <element signature="e#7148#7199#0" expanded="false" />
-                <element signature="e#7230#7287#0" expanded="false" />
-                <element signature="e#7331#7364#0" expanded="false" />
-                <element signature="e#7387#7444#0" expanded="false" />
-                <element signature="e#7609#10282#0" expanded="false" />
-                <element signature="e#7821#10162#0" expanded="false" />
-                <element signature="e#10288#12961#0" expanded="false" />
-                <element signature="e#12967#15640#0" expanded="false" />
-                <element signature="e#15646#18319#0" expanded="false" />
-                <element signature="e#18325#20998#0" expanded="false" />
-                <element signature="e#21004#23677#0" expanded="false" />
-                <element signature="e#23683#26356#0" expanded="false" />
-                <element signature="e#26362#29035#0" expanded="false" />
-                <element signature="e#29041#31610#0" expanded="false" />
-                <element signature="e#31616#34289#0" expanded="false" />
-                <element signature="e#34295#36864#0" expanded="false" />
-                <element signature="e#36870#39439#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="LogsToElasticsearch_iot.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/2015 Oct/LogsToElasticsearch_iot.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1440">
-              <caret line="74" column="49" selection-start-line="74" selection-start-column="42" selection-end-line="74" selection-end-column="49" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="IndexSensorData.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="IndexSensorData.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/IndexSensorData.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="380">
-              <caret line="80" column="44" selection-start-line="0" selection-start-column="0" selection-end-line="708" selection-end-column="31" />
+            <state relative-caret-position="242">
+              <caret line="480" column="32" selection-start-line="0" selection-start-column="0" selection-end-line="708" selection-end-column="31" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
-                <element signature="e#27413#27866#0" expanded="false" />
+                <element signature="e#27383#27836#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -149,9 +101,9 @@
         <option value="$PROJECT_DIR$/RecordSensorData.js" />
         <option value="$PROJECT_DIR$/LogsToElasticsearch_iot.js" />
         <option value="$PROJECT_DIR$/2015 Oct/LogsToElasticsearch_iot.js" />
-        <option value="$PROJECT_DIR$/IndexAWSLogs.js" />
         <option value="$PROJECT_DIR$/ExpandSensorData.js" />
         <option value="$PROJECT_DIR$/IndexSensorData.js" />
+        <option value="$PROJECT_DIR$/IndexAWSLogs.js" />
       </list>
     </option>
   </component>
@@ -199,7 +151,7 @@
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
   <component name="ProjectView">
-    <navigator proportions="" version="1">
+    <navigator currentView="ProjectPane" proportions="" version="1">
       <flattenPackages />
       <showMembers />
       <showModules />
@@ -212,7 +164,30 @@
       <manualOrder />
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes />
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="nodejs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="nodejs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="nodejs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scratches" />
+    </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="settings.editor.selected.configurable" value="settings.nodejs" />
@@ -382,7 +357,7 @@
       <workItem from="1462642444448" duration="3695000" />
       <workItem from="1462756624384" duration="29000" />
       <workItem from="1463147349696" duration="5376000" />
-      <workItem from="1463164663758" duration="246000" />
+      <workItem from="1463164663758" duration="878000" />
     </task>
     <task id="LOCAL-00001" summary="Before patching to fix AWS IoT beta SQL">
       <created>1463147533406</created>
@@ -395,11 +370,11 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="52013000" />
+    <option name="totallyTimeSpent" value="52645000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="315" y="41" width="1270" height="884" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="DB Execution Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Gerrit" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
@@ -426,7 +401,7 @@
       <window_info id="Floobits" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299373" sideWeight="0.5" order="17" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3291032" sideWeight="0.49746192" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="GhcMod" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15228014" sideWeight="0.64705884" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15228014" sideWeight="0.64705884" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15323646" sideWeight="0.3529412" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -514,7 +489,7 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#27431#27956#0" expanded="false" />
+            <element signature="e#27419#27944#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -525,7 +500,7 @@
           <caret line="418" column="107" selection-start-line="0" selection-start-column="0" selection-end-line="613" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#27431#27956#0" expanded="false" />
+            <element signature="e#27419#27944#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -546,7 +521,7 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#27413#27866#0" expanded="false" />
+            <element signature="e#27383#27836#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -557,7 +532,7 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#27431#27956#0" expanded="false" />
+            <element signature="e#27419#27944#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -578,39 +553,7 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#27431#27956#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/2015 Oct/LogsToElasticsearch_iot.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1440">
-          <caret line="74" column="49" selection-start-line="74" selection-start-column="42" selection-end-line="74" selection-end-column="49" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/IndexSensorData.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3740">
-          <caret line="187" column="0" selection-start-line="168" selection-start-column="0" selection-end-line="187" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#27413#27866#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/IndexAWSLogs.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#27431#27956#0" expanded="false" />
+            <element signature="e#27419#27944#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -631,7 +574,39 @@
           <caret line="187" column="0" selection-start-line="168" selection-start-column="0" selection-end-line="187" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#27413#27866#0" expanded="false" />
+            <element signature="e#27383#27836#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/IndexAWSLogs.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#27419#27944#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/2015 Oct/LogsToElasticsearch_iot.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1440">
+          <caret line="74" column="49" selection-start-line="74" selection-start-column="42" selection-end-line="74" selection-end-column="49" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/IndexSensorData.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3740">
+          <caret line="187" column="0" selection-start-line="168" selection-start-column="0" selection-end-line="187" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#27383#27836#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -649,7 +624,7 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#27413#27866#0" expanded="false" />
+            <element signature="e#27383#27836#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -703,17 +678,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/IndexAWSLogs.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="13800">
-          <caret line="708" column="31" selection-start-line="708" selection-start-column="31" selection-end-line="708" selection-end-column="31" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#27431#27956#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ExpandSensorData.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-219">
@@ -760,11 +724,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/IndexSensorData.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="80" column="44" selection-start-line="0" selection-start-column="0" selection-end-line="708" selection-end-column="31" />
+        <state relative-caret-position="242">
+          <caret line="480" column="32" selection-start-line="0" selection-start-column="0" selection-end-line="708" selection-end-column="31" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#27413#27866#0" expanded="false" />
+            <element signature="e#27383#27836#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/IndexAWSLogs.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="59">
+          <caret line="676" column="3" selection-start-line="676" selection-start-column="3" selection-end-line="676" selection-end-column="3" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#27419#27944#0" expanded="false" />
           </folding>
         </state>
       </provider>

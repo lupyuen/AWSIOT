@@ -91,7 +91,7 @@ function processLogs(url, tags, awslogsData, callback) {
     //  Post JSON messages to Sumo Logic.
     postLogsToSumoLogic(url, records, tags, (error, result) => {
         if (error) {
-            console.error('IndexSensorData Error: ', JSON.stringify(error, null, 2));
+            console.error('IndexSensorData Error: ', JSON.stringify(error));
             //if (failedItems && failedItems.length > 0)
             //console.log('Failed Items: ', JSON.stringify(failedItems, null, 2));
             return callback(error);
@@ -108,7 +108,7 @@ function getDevice(input) {
     let device = 'Unknown';
     let topic = null;
     if (input.topic) topic = input.topic;
-    else if (input.input.topic) topic = input.input.topic;
+    else if (input.input && input.input.topic) topic = input.input.topic;
     if (topic) {
         //  We split the topic to get the device name.  The topic looks like "$aws/things/g88pi/shadow/update/accepted"
         let topicArray = topic.split('/');
@@ -122,7 +122,7 @@ function getDevice(input) {
 
 function processSensorData(input, context) {
     //  Format the sensor data into a Sumo Logic update request.
-    console.log(JSON.stringify({input: input}, null, 2)); ////
+    console.log(JSON.stringify({input: input})); ////
     let extractedFields = {};
     let action = '';
     let device = getDevice(input);
@@ -200,7 +200,7 @@ function transformLog(payload) {
         parseIoTFields(logEvent);
         let source = buildSource(logEvent.message, logEvent.extractedFields);
         //source['id'] = logEvent.id;  //  Ignore ID because it is very long.
-        console.log(`transformLog: ${logEvent.message} =>\n${JSON.stringify(source, null, 2)}`);  ////
+        console.log(`transformLog: ${logEvent.message} =>\n${JSON.stringify(source)}`);  ////
         bulkRequestBody += JSON.stringify(source) + '\n';
     });
     return bulkRequestBody;
@@ -235,7 +235,7 @@ function buildSource(message, extractedFields) {
 function parseIoTFields(logEvent) {
     // logevent.extractedFields.data contains "EVENT:UpdateThingShadow TOPICNAME:$aws/things/g88pi/shadow/update THINGNAME:g88pi"
     // We extract the fields.  Do the same for logevent.extractedFields.event.  Also we remove "TRACEID:", "PRINCIPALID:", "EVENT:" from the existing fields.
-    //console.log("parseIoTFields logEvent=", JSON.stringify(logEvent, null, 2));
+    //console.log("parseIoTFields logEvent=", JSON.stringify(logEvent));
     let fields = logEvent.extractedFields;
     //  Parse the message field.
     if (logEvent.message) parseIoTData(fields, logEvent.message);
@@ -444,7 +444,7 @@ function postSensorDataToSlack(device, sensorData, callback) {
     //  device is assumed to begin with the group name. sensorData contains
     //  the sensor values.
     if (!device) return;
-    console.log(JSON.stringify({sensorData: sensorData}, null, 2)); ////
+    console.log(JSON.stringify({sensorData: sensorData})); ////
 
     let channel = '';
     let pos = device.indexOf('_');
