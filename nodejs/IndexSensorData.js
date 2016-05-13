@@ -101,11 +101,13 @@ function processLogs(url, tags, awslogsData, callback) {
     });
 }
 
+let default_device = 'Unknown';
+
 function getDevice(input) {
     //  Get the device name.
     if (input.device)
         return input.device;
-    let device = 'Unknown';
+    let device = default_device;
     let topic = null;
     if (input.topic) topic = input.topic;
     else if (input.input && input.input.topic) topic = input.input.topic;
@@ -117,7 +119,22 @@ function getDevice(input) {
             console.log(`device=${device}`);
         }
     }
+    //  If this is a Slack message, get the device name from the channel.
+    //  Use the same device name for the rest of the log file.
+    if (device == 'Unknown' && input.channel_name) {
+        default_device = mapChannelToDevice(input.channel_name);
+        device = default_device;
+    }
     return device;
+}
+
+function mapChannelToDevice(channel) {
+    //  Map the Slack channel to device name.  e.g. g88a will return g88pi
+    for (let key in replaceSlackChannels) {
+        if (replaceSlackChannels[key] == channel)
+            return key + 'pi';
+    }
+    return channel + 'pi';
 }
 
 function processSensorData(input, context) {

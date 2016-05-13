@@ -57,18 +57,18 @@
       <file leaf-file-name="IndexAWSLogs.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/IndexAWSLogs.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="502">
-              <caret line="104" column="28" selection-start-line="0" selection-start-column="0" selection-end-line="740" selection-end-column="31" />
+            <state relative-caret-position="402">
+              <caret line="99" column="38" selection-start-line="0" selection-start-column="0" selection-end-line="757" selection-end-column="31" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
-                <element signature="e#24789#26570#0" expanded="false" />
-                <element signature="e#26614#28047#0" expanded="false" />
-                <element signature="e#28102#30239#0" expanded="false" />
-                <element signature="e#30344#31212#0" expanded="false" />
-                <element signature="e#31336#32353#0" expanded="false" />
-                <element signature="e#31642#32167#0" expanded="false" />
-                <element signature="e#32402#32768#0" expanded="false" />
-                <element signature="e#32791#33277#0" expanded="false" />
+                <element signature="e#25396#27177#0" expanded="false" />
+                <element signature="e#27221#28654#0" expanded="false" />
+                <element signature="e#28709#30846#0" expanded="false" />
+                <element signature="e#30951#31819#0" expanded="false" />
+                <element signature="e#31943#32960#0" expanded="false" />
+                <element signature="e#32249#32774#0" expanded="false" />
+                <element signature="e#33009#33375#0" expanded="false" />
+                <element signature="e#33398#33884#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -78,17 +78,17 @@
         <entry file="file://$PROJECT_DIR$/IndexSensorData.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="699">
-              <caret line="740" column="31" selection-start-line="740" selection-start-column="31" selection-end-line="740" selection-end-column="31" />
+              <caret line="757" column="31" selection-start-line="757" selection-start-column="31" selection-end-line="757" selection-end-column="31" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
-                <element signature="e#24789#26570#0" expanded="false" />
-                <element signature="e#26614#28055#0" expanded="false" />
-                <element signature="e#28110#30247#0" expanded="false" />
-                <element signature="e#30352#31220#0" expanded="false" />
-                <element signature="e#31344#32361#0" expanded="false" />
-                <element signature="e#31650#32175#0" expanded="false" />
-                <element signature="e#32410#32776#0" expanded="false" />
-                <element signature="e#32799#33285#0" expanded="false" />
+                <element signature="e#25396#27177#0" expanded="false" />
+                <element signature="e#27221#28662#0" expanded="false" />
+                <element signature="e#28717#30854#0" expanded="false" />
+                <element signature="e#30959#31827#0" expanded="false" />
+                <element signature="e#31951#32968#0" expanded="false" />
+                <element signature="e#32257#32782#0" expanded="false" />
+                <element signature="e#33017#33383#0" expanded="false" />
+                <element signature="e#33406#33892#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -353,7 +353,7 @@
       <workItem from="1462642444448" duration="3695000" />
       <workItem from="1462756624384" duration="29000" />
       <workItem from="1463147349696" duration="5376000" />
-      <workItem from="1463164663758" duration="2874000" />
+      <workItem from="1463164663758" duration="4230000" />
     </task>
     <task id="LOCAL-00001" summary="Before patching to fix AWS IoT beta SQL">
       <created>1463147533406</created>
@@ -366,7 +366,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="54641000" />
+    <option name="totallyTimeSpent" value="55997000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="118" y="48" width="1468" height="884" extended-state="0" />
@@ -455,7 +455,7 @@
           <properties />
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="37" />
+      <option name="time" value="42" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -471,14 +471,14 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#24789#26570#0" expanded="false" />
-            <element signature="e#26614#28047#0" expanded="false" />
-            <element signature="e#28102#30239#0" expanded="false" />
-            <element signature="e#30344#31212#0" expanded="false" />
-            <element signature="e#31336#32353#0" expanded="false" />
-            <element signature="e#31642#32167#0" expanded="false" />
-            <element signature="e#32402#32768#0" expanded="false" />
-            <element signature="e#32791#33277#0" expanded="false" />
+            <element signature="e#25396#27177#0" expanded="false" />
+            <element signature="e#27221#28654#0" expanded="false" />
+            <element signature="e#28709#30846#0" expanded="false" />
+            <element signature="e#30951#31819#0" expanded="false" />
+            <element signature="e#31943#32960#0" expanded="false" />
+            <element signature="e#32249#32774#0" expanded="false" />
+            <element signature="e#33009#33375#0" expanded="false" />
+            <element signature="e#33398#33884#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -489,14 +489,14 @@
           <caret line="418" column="107" selection-start-line="0" selection-start-column="0" selection-end-line="613" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#24789#26570#0" expanded="false" />
-            <element signature="e#26614#28047#0" expanded="false" />
-            <element signature="e#28102#30239#0" expanded="false" />
-            <element signature="e#30344#31212#0" expanded="false" />
-            <element signature="e#31336#32353#0" expanded="false" />
-            <element signature="e#31642#32167#0" expanded="false" />
-            <element signature="e#32402#32768#0" expanded="false" />
-            <element signature="e#32791#33277#0" expanded="false" />
+            <element signature="e#25396#27177#0" expanded="false" />
+            <element signature="e#27221#28654#0" expanded="false" />
+            <element signature="e#28709#30846#0" expanded="false" />
+            <element signature="e#30951#31819#0" expanded="false" />
+            <element signature="e#31943#32960#0" expanded="false" />
+            <element signature="e#32249#32774#0" expanded="false" />
+            <element signature="e#33009#33375#0" expanded="false" />
+            <element signature="e#33398#33884#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -517,14 +517,14 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#24789#26570#0" expanded="false" />
-            <element signature="e#26614#28055#0" expanded="false" />
-            <element signature="e#28110#30247#0" expanded="false" />
-            <element signature="e#30352#31220#0" expanded="false" />
-            <element signature="e#31344#32361#0" expanded="false" />
-            <element signature="e#31650#32175#0" expanded="false" />
-            <element signature="e#32410#32776#0" expanded="false" />
-            <element signature="e#32799#33285#0" expanded="false" />
+            <element signature="e#25396#27177#0" expanded="false" />
+            <element signature="e#27221#28662#0" expanded="false" />
+            <element signature="e#28717#30854#0" expanded="false" />
+            <element signature="e#30959#31827#0" expanded="false" />
+            <element signature="e#31951#32968#0" expanded="false" />
+            <element signature="e#32257#32782#0" expanded="false" />
+            <element signature="e#33017#33383#0" expanded="false" />
+            <element signature="e#33406#33892#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -535,14 +535,14 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#24789#26570#0" expanded="false" />
-            <element signature="e#26614#28047#0" expanded="false" />
-            <element signature="e#28102#30239#0" expanded="false" />
-            <element signature="e#30344#31212#0" expanded="false" />
-            <element signature="e#31336#32353#0" expanded="false" />
-            <element signature="e#31642#32167#0" expanded="false" />
-            <element signature="e#32402#32768#0" expanded="false" />
-            <element signature="e#32791#33277#0" expanded="false" />
+            <element signature="e#25396#27177#0" expanded="false" />
+            <element signature="e#27221#28654#0" expanded="false" />
+            <element signature="e#28709#30846#0" expanded="false" />
+            <element signature="e#30951#31819#0" expanded="false" />
+            <element signature="e#31943#32960#0" expanded="false" />
+            <element signature="e#32249#32774#0" expanded="false" />
+            <element signature="e#33009#33375#0" expanded="false" />
+            <element signature="e#33398#33884#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -563,60 +563,14 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#24789#26570#0" expanded="false" />
-            <element signature="e#26614#28047#0" expanded="false" />
-            <element signature="e#28102#30239#0" expanded="false" />
-            <element signature="e#30344#31212#0" expanded="false" />
-            <element signature="e#31336#32353#0" expanded="false" />
-            <element signature="e#31642#32167#0" expanded="false" />
-            <element signature="e#32402#32768#0" expanded="false" />
-            <element signature="e#32791#33277#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/2015 Oct/LogsToElasticsearch_iot.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1440">
-          <caret line="74" column="49" selection-start-line="74" selection-start-column="42" selection-end-line="74" selection-end-column="49" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/IndexSensorData.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3740">
-          <caret line="187" column="0" selection-start-line="168" selection-start-column="0" selection-end-line="187" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#24789#26570#0" expanded="false" />
-            <element signature="e#26614#28055#0" expanded="false" />
-            <element signature="e#28110#30247#0" expanded="false" />
-            <element signature="e#30352#31220#0" expanded="false" />
-            <element signature="e#31344#32361#0" expanded="false" />
-            <element signature="e#31650#32175#0" expanded="false" />
-            <element signature="e#32410#32776#0" expanded="false" />
-            <element signature="e#32799#33285#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/IndexAWSLogs.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#24789#26570#0" expanded="false" />
-            <element signature="e#26614#28047#0" expanded="false" />
-            <element signature="e#28102#30239#0" expanded="false" />
-            <element signature="e#30344#31212#0" expanded="false" />
-            <element signature="e#31336#32353#0" expanded="false" />
-            <element signature="e#31642#32167#0" expanded="false" />
-            <element signature="e#32402#32768#0" expanded="false" />
-            <element signature="e#32791#33277#0" expanded="false" />
+            <element signature="e#25396#27177#0" expanded="false" />
+            <element signature="e#27221#28654#0" expanded="false" />
+            <element signature="e#28709#30846#0" expanded="false" />
+            <element signature="e#30951#31819#0" expanded="false" />
+            <element signature="e#31943#32960#0" expanded="false" />
+            <element signature="e#32249#32774#0" expanded="false" />
+            <element signature="e#33009#33375#0" expanded="false" />
+            <element signature="e#33398#33884#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -637,14 +591,60 @@
           <caret line="187" column="0" selection-start-line="168" selection-start-column="0" selection-end-line="187" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#24789#26570#0" expanded="false" />
-            <element signature="e#26614#28055#0" expanded="false" />
-            <element signature="e#28110#30247#0" expanded="false" />
-            <element signature="e#30352#31220#0" expanded="false" />
-            <element signature="e#31344#32361#0" expanded="false" />
-            <element signature="e#31650#32175#0" expanded="false" />
-            <element signature="e#32410#32776#0" expanded="false" />
-            <element signature="e#32799#33285#0" expanded="false" />
+            <element signature="e#25396#27177#0" expanded="false" />
+            <element signature="e#27221#28662#0" expanded="false" />
+            <element signature="e#28717#30854#0" expanded="false" />
+            <element signature="e#30959#31827#0" expanded="false" />
+            <element signature="e#31951#32968#0" expanded="false" />
+            <element signature="e#32257#32782#0" expanded="false" />
+            <element signature="e#33017#33383#0" expanded="false" />
+            <element signature="e#33406#33892#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/IndexAWSLogs.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#25396#27177#0" expanded="false" />
+            <element signature="e#27221#28654#0" expanded="false" />
+            <element signature="e#28709#30846#0" expanded="false" />
+            <element signature="e#30951#31819#0" expanded="false" />
+            <element signature="e#31943#32960#0" expanded="false" />
+            <element signature="e#32249#32774#0" expanded="false" />
+            <element signature="e#33009#33375#0" expanded="false" />
+            <element signature="e#33398#33884#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/2015 Oct/LogsToElasticsearch_iot.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1440">
+          <caret line="74" column="49" selection-start-line="74" selection-start-column="42" selection-end-line="74" selection-end-column="49" />
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/IndexSensorData.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3740">
+          <caret line="187" column="0" selection-start-line="168" selection-start-column="0" selection-end-line="187" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#25396#27177#0" expanded="false" />
+            <element signature="e#27221#28662#0" expanded="false" />
+            <element signature="e#28717#30854#0" expanded="false" />
+            <element signature="e#30959#31827#0" expanded="false" />
+            <element signature="e#31951#32968#0" expanded="false" />
+            <element signature="e#32257#32782#0" expanded="false" />
+            <element signature="e#33017#33383#0" expanded="false" />
+            <element signature="e#33406#33892#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -662,14 +662,14 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#24789#26570#0" expanded="false" />
-            <element signature="e#26614#28055#0" expanded="false" />
-            <element signature="e#28110#30247#0" expanded="false" />
-            <element signature="e#30352#31220#0" expanded="false" />
-            <element signature="e#31344#32361#0" expanded="false" />
-            <element signature="e#31650#32175#0" expanded="false" />
-            <element signature="e#32410#32776#0" expanded="false" />
-            <element signature="e#32799#33285#0" expanded="false" />
+            <element signature="e#25396#27177#0" expanded="false" />
+            <element signature="e#27221#28662#0" expanded="false" />
+            <element signature="e#28717#30854#0" expanded="false" />
+            <element signature="e#30959#31827#0" expanded="false" />
+            <element signature="e#31951#32968#0" expanded="false" />
+            <element signature="e#32257#32782#0" expanded="false" />
+            <element signature="e#33017#33383#0" expanded="false" />
+            <element signature="e#33406#33892#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -769,18 +769,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/IndexAWSLogs.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="502">
-          <caret line="104" column="28" selection-start-line="0" selection-start-column="0" selection-end-line="740" selection-end-column="31" />
+        <state relative-caret-position="402">
+          <caret line="99" column="38" selection-start-line="0" selection-start-column="0" selection-end-line="757" selection-end-column="31" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#24789#26570#0" expanded="false" />
-            <element signature="e#26614#28047#0" expanded="false" />
-            <element signature="e#28102#30239#0" expanded="false" />
-            <element signature="e#30344#31212#0" expanded="false" />
-            <element signature="e#31336#32353#0" expanded="false" />
-            <element signature="e#31642#32167#0" expanded="false" />
-            <element signature="e#32402#32768#0" expanded="false" />
-            <element signature="e#32791#33277#0" expanded="false" />
+            <element signature="e#25396#27177#0" expanded="false" />
+            <element signature="e#27221#28654#0" expanded="false" />
+            <element signature="e#28709#30846#0" expanded="false" />
+            <element signature="e#30951#31819#0" expanded="false" />
+            <element signature="e#31943#32960#0" expanded="false" />
+            <element signature="e#32249#32774#0" expanded="false" />
+            <element signature="e#33009#33375#0" expanded="false" />
+            <element signature="e#33398#33884#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -788,17 +788,17 @@
     <entry file="file://$PROJECT_DIR$/IndexSensorData.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="699">
-          <caret line="740" column="31" selection-start-line="740" selection-start-column="31" selection-end-line="740" selection-end-column="31" />
+          <caret line="757" column="31" selection-start-line="757" selection-start-column="31" selection-end-line="757" selection-end-column="31" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#24789#26570#0" expanded="false" />
-            <element signature="e#26614#28055#0" expanded="false" />
-            <element signature="e#28110#30247#0" expanded="false" />
-            <element signature="e#30352#31220#0" expanded="false" />
-            <element signature="e#31344#32361#0" expanded="false" />
-            <element signature="e#31650#32175#0" expanded="false" />
-            <element signature="e#32410#32776#0" expanded="false" />
-            <element signature="e#32799#33285#0" expanded="false" />
+            <element signature="e#25396#27177#0" expanded="false" />
+            <element signature="e#27221#28662#0" expanded="false" />
+            <element signature="e#28717#30854#0" expanded="false" />
+            <element signature="e#30959#31827#0" expanded="false" />
+            <element signature="e#31951#32968#0" expanded="false" />
+            <element signature="e#32257#32782#0" expanded="false" />
+            <element signature="e#33017#33383#0" expanded="false" />
+            <element signature="e#33406#33892#0" expanded="false" />
           </folding>
         </state>
       </provider>
