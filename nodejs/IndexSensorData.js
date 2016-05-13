@@ -71,14 +71,14 @@ exports.handler = (input, context, callback) => {
     }
     else {
         //  Index the sensor data.
+        //  Don't index response to set desired state.
+        if (input.state && input.state.desired) return callback(null, 'Ignoring response to set desired state');
         //  This Sumo Logic Collector URL is unique to us: Sensor Data Logs
         const url = 'https://endpoint1.collection.us2.sumologic.com/receiver/v1/http/ZaVnC4dhaV2spqT2JdXJBek02aporY-ujTTn2eTcc3XfNomF_U94P6-YIpFZ6FIyAJqG9rNtzNK0JmP13upzBiH8FUfaSMyQmXqgfMdfSGazF6czrBHHxw==';
         const ret = processSensorData(input, context);
         const device = ret.device;
         const actionCount = ret.actionCount;
         const awslogsData = ret.awslogsData;
-        //  Don't index response to set desired state.
-        if (actionCount == 2) return callback(null, 'Ignoring response to set desired state');
         return processLogs(url, device, awslogsData, callback);
     }
 };
