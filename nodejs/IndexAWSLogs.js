@@ -119,12 +119,21 @@ function getDevice(input) {
 
 function processSensorData(input, context) {
     //  Format the sensor data into a Sumo Logic update request.
+    console.log(JSON.stringify({input: input}, null, 2)); ////
     let extractedFields = {};
     let action = '';
     let device = getDevice(input);
     extractedFields.device = device;
-    //  If sensor data is located in the field "reported", move them up to top level.
-    if (input.reported) {
+    //  For AWS IoT 2016-03-23-beta, sensor data is located in the field "input->state->reported".  We move them up to top level.
+    if (input.input && input.input.state && input.input.state.reported) {
+        for (let key in input.input.state.reported)
+            input[key] = input.input.state.reported[key];
+        delete input.input.state.reported;
+        delete input.input.state;
+        delete input.input;
+    }
+    //  For AWS IoT 2015-10-08, sensor data is located in the field "reported".  We move them up to top level.
+    else if (input.reported) {
         for (let key in input.reported)
             input[key] = input.reported[key];
         delete input.reported;
@@ -426,6 +435,8 @@ function postSensorDataToSlack(device, sensorData, callback) {
     //  device is assumed to begin with the group name. sensorData contains
     //  the sensor values.
     if (!device) return;
+    console.log(JSON.stringify({sensorData: sensorData}, null, 2)); ////
+
     let channel = '';
     let pos = device.indexOf('_');
     if (pos > 0)
@@ -573,23 +584,64 @@ function isProduction() {
  };
  */
 
-//  Sensor Data
-const test_input = {
-    "timestamp": 1462090920,
-    "version": 1227,
-    "metadata": {
-        "timestamp": 1462090920
-    },
-    "reported": {
-        "sound_level": 324,
-        "timestamp": "2016-05-01T16:22:00.347743",
-        "humidity": 45,
-        "temperature": 33,
-        "light_level": 792
-    },
-    "topic": "$aws/things/g88pi/shadow/update/accepted",
-    "traceId": "4fb3ed68-ec3f-42b6-a202-4207c9c55a2a"
-};
+//  Sensor Data for AWS IoT version 2016-03-23-beta.  Note the new "input->state".
+const test_input =
+{
+    "input": {
+        "state": {
+            "reported": {
+                "humidity": 44,
+                "timestamp": "2016-05-09T07:58:29.138750",
+                "temperature": 31.1,
+                "sound_level": 334,
+                "light_level": 267
+            }
+        },
+        "metadata": {
+            "reported": {
+                "humidity": {
+                    "timestamp": 1463146990
+                },
+                "timestamp": {
+                    "timestamp": 1463146990
+                },
+                "temperature": {
+                    "timestamp": 1463146990
+                },
+                "sound_level": {
+                    "timestamp": 1463146990
+                },
+                "light_level": {
+                    "timestamp": 1463146990
+                }
+            }
+        },
+        "version": 9139,
+        "timestamp": 1463146990,
+        "topic": "$aws/things/g88pi/shadow/update/accepted",
+        "traceId": "33e6c7e3-ba1e-48fe-a535-98ff5b37834f"
+    }
+}
+
+//  Sensor Data for AWS IoT version 2015-10-08
+/*
+ const test_input = {
+ "timestamp": 1462090920,
+ "version": 1227,
+ "metadata": {
+ "timestamp": 1462090920
+ },
+ "reported": {
+ "sound_level": 324,
+ "timestamp": "2016-05-01T16:22:00.347743",
+ "humidity": 45,
+ "temperature": 33,
+ "light_level": 792
+ },
+ "topic": "$aws/things/g88pi/shadow/update/accepted",
+ "traceId": "4fb3ed68-ec3f-42b6-a202-4207c9c55a2a"
+ };
+ */
 
 const test_context = {
     "awsRequestId": "98dc0220-0eba-11e6-b84a-f75570995fc5",
