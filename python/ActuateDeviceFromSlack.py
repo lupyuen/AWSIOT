@@ -42,7 +42,7 @@ def lambda_handler(event, context):
         if replace_channel == channel:
             device = original_channel
             break
-    device = device + "_pi"
+    device = device + "pi"
 
     # Compose the desired state that we will send to SetDesiredState via Kinesis.
     desired_state = {

@@ -1,17 +1,18 @@
-from __future__ import print_function
-import boto3, json, datetime, urllib2, os
-
-print('Loading function')
-
-# List of device names and the replacement Slack channels for the device.
-# Used if the channel name is already taken up.  Sync this with ActuateDeviceFromSlack and
-# SendSensorDataToElasticsearch.
-replaceSlackChannels = {
-    "g88": "g88a"
+'''
+This lambda function sets the desired state of a device and sensor (attribute).  The input looks like:
+{
+  "device": "g88pi",
+  "attribute": "led",
+  "value": "flash3"
+}
+Or for Slack commands:
+{
+  "channel_name": "g88a",
+  "user_name": "lupyuen",
+  "text": "led+flash1"
 }
 
-'''
-Log on to AWS as lambda_iot_user.  lambda_iot_user must be attached to policy LambdaExecuteIoTUpdate, defined as:
+This lambda function must be run as role lambda_iot.  lambda_iot must be attached to policy LambdaExecuteIoTUpdate, defined as:
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -49,6 +50,19 @@ Log on to AWS as lambda_iot_user.  lambda_iot_user must be attached to policy La
     ]
 }
 '''
+from __future__ import print_function
+import boto3, json, datetime, urllib2, os
+
+print('Loading function')
+
+# List of device names and the replacement Slack channels for the device.
+# Used if the channel name is already taken up.  Sync this with ActuateDeviceFromSlack and
+# SendSensorDataToElasticsearch.
+replaceSlackChannels = {
+    "g88": "g88a"
+}
+
+# Log on to AWS as lambda_iot_user.  lambda_iot_user must be attached to policy LambdaExecuteIoTUpdate, defined above.
 aws_session = boto3.Session(aws_access_key_id='AKIAJE7ODGU4E5RJQC5Q',
                             aws_secret_access_key='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',
                             region_name='us-west-2')
@@ -57,6 +71,18 @@ aws_session = boto3.Session(aws_access_key_id='AKIAJE7ODGU4E5RJQC5Q',
 def lambda_handler(event, context):
     # Look for the device with the provided device ID and set its desired state.
     print("Received event: " + json.dumps(event, indent=2))
+    if event.get("channel_name") is not None:
+        # This is a Slack message.
+        return slack_handler(event, context)
+    else:
+        # This is a REST call.
+        return rest_handler(event, context)
+
+
+def rest_handler(event, context):
+    # Handle a REST command received from the REST channels except Slack.
+    # Look for the device with the provided device ID and set its desired state.
+    print("Received REST event: " + json.dumps(event, indent=2))
     device = event.get("device")
     attribute = event.get("attribute")
     value = event.get("value")
@@ -66,6 +92,45 @@ def lambda_handler(event, context):
         event["timestamp"] = timestamp
     set_desired_state(device, attribute, value, timestamp)
     return "OK"
+
+
+def slack_handler(event, context):
+    # Handle a user command received from Slack.
+    # Look for the device with the provided device ID and set its desired state.
+    print("Received Slack event: " + json.dumps(event, indent=2))
+
+    # Don't respond to a message that this function has posted previously,
+    # because we will be stuck in a loop.
+    if event.get("user_name") == "slackbot":
+        print("Ignoring my own message")
+        return {}
+
+    # We will receive a command that looks like "led+flash1", because space gets encoded to +.
+    # We split the command by +.
+    user_command = event.get("text")
+    user_command_split = user_command.split("+")
+    if len(user_command_split) != 2:
+        print("Bad command")
+        return {"text": "Sorry I don't understand your command. " +
+                        "Please enter a valid command like 'led flash1'."}
+
+    # Derive the device name from the channel, e.g. channel g88 refers to device g88pi.
+    # Also handle channels that have been renamed.
+    channel = event.get("channel_name")
+    device = channel
+    for original_channel in replaceSlackChannels:
+        replace_channel = replaceSlackChannels[original_channel]
+        if replace_channel == channel:
+            device = original_channel
+            break
+    device = device + "pi"
+
+    # Pass to the REST function to handle.
+    event["device"] = device
+    event["attribute"], event["value"] = user_command_split  # e.g. attribute=led, value=flash1
+    event["timestamp"] = None  # Remove the timestamp.
+    result = rest_handler(event, context)
+    return {}
 
 
 # Update the thing's desired state.
@@ -194,11 +259,43 @@ def post_to_slack(device, textOrAttachments):
 
 # The main program starts here.  If this program is not started via AWS Lambda, we execute a test case.
 if os.environ.get("AWS_LAMBDA_FUNCTION_NAME") is None:
-    # Test Case: Set the LED attribute of the device.
-    event0 = {
+    # Test Case 1: Set the LED attribute of the device when called through API Gateway / REST service.
+    event1 = {
         "device": "g88pi",
         "attribute": "led",
         "value": "on"
     }
+    # Test Case 2: Same as Test Case 1, except that the command is triggered by user typing a Slack command.
+    event2 = {
+        "channel_name": "g88a",
+        "user_name": "lupyuen",
+        "text": "led+flash1"
+    }
+    # Test Case 3: Same as Test Case 2.
+    event3 = {
+        "http-method": "POST",
+        "text": "led+flash4",
+        "api-key": "",
+        "team_id": "T09SXGWKG",
+        "team_domain": "tp-iot",
+        "api-id": "1xt9kv75ii",
+        "user-arn": "",
+        "account-id": "",
+        "user_id": "U09SXEZ60",
+        "channel_id": "C0DBYP4LQ",
+        "source-ip": "52.90.33.223",
+        "user-agent": "Slackbot 1.0 (+https://api.slack.com/robots)",
+        "resource-path": "/ActuateDeviceFromSlack",
+        "user_name": "lupyuen",
+        "timestamp": "1463173799.000071",
+        "user": "",
+        "resource-id": "6kilk3",
+        "stage": "prod",
+        "request-id": "0d8c5433-194f-11e6-b830-638262ac861f",
+        "caller": "",
+        "channel_name": "g88a",
+        "token": "EaCNnfmwGnnL2E0Bh6CTAH6r",
+        "service_id": "13328414355"
+    }
     # Start the lambda function.
-    lambda_handler(event0, {})
+    lambda_handler(event2, {})
