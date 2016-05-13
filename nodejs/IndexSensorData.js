@@ -103,12 +103,15 @@ function processLogs(url, tags, awslogsData, callback) {
 
 function getDevice(input) {
     //  Get the device name.
-    let device = 'Unknown';
     if (input.device)
-        device = input.device;
-    else if (input.topic) {
+        return input.device;
+    let device = 'Unknown';
+    let topic = null;
+    if (input.topic) topic = input.topic;
+    else if (input.input.topic) topic = input.input.topic;
+    if (topic) {
         //  We split the topic to get the device name.  The topic looks like "$aws/things/g88pi/shadow/update/accepted"
-        let topicArray = input.topic.split('/');
+        let topicArray = topic.split('/');
         if (topicArray.length >= 3) {
             device = topicArray[2];
             console.log(`device=${device}`);
@@ -155,7 +158,8 @@ function processSensorData(input, context) {
         sensorData[key] = value;
         //  If the value is numeric, send the metric to CloudWatch.
         if (key != 'version' && !isNaN(value))
-            writeMetricToCloudWatch(device, key, value);
+            try { writeMetricToCloudWatch(device, key, value) }
+            catch(err) { console.error(err, err.stack); }
     }
     if (!extractedFields.event) extractedFields.event = 'IndexSensorData';
 
