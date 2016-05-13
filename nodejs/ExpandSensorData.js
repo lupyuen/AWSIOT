@@ -32,8 +32,7 @@ let docClient = new AWS.DynamoDB.DocumentClient({region: 'us-west-2'});
 exports.handler = (event, context, callback) => {
     //console.log('Received event:', JSON.stringify(event, null, 2));
     event.Records.forEach((record) => {
-        console.log(record.eventID);
-        console.log(record.eventName);
+        console.log({ eventID: record.eventID, eventName: record.eventName });
         //console.log('DynamoDB Record: %j', record.dynamodb);
 
         //  Skip if this is not an Insert event.
@@ -45,13 +44,20 @@ exports.handler = (event, context, callback) => {
         const table = source_split[1];
 
         //  Extract the fields.
-        const update = record.dynamodb; if (!update) return;
-        const keys = update.Keys;  if (!keys) return;
-        const timestamp = getDynamoValue(keys.timestamp);  if (!timestamp) return;
+        const update = record.dynamodb; if (!update) return console.log('Skipping record, missing record.dynamodb');
+        const keys = update.Keys;  if (!keys) return console.log('Skipping record, missing record.dynamodb.Keys');
+        const timestamp = getDynamoValue(keys.timestamp);  if (!timestamp) return console.log('Skipping record, missing record.dynamodb.Keys.timestamp');
         const sensor = getDynamoValue(keys.sensor);
-        const image = update.NewImage;  if (!image) return;
-        const payload = getDynamoValue(image.payload); if (!payload) return;
-        const reported = payload.reported; if (!reported) return;
+        const image = update.NewImage;  if (!image) return console.log('Skipping record, missing record.dynamodb.NewImage');
+        console.log({image});
+        const payload = getDynamoValue(image.payload); if (!payload) return console.log('Skipping record, missing record.dynamodb.NewImage.payload');
+        //  For AWS IoT 2016-03-23-beta, sensor data is located in the field
+        //  "state->reported" or "input->state->reported".
+        //  For AWS IoT 2015-10-08, sensor data is located in the field "reported".
+        let reported = payload.reported;
+        if (payload.state && payload.state.reported) reported = payload.state.reported;
+        else if (payload.input && payload.input.state && payload.input.state.reported) reported = payload.input.state.reported;
+        if (!reported) return console.log('Skipping record, missing reported state');
 
         let item = {
             timestamp: timestamp,
