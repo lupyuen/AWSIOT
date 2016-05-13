@@ -1,5 +1,6 @@
 from __future__ import print_function
 import boto3, json, ast, datetime, sys, os, hashlib, hmac, urllib2, base64, pickle
+
 print('Loading function')
 
 # List of device names and the replacement Slack channels for the device.
@@ -7,15 +8,15 @@ print('Loading function')
 # SendSensorDataToElasticsearch.
 replaceSlackChannels = {
     "g16-pi": "g16",
-    "g16p-pi": "g16",
+    "g16b-pi": "g16",
     "g29": "g29a",
     "g88": "g88a"
 }
 
 # Log on to AWS as lambda_iot_user.
 aws_session = boto3.Session(aws_access_key_id='AKIAIAAXOWVF3FX2XBZA',
-    aws_secret_access_key='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',
-    region_name='us-west-2')
+                            aws_secret_access_key='ZF9kDr50UpxotuDvtpITrEP7vjJkwowSEl5szKO0',
+                            region_name='us-west-2')
 # Get AWS S3 client.
 s3_client = aws_session.client('s3')
 
@@ -55,14 +56,14 @@ def set_desired_state(device2, attribute2, value2, timestamp2):
     print("update_thing_shadow: ", response)
     # Check the server response for success/failure.
     if str(response).find("'HTTPStatusCode': 200") > 0:
-        slackResult = { "color": "good",
-            "title": "Device has set desired state successfully" }
+        slackResult = {"color": "good",
+                       "title": "Device has set desired state successfully"}
     else:
-        slackResult = { "color": "danger",
-            "title": "Error: Device failed to set desired state" }
+        slackResult = {"color": "danger",
+                       "title": "Error: Device failed to set desired state"}
     # Post the result to Slack.
     slackResult["fallback"] = slackResult["title"]
-    post_to_slack(device2, [ slackResult ])
+    post_to_slack(device2, [slackResult])
     return response
 
 
@@ -96,7 +97,7 @@ def post_state_to_slack(device, state):
         "color": "warning",
         "title": "Setting " + kind + " state",
         "text": ":open_file_folder: _state:_ :open_file_folder: _" + kind + ":_\n" + \
-            "_:wavy_dash::wavy_dash::wavy_dash::wavy_dash::wavy_dash::wavy_dash::wavy_dash::wavy_dash::wavy_dash:_",
+                "_:wavy_dash::wavy_dash::wavy_dash::wavy_dash::wavy_dash::wavy_dash::wavy_dash::wavy_dash::wavy_dash:_",
         "fields": fields
     }
     post_to_slack(device, [attachment])
@@ -141,4 +142,3 @@ def post_to_slack(device, textOrAttachments):
         print("error = " + error_content)
 
 
-    

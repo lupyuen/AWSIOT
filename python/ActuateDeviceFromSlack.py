@@ -9,7 +9,7 @@ import boto3
 print('Loading function...')
 
 # List of device names and the replacement Slack channels for the device.
-# Used if the channel name is already taken up.  Sync this with SetDesiredState and SendSensorDataToElasticsearch.
+# Used if the channel name is already taken up.  Sync this with SetDesiredState.
 replaceSlackChannels = {
     "g88": "g88a"
 }

@@ -14,8 +14,8 @@ import sys, os, datetime, hashlib, hmac, urllib2, json, base64, pickle
 # SendSensorDataToElasticsearch.
 replaceSlackChannels = {
     "g16-pi": "g16",
-    "g16p-pi": "g16",
-    "g29": "g29a",
+    "g16b-pi": "g16",
+    "g28-pi": "g28",
     "g88": "g88a"
 }
 
