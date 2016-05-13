@@ -230,7 +230,7 @@ def post_to_slack(device, action):
         result2 = urllib2.urlopen(request).read()
         print("result = " + result2)
         return result2
-    except urllib2.HTTPError, error:
+    except error:
         # Show the error.
         error_content = error.read()
         print("error = " + error_content)

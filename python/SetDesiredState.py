@@ -1,306 +1,17 @@
-#!/usr/bin/env python
+from __future__ import print_function
+import boto3, json, datetime, urllib2, os
 
-# This program tells AWS IoT the desired state of our device. It sends a REST request to AWS IoT over HTTPS.
-# The program here uses digital signatures to sign the REST request so that the AWS IoT server can authenticate us.
-# This program expects 3 parameters from the AWS Lambda event:
-#   device: Name of device, e.g. g88_pi
-#   attribute: Name of actuator, e.g. led
-#   value: Desired state of actuator, e.g. on
-
-import sys, os, datetime, hashlib, hmac, urllib2, json, base64, pickle
+print('Loading function')
 
 # List of device names and the replacement Slack channels for the device.
 # Used if the channel name is already taken up.  Sync this with ActuateDeviceFromSlack and
 # SendSensorDataToElasticsearch.
 replaceSlackChannels = {
-    "g16-pi": "g16",
-    "g16b-pi": "g16",
-    "g28-pi": "g28",
     "g88": "g88a"
 }
 
-# TODO: Name of our Raspberry Pi, also known as our "Thing Name".  Used only when running from command-line.
-deviceName = "g88_pi"
-
-
-def lambda_handler(event, context):
-    # This is the main logic of the program. We construct a JSON payload to tell AWS IoT to set our device's desired
-    # state. Then we wrap the JSON payload as a REST request and send to AWS IoT over HTTPS. The REST request needs
-    # to be signed so that the AWS IoT server can authenticate us. This code is written as an AWS Lambda handler so
-    # that we can run this code on the command line as well as AWS Lambda.
-    print("AWS Lambda event: " + json.dumps(event, indent=4))
-
-    try:
-        # We want to handle 3 types of input: Kinesis, IoT Rule and REST
-        if event.get('Records') is not None:
-            # If Kinesis, get the batch of records. Kinesis supports multiple records.
-            records = event.get('Records')
-        else:
-            # If IoT Rule or REST, we should expect only 1 input record.
-            records = [event]
-
-        # We loop and process every record received.
-        for record in records:
-
-            # Kinesis data is encoded with Base-64 so we need to decode.
-            if record.get('kinesis') is not None:
-                record = json.loads(base64.b64decode(record['kinesis']['data']))
-                print("Decoded payload from Kinesis: " + json.dumps(record, indent=2))
-
-            # Get the device, attribute and value parameters from the caller (e.g. IoT Rule).
-            device = record.get("device")
-            attribute = record.get("attribute")
-            value = record.get("value")
-
-            # If the parameters were not provided, we stop.
-            if device is None:
-                raise RuntimeError("Missing parameter for device")
-            if attribute is None:
-                raise RuntimeError("Missing parameter for attribute")
-            if value is None:
-                raise RuntimeError("Missing parameter for value")
-
-            # Construct the JSON payload to set the desired state for our device actuator, e.g. if we desire LED
-            # to turn on, then attribute="led" and value="on"
-            payloadObj = {
-                "state": {
-                    "desired": {
-                        attribute: value,
-                        "timestamp": datetime.datetime.now().isoformat()
-                    }
-                }
-            }
-            payload = json.dumps(payloadObj);
-            print("REST request payload: " + payload)
-            post_state_to_slack(device, payloadObj)
-
-            # Send the "set desired state" request to AWS IoT via a REST request over HTTPS.  We are actually updating
-            # the Thing Shadow, according to AWS IoT terms.
-            result = send_aws_iot_request("POST", device, payload)
-            print("Result of REST request:\n" +
-                  json.dumps(result, indent=4, separators=(',', ': ')))
-            if json.dumps(result).find("metadata") > 0:
-                slackResult = { "color": "good",
-                    "title": "Device has set desired state successfully" }
-            else:
-                slackResult = { "color": "danger",
-                    "title": "Error: Device failed to set desired state" }
-            slackResult["fallback"] = slackResult["title"]
-            post_to_slack(device, [ slackResult ])
-
-    except:
-        # In case of error, show the exception.
-        print('REST request failed')
-        raise
-    else:
-        # If no error, return the result.
-        return result
-    finally:
-        # If any case, display "completed".
-        print('REST request completed')
-
-
-def send_aws_iot_request(method, device_name2, payload2):
-    # Send a REST request to AWS IoT over HTTPS.  Only method "POST" is supported, which will update the Thing Shadow
-    # for the specified device with the specified payload.
-    # This is the access key for user lambda_iot_user.  Somehow we can't sign using the AWS Lambda access key.
-    access_key = 'AKIAIAAXOWVF3FX2XBZA'
-    secret_key = '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'
-    if access_key is None or secret_key is None:
-        print('No access key is available.')
-        sys.exit()
-
-    # Create a date for headers and the credential string
-    t = datetime.datetime.utcnow()
-    amz_date = t.strftime('%Y%m%dT%H%M%SZ')
-    date_stamp = t.strftime('%Y%m%d')  # Date w/o time, used in credential scope
-
-    # ************* TASK 1: CREATE A CANONICAL REQUEST *************
-    # http://docs.aws.amazon.com/general/latest/gr/sigv4-create-canonical-request.html
-
-    # Step 1 is to define the verb (GET, POST, etc.)--already done.
-
-    # Step 2: Create canonical URI--the part of the URI from domain to query string (use '/' if no path)
-    canonical_uri = '/things/' + device_name2 + '/shadow'
-
-    # Step 3: Create the canonical query string.
-    canonical_querystring = ''
-
-    # Step 4: Create the canonical headers. Header names and values must be trimmed and lowercase, and sorted in ASCII
-    # order. Note that there is a trailing \n.  Use AWS command line "aws iot describe-endpoint" to get the address.
-    host = 'A1P01IYM2DOZA0.iot.us-west-2.amazonaws.com'
-    user_agent = "TP-IoT"  # Any value should work.
-    canonical_headers = 'host:' + host + '\n' + \
-                        'user-agent:' + user_agent + '\n' + \
-                        'x-amz-date:' + amz_date + '\n'
-    print("REST request header values to be signed (canonical_headers):\n<<\n" + canonical_headers + ">>\n")
-
-    # Step 5: Create the list of signed headers. This lists the headers in the canonical_headers list, delimited with
-    # ";" and in alpha order. Note: The request can include any headers; canonical_headers and signed_headers include
-    # those that you want to be included in the hash of the request. "Host" and "x-amz-date" are always required. For
-    # IoT, user-agent is also required.
-    signed_headers = 'host;user-agent;x-amz-date'
-    print("REST request header fields to be signed (signed_headers): " + signed_headers)
-
-    # Step 6: Create payload hash. In this example, the payload (body of the request) contains the request parameters.
-    payload_hash = hashlib.sha256(payload2).hexdigest()
-    print("REST payload hash: " + payload_hash)
-
-    # Step 7: Combine elements to create create canonical request
-    canonical_request = method + '\n' + canonical_uri + '\n' + canonical_querystring + '\n' + \
-                        canonical_headers + '\n' + signed_headers + '\n' + payload_hash
-    print("REST request to be signed (canonical_request):\n<<\n" + canonical_request + "\n>>\n")
-
-    # ************* TASK 2: CREATE THE STRING TO SIGN*************
-    # Match the algorithm to the hashing algorithm you use, either SHA-1 or SHA-256 (recommended)
-    region = 'us-west-2'
-    service = 'iotdata'
-    algorithm = 'AWS4-HMAC-SHA256'
-    credential_scope = date_stamp + '/' + region + '/' + service + '/' + 'aws4_request'
-    print("REST credential scope: " + credential_scope)
-    string_to_sign = algorithm + '\n' + amz_date + '\n' + credential_scope + '\n' + \
-                     hashlib.sha256(canonical_request).hexdigest()
-    print("REST request hash to be signed (string_to_sign):\n<<\n" + string_to_sign + "\n>>\n")
-
-    # ************* TASK 3: CALCULATE THE SIGNATURE *************
-    # Create the signing key using the function defined above.
-    signing_key = get_signature_key(secret_key, date_stamp, region, service)
-    # Sign the string_to_sign using the signing_key
-    signature = hmac.new(signing_key, (string_to_sign).encode('utf-8'), hashlib.sha256).hexdigest()
-
-    # ************* TASK 4: ADD SIGNING INFORMATION TO THE REQUEST *************
-    # Put the signature information in a header named Authorization.
-    authorization_header = algorithm + ' ' + 'Credential=' + access_key + '/' + credential_scope + ', ' + \
-                           'SignedHeaders=' + signed_headers + ', ' + 'Signature=' + signature
-    print("REST request authorization header:\n<<\n" + authorization_header.replace(" ", "\n") + "\n>>\n")
-
-    # For AWS IoT, the request should include the following. The headers must be included in the canonical_headers and
-    # signed_headers values, as noted earlier. Order here is not significant.
-    content_type = ""
-    headers = {'Content-Type': content_type,
-               'Host': host,
-               'User-Agent': user_agent,
-               'X-Amz-Date': amz_date,
-               'Authorization': authorization_header}
-    print("REST request header values:\n<<\n" + str(headers).replace(",", ",\n") + "\n>>\n")
-
-    # ************* SEND THE REQUEST *************
-    url = "https://" + host + canonical_uri
-    print("Sending REST request via HTTPS " + method + " to URL " + url + "...")
-    request = urllib2.Request(url, payload2, headers)
-    result2 = urllib2.urlopen(request).read()
-    # Parse the result as JSON and return as a dictionary.
-    return json.loads(result2)
-
-
-def sign(key, msg):
-    # Function for signing a HTTPS request to AWS, so that AWS can authenticate us.  See:
-    # http://docs.aws.amazon.com/general/latest/gr/signature-v4-examples.html#signature-v4-examples-python
-    # Return the signature of the message, signed with the specified key.
-    return hmac.new(key, msg.encode("utf-8"), hashlib.sha256).digest()
-
-
-def get_signature_key(key, date_stamp, region_name, service_name):
-    # Also used for signing the HTTPS request to AWS.
-    # Return the key to be used for signing the request.
-    kdate = sign(('AWS4' + key).encode('utf-8'), date_stamp)
-    kregion = sign(kdate, region_name)
-    kservice = sign(kregion, service_name)
-    ksigning = sign(kservice, 'aws4_request')
-    return ksigning
-
-
-def post_state_to_slack(device, state):
-    # Post the set desired/reported state payload to the Slack channel of the
-    # same name as the device e.g. #g88.
-    state2 = state.get("state")
-    if state2 is None:
-        return
-    # Check whether we are setting the desired or reported state.
-    kind = None
-    state3 = state2.get("desired")
-    if state3 is not None:
-        kind = "desired"
-    else:
-        state3 = state2.get("reported")
-        if state3 is not None:
-            kind = "reported"
-    if kind is None:
-        return
-    fields = []
-    for key in state3:
-        fields = fields + [{
-            "title": key + ":",
-            "value": "```" + str(state3[key]) + "```",
-            "short": True
-        }]
-    attachment = {
-        "mrkdwn_in": ["text", "fields"],
-        "fallback": "Setting " + kind + " state: " + json.dumps(state),
-        "color": "warning",
-        "title": "Setting " + kind + " state",
-        "text": ":open_file_folder: _state:_ :open_file_folder: _" + kind + ":_\n" + \
-            "_:wavy_dash::wavy_dash::wavy_dash::wavy_dash::wavy_dash::wavy_dash::wavy_dash::wavy_dash::wavy_dash:_",
-        "fields": fields
-    }
-    post_to_slack(device, [attachment])
-
-def post_to_slack(device, textOrAttachments):
-    # Post a Slack message to the channel of the same name as the device e.g. #g88.
-    # device is assumed to begin with the group name.  action is the message.
-    if device is None:
-        return
-    channel = "g88a"
-    # If device is g88_pi, then post to channel #g88.
-    pos = device.find("_")
-    if pos > 0:
-        channel = device[0:pos]
-    # Map the channel name in case the channel name is unavailable.
-    if replaceSlackChannels.get(device) is not None:
-        channel = replaceSlackChannels.get(device)
-    elif replaceSlackChannels.get(channel) is not None:
-        channel = replaceSlackChannels.get(channel)
-    # Construct the REST request to Slack.
-    body = {
-        "channel": "#" + channel,  # Public channels always start with #
-        "username": device
-    }
-    # If message is a string, send as text. Else assume it's in Slack Attachment format.
-    if len(textOrAttachments[0]) == 1:
-        body["text"] = textOrAttachments
-    else:
-        body["attachments"] = textOrAttachments
-    print(json.dumps(body, indent=2))
-    url = "https://hooks.slack.com/services/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"
-    try:
-        # Make the REST request to Slack.
-        request = urllib2.Request(url, json.dumps(body))
-        result2 = urllib2.urlopen(request).read()
-        print("result = " + result2)
-        return result2
-    except urllib2.HTTPError, error:
-        # Show the error.
-        error_content = error.read()
-        print("error = " + error_content)
-
-
-# The main program starts here.  If started from a command line, run the lambda function manually.
-if os.environ.get("AWS_LAMBDA_FUNCTION_NAME") is None:
-    # If running on command line, we set the LED attribute of the device.
-    event0 = {
-        "device": deviceName,
-        "attribute": "led",
-        "value": "on"
-    }
-    # Start the lambda function.
-    lambda_handler(event0, {})
-
 '''
-Some of the above signature settings were obtained from capturing the debug output of the AWS command line tool:
-aws --debug --region us-west-2 --profile tp-iot iot-data update-thing-shadow --thing-name g0_temperature_sensor --payload "{ \"state\": {\"desired\": { \"led\": \"on\" } } }"  output.txt && cat output.txt
-aws --debug --endpoint-url http://g89-pi.local --no-verify-ssl --region us-west-2 --profile tp-iot iot-data update-thing-shadow --thing-name g0_temperature_sensor --payload "{ \"state\": {\"desired\": { \"led\": \"on\" } } }"  output.txt && cat output.txt
-
-lambda_iot_user has the following policy:
+Log on to AWS as lambda_iot_user.  lambda_iot_user must be attached to policy LambdaExecuteIoTUpdate, defined as:
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -316,6 +27,7 @@ lambda_iot_user has the following policy:
         {
             "Effect": "Allow",
             "Action": [
+                "iot:GetThingShadow",
                 "iot:UpdateThingShadow"
             ],
             "Resource": [
@@ -337,3 +49,156 @@ lambda_iot_user has the following policy:
     ]
 }
 '''
+aws_session = boto3.Session(aws_access_key_id='AKIAJE7ODGU4E5RJQC5Q',
+                            aws_secret_access_key='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',
+                            region_name='us-west-2')
+
+
+def lambda_handler(event, context):
+    # Look for the device with the provided device ID and set its desired state.
+    print("Received event: " + json.dumps(event, indent=2))
+    device = event.get("device")
+    attribute = event.get("attribute")
+    value = event.get("value")
+    timestamp = event.get("timestamp")
+    if timestamp is None:
+        timestamp = datetime.datetime.now().isoformat()
+        event["timestamp"] = timestamp
+    set_desired_state(device, attribute, value, timestamp)
+    return "OK"
+
+
+# Update the thing's desired state.
+def set_desired_state(device2, attribute2, value2, timestamp2):
+    payload = {
+        "state": {
+            "desired": {
+                attribute2: value2,
+                "timestamp": timestamp2
+            }
+        }
+    }
+    # Post to Slack.
+    post_state_to_slack(device2, payload)
+
+    # Post to AWS.
+    print("\nSending to AWS: " + json.dumps(payload, indent=4, separators=(',', ': ')))
+    iot_client = aws_session.client('iot-data')  # Create a client for AWS IoT Data API.
+    response = iot_client.update_thing_shadow(   #  Update the AWS IoT thing shadow, i.e. set the device state.
+        thingName=device2,
+        payload=json.dumps(payload).encode("utf-8")
+    )
+
+    # Show AWS response.
+    print("\nResponse from AWS update_thing_shadow: ", str(response))
+    if response.get('payload') is not None:
+        payload2 = json.loads(response.get('payload').read().decode("utf-8"))  # Parse payload text to JSON.
+        print("\nResponse Payload: ", json.dumps(payload2, indent=4, separators=(',', ': ')))  # Show formatted JSON.
+
+    # Check the AWS response for success/failure.
+    if str(response).find("'HTTPStatusCode': 200") > 0:
+        slackResult = {"color": "good",
+                       "title": "Device has set desired state successfully"}
+    else:
+        slackResult = {"color": "danger",
+                       "title": "Error: Device failed to set desired state"}
+
+    # Post the result to Slack.
+    slackResult["fallback"] = slackResult["title"]
+    post_to_slack(device2, [slackResult])
+    return response
+
+
+def post_state_to_slack(device, state):
+    # Post the set desired/reported state payload to the Slack channel of the
+    # same name as the device e.g. #g88.
+    state2 = state.get("state")
+    if state2 is None:
+        return
+
+    # Check whether we are setting the desired or reported state.
+    kind = None
+    state3 = state2.get("desired")
+    if state3 is not None:
+        kind = "desired"
+    else:
+        state3 = state2.get("reported")
+        if state3 is not None:
+            kind = "reported"
+    if kind is None:
+        return
+    fields = []
+
+    # Format the message nicely for Slack.
+    for key in state3:
+        fields = fields + [{
+            "title": key + ":",
+            "value": "```" + str(state3[key]) + "```",
+            "short": True
+        }]
+    attachment = {
+        "mrkdwn_in": ["text", "fields"],
+        "fallback": "Setting " + kind + " state: " + json.dumps(state),
+        "color": "warning",
+        "title": "Setting " + kind + " state",
+        "text": ":open_file_folder: _state:_ :open_file_folder: _" + kind + ":_\n" + \
+                "_:wavy_dash::wavy_dash::wavy_dash::wavy_dash::wavy_dash::wavy_dash::wavy_dash::wavy_dash::wavy_dash:_",
+        "fields": fields
+    }
+    # Send the formatted message to Slack.
+    post_to_slack(device, [attachment])
+
+
+def post_to_slack(device, textOrAttachments):
+    # Post a Slack message to the channel of the same name as the device e.g. #g88.
+    # device is assumed to begin with the group name.  action is the message.
+    if device is None:
+        return
+    channel = "g88a"
+
+    # If device is g88pi, then post to channel #g88.
+    pos = device.find("pi")
+    if pos > 0:
+        channel = device[0:pos]
+
+    # Map the channel name in case the channel name is unavailable.
+    if replaceSlackChannels.get(device) is not None:
+        channel = replaceSlackChannels.get(device)
+    elif replaceSlackChannels.get(channel) is not None:
+        channel = replaceSlackChannels.get(channel)
+
+    # Construct the REST request to Slack.
+    body = {
+        "channel": "#" + channel,  # Public channels always start with #
+        "username": device
+    }
+    # If message is a string, send as text. Else assume it's in Slack Attachment format.
+    if len(textOrAttachments[0]) == 1:
+        body["text"] = textOrAttachments
+    else:
+        body["attachments"] = textOrAttachments
+    print("\nSending to Slack: ", json.dumps(body, indent=2))
+    url = "https://hooks.slack.com/services/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"
+    try:
+        # Make the REST request to Slack.
+        request = urllib2.Request(url, json.dumps(body))
+        result2 = urllib2.urlopen(request).read()
+        print("\nResponse from Slack: " + result2)
+        return result2
+
+    except urllib2.HTTPError, error:
+        # Show the error.
+        error_content = error.read()
+        print("Slack Error: " + error_content)
+
+
+# The main program starts here.  If this program is not started via AWS Lambda, we execute a test case.
+if os.environ.get("AWS_LAMBDA_FUNCTION_NAME") is None:
+    # Test Case: Set the LED attribute of the device.
+    event0 = {
+        "device": "g88pi",
+        "attribute": "led",
+        "value": "on"
+    }
+    # Start the lambda function.
+    lambda_handler(event0, {})
