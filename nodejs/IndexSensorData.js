@@ -325,7 +325,18 @@ const fieldNames = {
     'Target Arn': null,
     'THINGNAME': 'device',
     'TOPICNAME': 'topic',
-    'TRACEID': 'traceId'
+    'TRACEID': 'traceId',
+
+    //  Additional fields from SetDesiredState.
+    'LoadingFunction': null,
+    'ReceivedEvent': null,
+    'ReceivedRESTEvent': null,
+    'ReceivedSlackEvent': null,
+    'SendToSlack': null,
+    'GotSlackResponse': null,
+    'SendToAWS': null,
+    'GotAWSResponse': null,
+    'GotAWSResponsePayload': null
 };
 
 function matchIoTField(data, pos) {
@@ -586,10 +597,10 @@ function isProduction() {
 //  Unit test cases.
 //  AWS Log
 const test_input1 = {
- "awslogs": {
- "data": "H4sIAAAAAAAAAO2XW2/bNhTHvwph7GED7Jj3i/pkOE5nLDfYbvtQFAEtUbYwWfJEKVla9LvvUHKadK3rtgu2YJtfDPFyePg/P/IcvuttnPd25Ra3W9eLesejxejqbDKfj55Pev1eeVO4CpqFEUoZog03GJrzcvW8Kpst9IxezadlfVqufNc+rytnN2FKzKWzCpM0NXFC7BKn8VJQuxQpwSaV1FjmHKZmKTFVhqZaU6uXKUmETO2SgjnfLH1cZds6K4uTLK9d5XvR696p3SwT2y10NS0S9zs40XrwpnVhcu2KOox818sS8IRRiRWVDEtCNGGcUUEU1UYwRgmWmCjCpWCEc0m5lJJryjmlHDyoM5CnthvYKYyhBFzl3BDSv5MNzFNM5ACLAaYIs4ipiPIjGIIWs9F4Mj2OklTFBms3ENiwAYddDyymeJCkwjChY4wThy5n0/Px9HJ0ChP+qnLo9fT85OINQpOXk/NFdNks88yvW1XQ4uJyOj4fnU2iH+yNH9brrFj54UrrbTb0a5uUN8Nmm9jaoR0Ed9OnBZrXtm58hOYvxmPo7L3vfyqwxAILxQn8EcwEfCsOu8SEUG64AvmZoJJoRQk1ewVm+KDADD81gS+ab5B3aOPYbWuX/FnnYOUrhKYBWEM54xr+Fedcc0wE1VoRhg0VPIzl1EAINN0rtFIHhVbqyQh9Zus4KDprcndSNkXyPXqPT6dgC5wrhvaD+HeWUQWmURpsRwjMXFUuLqvkyrvCl9UVWLKfjQYEQRjNjOQUU2I4UM6YBqEJ4I85J5RobLAy4STsjYYWB6OhxX83GurKxsVXRiTc7IrA7c5Bc8oxptIwYyAMVBM4HZIxySQcIEmx3nfTC5j25YiIIxjyZCJyfFvYTTmKQ76cNyCx948Wk529tMnzW7SFS6pbDHXhOEJnnUrIVlV2DUbKIkJfu2IfdT5HKGmN9tHCLnN3H/MHwe4j9LP161/c7UnmcuAicddZ7Pp3rS9t3rQzYbk+mtli5e7Hfgjyfc9u/H1oF4TsDhskK2nI5+jiWMOhxoQqwZQJFYXhcP5JuISV0HDmQylBhYQ7Ae9LcwLzA3UE0MWfTh3xL6RLf5GsB7R8DNd+WD4hrrP/CW42zz/LFSUcEgGgpCiUkBrLwA9EiAjMgClIMCwkFaEBQLmfqwNZPXD1dLJ6V87/DVxlxXX5K4zM2wVR2hTtmo9FV2e2j052diHKVRGBmajriRo/uIFoDWj08DkV3fkRtU+ZeQvMMfC4KwPHZdIiR+8tI1dVZRWhotmDEddECyY4gR/XAtIdhjoc1pQmvG+IMTK8fhg0mf3XkzAHMRLmf4yeGkZAUBL4qctJbn2dxXNnq3gtvpsnxSD2PLx7mYJLTphQ4EJdRZmE60rBM8QwopmCl4bmYu+1BEQd4gmG/JM8TWazi9kHoObn8y4mJzbLm8o9Gk3BHvTVJWS69s2HYCn43GbxEVqsXReOkPtcy9GN9eiFd9U9Cb720cfRt943G5cMqjJ3w2m5OC1Xq1Cbh09yMx69Va/GKPOoKGtkm3pdVtnbnQ+uSstqEwUn7h6hgC4s78umit2DVQu/D76QSuuyXIP1H+euChVZhEYb+xbO4vn82Q491LHHMXuGJu0eu4bRziEb1G47nqGZ+62BhRBoh1i8BNAAhaWWciAUiweWcTPACXVKJGxpaPLTY50/2GWoEKqVq9GoKr5x+733b97/AU2Sk2ZUEwAA"
- }
- };
+    "awslogs": {
+        "data": "H4sIAAAAAAAAAO2XW2/bNhTHvwph7GED7Jj3i/pkOE5nLDfYbvtQFAEtUbYwWfJEKVla9LvvUHKadK3rtgu2YJtfDPFyePg/P/IcvuttnPd25Ra3W9eLesejxejqbDKfj55Pev1eeVO4CpqFEUoZog03GJrzcvW8Kpst9IxezadlfVqufNc+rytnN2FKzKWzCpM0NXFC7BKn8VJQuxQpwSaV1FjmHKZmKTFVhqZaU6uXKUmETO2SgjnfLH1cZds6K4uTLK9d5XvR696p3SwT2y10NS0S9zs40XrwpnVhcu2KOox818sS8IRRiRWVDEtCNGGcUUEU1UYwRgmWmCjCpWCEc0m5lJJryjmlHDyoM5CnthvYKYyhBFzl3BDSv5MNzFNM5ACLAaYIs4ipiPIjGIIWs9F4Mj2OklTFBms3ENiwAYddDyymeJCkwjChY4wThy5n0/Px9HJ0ChP+qnLo9fT85OINQpOXk/NFdNks88yvW1XQ4uJyOj4fnU2iH+yNH9brrFj54UrrbTb0a5uUN8Nmm9jaoR0Ed9OnBZrXtm58hOYvxmPo7L3vfyqwxAILxQn8EcwEfCsOu8SEUG64AvmZoJJoRQk1ewVm+KDADD81gS+ab5B3aOPYbWuX/FnnYOUrhKYBWEM54xr+Fedcc0wE1VoRhg0VPIzl1EAINN0rtFIHhVbqyQh9Zus4KDprcndSNkXyPXqPT6dgC5wrhvaD+HeWUQWmURpsRwjMXFUuLqvkyrvCl9UVWLKfjQYEQRjNjOQUU2I4UM6YBqEJ4I85J5RobLAy4STsjYYWB6OhxX83GurKxsVXRiTc7IrA7c5Bc8oxptIwYyAMVBM4HZIxySQcIEmx3nfTC5j25YiIIxjyZCJyfFvYTTmKQ76cNyCx948Wk529tMnzW7SFS6pbDHXhOEJnnUrIVlV2DUbKIkJfu2IfdT5HKGmN9tHCLnN3H/MHwe4j9LP161/c7UnmcuAicddZ7Pp3rS9t3rQzYbk+mtli5e7Hfgjyfc9u/H1oF4TsDhskK2nI5+jiWMOhxoQqwZQJFYXhcP5JuISV0HDmQylBhYQ7Ae9LcwLzA3UE0MWfTh3xL6RLf5GsB7R8DNd+WD4hrrP/CW42zz/LFSUcEgGgpCiUkBrLwA9EiAjMgClIMCwkFaEBQLmfqwNZPXD1dLJ6V87/DVxlxXX5K4zM2wVR2hTtmo9FV2e2j052diHKVRGBmajriRo/uIFoDWj08DkV3fkRtU+ZeQvMMfC4KwPHZdIiR+8tI1dVZRWhotmDEddECyY4gR/XAtIdhjoc1pQmvG+IMTK8fhg0mf3XkzAHMRLmf4yeGkZAUBL4qctJbn2dxXNnq3gtvpsnxSD2PLx7mYJLTphQ4EJdRZmE60rBM8QwopmCl4bmYu+1BEQd4gmG/JM8TWazi9kHoObn8y4mJzbLm8o9Gk3BHvTVJWS69s2HYCn43GbxEVqsXReOkPtcy9GN9eiFd9U9Cb720cfRt943G5cMqjJ3w2m5OC1Xq1Cbh09yMx69Va/GKPOoKGtkm3pdVtnbnQ+uSstqEwUn7h6hgC4s78umit2DVQu/D76QSuuyXIP1H+euChVZhEYb+xbO4vn82Q491LHHMXuGJu0eu4bRziEb1G47nqGZ+62BhRBoh1i8BNAAhaWWciAUiweWcTPACXVKJGxpaPLTY50/2GWoEKqVq9GoKr5x+733b97/AU2Sk2ZUEwAA"
+    }
+};
 
 //  Sensor Data for AWS IoT version 2016-03-23-beta.  Note the new "input->state".
 const test_input =
@@ -632,60 +643,60 @@ const test_input =
 const test_input3 =
 {
     "input": {
-    "state": {
-        "reported": {
-            "humidity": 44,
+        "state": {
+            "reported": {
+                "humidity": 44,
                 "timestamp": "2016-05-09T07:58:29.138750",
                 "temperature": 31.1,
                 "sound_level": 334,
                 "light_level": 267
-        }
-    },
-    "metadata": {
-        "reported": {
-            "humidity": {
-                "timestamp": 1463146990
-            },
-            "timestamp": {
-                "timestamp": 1463146990
-            },
-            "temperature": {
-                "timestamp": 1463146990
-            },
-            "sound_level": {
-                "timestamp": 1463146990
-            },
-            "light_level": {
-                "timestamp": 1463146990
             }
-        }
-    },
-    "version": 9139,
+        },
+        "metadata": {
+            "reported": {
+                "humidity": {
+                    "timestamp": 1463146990
+                },
+                "timestamp": {
+                    "timestamp": 1463146990
+                },
+                "temperature": {
+                    "timestamp": 1463146990
+                },
+                "sound_level": {
+                    "timestamp": 1463146990
+                },
+                "light_level": {
+                    "timestamp": 1463146990
+                }
+            }
+        },
+        "version": 9139,
         "timestamp": 1463146990,
         "topic": "$aws/things/g88pi/shadow/update/accepted",
         "traceId": "33e6c7e3-ba1e-48fe-a535-98ff5b37834f"
-}
+    }
 }
 
 //  Sensor Data for AWS IoT version 2015-10-08
 /*
-const test_input = {
-    "timestamp": 1462090920,
-    "version": 1227,
-    "metadata": {
-        "timestamp": 1462090920
-    },
-    "reported": {
-        "sound_level": 324,
-        "timestamp": "2016-05-01T16:22:00.347743",
-        "humidity": 45,
-        "temperature": 33,
-        "light_level": 792
-    },
-    "topic": "$aws/things/g88pi/shadow/update/accepted",
-    "traceId": "4fb3ed68-ec3f-42b6-a202-4207c9c55a2a"
-};
-*/
+ const test_input = {
+ "timestamp": 1462090920,
+ "version": 1227,
+ "metadata": {
+ "timestamp": 1462090920
+ },
+ "reported": {
+ "sound_level": 324,
+ "timestamp": "2016-05-01T16:22:00.347743",
+ "humidity": 45,
+ "temperature": 33,
+ "light_level": 792
+ },
+ "topic": "$aws/things/g88pi/shadow/update/accepted",
+ "traceId": "4fb3ed68-ec3f-42b6-a202-4207c9c55a2a"
+ };
+ */
 
 const test_context = {
     "awsRequestId": "98dc0220-0eba-11e6-b84a-f75570995fc5",

@@ -325,7 +325,18 @@ const fieldNames = {
     'Target Arn': null,
     'THINGNAME': 'device',
     'TOPICNAME': 'topic',
-    'TRACEID': 'traceId'
+    'TRACEID': 'traceId',
+
+    //  Additional fields from SetDesiredState.
+    'LoadingFunction': null,
+    'ReceivedEvent': null,
+    'ReceivedRESTEvent': null,
+    'ReceivedSlackEvent': null,
+    'SendToSlack': null,
+    'GotSlackResponse': null,
+    'SendToAWS': null,
+    'GotAWSResponse': null,
+    'GotAWSResponsePayload': null
 };
 
 function matchIoTField(data, pos) {
