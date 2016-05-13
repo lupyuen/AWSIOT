@@ -57,11 +57,18 @@
       <file leaf-file-name="IndexAWSLogs.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/IndexAWSLogs.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="646">
-              <caret line="339" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="719" selection-end-column="31" />
+            <state relative-caret-position="502">
+              <caret line="104" column="28" selection-start-line="0" selection-start-column="0" selection-end-line="740" selection-end-column="31" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
-                <element signature="e#27728#28253#0" expanded="false" />
+                <element signature="e#24789#26570#0" expanded="false" />
+                <element signature="e#26614#28047#0" expanded="false" />
+                <element signature="e#28102#30239#0" expanded="false" />
+                <element signature="e#30344#31212#0" expanded="false" />
+                <element signature="e#31336#32353#0" expanded="false" />
+                <element signature="e#31642#32167#0" expanded="false" />
+                <element signature="e#32402#32768#0" expanded="false" />
+                <element signature="e#32791#33277#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -71,10 +78,17 @@
         <entry file="file://$PROJECT_DIR$/IndexSensorData.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="699">
-              <caret line="719" column="31" selection-start-line="719" selection-start-column="31" selection-end-line="719" selection-end-column="31" />
+              <caret line="740" column="31" selection-start-line="740" selection-start-column="31" selection-end-line="740" selection-end-column="31" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
-                <element signature="e#27728#28253#0" expanded="false" />
+                <element signature="e#24789#26570#0" expanded="false" />
+                <element signature="e#26614#28055#0" expanded="false" />
+                <element signature="e#28110#30247#0" expanded="false" />
+                <element signature="e#30352#31220#0" expanded="false" />
+                <element signature="e#31344#32361#0" expanded="false" />
+                <element signature="e#31650#32175#0" expanded="false" />
+                <element signature="e#32410#32776#0" expanded="false" />
+                <element signature="e#32799#33285#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -115,9 +129,9 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="423" />
-    <option name="y" value="59" />
-    <option name="width" value="1270" />
+    <option name="x" value="118" />
+    <option name="y" value="48" />
+    <option name="width" value="1468" />
     <option name="height" value="884" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
@@ -166,24 +180,7 @@
     <panes>
       <pane id="Scope" />
       <pane id="ProjectPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="nodejs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="nodejs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="nodejs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
+        <subPane />
       </pane>
       <pane id="Scratches" />
     </panes>
@@ -241,7 +238,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Node.js.ExpandSensorData.js">
+  <component name="RunManager" selected="Node.js.IndexAWSLogs.js">
     <configuration default="true" type="BashConfigurationType" factoryName="Bash">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="INTERPRETER_PATH" value="/bin/bash" />
@@ -356,7 +353,7 @@
       <workItem from="1462642444448" duration="3695000" />
       <workItem from="1462756624384" duration="29000" />
       <workItem from="1463147349696" duration="5376000" />
-      <workItem from="1463164663758" duration="1300000" />
+      <workItem from="1463164663758" duration="2874000" />
     </task>
     <task id="LOCAL-00001" summary="Before patching to fix AWS IoT beta SQL">
       <created>1463147533406</created>
@@ -369,10 +366,10 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="53067000" />
+    <option name="totallyTimeSpent" value="54641000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="423" y="59" width="1270" height="884" extended-state="0" />
+    <frame x="118" y="48" width="1468" height="884" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="DB Execution Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
@@ -386,7 +383,7 @@
       <window_info id="Tail" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Dilbert" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.16680227" sideWeight="0.73625" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21824104" sideWeight="0.64737797" order="9" side_tool="true" content_ui="tabs" x="60" y="-1201" width="1383" height="470" />
+      <window_info id="Debug" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.39340815" sideWeight="0.64737797" order="9" side_tool="true" content_ui="tabs" x="60" y="-1201" width="1383" height="470" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32843894" sideWeight="0.58600736" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="SvgViewer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="DB Browser" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -400,7 +397,7 @@
       <window_info id="Floobits" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299373" sideWeight="0.5" order="17" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3291032" sideWeight="0.49746192" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="GhcMod" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15228014" sideWeight="0.64705884" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15228014" sideWeight="0.64705884" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15323646" sideWeight="0.3529412" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -440,6 +437,12 @@
           <line>82</line>
           <option name="timeStamp" value="10" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/IndexAWSLogs.js</url>
+          <line>91</line>
+          <properties />
+          <option name="timeStamp" value="33" />
+        </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
@@ -452,7 +455,7 @@
           <properties />
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="33" />
+      <option name="time" value="37" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -468,7 +471,14 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#27728#28253#0" expanded="false" />
+            <element signature="e#24789#26570#0" expanded="false" />
+            <element signature="e#26614#28047#0" expanded="false" />
+            <element signature="e#28102#30239#0" expanded="false" />
+            <element signature="e#30344#31212#0" expanded="false" />
+            <element signature="e#31336#32353#0" expanded="false" />
+            <element signature="e#31642#32167#0" expanded="false" />
+            <element signature="e#32402#32768#0" expanded="false" />
+            <element signature="e#32791#33277#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -479,7 +489,14 @@
           <caret line="418" column="107" selection-start-line="0" selection-start-column="0" selection-end-line="613" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#27728#28253#0" expanded="false" />
+            <element signature="e#24789#26570#0" expanded="false" />
+            <element signature="e#26614#28047#0" expanded="false" />
+            <element signature="e#28102#30239#0" expanded="false" />
+            <element signature="e#30344#31212#0" expanded="false" />
+            <element signature="e#31336#32353#0" expanded="false" />
+            <element signature="e#31642#32167#0" expanded="false" />
+            <element signature="e#32402#32768#0" expanded="false" />
+            <element signature="e#32791#33277#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -489,7 +506,7 @@
         <state relative-caret-position="1440">
           <caret line="74" column="49" selection-start-line="74" selection-start-column="42" selection-end-line="74" selection-end-column="49" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#!!doc" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -500,7 +517,14 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#27728#28253#0" expanded="false" />
+            <element signature="e#24789#26570#0" expanded="false" />
+            <element signature="e#26614#28055#0" expanded="false" />
+            <element signature="e#28110#30247#0" expanded="false" />
+            <element signature="e#30352#31220#0" expanded="false" />
+            <element signature="e#31344#32361#0" expanded="false" />
+            <element signature="e#31650#32175#0" expanded="false" />
+            <element signature="e#32410#32776#0" expanded="false" />
+            <element signature="e#32799#33285#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -511,7 +535,14 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#27728#28253#0" expanded="false" />
+            <element signature="e#24789#26570#0" expanded="false" />
+            <element signature="e#26614#28047#0" expanded="false" />
+            <element signature="e#28102#30239#0" expanded="false" />
+            <element signature="e#30344#31212#0" expanded="false" />
+            <element signature="e#31336#32353#0" expanded="false" />
+            <element signature="e#31642#32167#0" expanded="false" />
+            <element signature="e#32402#32768#0" expanded="false" />
+            <element signature="e#32791#33277#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -521,7 +552,7 @@
         <state relative-caret-position="1440">
           <caret line="74" column="49" selection-start-line="74" selection-start-column="42" selection-end-line="74" selection-end-column="49" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#!!doc" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -532,7 +563,14 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#27728#28253#0" expanded="false" />
+            <element signature="e#24789#26570#0" expanded="false" />
+            <element signature="e#26614#28047#0" expanded="false" />
+            <element signature="e#28102#30239#0" expanded="false" />
+            <element signature="e#30344#31212#0" expanded="false" />
+            <element signature="e#31336#32353#0" expanded="false" />
+            <element signature="e#31642#32167#0" expanded="false" />
+            <element signature="e#32402#32768#0" expanded="false" />
+            <element signature="e#32791#33277#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -542,39 +580,7 @@
         <state relative-caret-position="1440">
           <caret line="74" column="49" selection-start-line="74" selection-start-column="42" selection-end-line="74" selection-end-column="49" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/IndexSensorData.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3740">
-          <caret line="187" column="0" selection-start-line="168" selection-start-column="0" selection-end-line="187" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#27728#28253#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/IndexAWSLogs.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#27728#28253#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/2015 Oct/LogsToElasticsearch_iot.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1440">
-          <caret line="74" column="49" selection-start-line="74" selection-start-column="42" selection-end-line="74" selection-end-column="49" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#!!doc" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -585,7 +591,60 @@
           <caret line="187" column="0" selection-start-line="168" selection-start-column="0" selection-end-line="187" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#27728#28253#0" expanded="false" />
+            <element signature="e#24789#26570#0" expanded="false" />
+            <element signature="e#26614#28055#0" expanded="false" />
+            <element signature="e#28110#30247#0" expanded="false" />
+            <element signature="e#30352#31220#0" expanded="false" />
+            <element signature="e#31344#32361#0" expanded="false" />
+            <element signature="e#31650#32175#0" expanded="false" />
+            <element signature="e#32410#32776#0" expanded="false" />
+            <element signature="e#32799#33285#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/IndexAWSLogs.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#24789#26570#0" expanded="false" />
+            <element signature="e#26614#28047#0" expanded="false" />
+            <element signature="e#28102#30239#0" expanded="false" />
+            <element signature="e#30344#31212#0" expanded="false" />
+            <element signature="e#31336#32353#0" expanded="false" />
+            <element signature="e#31642#32167#0" expanded="false" />
+            <element signature="e#32402#32768#0" expanded="false" />
+            <element signature="e#32791#33277#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/2015 Oct/LogsToElasticsearch_iot.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1440">
+          <caret line="74" column="49" selection-start-line="74" selection-start-column="42" selection-end-line="74" selection-end-column="49" />
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/IndexSensorData.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3740">
+          <caret line="187" column="0" selection-start-line="168" selection-start-column="0" selection-end-line="187" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#24789#26570#0" expanded="false" />
+            <element signature="e#26614#28055#0" expanded="false" />
+            <element signature="e#28110#30247#0" expanded="false" />
+            <element signature="e#30352#31220#0" expanded="false" />
+            <element signature="e#31344#32361#0" expanded="false" />
+            <element signature="e#31650#32175#0" expanded="false" />
+            <element signature="e#32410#32776#0" expanded="false" />
+            <element signature="e#32799#33285#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -603,7 +662,14 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#27728#28253#0" expanded="false" />
+            <element signature="e#24789#26570#0" expanded="false" />
+            <element signature="e#26614#28055#0" expanded="false" />
+            <element signature="e#28110#30247#0" expanded="false" />
+            <element signature="e#30352#31220#0" expanded="false" />
+            <element signature="e#31344#32361#0" expanded="false" />
+            <element signature="e#31650#32175#0" expanded="false" />
+            <element signature="e#32410#32776#0" expanded="false" />
+            <element signature="e#32799#33285#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -696,18 +762,25 @@
         <state relative-caret-position="1440">
           <caret line="74" column="49" selection-start-line="74" selection-start-column="42" selection-end-line="74" selection-end-column="49" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#!!doc" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/IndexAWSLogs.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="646">
-          <caret line="339" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="719" selection-end-column="31" />
+        <state relative-caret-position="502">
+          <caret line="104" column="28" selection-start-line="0" selection-start-column="0" selection-end-line="740" selection-end-column="31" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#27728#28253#0" expanded="false" />
+            <element signature="e#24789#26570#0" expanded="false" />
+            <element signature="e#26614#28047#0" expanded="false" />
+            <element signature="e#28102#30239#0" expanded="false" />
+            <element signature="e#30344#31212#0" expanded="false" />
+            <element signature="e#31336#32353#0" expanded="false" />
+            <element signature="e#31642#32167#0" expanded="false" />
+            <element signature="e#32402#32768#0" expanded="false" />
+            <element signature="e#32791#33277#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -715,10 +788,17 @@
     <entry file="file://$PROJECT_DIR$/IndexSensorData.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="699">
-          <caret line="719" column="31" selection-start-line="719" selection-start-column="31" selection-end-line="719" selection-end-column="31" />
+          <caret line="740" column="31" selection-start-line="740" selection-start-column="31" selection-end-line="740" selection-end-column="31" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#27728#28253#0" expanded="false" />
+            <element signature="e#24789#26570#0" expanded="false" />
+            <element signature="e#26614#28055#0" expanded="false" />
+            <element signature="e#28110#30247#0" expanded="false" />
+            <element signature="e#30352#31220#0" expanded="false" />
+            <element signature="e#31344#32361#0" expanded="false" />
+            <element signature="e#31650#32175#0" expanded="false" />
+            <element signature="e#32410#32776#0" expanded="false" />
+            <element signature="e#32799#33285#0" expanded="false" />
           </folding>
         </state>
       </provider>
