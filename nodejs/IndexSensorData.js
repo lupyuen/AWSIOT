@@ -119,6 +119,7 @@ function getDevice(input) {
 
 function processSensorData(input, context) {
     //  Format the sensor data into a Sumo Logic update request.
+    console.log(JSON.stringify({input: input}, null, 2)); ////
     let extractedFields = {};
     let action = '';
     let device = getDevice(input);
@@ -426,6 +427,8 @@ function postSensorDataToSlack(device, sensorData, callback) {
     //  device is assumed to begin with the group name. sensorData contains
     //  the sensor values.
     if (!device) return;
+    console.log(JSON.stringify({sensorData: sensorData}, null, 2)); ////
+
     let channel = '';
     let pos = device.indexOf('_');
     if (pos > 0)
