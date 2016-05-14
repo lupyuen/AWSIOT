@@ -75,10 +75,23 @@ aws_session = boto3.Session(aws_access_key_id='AKIAJE7ODGU4E5RJQC5Q',
 def lambda_handler(event, context):
     # Look for the device with the provided device ID and set its desired state.
     event["event"] = "ReceivedEvent"; print(json.dumps(event))
+    value = event.get("value")
+    if value is None:  # No value provided, so we are getting the value.
+        event["action"] = "Get"
+    else:  # Value is provided, so we are setting the value.
+        event["action"] = "Set"
     if event.get("desired_or_reported") is None:
-        event["desired_or_reported"] = "reported"
+        # Value is null means we are getting reported state.
+        if value is None:
+            event["desired_or_reported"] = "Reported"
+        # Value is non-null means we are setting desired state.
+        else:
+            event["desired_or_reported"] = "Desired"
+    event["action"] = event["action"] + event["desired_or_reported"] + "State"
+    event["event"] = event["action"]; print(json.dumps(event))
+
     if event.get("channel_name") is not None:
-        # This is a Slack message.
+        # If there is a channel, this is a Slack message.
         return slack_handler(event, context)
     else:
         # This is a REST call.
@@ -94,15 +107,22 @@ def rest_handler(event, context):
     value = event.get("value")
     timestamp = event.get("timestamp")
     desired_or_reported = event.get("desired_or_reported")
+    # If no timestamp provided, then we create one.
     if timestamp is None:
         timestamp = datetime.datetime.now().isoformat()
         event["timestamp"] = timestamp
+
     # Call AWS to get or set the desired or reported state.
     # If value is missing, must be get.
     if value is None:
-        return get_state(device, desired_or_reported)
+        result = get_state(device, desired_or_reported)
+        event["event"] = event["action"] + "Completed"
+        event["result"] = result
+        print(json.dumps(event))
+        return result
     else:
         set_state(device, desired_or_reported, attribute, value, timestamp)
+        event["event"] = event["action"] + "Completed"
         return "OK"
 
 
@@ -171,8 +191,8 @@ def get_state(device2, desired_or_reported):
                 }
             }
         '''
-    if response_payload.get("state") is not None and response_payload["state"].get(desired_or_reported) is not None:
-        return response_payload["state"][desired_or_reported]
+    if response_payload.get("state") is not None and response_payload["state"].get(desired_or_reported.lower()) is not None:
+        return response_payload["state"][desired_or_reported.lower()]
     # TODO: Post the result to Slack.
     return None
 
@@ -181,7 +201,7 @@ def get_state(device2, desired_or_reported):
 def set_state(device2, desired_or_reported, attribute2, value2, timestamp2):
     payload = {
         "state": {
-            desired_or_reported: {
+            desired_or_reported.lower(): {
                 attribute2: value2,
                 "timestamp": timestamp2
             }
@@ -348,4 +368,4 @@ if os.environ.get("AWS_LAMBDA_FUNCTION_NAME") is None:
         "service_id": "13328414355"
     }
     # Start the lambda function.
-    lambda_handler(test_get_reported, {})
+    lambda_handler(test_set_slack, {})

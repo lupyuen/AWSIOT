@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8c51c8a2-3c39-46e8-96b5-b6ff00500e7c" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/GetSetDeviceState.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../nodejs/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../nodejs/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../nodejs/IndexAWSLogs.js" afterPath="$PROJECT_DIR$/../nodejs/IndexAWSLogs.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../nodejs/IndexSensorData.js" afterPath="$PROJECT_DIR$/../nodejs/IndexSensorData.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SetDesiredState.py" afterPath="$PROJECT_DIR$/SetDesiredState.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GetSetDeviceState.py" afterPath="$PROJECT_DIR$/GetSetDeviceState.py" />
     </list>
     <ignored path="python.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -31,8 +26,8 @@
       <file leaf-file-name="GetSetDeviceState.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/GetSetDeviceState.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="436">
-              <caret line="174" column="31" selection-start-line="174" selection-start-column="31" selection-end-line="174" selection-end-column="31" />
+            <state relative-caret-position="4769">
+              <caret line="367" column="35" selection-start-line="367" selection-start-column="35" selection-end-line="367" selection-end-column="35" />
               <folding />
             </state>
           </provider>
@@ -562,8 +557,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/GetSetDeviceState.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="436">
-          <caret line="174" column="31" selection-start-line="174" selection-start-column="31" selection-end-line="174" selection-end-column="31" />
+        <state relative-caret-position="4769">
+          <caret line="367" column="35" selection-start-line="367" selection-start-column="35" selection-end-line="367" selection-end-column="35" />
           <folding />
         </state>
       </provider>
