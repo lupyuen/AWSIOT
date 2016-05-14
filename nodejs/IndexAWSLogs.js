@@ -749,7 +749,7 @@ const test_context = {
 
 //  Run the unit test if we are in development environment.
 function runTest() {
-    return exports.handler(test_input2b, test_context, function(err, result) {
+    return exports.handler(test_input2a, test_context, function(err, result) {
         if (err) console.error(err);
         else console.log(result);
     });

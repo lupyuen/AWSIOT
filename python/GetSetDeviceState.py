@@ -1,9 +1,10 @@
 '''
-This lambda function sets the desired state of a device and sensor (attribute).  The input looks like:
+This lambda function gets or sets the reported or desired state of a device and sensor (attribute).  The input looks like:
 {
   "device": "g88pi",
   "attribute": "led",
-  "value": "flash3"
+  "value": "flash3",
+  "reported_or_desired": "reported"
 }
 Or for Slack commands:
 {
@@ -11,6 +12,9 @@ Or for Slack commands:
   "user_name": "lupyuen",
   "text": "led+flash1"
 }
+
+If the value is provided, the request is assumed to be a "set" request, else a "get" request.
+if "reported_or_desired" is missing, assume "reported".
 
 This lambda function must be run as role lambda_iot.  lambda_iot must be attached to policy LambdaExecuteIoTUpdate, defined as:
 {
@@ -71,6 +75,8 @@ aws_session = boto3.Session(aws_access_key_id='AKIAJE7ODGU4E5RJQC5Q',
 def lambda_handler(event, context):
     # Look for the device with the provided device ID and set its desired state.
     event["event"] = "ReceivedEvent"; print(json.dumps(event))
+    if event.get("desired_or_reported") is None:
+        event["desired_or_reported"] = "reported"
     if event.get("channel_name") is not None:
         # This is a Slack message.
         return slack_handler(event, context)
@@ -87,12 +93,17 @@ def rest_handler(event, context):
     attribute = event.get("attribute")
     value = event.get("value")
     timestamp = event.get("timestamp")
+    desired_or_reported = event.get("desired_or_reported")
     if timestamp is None:
         timestamp = datetime.datetime.now().isoformat()
         event["timestamp"] = timestamp
-    # Call AWS to set the desired state.
-    set_state(device, "desired", attribute, value, timestamp)
-    return "OK"
+    # Call AWS to get or set the desired or reported state.
+    # If value is missing, must be get.
+    if value is None:
+        return get_state(device, desired_or_reported)
+    else:
+        set_state(device, desired_or_reported, attribute, value, timestamp)
+        return "OK"
 
 
 def slack_handler(event, context):
@@ -143,22 +154,26 @@ def get_state(device2, desired_or_reported):
         thingName=device2)
 
     # Show AWS response.
-    response["event"] = "GotAWSResponse"; print(json.dumps(response))
+    response2 = {
+        "event": "GotAWSResponse",
+        "response": str(response)
+    }
+    print(json.dumps(response2))
     if response.get('payload') is not None:
         response_payload = json.loads(response.get('payload').read().decode("utf-8"))  # Parse payload text to JSON.
-        response["response_payload"] = response_payload; response["event"] = "GotAWSResponsePayload"; print(json.dumps(response))
+        response2["response_payload"] = response_payload; response2["event"] = "GotAWSResponsePayload"; print(json.dumps(response2))
         '''
+        We return the desired or reported state.
         payload looks like: {
-        "state": {
-            "desired": { ... },
-            "reported": { ... }
+            "state": {
+                "desired": { ... },
+                "reported": { ... }
+                }
             }
-        }
         '''
-
-    # TODO: Post the result to Slack.
     if response_payload.get("state") is not None and response_payload["state"].get(desired_or_reported) is not None:
-        return response["state"][desired_or_reported]
+        return response_payload["state"][desired_or_reported]
+    # TODO: Post the result to Slack.
     return None
 
 
@@ -288,20 +303,26 @@ def post_to_slack(device, textOrAttachments):
 
 # The main program starts here.  If this program is not started via AWS Lambda, we execute a test case.
 if os.environ.get("AWS_LAMBDA_FUNCTION_NAME") is None:
-    # Test Case 1: Set the LED attribute of the device when called through API Gateway / REST service.
-    event1 = {
+    # Test Case 1: Get the LED attribute of the device when called through API Gateway / REST service.
+    test_get_reported = {
+        "device": "g88pi",
+        "attribute": "led",
+    }
+
+    # Test Case 2: Set the LED attribute of the device when called through API Gateway / REST service.
+    test_set_desired = {
         "device": "g88pi",
         "attribute": "led",
         "value": "on"
     }
-    # Test Case 2: Same as Test Case 1, except that the command is triggered by user typing a Slack command.
-    event2 = {
+    # Test Case 3: Same as Test Case 1, except that the command is triggered by user typing a Slack command.
+    test_set_slack = {
         "channel_name": "g88a",
         "user_name": "lupyuen",
         "text": "led+flash1"
     }
-    # Test Case 3: Same as Test Case 2.
-    event3 = {
+    # Test Case 4: Same as Test Case 2.
+    test_set_slack2 = {
         "http-method": "POST",
         "text": "led+flash4",
         "api-key": "",
@@ -327,4 +348,4 @@ if os.environ.get("AWS_LAMBDA_FUNCTION_NAME") is None:
         "service_id": "13328414355"
     }
     # Start the lambda function.
-    lambda_handler(event2, {})
+    lambda_handler(test_get_reported, {})

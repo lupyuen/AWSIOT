@@ -54,11 +54,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="IndexAWSLogs.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="IndexAWSLogs.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/IndexAWSLogs.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="402">
-              <caret line="99" column="38" selection-start-line="0" selection-start-column="0" selection-end-line="757" selection-end-column="31" />
+            <state relative-caret-position="1062">
+              <caret line="96" column="35" selection-start-line="96" selection-start-column="35" selection-end-line="96" selection-end-column="35" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="e#25396#27177#0" expanded="false" />
@@ -74,11 +74,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="IndexSensorData.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="IndexSensorData.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/IndexSensorData.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="699">
-              <caret line="757" column="31" selection-start-line="757" selection-start-column="31" selection-end-line="757" selection-end-column="31" />
+            <state relative-caret-position="586">
+              <caret line="756" column="0" selection-start-line="756" selection-start-column="0" selection-end-line="756" selection-end-column="0" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="e#25396#27177#0" expanded="false" />
@@ -115,8 +115,8 @@
         <option value="$PROJECT_DIR$/LogsToElasticsearch_iot.js" />
         <option value="$PROJECT_DIR$/2015 Oct/LogsToElasticsearch_iot.js" />
         <option value="$PROJECT_DIR$/ExpandSensorData.js" />
-        <option value="$PROJECT_DIR$/IndexAWSLogs.js" />
         <option value="$PROJECT_DIR$/IndexSensorData.js" />
+        <option value="$PROJECT_DIR$/IndexAWSLogs.js" />
       </list>
     </option>
   </component>
@@ -353,7 +353,7 @@
       <workItem from="1462642444448" duration="3695000" />
       <workItem from="1462756624384" duration="29000" />
       <workItem from="1463147349696" duration="5376000" />
-      <workItem from="1463164663758" duration="4230000" />
+      <workItem from="1463164663758" duration="5374000" />
     </task>
     <task id="LOCAL-00001" summary="Before patching to fix AWS IoT beta SQL">
       <created>1463147533406</created>
@@ -366,7 +366,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="55997000" />
+    <option name="totallyTimeSpent" value="57141000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="118" y="48" width="1468" height="884" extended-state="0" />
@@ -441,7 +441,7 @@
           <url>file://$PROJECT_DIR$/IndexAWSLogs.js</url>
           <line>91</line>
           <properties />
-          <option name="timeStamp" value="33" />
+          <option name="timeStamp" value="42" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
@@ -455,7 +455,7 @@
           <properties />
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="42" />
+      <option name="time" value="43" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -767,28 +767,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/IndexAWSLogs.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="402">
-          <caret line="99" column="38" selection-start-line="0" selection-start-column="0" selection-end-line="757" selection-end-column="31" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#25396#27177#0" expanded="false" />
-            <element signature="e#27221#28654#0" expanded="false" />
-            <element signature="e#28709#30846#0" expanded="false" />
-            <element signature="e#30951#31819#0" expanded="false" />
-            <element signature="e#31943#32960#0" expanded="false" />
-            <element signature="e#32249#32774#0" expanded="false" />
-            <element signature="e#33009#33375#0" expanded="false" />
-            <element signature="e#33398#33884#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/IndexSensorData.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="699">
-          <caret line="757" column="31" selection-start-line="757" selection-start-column="31" selection-end-line="757" selection-end-column="31" />
+        <state relative-caret-position="586">
+          <caret line="756" column="0" selection-start-line="756" selection-start-column="0" selection-end-line="756" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="e#25396#27177#0" expanded="false" />
@@ -799,6 +781,24 @@
             <element signature="e#32257#32782#0" expanded="false" />
             <element signature="e#33017#33383#0" expanded="false" />
             <element signature="e#33406#33892#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/IndexAWSLogs.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1062">
+          <caret line="96" column="35" selection-start-line="96" selection-start-column="35" selection-end-line="96" selection-end-column="35" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#25396#27177#0" expanded="false" />
+            <element signature="e#27221#28654#0" expanded="false" />
+            <element signature="e#28709#30846#0" expanded="false" />
+            <element signature="e#30951#31819#0" expanded="false" />
+            <element signature="e#31943#32960#0" expanded="false" />
+            <element signature="e#32249#32774#0" expanded="false" />
+            <element signature="e#33009#33375#0" expanded="false" />
+            <element signature="e#33398#33884#0" expanded="false" />
           </folding>
         </state>
       </provider>
