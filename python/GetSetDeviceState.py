@@ -1,5 +1,5 @@
 '''
-This lambda function gets or sets the reported or desired state of a device and sensor (attribute).  The input looks like:
+Get or set the reported or desired state of a device and sensor (attribute).  The input looks like:
 {
   "device": "g88pi",
   "attribute": "led",
@@ -14,7 +14,7 @@ Or for Slack commands:
 }
 
 If the value is provided, the request is assumed to be a "set" request, else a "get" request.
-if "reported_or_desired" is missing, assume "reported".
+if "reported_or_desired" is missing, assume "desired" if value is provided, else assume "reported".
 
 This lambda function must be run as role lambda_iot.  lambda_iot must be attached to policy LambdaExecuteIoTUpdate, defined as:
 {
@@ -75,11 +75,19 @@ aws_session = boto3.Session(aws_access_key_id='AKIAJE7ODGU4E5RJQC5Q',
 def lambda_handler(event, context):
     # Look for the device with the provided device ID and set its desired state.
     event["event"] = "ReceivedEvent"; print(json.dumps(event))
+
+    # Deduce whether this is a get or set action.
     value = event.get("value")
     if value is None:  # No value provided, so we are getting the value.
         event["action"] = "Get"
     else:  # Value is provided, so we are setting the value.
         event["action"] = "Set"
+
+    # Deduce whether this is for desired or reported state.
+    # If there is a channel, this is a Slack message.
+    if event.get("channel_name") is not None:
+        event["desired_or_reported"] = "Desired"  # Slack always sets the desired state.
+
     if event.get("desired_or_reported") is None:
         # Value is null means we are getting reported state.
         if value is None:

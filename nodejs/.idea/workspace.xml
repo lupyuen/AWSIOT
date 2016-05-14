@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7c392364-e4dd-472f-8964-ecf49ededf90" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/IndexAWSLogs.js" afterPath="$PROJECT_DIR$/IndexAWSLogs.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/IndexSensorData.js" afterPath="$PROJECT_DIR$/IndexSensorData.js" />
-    </list>
+    <list default="true" id="7c392364-e4dd-472f-8964-ecf49ededf90" name="Default" comment="" />
     <ignored path="nodejs.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -57,8 +54,8 @@
       <file leaf-file-name="IndexAWSLogs.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/IndexAWSLogs.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1062">
-              <caret line="96" column="35" selection-start-line="96" selection-start-column="35" selection-end-line="96" selection-end-column="35" />
+            <state relative-caret-position="402">
+              <caret line="63" column="20" selection-start-line="63" selection-start-column="20" selection-end-line="63" selection-end-column="20" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="e#25396#27177#0" expanded="false" />
@@ -353,7 +350,7 @@
       <workItem from="1462642444448" duration="3695000" />
       <workItem from="1462756624384" duration="29000" />
       <workItem from="1463147349696" duration="5376000" />
-      <workItem from="1463164663758" duration="5374000" />
+      <workItem from="1463164663758" duration="5574000" />
     </task>
     <task id="LOCAL-00001" summary="Before patching to fix AWS IoT beta SQL">
       <created>1463147533406</created>
@@ -366,7 +363,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="57141000" />
+    <option name="totallyTimeSpent" value="57341000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="118" y="48" width="1468" height="884" extended-state="0" />
@@ -787,8 +784,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/IndexAWSLogs.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1062">
-          <caret line="96" column="35" selection-start-line="96" selection-start-column="35" selection-end-line="96" selection-end-column="35" />
+        <state relative-caret-position="402">
+          <caret line="63" column="20" selection-start-line="63" selection-start-column="20" selection-end-line="63" selection-end-column="20" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="e#25396#27177#0" expanded="false" />
