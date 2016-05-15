@@ -696,16 +696,13 @@ partitions.json
 
 0. To install a new SD Card, copy the entire contents of C:\TP-IoT-NOOBS to the SD Card and boot the Pi with the SD Card.  See https://goo.gl/Vrce5E
 
-## TODO: Setup AWS menubar
+## Install Guacamole VNC web client
 
-## TODO: Hoiio
-
-## TODO: Web Terminal vs SSH Command Line
-
-## TODO: AWS IoT Certs
-
-## TODO: Sumo Logic vs Elasticsearch/Kibana
-
+From https://sourceforge.net/p/guacamole/discussion/1110834/thread/75fd04f0/
+```
+apt-get install guacamole-tomcat
+apt-get install libguac-client-ssh0
+```
 
 
 
