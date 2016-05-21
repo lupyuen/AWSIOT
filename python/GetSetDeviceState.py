@@ -145,6 +145,17 @@ def slack_handler(event, context):
         event["event"] = "IgnoreOwnEvent"; print(json.dumps(event))
         return {}
 
+    # Only respond to messages from channels that start with g followed by 2 or more digits.
+    channel = event.get("channel_name")
+    if len(channel) < 3:
+        return {}
+    if channel[0] != 'g':
+        return {}
+    if channel[1] < '0' or channel[1] > '9':
+        return {}
+    if channel[2] < '0' or channel[2] > '9':
+        return {}
+
     # We will receive a command that looks like "led+flash1", because space gets encoded to +.
     # We split the command by +.
     user_command = event.get("text")
@@ -156,7 +167,6 @@ def slack_handler(event, context):
 
     # Derive the device name from the channel, e.g. channel g88 refers to device g88pi.
     # Also handle channels that have been renamed.
-    channel = event.get("channel_name")
     device = channel
     for original_channel in replaceSlackChannels:
         replace_channel = replaceSlackChannels[original_channel]
