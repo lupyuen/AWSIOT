@@ -115,9 +115,9 @@ def rest_handler(event, context):
     value = event.get("value")
     timestamp = event.get("timestamp")
     desired_or_reported = event.get("desired_or_reported")
-    # If no timestamp provided, then we create one.
+    # If no timestamp provided, then we create one.  Add 8 hours for Singapore time.
     if timestamp is None:
-        timestamp = datetime.datetime.now().isoformat()
+        timestamp = (datetime.datetime.now() + datetime.timedelta(hours=8)).isoformat()
         event["timestamp"] = timestamp
 
     # Call AWS to get or set the desired or reported state.
@@ -229,7 +229,7 @@ def set_state(device2, desired_or_reported, attribute2, value2, timestamp2):
     post_state_to_slack(device2, payload)
 
     # Post to AWS.
-    payload2 = payload; payload2["event"] = "SendToAWS"; print(json.dumps(payload2))
+    payload2 = payload.copy(); payload2["event"] = "SendToAWS"; print(json.dumps(payload2))
     iot_client = aws_session.client('iot-data')  # Create a client for AWS IoT Data API.
     response = iot_client.update_thing_shadow(   #  Update the AWS IoT thing shadow, i.e. set the device state.
         thingName=device2,
@@ -355,7 +355,7 @@ if os.environ.get("AWS_LAMBDA_FUNCTION_NAME") is None:
     }
     # Test Case 3: Same as Test Case 1, except that the command is triggered by user typing a Slack command.
     test_set_slack = {
-        "channel_name": "g88a",
+        "channel_name": "g50",
         "user_name": "lupyuen",
         "text": "led+flash1"
     }
