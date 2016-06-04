@@ -4,6 +4,40 @@ Raspberry Pi, Node.js and Python scripts for AWS IoT, used in Temasek Polytechni
 - https://github.com/lupyuen/RaspberryPiImage
 - https://www.facebook.com/photo.php?fbid=10203864039081512&set=a.1222080012259.25950.1836747147&type=3&theater
 
+## Set up pybluez for scanning beacons
+
+```
+sudo apt install bluetooth bluez blueman
+sudo cp -r /usr/include old_include
+wget https://github.com/lupyuen/AWSIOT/raw/master/include.zip
+unzip include.zip
+sudo cp -r include/* /usr/include/
+sudo apt install python3-dev
+sudo apt install libbluetooth-dev
+sudo pip3 install pybluez
+sudo apt install libboost-dev
+sudo apt install libboost-python-dev
+sudo apt install libboost-thread-dev
+sudo pip3 install gattlib
+wget https://github.com/karulis/pybluez/zipball/master
+mv master master.zip
+unzip master.zip
+cd karulis-pybluez-35296f4/examples/ble
+sudo python3 beacon_scan.py
+```
+
+beacon_scan.py returns a list of beacons detected:
+```
+Beacon: address:C1:8B:BF:C6:4E:56 uuid:b9407f30-f5f8-466e-aff9-25556b57fe6d major:22094 minor:50879 txpower:182 rssi:-75
+Beacon: address:D4:AC:86:66:3A:0D uuid:b9407f30-f5f8-466e-aff9-25556b57fe6d major:3386 minor:26246 txpower:182 rssi:-79
+Beacon: address:D8:22:CB:53:63:B0 uuid:b9407f30-f5f8-466e-aff9-25556b57fe6d major:45155 minor:21451 txpower:182 rssi:-83
+Beacon: address:F7:43:86:4E:B9:CD uuid:b9407f30-f5f8-466e-aff9-25556b57fe6d major:52665 minor:20102 txpower:182 rssi:-68
+Beacon: address:D8:B1:B7:D4:38:AE uuid:b9407f30-f5f8-466e-aff9-25556b57fe6d major:44600 minor:54455 txpower:182 rssi:-79
+```
+
+Installation Log:
+https://github.com/lupyuen/AWSIOT/blob/master/install_pybluez.log
+
 ## Set up AWS IoT
 
 0. Go to AWS IoT Console, create a Thing, Name=g88pi.
