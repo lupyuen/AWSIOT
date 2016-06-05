@@ -301,7 +301,7 @@ def post_to_slack(device, textOrAttachments):
     # device is assumed to begin with the group name.  action is the message.
     if device is None:
         return
-    channel = "g88a"
+    channel = "g87"
 
     # If device is g88pi, then post to channel #g88.
     pos = device.find("pi")

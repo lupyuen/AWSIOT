@@ -74,16 +74,16 @@ aws_session = boto3.Session(aws_access_key_id='AKIAJE7ODGU4E5RJQC5Q',
 
 
 def lambda_handler(event, context):
-    
     #### TODO
     event = parse_qs(event['body'])
     event["channel_name"] = event["channel_name"][0]
     event["user_name"] = event["user_name"][0]
     event["text"] = event["text"][0]  ## TODO: Change + to space
     ####
-    
+
     # Look for the device with the provided device ID and set its desired state.
-    event["event"] = "ReceivedEvent"; print(json.dumps(event))
+    event["event"] = "ReceivedEvent";
+    print(json.dumps(event))
 
     # Deduce whether this is a get or set action.
     value = event.get("value")
@@ -105,7 +105,8 @@ def lambda_handler(event, context):
         else:
             event["desired_or_reported"] = "Desired"
     event["action"] = event["action"] + event["desired_or_reported"] + "State"
-    event["event"] = event["action"]; print(json.dumps(event))
+    event["event"] = event["action"];
+    print(json.dumps(event))
 
     if event.get("channel_name") is not None:
         # If there is a channel, this is a Slack message.
@@ -118,7 +119,8 @@ def lambda_handler(event, context):
 def rest_handler(event, context):
     # Handle a REST command received from the REST channels except Slack.
     # Look for the device with the provided device ID and set its desired state.
-    event["event"] = "ReceivedRESTEvent"; print(json.dumps(event))
+    event["event"] = "ReceivedRESTEvent";
+    print(json.dumps(event))
     device = event.get("device")
     attribute = event.get("attribute")
     value = event.get("value")
@@ -146,12 +148,14 @@ def rest_handler(event, context):
 def slack_handler(event, context):
     # Handle a user command received from Slack.
     # Look for the device with the provided device ID and set its desired state.
-    event["event"] = "ReceivedSlackEvent"; print(json.dumps(event))
+    event["event"] = "ReceivedSlackEvent";
+    print(json.dumps(event))
 
     # Don't respond to a message that this function has posted previously,
     # because we will be stuck in a loop.
     if event.get("user_name") == "slackbot":
-        event["event"] = "IgnoreOwnEvent"; print(json.dumps(event))
+        event["event"] = "IgnoreOwnEvent";
+        print(json.dumps(event))
         return {}
 
     # Only respond to messages from channels that start with g followed by 2 or more digits.
@@ -170,7 +174,8 @@ def slack_handler(event, context):
     user_command = event.get("text")
     user_command_split = user_command.split(" ")  #### TODO
     if len(user_command_split) != 2:
-        event["event"] = "BadCommand"; print(json.dumps(event))
+        event["event"] = "BadCommand";
+        print(json.dumps(event))
         return {"text": "Sorry I don't understand your command. " +
                         "Please enter a valid command like 'led flash1'."}
 
@@ -195,9 +200,9 @@ def slack_handler(event, context):
 # Get the thing's desired or reported state.
 def get_state(device2, desired_or_reported):
     # Post to AWS.
-    print(json.dumps({ "event": "SendToAWS" }))
+    print(json.dumps({"event": "SendToAWS"}))
     iot_client = aws_session.client('iot-data')  # Create a client for AWS IoT Data API.
-    response = iot_client.get_thing_shadow(   #  Get the AWS IoT thing shadow, i.e. get the device state.
+    response = iot_client.get_thing_shadow(  # Get the AWS IoT thing shadow, i.e. get the device state.
         thingName=device2)
 
     # Show AWS response.
@@ -208,7 +213,9 @@ def get_state(device2, desired_or_reported):
     print(json.dumps(response2))
     if response.get('payload') is not None:
         response_payload = json.loads(response.get('payload').read().decode("utf-8"))  # Parse payload text to JSON.
-        response2["response_payload"] = response_payload; response2["event"] = "GotAWSResponsePayload"; print(json.dumps(response2))
+        response2["response_payload"] = response_payload;
+        response2["event"] = "GotAWSResponsePayload";
+        print(json.dumps(response2))
         '''
         We return the desired or reported state.
         payload looks like: {
@@ -218,7 +225,8 @@ def get_state(device2, desired_or_reported):
                 }
             }
         '''
-    if response_payload.get("state") is not None and response_payload["state"].get(desired_or_reported.lower()) is not None:
+    if response_payload.get("state") is not None and response_payload["state"].get(
+            desired_or_reported.lower()) is not None:
         return response_payload["state"][desired_or_reported.lower()]
     # TODO: Post the result to Slack.
     return None
@@ -238,18 +246,24 @@ def set_state(device2, desired_or_reported, attribute2, value2, timestamp2):
     post_state_to_slack(device2, payload)
 
     # Post to AWS.
-    payload2 = payload.copy(); payload2["event"] = "SendToAWS"; print(json.dumps(payload2))
+    payload2 = payload.copy();
+    payload2["event"] = "SendToAWS";
+    print(json.dumps(payload2))
     iot_client = aws_session.client('iot-data')  # Create a client for AWS IoT Data API.
-    response = iot_client.update_thing_shadow(   #  Update the AWS IoT thing shadow, i.e. set the device state.
+    response = iot_client.update_thing_shadow(  # Update the AWS IoT thing shadow, i.e. set the device state.
         thingName=device2,
         payload=json.dumps(payload).encode("utf-8")
     )
 
     # Show AWS response.
-    payload2["response"] = str(response); payload2["event"] = "GotAWSResponse"; print(json.dumps(payload2))
+    payload2["response"] = str(response);
+    payload2["event"] = "GotAWSResponse";
+    print(json.dumps(payload2))
     if response.get('payload') is not None:
         response_payload = json.loads(response.get('payload').read().decode("utf-8"))  # Parse payload text to JSON.
-        payload2["response_payload"] = response_payload; payload2["event"] = "GotAWSResponsePayload"; print(json.dumps(payload2))
+        payload2["response_payload"] = response_payload;
+        payload2["event"] = "GotAWSResponsePayload";
+        print(json.dumps(payload2))
 
     # Check the AWS response for success/failure.
     if str(response).find("'HTTPStatusCode': 200") > 0:
@@ -310,7 +324,7 @@ def post_to_slack(device, textOrAttachments):
     # device is assumed to begin with the group name.  action is the message.
     if device is None:
         return
-    channel = "g88a"
+    channel = "g87"
 
     # If device is g88pi, then post to channel #g88.
     pos = device.find("pi")
@@ -333,19 +347,25 @@ def post_to_slack(device, textOrAttachments):
         body["text"] = textOrAttachments
     else:
         body["attachments"] = textOrAttachments
-    body2 = body; body2["event"] = "SendToSlack"; print(json.dumps(body2))
+    body2 = body;
+    body2["event"] = "SendToSlack";
+    print(json.dumps(body2))
     url = "https://hooks.slack.com/services/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"
     try:
         # Make the REST request to Slack.
         request = urllib2.Request(url, json.dumps(body))
         result2 = urllib2.urlopen(request).read()
-        body2["response"] = result2; body2["event"] = "GotSlackResponse"; print(json.dumps(body2))
+        body2["response"] = result2;
+        body2["event"] = "GotSlackResponse";
+        print(json.dumps(body2))
         return result2
 
     except urllib2.HTTPError, error:
         # Show the error.
         error_content = error.read()
-        body2["error"] = error_content; body2["event"] = "SlackError"; print(json.dumps(body2))
+        body2["error"] = error_content;
+        body2["event"] = "SlackError";
+        print(json.dumps(body2))
 
 
 # The main program starts here.  If this program is not started via AWS Lambda, we execute a test case.
@@ -396,38 +416,38 @@ if os.environ.get("AWS_LAMBDA_FUNCTION_NAME") is None:
     }
     # Start the lambda function.
     lambda_handler(test_set_slack, {})
-    
+
 '''
 Remember to add template mapping for content type application/x-www-form-urlencoded:
 
 ##  Pass through everything including system info.
 
-#set($path = $input.params().path) 
-#set($qs = $input.params().querystring) 
-{ 
-    "resource-path": "$context.resourcePath", 
-    "http-method": "$context.httpMethod", 
-    "identity": 
-    { 
-        #foreach($key in $context.identity.keySet()) 
-            "$key": "$context.identity.get($key)" 
-        #if($foreach.hasNext), #end 
-        #end 
-    }, 
-    "params": 
-    { 
-        #foreach($key in $path.keySet()) 
-            "$key": "$path.get($key)" 
-        #if($foreach.hasNext), #end 
-        #end 
-    }, 
-    "query": 
-    { 
-        #foreach($key in $qs.keySet()) 
-            "$key": "$qs.get($key)" 
-        #if($foreach.hasNext), #end 
-        #end 
-    }, 
-    "body": $input.json('$') 
-} 
+#set($path = $input.params().path)
+#set($qs = $input.params().querystring)
+{
+    "resource-path": "$context.resourcePath",
+    "http-method": "$context.httpMethod",
+    "identity":
+    {
+        #foreach($key in $context.identity.keySet())
+            "$key": "$context.identity.get($key)"
+        #if($foreach.hasNext), #end
+        #end
+    },
+    "params":
+    {
+        #foreach($key in $path.keySet())
+            "$key": "$path.get($key)"
+        #if($foreach.hasNext), #end
+        #end
+    },
+    "query":
+    {
+        #foreach($key in $qs.keySet())
+            "$key": "$qs.get($key)"
+        #if($foreach.hasNext), #end
+        #end
+    },
+    "body": $input.json('$')
+}
 '''
