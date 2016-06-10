@@ -232,18 +232,16 @@ function buildSource(message, extractedFields) {
     if (extractedFields) {
         let source = {};
         for (let key in extractedFields) {
-            if (extractedFields.hasOwnProperty(key) && extractedFields[key]) {
-                let value = extractedFields[key];
-                if (isNumeric(value)) {
-                    source[key] = 1 * value;
-                    continue;
-                }
-                let jsonSubString = extractJson(value);
-                if (jsonSubString !== null) {
-                    source['$' + key] = JSON.parse(jsonSubString);
-                }
-                source[key] = value;
+            let value = extractedFields[key];
+            if (isNumeric(value)) {
+                source[key] = 1 * value;
+                continue;
             }
+            let jsonSubString = extractJson(value);
+            if (jsonSubString !== null) {
+                source['$' + key] = JSON.parse(jsonSubString);
+            }
+            source[key] = value;
         }
         return source;
     }
@@ -673,7 +671,7 @@ const test_input3 =
     },
     "version": 9142,
     "timestamp": 1463150093,
-    "topic": "$aws/things/g88pi/shadow/update/accepted",
+    "topic": "$aws/things/g87pi/shadow/update/accepted",
     "traceId": "081f1280-93f9-4b94-88a9-7c3813136398"
 }
 
@@ -711,7 +709,7 @@ const test_input4 =
         },
         "version": 9139,
         "timestamp": 1463146990,
-        "topic": "$aws/things/g88pi/shadow/update/accepted",
+        "topic": "$aws/things/g87pi/shadow/update/accepted",
         "traceId": "33e6c7e3-ba1e-48fe-a535-98ff5b37834f"
     }
 }
@@ -731,7 +729,7 @@ const test_input4 =
  "temperature": 33,
  "light_level": 792
  },
- "topic": "$aws/things/g88pi/shadow/update/accepted",
+ "topic": "$aws/things/g87pi/shadow/update/accepted",
  "traceId": "4fb3ed68-ec3f-42b6-a202-4207c9c55a2a"
  };
  */
