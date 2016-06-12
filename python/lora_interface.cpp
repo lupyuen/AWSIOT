@@ -1,7 +1,8 @@
-#include <msgpack.hpp>
-#include <vector>
-#include <string>
-#include <iostream>
+//  Interface to send and receive LoRa messages, exposing a Python wrapper via Swig.
+//  We compress JSON messages with MessagePack to reduce transmitted message size.
+
+#include <msgpack.h>
+#include <stdio.h>
 #include "arduPiLoRa.h"  //  Include the SX1272 and SPI library. 
 
 int e;
@@ -14,34 +15,52 @@ static int setupDone = 0;
 static int sendCount = 0;
 static int receiveCount = 0;
 
+//  MessagePack buffer and serializer instance.
+msgpack_sbuffer* buffer = NULL;
+msgpack_packer* pk = NULL;
+
 int getLoRaStatus()
 {
-  // serializes this object.
-  std::vector<std::string> vec;
-  vec.push_back("Hello");
-  vec.push_back("MessagePack");
-
-  // serialize it into simple buffer.
-  msgpack::sbuffer sbuf;
-  msgpack::pack(sbuf, vec);
-
-  // deserialize it.
-  msgpack::object_handle oh =
-      msgpack::unpack(sbuf.data(), sbuf.size());
-
-  // print the deserialized object.
-  msgpack::object obj = oh.get();
-  std::cout << obj << std::endl;  //=> ["Hello", "MessagePack"]
-
-  // convert it into statically typed object.
-  std::vector<std::string> rvec;
-  obj.convert(rvec);
-
   return e;
 }
 
 int setupLoRa()
 {
+  if (setupDone > 0)
+  {
+    printf("setupLoRa ERROR: setupLoRa already called");
+    return -1;
+  }
+  //  Create MessagePack buffer and serializer instance.
+  buffer = msgpack_sbuffer_new();
+  pk = msgpack_packer_new(buffer, msgpack_sbuffer_write);
+  for (int j = 0; j < 5; j++) 
+  {
+     //  NB: the buffer needs to be cleared on each iteration.
+     msgpack_sbuffer_clear(buffer);
+
+     //  Serializes ["Hello", "MessagePack"].
+     msgpack_pack_array(pk, 3);
+     msgpack_pack_bin(pk, 5);
+     msgpack_pack_bin_body(pk, "Hello", 5);
+     msgpack_pack_bin(pk, 11);
+     msgpack_pack_bin_body(pk, "MessagePack", 11);
+     msgpack_pack_int(pk, j);
+
+     //  Deserializes it.
+     msgpack_unpacked msg;
+     msgpack_unpacked_init(&msg);
+     bool success = msgpack_unpack_next(&msg, buffer->data, buffer->size, NULL);
+
+     //  Prints the deserialized object.
+     msgpack_object obj = msg.data;
+     msgpack_object_print(stdout, obj);  // => ["Hello", "MessagePack"]
+     puts("");
+  }
+  //  Cleaning.
+  //msgpack_sbuffer_free(buffer);
+  //msgpack_packer_free(pk);
+
   // Print a start message
   printf("setupLoRa: SX1272 module and Raspberry Pi: send packets without ACK\n");
   
