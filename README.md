@@ -14,6 +14,15 @@ cd msgpack-1.4.1
 ./configure
 make
 sudo make install
+
+cd /home/pi
+wget https://github.com/ludocode/msgpack-tools/releases/download/v0.4/msgpack-tools-0.4.tar.gz
+tar zxvf msgpack-tools-0.4.tar.gz
+cd msgpack-tools-0.4
+./configure
+make
+sudo make install
+
 ```
 
 ## Set up LoRa libraries
