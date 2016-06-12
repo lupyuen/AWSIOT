@@ -4,6 +4,18 @@ Raspberry Pi, Node.js and Python scripts for AWS IoT, used in Temasek Polytechni
 - https://github.com/lupyuen/RaspberryPiImage
 - https://www.facebook.com/photo.php?fbid=10203864039081512&set=a.1222080012259.25950.1836747147&type=3&theater
 
+## Install MessagePack
+
+```
+cd /home/pi
+wget https://github.com/msgpack/msgpack-c/releases/download/cpp-1.4.1/msgpack-1.4.1.tar.gz
+tar zxvf msgpack-1.4.1.tar.gz
+cd msgpack-1.4.1
+./configure
+make
+sudo make install
+```
+
 ## Set up LoRa libraries
 
 Based on https://www.cooking-hacks.com/documentation/tutorials/extreme-range-lora-sx1272-module-shield-arduino-raspberry-pi-intel-galileo/
@@ -12,8 +24,6 @@ Based on https://www.cooking-hacks.com/documentation/tutorials/extreme-range-lor
 wget http://www.cooking-hacks.com/media/cooking/images/documentation/raspberry_arduino_shield/raspberrypi2.zip && unzip raspberrypi2.zip && cd cooking/arduPi && chmod +x install_arduPi && ./install_arduPi && rm install_arduPi && cd ../..
 		
 wget http://www.cooking-hacks.com/media/cooking/images/documentation/tutorial_SX1272/arduPi-api_LoRa_v1_4.zip && unzip -u arduPi-api_LoRa_v1_4.zip && cd cooking/examples/LoRa && chmod +x cook.sh && cd ../../..  
-
-sudo apt install libmsgpack-dev
 
 cd /home/pi/cooking/examples/LoRa/ 
 ./cook.sh lora_interface.cpp 
