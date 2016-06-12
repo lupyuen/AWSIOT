@@ -273,6 +273,7 @@ sudo reboot now
 sudo apt-get install telnet
 sudo apt-get install npm
 sudo npm config -g set python /usr/bin/python2.7
+sudo apt install cmake
 sudo apt install zsh
 curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
 
