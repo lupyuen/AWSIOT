@@ -1,33 +1,10 @@
-/*  
- *  LoRa 868 / 915MHz SX1272 LoRa module
- *  
- *  Copyright (C) Libelium Comunicaciones Distribuidas S.L. 
- *  http://www.libelium.com 
- *  
- *  This program is free software: you can redistribute it and/or modify 
- *  it under the terms of the GNU General Public License as published by 
- *  the Free Software Foundation, either version 3 of the License, or 
- *  (at your option) any later version. 
- *  
- *  This program is distributed in the hope that it will be useful, 
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of 
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
- *  GNU General Public License for more details.
- *  
- *  You should have received a copy of the GNU General Public License 
- *  along with this program.  If not, see http://www.gnu.org/licenses/. 
- *  
- *  Version:           1.1
- *  Design:            David Gascón 
- *  Implementation:    Covadonga Albiñana & Victor Boria
- */
- 
-// Include the SX1272 and SPI library: 
-//#include "SX1272.h"
-#include "arduPiLoRa.h"
+#include <msgpack.hpp>
+#include <vector>
+#include <string>
+#include <iostream>
+#include "arduPiLoRa.h"  //  Include the SX1272 and SPI library. 
 
 int e;
-
 char my_packet[100];
 char message1 [] = "Packet 1, wanting to see if received packet is the same as sent packet";
 char message2 [] = "Packet 2, broadcast test";
@@ -39,6 +16,27 @@ static int receiveCount = 0;
 
 int getLoRaStatus()
 {
+  // serializes this object.
+  std::vector<std::string> vec;
+  vec.push_back("Hello");
+  vec.push_back("MessagePack");
+
+  // serialize it into simple buffer.
+  msgpack::sbuffer sbuf;
+  msgpack::pack(sbuf, vec);
+
+  // deserialize it.
+  msgpack::object_handle oh =
+      msgpack::unpack(sbuf.data(), sbuf.size());
+
+  // print the deserialized object.
+  msgpack::object obj = oh.get();
+  std::cout << obj << std::endl;  //=> ["Hello", "MessagePack"]
+
+  // convert it into statically typed object.
+  std::vector<std::string> rvec;
+  obj.convert(rvec);
+
   return e;
 }
 
@@ -94,6 +92,7 @@ int sendLoRaMessage(int address, char *msg)
       printf("sendLoRaMessage ERROR: setupLoRa not called");
       return -1;
     }
+    //  TODO: If message starts with "{", assume it's in JSON format and compress with MessagePack.
     e = sx1272.sendPacketTimeout(address, msg);
     printf("sendLoRaMessage: state=%d\n",e);
 
@@ -128,12 +127,13 @@ char *receiveLoRaMessage(void)
   }
 
   ////
+  //  TODO: If message does not start with "{", assume it's in MessagePack format and uncompress to JSON format.
   receiveCount++;
   printf("receiveLoRaMessage: done %d, %d, %d\n", setupDone, sendCount, receiveCount);
   return my_packet;
 }
 
-int main (){
+int main() {
 	int setupStatus = setupLoRa();
   printf("Setup status %d\n",setupStatus);
 	while(1){
