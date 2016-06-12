@@ -13,6 +13,8 @@ wget http://www.cooking-hacks.com/media/cooking/images/documentation/raspberry_a
 		
 wget http://www.cooking-hacks.com/media/cooking/images/documentation/tutorial_SX1272/arduPi-api_LoRa_v1_4.zip && unzip -u arduPi-api_LoRa_v1_4.zip && cd cooking/examples/LoRa && chmod +x cook.sh && cd ../../..  
 
+sudo apt install libmsgpackc2
+
 cd /home/pi/cooking/examples/LoRa/ 
 ./cook.sh lora_interface.cpp 
 sudo ./lora_interface.cpp_exe 
