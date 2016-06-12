@@ -110,7 +110,7 @@ char *receiveLoRaMessage(void)
   if (setupDone == 0)
   {
     printf("sendLoRaMessage ERROR: setupLoRa not called");
-    return -1;
+    return (char *) "ERROR";
   }
   e = sx1272.receivePacketTimeout(10000);
   if ( e == 0 )
