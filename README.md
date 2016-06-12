@@ -26,7 +26,10 @@ wget http://www.cooking-hacks.com/media/cooking/images/documentation/raspberry_a
 wget http://www.cooking-hacks.com/media/cooking/images/documentation/tutorial_SX1272/arduPi-api_LoRa_v1_4.zip && unzip -u arduPi-api_LoRa_v1_4.zip && cd cooking/examples/LoRa && chmod +x cook.sh && cd ../../..  
 
 cd /home/pi/cooking/examples/LoRa/ 
-./cook.sh lora_interface.cpp 
+## Previously: ./cook.sh lora_interface.cpp 
+
+g++ -lrt -lpthread -lstdc++ lora_interface.cpp /usr/local/lib/libmsgpackc.a /home/pi/cooking/libraries/arduPiLoRa/arduPiLoRa.o /home/pi/cooking/arduPi-api/arduPiUART.o /home/pi/cooking/arduPi-api/arduPiUtils.o /home/pi/cooking/arduPi-api/arduPiMultiprotocol.o /home/pi/cooking/arduPi/arduPi.o -I/home/pi/cooking/arduPi -I/home/pi/cooking/arduPi-api -I/home/pi/cooking/libraries/arduPiLoRa -o lora_interface.cpp_exe
+
 sudo ./lora_interface.cpp_exe 
 ```
 
@@ -38,7 +41,7 @@ swig -python lora_interface.i
 
 g++ -c lora_interface.cpp lora_interface_wrap.c -I/home/pi/cooking/arduPi -I/home/pi/cooking/arduPi-api -I/home/pi/cooking/libraries/arduPiLoRa -I /usr/include/python3.4 
 
-ld -shared -lrt -lpthread -lstdc++ -L /usr/lib/gcc/arm-linux-gnueabihf/4.9 lora_interface.o lora_interface_wrap.o /home/pi/cooking/libraries/arduPiLoRa/arduPiLoRa.o /home/pi/cooking/arduPi-api/arduPiUART.o /home/pi/cooking/arduPi-api/arduPiUtils.o /home/pi/cooking/arduPi-api/arduPiMultiprotocol.o /home/pi/cooking/arduPi/arduPi.o -o _lora_interface.so
+ld -shared -lrt -lpthread -lstdc++ -L /usr/lib/gcc/arm-linux-gnueabihf/4.9 lora_interface.o lora_interface_wrap.o /home/pi/cooking/libraries/arduPiLoRa/arduPiLoRa.o /home/pi/cooking/arduPi-api/arduPiUART.o /home/pi/cooking/arduPi-api/arduPiUtils.o /home/pi/cooking/arduPi-api/arduPiMultiprotocol.o /home/pi/cooking/arduPi/arduPi.o /usr/local/lib/libmsgpackc.a -o _lora_interface.so
 
 sudo python3 test_lora_interface.py
 
