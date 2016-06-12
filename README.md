@@ -14,14 +14,17 @@ wget http://www.cooking-hacks.com/media/cooking/images/documentation/raspberry_a
 wget http://www.cooking-hacks.com/media/cooking/images/documentation/tutorial_SX1272/arduPi-api_LoRa_v1_4.zip && unzip -u arduPi-api_LoRa_v1_4.zip && cd cooking/examples/LoRa && chmod +x cook.sh && cd ../../..  
 
 cd /home/pi/cooking/examples/LoRa/ 
+./cook.sh lora_interface.cpp 
+sudo ./lora_interface.cpp_exe 
+```
+
+Based on http://www.swig.org/tutorial.html:
+```
+cd /home/pi/cooking/examples/LoRa/ 
 sudo apt install swig
 swig -python lora_interface.i
 gcc -c lora_interface.cpp lora_interface_wrap.c -I /usr/include/python3.4 -I ../../libraries/arduPiLoRa -I ../../arduPi
-
-cd /home/pi/cooking/examples/LoRa/ 
-./cook.sh lora_interface.cpp 
-sudo ./lora_interface.cpp_exe 
-
+ld -shared lora_interface.o lora_interface_wrap.o -o _lora_interface.so
 ```
 
 ## Set up pybluez for scanning beacons
