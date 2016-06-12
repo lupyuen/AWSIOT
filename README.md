@@ -30,7 +30,10 @@ ld -shared -lrt -lpthread -lstdc++ -L /usr/lib/gcc/arm-linux-gnueabihf/4.9 lora_
 
 sudo python3
 import lora_interface
-
+lora_interface.setup()
+status = lora_interface.sendMessage(1, "test message")
+msg = lora_interface.receiveMessage()
+status = lora_interface.getStatus()
 
 ```
 
