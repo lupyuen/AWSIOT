@@ -12,6 +12,11 @@ Based on https://www.cooking-hacks.com/documentation/tutorials/extreme-range-lor
 wget http://www.cooking-hacks.com/media/cooking/images/documentation/raspberry_arduino_shield/raspberrypi2.zip && unzip raspberrypi2.zip && cd cooking/arduPi && chmod +x install_arduPi && ./install_arduPi && rm install_arduPi && cd ../..
 		
 wget http://www.cooking-hacks.com/media/cooking/images/documentation/tutorial_SX1272/arduPi-api_LoRa_v1_4.zip && unzip -u arduPi-api_LoRa_v1_4.zip && cd cooking/examples/LoRa && chmod +x cook.sh && cd ../../..  
+
+cd cooking/examples/LoRa/ 
+./cook.sh my_example.cpp 
+./my_example.cpp_exe 
+
 ```
 
 ## Set up pybluez for scanning beacons
