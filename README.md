@@ -18,13 +18,13 @@ cd /home/pi/cooking/examples/LoRa/
 sudo ./lora_interface.cpp_exe 
 ```
 
-Based on http://www.swig.org/tutorial.html:
+Build Python3 interface for lora_interface using swig.  Based on http://www.swig.org/tutorial.html:
 ```
 cd /home/pi/cooking/examples/LoRa/ 
 sudo apt install swig
 swig -python lora_interface.i
 gcc -c lora_interface.cpp lora_interface_wrap.c -I /usr/include/python3.4 -I ../../libraries/arduPiLoRa -I ../../arduPi
-ld -shared lora_interface.o lora_interface_wrap.o -o _lora_interface.so
+ld -shared lora_interface.o lora_interface_wrap.o ../../libraries/arduPiLoRa/arduPiLoRa.o -o _lora_interface.so
 ```
 
 ## Set up pybluez for scanning beacons
