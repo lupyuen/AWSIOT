@@ -41,14 +41,17 @@ cd /home/pi/cooking/examples/LoRa/
 ## Previously: ./cook.sh lora_interface.cpp 
 
 cd /home/pi/LoRa
+
 g++ -lrt -lpthread -lstdc++ lora_interface.cpp /usr/local/lib/libmsgpackc.a /home/pi/cooking/libraries/arduPiLoRa/arduPiLoRa.o /home/pi/cooking/arduPi-api/arduPiUART.o /home/pi/cooking/arduPi-api/arduPiUtils.o /home/pi/cooking/arduPi-api/arduPiMultiprotocol.o /home/pi/cooking/arduPi/arduPi.o -I/home/pi/cooking/arduPi -I/home/pi/cooking/arduPi-api -I/home/pi/cooking/libraries/arduPiLoRa -o lora_interface.cpp_exe
 
 sudo ./lora_interface.cpp_exe 
+
 ```
 
 Build Python3 interface for lora_interface using swig.  Based on http://www.swig.org/tutorial.html:
 ```
 sudo apt install swig
+
 cd /home/pi/LoRa
 swig -python lora_interface.i
 
