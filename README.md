@@ -63,6 +63,22 @@ sudo python3 test_lora_interface.py
 
 ```
 
+## Auto start the LoRa gateway and nodes
+
+For gateway:
+```
+crontab -e
+#### Start LoRa node at startup.
+@reboot /home/pi/LoRa/run_lora_gateway.sh
+```
+
+For node:
+```
+crontab -e
+#### Start LoRa node at startup.
+@reboot /home/pi/LoRa/run_lora_node.sh
+```
+
 ## Set up pybluez for scanning beacons
 
 ```
