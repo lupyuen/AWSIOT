@@ -71,6 +71,7 @@ exit()
 ## Set up pybluez for scanning beacons
 
 ```
+cd /home/pi
 sudo apt install bluetooth bluez blueman
 sudo cp -r /usr/include old_include
 wget https://github.com/lupyuen/AWSIOT/raw/master/include.zip
@@ -86,7 +87,7 @@ sudo pip3 install gattlib
 wget https://github.com/karulis/pybluez/zipball/master
 mv master master.zip
 unzip master.zip
-cd karulis-pybluez-35296f4/examples/ble
+cd karulis-pybluez-*/examples/ble
 sudo python3 beacon_scan.py
 ```
 
