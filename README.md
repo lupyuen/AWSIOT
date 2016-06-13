@@ -37,8 +37,10 @@ cd /home/pi
 wget http://www.cooking-hacks.com/media/cooking/images/documentation/tutorial_SX1272/arduPi-api_LoRa_v1_4.zip && unzip -u arduPi-api_LoRa_v1_4.zip && cd cooking/examples/LoRa && chmod +x cook.sh && cd ../../..  
 
 cd /home/pi/cooking/examples/LoRa/ 
+./cook.sh
 ## Previously: ./cook.sh lora_interface.cpp 
 
+cd /home/pi/LoRa
 g++ -lrt -lpthread -lstdc++ lora_interface.cpp /usr/local/lib/libmsgpackc.a /home/pi/cooking/libraries/arduPiLoRa/arduPiLoRa.o /home/pi/cooking/arduPi-api/arduPiUART.o /home/pi/cooking/arduPi-api/arduPiUtils.o /home/pi/cooking/arduPi-api/arduPiMultiprotocol.o /home/pi/cooking/arduPi/arduPi.o -I/home/pi/cooking/arduPi -I/home/pi/cooking/arduPi-api -I/home/pi/cooking/libraries/arduPiLoRa -o lora_interface.cpp_exe
 
 sudo ./lora_interface.cpp_exe 
