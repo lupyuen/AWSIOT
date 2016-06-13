@@ -48,7 +48,7 @@ sudo ./lora_interface.cpp_exe
 
 Build Python3 interface for lora_interface using swig.  Based on http://www.swig.org/tutorial.html:
 ```
-cd /home/pi/cooking/examples/LoRa/ 
+cd /home/pi/LoRa
 sudo apt install swig
 swig -python lora_interface.i
 
