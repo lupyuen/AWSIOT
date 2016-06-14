@@ -50,10 +50,24 @@ to
 ```
 #define SX1272_debug_mode 2
 ```
+```
+nano /home/pi/cooking/libraries/arduPiLoRa/arduPiLoRa.cpp
+```
+Change line 204:
+```
+    #if (SX1272_debug_mode > 1)
+        printf("## Reading:  ##\tRegister ");
+```
+to
+```
+    #if (SX1272_debug_mode > 2)
+        printf("## Reading:  ##\tRegister ");
+```
 
 Build arduPiLoRa:
 ```
 cd /home/pi/cooking/examples/LoRa/ 
+rm -f /home/pi/cooking/libraries/arduPiLoRa/arduPiLoRa.o
 ./cook.sh
 ## Previously: ./cook.sh lora_interface.cpp 
 
