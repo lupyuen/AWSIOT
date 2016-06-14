@@ -35,7 +35,24 @@ wget http://www.cooking-hacks.com/media/cooking/images/documentation/raspberry_a
 
 cd /home/pi
 wget http://www.cooking-hacks.com/media/cooking/images/documentation/tutorial_SX1272/arduPi-api_LoRa_v1_4.zip && unzip -u arduPi-api_LoRa_v1_4.zip && cd cooking/examples/LoRa && chmod +x cook.sh && cd ../../..  
+```
 
+Enable debug messages:
+```
+cd /home/pi/cooking/examples/LoRa/ 
+nano /home/pi/cooking/libraries/arduPiLoRa/arduPiLoRa.h
+```
+Change 
+```
+#define SX1272_debug_mode 0
+```
+to
+```
+#define SX1272_debug_mode 2
+```
+
+Build arduPiLoRa:
+```
 cd /home/pi/cooking/examples/LoRa/ 
 ./cook.sh
 ## Previously: ./cook.sh lora_interface.cpp 
