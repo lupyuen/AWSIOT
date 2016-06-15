@@ -64,6 +64,17 @@ to
         printf("## Reading:  ##\tRegister ");
 ```
 
+Change lines 3279++:
+```
+			_hreceived = true;			
+			int header_count = 0;  ////  TP-IoT
+			while( (header == 0) && (millis() - previous < (unsigned long)wait) )
+			{ // Waiting to read first payload bytes from packet
+				header = readRegister(REG_FIFO_RX_BYTE_ADDR);
+				printf("## Header[%d] = %x\n", header_count++, header);  ////  TP-IoT
+                 delay(1000);
+```
+
 Build arduPiLoRa:
 ```
 cd /home/pi/cooking/examples/LoRa/ 
