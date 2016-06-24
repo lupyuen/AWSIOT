@@ -37,44 +37,6 @@ cd /home/pi
 wget http://www.cooking-hacks.com/media/cooking/images/documentation/tutorial_SX1272/arduPi-api_LoRa_v1_4.zip && unzip -u arduPi-api_LoRa_v1_4.zip && cd cooking/examples/LoRa && chmod +x cook.sh && cd ../../..  
 ```
 
-Enable debug messages:
-```
-cd /home/pi/cooking/examples/LoRa/ 
-nano /home/pi/cooking/libraries/arduPiLoRa/arduPiLoRa.h
-```
-Change 
-```
-#define SX1272_debug_mode 0
-```
-to
-```
-#define SX1272_debug_mode 2
-```
-```
-nano /home/pi/cooking/libraries/arduPiLoRa/arduPiLoRa.cpp
-```
-Change line 204:
-```
-    #if (SX1272_debug_mode > 1)
-        printf("## Reading:  ##\tRegister ");
-```
-to
-```
-    #if (SX1272_debug_mode > 2)
-        printf("## Reading:  ##\tRegister ");
-```
-
-Change lines 3279++:
-```
-			_hreceived = true;			
-			int header_count = 0;  ////  TP-IoT
-			while( (header == 0) && (millis() - previous < (unsigned long)wait) )
-			{ // Waiting to read first payload bytes from packet
-				header = readRegister(REG_FIFO_RX_BYTE_ADDR);
-				printf("## Header[%d] = %x\n", header_count++, header);  ////  TP-IoT
-                 delay(1000);
-```
-
 Build arduPiLoRa:
 ```
 cd /home/pi/cooking/examples/LoRa/ 
