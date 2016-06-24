@@ -121,6 +121,12 @@ crontab -e
 @reboot /home/pi/LoRa/run_lora_node.sh
 ```
 
+## Setup Dragino LoRa GPS HAT
+
+```
+sudo apt install wiringpi
+```
+
 ## Set up pybluez for scanning beacons
 
 ```
