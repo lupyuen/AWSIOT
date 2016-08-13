@@ -4,15 +4,15 @@ Raspberry Pi, Node.js and Python scripts for AWS IoT, used in Temasek Polytechni
 - https://github.com/lupyuen/RaspberryPiImage
 - https://www.facebook.com/photo.php?fbid=10203864039081512&set=a.1222080012259.25950.1836747147&type=3&theater
 
-## Install LetsEncrypt cert for API Gateway with custom domain
+## Install Custom Domain for API Gateway
 
-Assume that you want to set `api.mydomain.com` as your API Gateway.  We refer to `api.mydomain.com` as `<<API_DOMAIN_NAME>>`
+Assume that you want to set `api.mydomain.com` as your API Gateway.  We refer to `api.mydomain.com` as `<<API_DOMAIN_NAME>>`.  Setting up a Custom Domain requires an SSL cert.  Let's get the cert from LetsEncrypt.
 
 0. Create an EC2 server running Ubuntu with public incoming HTTP port access. Denote the server IP address by `<<SERVER_IP>>`
 
 0. Update the DNS so that `<<API_DOMAIN_NAME>>` points to the new server: Go to Route 53 --> Hosted Zones --> Domain Name --> Create Record Set.  Set Name to `<<API_DOMAIN_NAME>>`, Type to "A", Alias to "No", Value to `<<SERVER_IP>>`
 
-0. Connect to server, install `certbot` and run `certbot`
+0. Connect to server, install `certbot` from https://letsencrypt.org/getting-started/ and run `certbot`
 ```
 ssh -i <<SERVER_KEY>> ubuntu@<<SERVER_IP>>
 sudo certbot certonly
@@ -32,7 +32,7 @@ sudo certbot certonly
 
 0. Copy the `chain.pem` file contents into Certificate Chain
 
-0. LetsEncrypt certs expire every 3 months, so you need to repeat the above process every 3 months
+0. LetsEncrypt certs expire every 3 months, so you need to repeat the above process every 3 months. You can load the new cert as a Backup Cert into API Gateway, then rotate the cert
 
 ## Install MessagePack
 
