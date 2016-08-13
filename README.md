@@ -24,13 +24,15 @@ sudo certbot certonly
 
 0. The new cert is created at `/etc/letsencrypt/live/<<API_DOMAIN_NAME>>`
 
-0. Go to API Gateway console --> Custom Domain Names --> Create, get the CloudFront domain name. Change the Route 53 record for `<<API_DOMAIN_NAME>>` to be an alias for the CloudFront domain name.
+0. Go to API Gateway console --> Custom Domain Names --> Create, enter `<<API_DOMAIN_NAME>>`, get the CloudFront domain name. Change the Route 53 record for `<<API_DOMAIN_NAME>>` to be an alias for the CloudFront domain name.
 
-0. Enter the `cert.pem` file contents into Certificate Body
+0. Copy the `cert.pem` file contents into Certificate Body
 
-0. Enter the `privkey.pem` file contents into Certificate Private Key
+0. Copy the `privkey.pem` file contents into Certificate Private Key
 
-0. Enter the `fullchain.pem` file contents into Certificate Chain
+0. Copy the `chain.pem` file contents into Certificate Chain
+
+0. LetsEncrypt certs expire every 3 months, so you need to repeat the above process every 3 months
 
 ## Install MessagePack
 
