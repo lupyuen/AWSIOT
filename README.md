@@ -4,6 +4,34 @@ Raspberry Pi, Node.js and Python scripts for AWS IoT, used in Temasek Polytechni
 - https://github.com/lupyuen/RaspberryPiImage
 - https://www.facebook.com/photo.php?fbid=10203864039081512&set=a.1222080012259.25950.1836747147&type=3&theater
 
+## Install LetsEncrypt cert for API Gateway with custom domain
+
+Assume that you want to set `api.mydomain.com` as your API Gateway.  We refer to `api.mydomain.com` as `<<API_DOMAIN_NAME>>`
+
+0. Create an EC2 server running Ubuntu with public incoming HTTP port access. Denote the server IP address by `<<SERVER_IP>>`
+
+0. Update the DNS so that `<<API_DOMAIN_NAME>>` points to the new server: Go to Route 53 --> Hosted Zones --> Domain Name --> Create Record Set.  Set Name to `<<API_DOMAIN_NAME>>`, Type to "A", Alias to "No", Value to `<<SERVER_IP>>`
+
+0. Connect to server, install `certbot` and run `certbot`
+```
+ssh -i <<SERVER_KEY>> ubuntu@<<SERVER_IP>>
+sudo certbot certonly
+```
+
+0. Select "Automatically use a temporary web server"
+
+0. Enter domain name as `<<API_DOMAIN_NAME>>`
+
+0. The new cert is created at `/etc/letsencrypt/live/<<API_DOMAIN_NAME>>`
+
+0. Go to API Gateway console --> Custom Domain Names --> Create, get the CloudFront domain name. Change the Route 53 record for `<<API_DOMAIN_NAME>>` to be an alias for the CloudFront domain name.
+
+0. Enter the `cert.pem` file contents into Certificate Body
+
+0. Enter the `privkey.pem` file contents into Certificate Private Key
+
+0. Enter the `fullchain.pem` file contents into Certificate Chain
+
 ## Install MessagePack
 
 ```
