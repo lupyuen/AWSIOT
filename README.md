@@ -12,8 +12,7 @@ Assume that you want to set `api.mydomain.com` as your API Gateway.  We refer to
 
 0. Update the DNS so that `<<API_DOMAIN_NAME>>` points to the new server: Go to Route 53 --> Hosted Zones --> Domain Name --> Create Record Set.  Set Name to `<<API_DOMAIN_NAME>>`, Type to "A", Alias to "No", Value to `<<SERVER_IP>>`
 
-0. Connect to server, install `certbot` from https://letsencrypt.org/getting-started/ and run `certbot`
-```
+0. Connect to server, install `certbot` from https://letsencrypt.org/getting-started/ and run `certbot`. ```
 ssh -i <<SERVER_KEY>> ubuntu@<<SERVER_IP>>
 <<...Install certbot first...>>
 sudo certbot certonly
