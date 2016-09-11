@@ -1,4 +1,3 @@
-/*
 //  This script allows you to use require(...) for NPM modules in AWS Lambda
 //  inline scripts.  The lambda code will be relocated to /tmp because only
 //  /tmp is writeable.  The NPM modules will be installed in /tmp/node_modules.
