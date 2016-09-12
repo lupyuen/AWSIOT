@@ -61,8 +61,9 @@ function autorequire(handler, dirname, filename) {
                 return res2.handler(event, context, (err, res) => {
                     //  Callback doesn't seem to work because we are in a different domain.
                     //  We call context.succeed instead.
-                    console.log({b: 5, err, res});
-                    context.succeed(res);
+                    console.log({b: 6, err, res});
+                    if (err) context.fail(err);
+                    else context.succeed(res);
                     dom.exit();  //  Must shutdown the domain.
                 });
             })
