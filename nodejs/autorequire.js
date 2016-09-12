@@ -39,11 +39,7 @@ function autorequire(handler, dirname, filename) {
         //  fix any missing "require" modules.
         //console.error({lambdaHandler1: err});
         const filename_split = filename.split('/');
-        let script = filename_split[filename_split.length - 1];
-        console.log({script});////
-        //script = 'index.js';
-        console.log({script});////
-        
+        const script = filename_split[filename_split.length - 1];
         //  Only handle missing module errors.
         if (err.code !== 'MODULE_NOT_FOUND')
             return callback(err);
@@ -67,8 +63,8 @@ function autorequire(handler, dirname, filename) {
             });
         }
         
-        //  Else we must be running from /tmp.  Install the module and restart.
-        const msg = err.message;  //  Cannot find module 'mysql2/promise'
+        //  Else we must be running from /tmp.  Install the missing module and restart.
+        const msg = err.message;  //  e.g. Cannot find module 'mysql2/promise'
         const msg_split = msg.split('\'');
         if (msg_split.length !== 3) return callback(err);
         let module = msg_split[1];
@@ -145,7 +141,5 @@ function requireModule(module) {
     const loaded_module = require(mod);
     return loaded_module;
 }
-
-dumpModules();////
 
 module.exports = autorequire;
