@@ -33,6 +33,7 @@ function autorequire(handler, dirname, filename) {
   
   return function lambdaHandler(event, context, callback) {
     const dom = require('domain').create();
+    dom.add(event);
     dom.add(context);
     dom.add(callback);
     
