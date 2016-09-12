@@ -39,9 +39,9 @@ function autorequire(handler) {
         //  fix any missing "require" modules.
         //console.error({lambdaHandler1: err});
         const filename_split = __filename.split('/');
-        const script = filename_split[filename_split.length - 1];
+        let script = filename_split[filename_split.length - 1];
         console.log({script});////
-        script = 'index';
+        script = 'index.js';
         console.log({script});////
         
         //  Only handle missing module errors.
