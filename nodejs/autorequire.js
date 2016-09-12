@@ -40,6 +40,9 @@ function autorequire(handler) {
         //console.error({lambdaHandler1: err});
         const filename_split = __filename.split('/');
         const script = filename_split[filename_split.length - 1];
+        console.log({script});////
+        script = 'index';
+        console.log({script});////
         
         //  Only handle missing module errors.
         if (err.code !== 'MODULE_NOT_FOUND')
