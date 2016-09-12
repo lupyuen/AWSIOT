@@ -32,8 +32,9 @@ function autorequire(handler, dirname, filename) {
   //  handler, not outside.
   
   return function lambdaHandler(event, context, callback) {
-    const callback2 = callback;
     const dom = require('domain').create();
+    dom.add(context);
+    dom.add(callback);
     
     dom.on('error', err => {
         //  When we see a module not found error, move the script to /tmp and 
@@ -59,7 +60,7 @@ function autorequire(handler, dirname, filename) {
                 ////return res2.handler(event, context, callback);
                 return res2.handler(event, context, (err, res) => {
                     console.log({err, res});
-                    return context.succeed(res);
+                    return callback(err, res);
                 });
             })
             .catch(err => {
