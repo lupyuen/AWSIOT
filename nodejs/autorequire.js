@@ -137,10 +137,12 @@ function runCommand(cmd) {
 function requireModule(module) {
     //  The module has been loaded into /tmp.  Load the module.  
     //  module is named like 'mysql2/promise'.
-    const loaded_module = require(`${modules}/${module}`);
+    const mod = `${modules}/${module}`;
+    console.log({mod});////
+    const loaded_module = require(mod);
     return loaded_module;
 }
 
-//dumpModules();
+dumpModules();////
 
 module.exports = autorequire;
