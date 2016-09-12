@@ -58,17 +58,20 @@ function autorequire(handler, dirname, filename) {
                 const script2 = `${tmp}/${script}`;
                 console.log({starting_script: script2});
                 const res2 = require(script2);
-                ////return res2.handler(event, context, callback);
                 return res2.handler(event, context, (err, res) => {
-                    console.log({b: 4, err, res});
-                    //return callback(err, res);
+                    //  Callback doesn't seem to work because we are in a different domain.
+                    //  We call context.succeed instead.
+                    console.log({b: 5, err, res});
                     context.succeed(res);
-                    dom.exit();
+                    dom.exit();  //  Must shutdown the domain.
                 });
             })
             .catch(err => {
+                //  Callback doesn't seem to work because we are in a different domain.
+                //  We call context.fail instead.
                 console.error({lambdaHandler2: err});
-                return callback(err);
+                context.fail(err);
+                dom.exit();  //  Must shutdown the domain.
             });
         }
         
