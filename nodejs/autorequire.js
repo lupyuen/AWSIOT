@@ -59,7 +59,7 @@ function autorequire(handler, dirname, filename) {
                 ////return res2.handler(event, context, callback);
                 return res2.handler(event, context, (err, res) => {
                     console.log({err, res});
-                    return callback2(err, res);
+                    return context.succeed(res);
                 });
             })
             .catch(err => {
