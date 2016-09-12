@@ -25,7 +25,7 @@ process.on('unhandledRejection', (reason, promise) => {
     console.error({unhandledRejection: {reason, promise}});
 });
 
-function autorequire(handler) {
+function autorequire(handler, dirname, filename) {
   //  Wrap a lambda handler so that we relocate the code and install NPM modules
   //  when we detect a module not found error.  Else we let it run as normal.
   //  All non-system require(...) references must be contained inside the 
@@ -38,17 +38,17 @@ function autorequire(handler) {
         //  When we see a module not found error, move the script to /tmp and 
         //  fix any missing "require" modules.
         //console.error({lambdaHandler1: err});
-        const filename_split = __filename.split('/');
+        const filename_split = filename.split('/');
         let script = filename_split[filename_split.length - 1];
         console.log({script});////
-        script = 'index.js';
+        //script = 'index.js';
         console.log({script});////
         
         //  Only handle missing module errors.
         if (err.code !== 'MODULE_NOT_FOUND')
             return callback(err);
             
-        if (__dirname.indexOf(tmp) !== 0) {
+        if (dirname.indexOf(tmp) !== 0) {
             //  If not running from /tmp, copy this script to /tmp and run from 
             //  there.  Because node_modules can only be installed in /tmp.
             let cmd = `cp ${taskRoot}/* ${tmp}`;
