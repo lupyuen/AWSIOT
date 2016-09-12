@@ -60,7 +60,7 @@ function autorequire(handler, dirname, filename) {
                 const res2 = require(script2);
                 ////return res2.handler(event, context, callback);
                 return res2.handler(event, context, (err, res) => {
-                    console.log({v: 2, err, res});
+                    console.log({b: 3, err, res});
                     return callback(err, res);
                 });
             })
