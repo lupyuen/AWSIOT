@@ -18,7 +18,7 @@ ssh -i <<SERVER_KEY>> ubuntu@<<SERVER_IP>>
 <<...Install certbot first...>>
 sudo certbot certonly
  ```
-0. Select "Automatically use a temporary web server". Make sure that port 80 is open for incoming access.  Check the EC2 firewall / security group.
+0. Select "Automatically use a temporary web server". Make sure that ports 80 and 443 are open for incoming access.  Check the EC2 firewall / security group.
 
 0. Enter domain name as `<<API_DOMAIN_NAME>>`
 
