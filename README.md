@@ -176,6 +176,12 @@ https://github.com/lupyuen/AWSIOT/blob/master/install_pybluez.log
 
 0. Burn the Rasbian image to SD card: https://www.raspberrypi.org/documentation/installation/installing-images/README.md
 
+0. Boot and update the OS
+   ```
+sudo apt-get update
+sudo apt-get upgrade
+   ```
+   
 0. Get the Raspberry Pi console cable: https://learn.adafruit.com/adafruits-raspberry-pi-lesson-5-using-a-console-cable?view=all
 
 0. Connect as follows: 
@@ -240,24 +246,19 @@ network={
    sudo dhclient
    ```
 
-0. Click Menu -> Preferences -> Raspberry Pi Configuration.  Click Interfaces. Enable SSH, SPI, I2C and Serial.  Set time zone to GMT+8.  Set keyboard to US.  Reboot.
+0. Click Menu -> Preferences -> Raspberry Pi Configuration.  Click Interfaces. Enable SSH, SPI, I2C and Serial.  Set time zone to GMT+8.  Set keyboard to US.  Set locale to English US (en_US.UTF-8).  Reboot.
 
-0. Set the locale:
+0. Install latest "Latest Features" Node.js from https://nodejs.org/en/download/ (ARMv7)
    ```
-sudo vi /etc/environment
+wget https://nodejs.org/dist/v6.9.0/node-v6.9.0-linux-armv7l.tar.xz
+tar -xvf node-v6.9.0-linux-armv7l.tar.xz
+sudo cp -r node-v6.9.0-linux-armv7l /opt
+sudo mv /usr/bin/nodejs /usr/bin/nodejs.v0.10.29
+sudo rm /usr/bin/node
+sudo ln -s /opt/node-v6.9.0-linux-armv7l/bin/node /usr/bin/node
+sudo ln -s /opt/node-v6.9.0-linux-armv7l/bin/node /usr/bin/nodejs
+sudo ln -s /opt/node-v6.9.0-linux-armv7l/lib/node_modules/npm/bin/npm-cli.js /usr/bin/npm
    ```
-   Set to this:
-   ```
-LC_CTYPE=en_SG.UTF-8
-LC_ALL=en_SG.UTF-8
-LANG=en_SG.UTF-8
-   ```
-   Generate the locale files:
-   ```
-sudo dpkg-reconfigure locales
-   ```
-   Select "en_SG.UTF-8 UTF-8".
-   Set default locale for system environment to "en_SG.UTF-8".
 
 0. Download the GrovePi+ software:
    ```
@@ -329,18 +330,6 @@ sudo apt install cmake
 sudo apt install zsh
 curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
 
-   ```
-
-0. Install latest Node.js from https://nodejs.org/en/download/stable/ (ARMv7)
-   ```
-wget https://nodejs.org/dist/v5.10.1/node-v5.10.1-linux-armv7l.tar.xz
-tar -xvf node-v5.10.1-linux-armv7l.tar.xz
-sudo cp -r node-v5.10.1-linux-armv7l /opt
-sudo mv /usr/bin/nodejs /usr/bin/nodejs.v0.10.29
-sudo rm /usr/bin/node
-sudo ln -s /opt/node-v5.10.1-linux-armv7l/bin/node /usr/bin/node
-sudo ln -s /opt/node-v5.10.1-linux-armv7l/bin/node /usr/bin/nodejs
-sudo ln -s /opt/node-v5.10.1-linux-armv7l/lib/node_modules/npm/bin/npm-cli.js /usr/bin/npm
    ```
 
 0. Copy /home/pi/TP-IoT from 
