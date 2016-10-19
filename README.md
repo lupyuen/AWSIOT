@@ -162,24 +162,11 @@ rm -rf ~/GrovePi/Firmware
 rm -rf ~/GrovePi/Hardware
 rm -rf ~/GrovePi/Software/CSharp
 rm -rf ~/GrovePi/Software/Scratch
-sudo apt-get purge wolfram-engine
-sudo apt-get purge sonic-pi
-sudo apt-get purge scratch
-sudo apt-get purge nuscratch
-sudo apt-get autoremove
-   ```
-
-0. Update the installed packages:
-   ```
-sudo apt-get update
-sudo apt-get upgrade
-sudo reboot now
    ```
 
 0. Install common tools
    ```
 sudo apt-get install telnet
-sudo apt-get install npm
 sudo npm config -g set python /usr/bin/python2.7
 sudo apt install cmake
 sudo apt install zsh
