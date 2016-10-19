@@ -232,7 +232,12 @@ sudo make install
 # At every reboot, start the pigpiod backgroud process needed for accessing the DHT22 temperature+humidity sensor.
 @reboot sudo pigpiod
    ```
-   
+0. Install GrovePi for Node.js
+   ```
+   sudo npm install -g node-grovepi
+   ```
+
+
 0. Assign hostname: https://github.com/adafruit/Adafruit-Pi-Finder#adafruit-raspberry-pi-finder
    ```
 sudo apt-get install avahi-daemon
