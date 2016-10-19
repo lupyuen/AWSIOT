@@ -4,156 +4,6 @@ Raspberry Pi, Node.js and Python scripts for AWS IoT, used in Temasek Polytechni
 - https://github.com/lupyuen/RaspberryPiImage
 - https://www.facebook.com/photo.php?fbid=10203864039081512&set=a.1222080012259.25950.1836747147&type=3&theater
 
-## Install Custom Domain for API Gateway
-
-Assume that you want to set `api.mydomain.com` as your API Gateway.  We refer to `api.mydomain.com` as `<<API_DOMAIN_NAME>>`.  Setting up a Custom Domain requires an SSL cert.  Let's get the cert from LetsEncrypt.
-
-0. Create an EC2 server running Ubuntu with public incoming HTTP port access. Denote the server IP address by `<<SERVER_IP>>`
-
-0. Update the DNS so that `<<API_DOMAIN_NAME>>` points to the new server: Go to Route 53 --> Hosted Zones --> Domain Name --> Create Record Set.  Set Name to `<<API_DOMAIN_NAME>>`, Type to "A", Alias to "No", Value to `<<SERVER_IP>>`
-
-0. Connect to server, install `certbot` from https://letsencrypt.org/getting-started/ and run `certbot`. 
- ```
-ssh -i <<SERVER_KEY>> ubuntu@<<SERVER_IP>>
-<<...Install certbot first...>>
-sudo certbot certonly
- ```
-0. Select "Automatically use a temporary web server". Make sure that ports 80 and 443 are open for incoming access.  Check the EC2 firewall / security group.
-
-0. Enter domain name as `<<API_DOMAIN_NAME>>`
-
-0. The new cert is created at `/etc/letsencrypt/live/<<API_DOMAIN_NAME>>`
-
-0. Go to API Gateway console --> Custom Domain Names --> Create, enter `<<API_DOMAIN_NAME>>`, get the CloudFront domain name. Change the Route 53 record for `<<API_DOMAIN_NAME>>` to be an alias for the CloudFront domain name.
-
-0. Copy the `cert.pem` file contents into Certificate Body
-
-0. Copy the `privkey.pem` file contents into Certificate Private Key
-
-0. Copy the `chain.pem` file contents into Certificate Chain
-
-0. LetsEncrypt certs expire every 3 months, so you need to repeat the above process every 3 months. You can load the new cert as a Backup Cert into API Gateway, then rotate the cert
-
-## Install MessagePack
-
-```
-cd /home/pi
-wget https://github.com/msgpack/msgpack-c/releases/download/cpp-1.4.1/msgpack-1.4.1.tar.gz
-tar zxvf msgpack-1.4.1.tar.gz
-cd msgpack-1.4.1
-./configure
-make
-sudo make install
-
-cd /home/pi
-wget https://github.com/ludocode/msgpack-tools/releases/download/v0.4/msgpack-tools-0.4.tar.gz
-tar zxvf msgpack-tools-0.4.tar.gz
-cd msgpack-tools-0.4
-./configure
-make
-sudo make install
-
-```
-
-## Set up LoRa libraries
-
-Based on https://www.cooking-hacks.com/documentation/tutorials/extreme-range-lora-sx1272-module-shield-arduino-raspberry-pi-intel-galileo/
-
-```
-cd /home/pi
-wget http://www.cooking-hacks.com/media/cooking/images/documentation/raspberry_arduino_shield/raspberrypi2.zip && unzip raspberrypi2.zip && cd cooking/arduPi && chmod +x install_arduPi && ./install_arduPi && rm install_arduPi && cd ../..
-
-cd /home/pi
-wget http://www.cooking-hacks.com/media/cooking/images/documentation/tutorial_SX1272/arduPi-api_LoRa_v1_4.zip && unzip -u arduPi-api_LoRa_v1_4.zip && cd cooking/examples/LoRa && chmod +x cook.sh && cd ../../..  
-```
-
-Build arduPiLoRa:
-```
-cd /home/pi/cooking/examples/LoRa/ 
-rm -f /home/pi/cooking/libraries/arduPiLoRa/arduPiLoRa.o
-./cook.sh
-## Previously: ./cook.sh lora_interface.cpp 
-
-cd /home/pi/LoRa
-
-g++ -lrt -lpthread -lstdc++ lora_interface.cpp /usr/local/lib/libmsgpackc.a /home/pi/cooking/libraries/arduPiLoRa/arduPiLoRa.o /home/pi/cooking/arduPi-api/arduPiUART.o /home/pi/cooking/arduPi-api/arduPiUtils.o /home/pi/cooking/arduPi-api/arduPiMultiprotocol.o /home/pi/cooking/arduPi/arduPi.o -I/home/pi/cooking/arduPi -I/home/pi/cooking/arduPi-api -I/home/pi/cooking/libraries/arduPiLoRa -o lora_interface.cpp_exe
-
-sudo ./lora_interface.cpp_exe 
-
-```
-
-Build Python3 interface for lora_interface using swig.  Based on http://www.swig.org/tutorial.html:
-```
-sudo apt install swig
-
-cd /home/pi/LoRa
-swig -python lora_interface.i
-
-g++ -c lora_interface.cpp lora_interface_wrap.c -I/home/pi/cooking/arduPi -I/home/pi/cooking/arduPi-api -I/home/pi/cooking/libraries/arduPiLoRa -I /usr/include/python3.4 
-
-ld -shared -lrt -lpthread -lstdc++ -L /usr/lib/gcc/arm-linux-gnueabihf/4.9 lora_interface.o lora_interface_wrap.o /home/pi/cooking/libraries/arduPiLoRa/arduPiLoRa.o /home/pi/cooking/arduPi-api/arduPiUART.o /home/pi/cooking/arduPi-api/arduPiUtils.o /home/pi/cooking/arduPi-api/arduPiMultiprotocol.o /home/pi/cooking/arduPi/arduPi.o /usr/local/lib/libmsgpackc.a -o _lora_interface.so
-
-sudo python3 test_lora_interface.py
-
-```
-
-## Auto start the LoRa gateway and nodes
-
-For gateway:
-```
-crontab -e
-#### Start LoRa node at startup.
-@reboot /home/pi/LoRa/run_lora_gateway.sh
-```
-
-For node:
-```
-crontab -e
-#### Start LoRa node at startup.
-@reboot /home/pi/LoRa/run_lora_node.sh
-```
-
-## Setup Dragino LoRa GPS HAT
-
-```
-sudo apt install wiringpi
-```
-
-## Set up pybluez for scanning beacons
-
-```
-cd /home/pi
-sudo apt install bluetooth bluez blueman
-sudo cp -r /usr/include old_include
-wget https://github.com/lupyuen/AWSIOT/raw/master/include.zip
-unzip include.zip
-sudo cp -r include/* /usr/include/
-sudo apt install python3-dev
-sudo apt install libbluetooth-dev
-sudo pip3 install pybluez
-sudo apt install libboost-dev
-sudo apt install libboost-python-dev
-sudo apt install libboost-thread-dev
-sudo pip3 install gattlib
-wget https://github.com/karulis/pybluez/zipball/master
-mv master master.zip
-unzip master.zip
-cd karulis-pybluez-*/examples/ble
-sudo python3 beacon_scan.py
-```
-
-beacon_scan.py returns a list of beacons detected:
-```
-Beacon: address:C1:8B:BF:C6:4E:56 uuid:b9407f30-f5f8-466e-aff9-25556b57fe6d major:22094 minor:50879 txpower:182 rssi:-75
-Beacon: address:D4:AC:86:66:3A:0D uuid:b9407f30-f5f8-466e-aff9-25556b57fe6d major:3386 minor:26246 txpower:182 rssi:-79
-Beacon: address:D8:22:CB:53:63:B0 uuid:b9407f30-f5f8-466e-aff9-25556b57fe6d major:45155 minor:21451 txpower:182 rssi:-83
-Beacon: address:F7:43:86:4E:B9:CD uuid:b9407f30-f5f8-466e-aff9-25556b57fe6d major:52665 minor:20102 txpower:182 rssi:-68
-Beacon: address:D8:B1:B7:D4:38:AE uuid:b9407f30-f5f8-466e-aff9-25556b57fe6d major:44600 minor:54455 txpower:182 rssi:-79
-```
-
-Installation Log:
-https://github.com/lupyuen/AWSIOT/blob/master/install_pybluez.log
-
 ## Set up AWS IoT
 
 0. Go to AWS IoT Console, create a Thing, Name=g88pi.
@@ -181,7 +31,8 @@ https://github.com/lupyuen/AWSIOT/blob/master/install_pybluez.log
 sudo apt-get update
 sudo apt-get upgrade
    ```
-   
+When prompted to replace lightdm.conf, respond 'Y'
+
 0. Get the Raspberry Pi console cable: https://learn.adafruit.com/adafruits-raspberry-pi-lesson-5-using-a-console-cable?view=all
 
 0. Connect as follows: 
@@ -197,8 +48,6 @@ sudo apt-get upgrade
 
 0. On Pi 3: We must disable Bluetooth else the console cable won't work: https://www.abelectronics.co.uk/kb/article/1035/raspberry-pi-3-serial-port-usage
    ```
-sudo apt-get update
-sudo apt-get upgrade
 sudo nano /boot/config.txt
    ```
    Add at the end of the file
@@ -246,7 +95,7 @@ network={
    sudo dhclient
    ```
 
-0. Click Menu -> Preferences -> Raspberry Pi Configuration.  Click Interfaces. Enable SSH, SPI, I2C and Serial.  Set time zone to GMT+8.  Set keyboard to US.  Set locale to English US (en_US.UTF-8).  Reboot.
+0. Click Menu -> Preferences -> Raspberry Pi Configuration.  Click Interfaces. Enable SSH, SPI, I2C and Serial.  Set time zone to GMT+8.  Set keyboard to US.  Set locale to English US UTF-8 (en_US.UTF-8).  Reboot.
 
 0. Install latest "Latest Features" Node.js from https://nodejs.org/en/download/ (ARMv7)
    ```
@@ -845,6 +694,156 @@ From https://sourceforge.net/p/guacamole/discussion/1110834/thread/75fd04f0/
 apt-get install guacamole-tomcat
 apt-get install libguac-client-ssh0
 ```
+## Install Custom Domain for API Gateway
+
+Assume that you want to set `api.mydomain.com` as your API Gateway.  We refer to `api.mydomain.com` as `<<API_DOMAIN_NAME>>`.  Setting up a Custom Domain requires an SSL cert.  Let's get the cert from LetsEncrypt.
+
+0. Create an EC2 server running Ubuntu with public incoming HTTP port access. Denote the server IP address by `<<SERVER_IP>>`
+
+0. Update the DNS so that `<<API_DOMAIN_NAME>>` points to the new server: Go to Route 53 --> Hosted Zones --> Domain Name --> Create Record Set.  Set Name to `<<API_DOMAIN_NAME>>`, Type to "A", Alias to "No", Value to `<<SERVER_IP>>`
+
+0. Connect to server, install `certbot` from https://letsencrypt.org/getting-started/ and run `certbot`. 
+ ```
+ssh -i <<SERVER_KEY>> ubuntu@<<SERVER_IP>>
+<<...Install certbot first...>>
+sudo certbot certonly
+ ```
+0. Select "Automatically use a temporary web server". Make sure that ports 80 and 443 are open for incoming access.  Check the EC2 firewall / security group.
+
+0. Enter domain name as `<<API_DOMAIN_NAME>>`
+
+0. The new cert is created at `/etc/letsencrypt/live/<<API_DOMAIN_NAME>>`
+
+0. Go to API Gateway console --> Custom Domain Names --> Create, enter `<<API_DOMAIN_NAME>>`, get the CloudFront domain name. Change the Route 53 record for `<<API_DOMAIN_NAME>>` to be an alias for the CloudFront domain name.
+
+0. Copy the `cert.pem` file contents into Certificate Body
+
+0. Copy the `privkey.pem` file contents into Certificate Private Key
+
+0. Copy the `chain.pem` file contents into Certificate Chain
+
+0. LetsEncrypt certs expire every 3 months, so you need to repeat the above process every 3 months. You can load the new cert as a Backup Cert into API Gateway, then rotate the cert
+
+## Install MessagePack
+
+```
+cd /home/pi
+wget https://github.com/msgpack/msgpack-c/releases/download/cpp-1.4.1/msgpack-1.4.1.tar.gz
+tar zxvf msgpack-1.4.1.tar.gz
+cd msgpack-1.4.1
+./configure
+make
+sudo make install
+
+cd /home/pi
+wget https://github.com/ludocode/msgpack-tools/releases/download/v0.4/msgpack-tools-0.4.tar.gz
+tar zxvf msgpack-tools-0.4.tar.gz
+cd msgpack-tools-0.4
+./configure
+make
+sudo make install
+
+```
+
+## Set up LoRa libraries
+
+Based on https://www.cooking-hacks.com/documentation/tutorials/extreme-range-lora-sx1272-module-shield-arduino-raspberry-pi-intel-galileo/
+
+```
+cd /home/pi
+wget http://www.cooking-hacks.com/media/cooking/images/documentation/raspberry_arduino_shield/raspberrypi2.zip && unzip raspberrypi2.zip && cd cooking/arduPi && chmod +x install_arduPi && ./install_arduPi && rm install_arduPi && cd ../..
+
+cd /home/pi
+wget http://www.cooking-hacks.com/media/cooking/images/documentation/tutorial_SX1272/arduPi-api_LoRa_v1_4.zip && unzip -u arduPi-api_LoRa_v1_4.zip && cd cooking/examples/LoRa && chmod +x cook.sh && cd ../../..  
+```
+
+Build arduPiLoRa:
+```
+cd /home/pi/cooking/examples/LoRa/ 
+rm -f /home/pi/cooking/libraries/arduPiLoRa/arduPiLoRa.o
+./cook.sh
+## Previously: ./cook.sh lora_interface.cpp 
+
+cd /home/pi/LoRa
+
+g++ -lrt -lpthread -lstdc++ lora_interface.cpp /usr/local/lib/libmsgpackc.a /home/pi/cooking/libraries/arduPiLoRa/arduPiLoRa.o /home/pi/cooking/arduPi-api/arduPiUART.o /home/pi/cooking/arduPi-api/arduPiUtils.o /home/pi/cooking/arduPi-api/arduPiMultiprotocol.o /home/pi/cooking/arduPi/arduPi.o -I/home/pi/cooking/arduPi -I/home/pi/cooking/arduPi-api -I/home/pi/cooking/libraries/arduPiLoRa -o lora_interface.cpp_exe
+
+sudo ./lora_interface.cpp_exe 
+
+```
+
+Build Python3 interface for lora_interface using swig.  Based on http://www.swig.org/tutorial.html:
+```
+sudo apt install swig
+
+cd /home/pi/LoRa
+swig -python lora_interface.i
+
+g++ -c lora_interface.cpp lora_interface_wrap.c -I/home/pi/cooking/arduPi -I/home/pi/cooking/arduPi-api -I/home/pi/cooking/libraries/arduPiLoRa -I /usr/include/python3.4 
+
+ld -shared -lrt -lpthread -lstdc++ -L /usr/lib/gcc/arm-linux-gnueabihf/4.9 lora_interface.o lora_interface_wrap.o /home/pi/cooking/libraries/arduPiLoRa/arduPiLoRa.o /home/pi/cooking/arduPi-api/arduPiUART.o /home/pi/cooking/arduPi-api/arduPiUtils.o /home/pi/cooking/arduPi-api/arduPiMultiprotocol.o /home/pi/cooking/arduPi/arduPi.o /usr/local/lib/libmsgpackc.a -o _lora_interface.so
+
+sudo python3 test_lora_interface.py
+
+```
+
+## Auto start the LoRa gateway and nodes
+
+For gateway:
+```
+crontab -e
+#### Start LoRa node at startup.
+@reboot /home/pi/LoRa/run_lora_gateway.sh
+```
+
+For node:
+```
+crontab -e
+#### Start LoRa node at startup.
+@reboot /home/pi/LoRa/run_lora_node.sh
+```
+
+## Setup Dragino LoRa GPS HAT
+
+```
+sudo apt install wiringpi
+```
+
+## Set up pybluez for scanning beacons
+
+```
+cd /home/pi
+sudo apt install bluetooth bluez blueman
+sudo cp -r /usr/include old_include
+wget https://github.com/lupyuen/AWSIOT/raw/master/include.zip
+unzip include.zip
+sudo cp -r include/* /usr/include/
+sudo apt install python3-dev
+sudo apt install libbluetooth-dev
+sudo pip3 install pybluez
+sudo apt install libboost-dev
+sudo apt install libboost-python-dev
+sudo apt install libboost-thread-dev
+sudo pip3 install gattlib
+wget https://github.com/karulis/pybluez/zipball/master
+mv master master.zip
+unzip master.zip
+cd karulis-pybluez-*/examples/ble
+sudo python3 beacon_scan.py
+```
+
+beacon_scan.py returns a list of beacons detected:
+```
+Beacon: address:C1:8B:BF:C6:4E:56 uuid:b9407f30-f5f8-466e-aff9-25556b57fe6d major:22094 minor:50879 txpower:182 rssi:-75
+Beacon: address:D4:AC:86:66:3A:0D uuid:b9407f30-f5f8-466e-aff9-25556b57fe6d major:3386 minor:26246 txpower:182 rssi:-79
+Beacon: address:D8:22:CB:53:63:B0 uuid:b9407f30-f5f8-466e-aff9-25556b57fe6d major:45155 minor:21451 txpower:182 rssi:-83
+Beacon: address:F7:43:86:4E:B9:CD uuid:b9407f30-f5f8-466e-aff9-25556b57fe6d major:52665 minor:20102 txpower:182 rssi:-68
+Beacon: address:D8:B1:B7:D4:38:AE uuid:b9407f30-f5f8-466e-aff9-25556b57fe6d major:44600 minor:54455 txpower:182 rssi:-79
+```
+
+Installation Log:
+https://github.com/lupyuen/AWSIOT/blob/master/install_pybluez.log
+
 
 
 
