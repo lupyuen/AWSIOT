@@ -136,10 +136,22 @@ ssl.OPENSSL_VERSION
    ```
    Ensure that OpenSSL version >=1.0.1
 
+0. Install common tools
+   ```
+sudo apt-get install telnet
+sudo npm config -g set python /usr/bin/python2.7
+sudo apt install cmake
+sudo apt install zsh
+curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
+
+   ```
+
 0. Set the system default to python3.4 instead of python2.x.  Python 2.x does not support TLS.
    ```
-vi ~/.bash_aliases
-Change to
+nano ~/.bash_aliases
+   ```
+   Change to
+   ```
 # Some more alias to avoid making mistakes:
 alias rm='rm -i'
 alias cp='cp -i'
@@ -148,6 +160,7 @@ alias mv='mv -i'
 # For TP IoT: Alias python to python3 because python2 doesn't support TLS needed for AWS IoT.
 alias python=python3
    ```
+Do the same for `nano ~/.zshenv`
 
 0. Install paho, the MQTT library for Python
    ```
@@ -162,16 +175,6 @@ rm -rf ~/GrovePi/Firmware
 rm -rf ~/GrovePi/Hardware
 rm -rf ~/GrovePi/Software/CSharp
 rm -rf ~/GrovePi/Software/Scratch
-   ```
-
-0. Install common tools
-   ```
-sudo apt-get install telnet
-sudo npm config -g set python /usr/bin/python2.7
-sudo apt install cmake
-sudo apt install zsh
-curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
-
    ```
 
 0. Copy /home/pi/TP-IoT from 
