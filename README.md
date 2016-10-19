@@ -111,10 +111,15 @@ sudo ln -s /opt/node-v6.9.0-linux-armv7l/lib/node_modules/npm/bin/npm-cli.js /us
 
 0. Download the GrovePi+ software:
    ```
-sudo git clone https://github.com/DexterInd/GrovePi.git
+git clone https://github.com/DexterInd/GrovePi.git
    ```
 
-0. Run GrovePi/Script/grovepi_python3_install.sh after setting execute access right on the file. Reboot.  (Note: Don't use install.sh because it caused my Raspberry Pi 3 to boot with a black screen.)
+0. Run:
+   ```
+chmod +x GrovePi/Script/grovepi_python3_install.sh
+sudo GrovePi/Script/grovepi_python3_install.sh
+   ```
+Reboot.  (Note: Don't use install.sh because it caused my Raspberry Pi 3 to boot with a black screen.)
 
 0. Connect the Grove buzzer to port D8.  Test by running:
    ```
