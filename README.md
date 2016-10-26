@@ -502,12 +502,9 @@ destination remote_log_server {
 
 ## Enable Bluetooth Support
 
-0. See http://www.techradar.com/sg/how-to/computing/how-to-get-wi-fi-and-bluetooth-working-on-raspberry-pi-3-1316938
-   ```
-   sudo apt-get install bluetooth bluez blueman
-   ```
+This works for Raspberry Pi 3 with built-in Bluetooth, and Raspberry Pi 2 with Bluetooth USB adapter.  We will install `pybluez` as the Python library for scanning Bluetooth beacons.
 
-## Set up pybluez for scanning beacons
+Based on http://www.techradar.com/sg/how-to/computing/how-to-get-wi-fi-and-bluetooth-working-on-raspberry-pi-3-1316938
 
    ```
 cd /home/pi
