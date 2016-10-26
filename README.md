@@ -341,7 +341,7 @@ Change the user authentication to sync with local users:
    Restart Ajenti, log in as pi, password raspberry.
 
 0. Copy `index.html, auth.html, terminal.html` from
-   https://github.com/lupyuen/RaspberryPiImage/tree/master/usr/share/pyshared/ajenti/plugins/main 
+   https://github.com/lupyuen/RaspberryPiImage/tree/master/usr/share/pyshared/ajenti/plugins/main/content/static 
    to 
    `/usr/share/pyshared/ajenti/plugins/main/content/static` and 
    `/usr/lib/pymodules/python2.7/ajenti/plugins/main/content/static`
