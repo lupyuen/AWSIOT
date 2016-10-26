@@ -19,41 +19,6 @@ sudo apt-get upgrade
    ```
 When prompted to replace lightdm.conf, respond 'Y'
 
-0. Get the Raspberry Pi console cable: https://learn.adafruit.com/adafruits-raspberry-pi-lesson-5-using-a-console-cable?view=all
-
-0. Connect as follows: 
-   
-   | Edge with SDCard | Empty | Empty | Black | White | Green |
-   | --- | --- | --- | --- | --- | --- |
-   | |  |  |  (Gnd) |  (Tx) |  (Rx) |
-
-
-   Do not connect Red cable because we are using external power
-
-0. Install the console cable driver from http://www.prolific.com.tw/US/ShowProduct.aspx?p_id=229&pcid=41
-
-0. On Pi 3: We must disable Bluetooth else the console cable won't work: https://www.abelectronics.co.uk/kb/article/1035/raspberry-pi-3-serial-port-usage
-   ```
-sudo nano /boot/config.txt
-   ```
-   Add at the end of the file
-   ```
-dtoverlay=pi3-miniuart-bt
-   ```
-   Exit the editor saving your changes and then:
-   ```
-sudo reboot
-   ```
-   Enabling the Serial Console Rasbian Jessie after 18th March 2016 release:
-   To enable the serial console, you need to edit the /boot/cmdline.txt file
-   ```
-sudo nano /boot/cmdline.txt
-   ```
-   Change the file to the following:
-   ```
-dwc_otg.lpm_enable=0 console=tty1 console=serial0,115200 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait
-   ```
-
 0. Attach the GrovePi+ Shield and sensors: http://www.seeedstudio.com/depot/GrovePi-Starter-Kit-for-Raspberry-Pi-ABB23-CE-certified-p-2572.html?cPath=122_154_151
 
 0. Connect a USB keyboard, mouse and HDMI monitor. Boot and connect to wifi. 
@@ -632,6 +597,46 @@ partitions.json
 0. Copy root.tar.xz, boot.tar.xz to C:\TP-IoT-NOOBS\os\TP-IoT\
 
 0. To install a new SD Card, copy the entire contents of C:\TP-IoT-NOOBS to the SD Card and boot the Pi with the SD Card.  See https://goo.gl/Vrce5E
+
+# Using a Console Cable
+
+The Console Cable is recommended for connecting your Pi directly to your laptop's USB port so that you can troubleshoot boot issues without a HDMI display.
+
+0. Get the Raspberry Pi console cable: https://learn.adafruit.com/adafruits-raspberry-pi-lesson-5-using-a-console-cable?view=all
+
+0. Connect as follows: 
+   
+   | Edge with SDCard | Empty | Empty | Black | White | Green |
+   | --- | --- | --- | --- | --- | --- |
+   | |  |  |  (Gnd) |  (Tx) |  (Rx) |
+
+
+   Do not connect Red cable because we are using external power
+
+0. Install the console cable driver from http://www.prolific.com.tw/US/ShowProduct.aspx?p_id=229&pcid=41
+
+0. On Pi 3: We must disable Bluetooth else the console cable won't work: https://www.abelectronics.co.uk/kb/article/1035/raspberry-pi-3-serial-port-usage
+   ```
+sudo nano /boot/config.txt
+   ```
+   Add at the end of the file
+   ```
+dtoverlay=pi3-miniuart-bt
+   ```
+   Exit the editor saving your changes and then:
+   ```
+sudo reboot
+   ```
+   Enabling the Serial Console Rasbian Jessie after 18th March 2016 release:
+   To enable the serial console, you need to edit the /boot/cmdline.txt file
+   ```
+sudo nano /boot/cmdline.txt
+   ```
+   Change the file to the following:
+   ```
+dwc_otg.lpm_enable=0 console=tty1 console=serial0,115200 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait
+   ```
+
 
 ## Install Custom Domain for API Gateway
 
