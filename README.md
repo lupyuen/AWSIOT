@@ -363,7 +363,7 @@ Change the user authentication to sync with local users:
       class="fa fa-list-alt fa-stack-1x fa-inverse"
       title="Relational Database Service"></i></span></a>
    <a target='_blank' 
-   href='https://us-west-2.console.aws.amazon.com/dynamodb/home?region=us-west-2#tables:'
+   href='https://us-west-2.console.aws.amazon.com/rds/home?region=us-west-2#dbinstances:'
    ><b>MySQL database</b> for storing sensor data</a><br>
    
    <a target='_blank' href='https://us-west-2.console.aws.amazon.com/lambda/home?region=us-west-2#/functions'><span 
