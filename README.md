@@ -438,13 +438,18 @@ Change the user authentication to sync with local users:
 ##  Install tty.js Web Terminal
 
 0. Install tty.js web terminal: https://github.com/chjj/tty.js/
+
    ```
 cd /tmp
-npm install tty.js
+npm init
+(Select all defaults)
+npm install --save tty.js
 sudo mkdir /opt/tty.js
+sudo cp package.json /opt/tty.js
 sudo cp -r node_modules /opt/tty.js
    ```
-0. In `/opt`, download files run.sh, daemon.sh from https://github.com/lupyuen/RaspberryPiImage/tree/master/opt/tty.js
+   
+0. In `/opt/tty.js`, download files run.sh, daemon.sh from https://github.com/lupyuen/RaspberryPiImage/tree/master/opt/tty.js
 
 0. Delete /opt/tty.js/node_modules/tty.js/static/index.html. This file will be rendered after successful token authentication.
 
