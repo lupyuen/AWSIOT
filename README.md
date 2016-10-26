@@ -393,13 +393,13 @@ Change the user authentication to sync with local users:
    href='https://us-west-2.console.aws.amazon.com/sns/v2/home?region=us-west-2#/topics'
    ><b>Simple Notification Service</b> for email alerts</a><br>
    
-   <a target='_blank' href='https://us-west-2.console.aws.amazon.com/dynamodb/home?region=us-west-2#tables:'><span 
+   <a target='_blank' href='https://us-west-2.console.aws.amazon.com/rds/home?region=us-west-2#dbinstances:'><span 
       class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i 
       class="fa fa-list-alt fa-stack-1x fa-inverse"
-      title="DynamoDB"></i></span></a>
+      title="Relational Database Service"></i></span></a>
    <a target='_blank' 
    href='https://us-west-2.console.aws.amazon.com/dynamodb/home?region=us-west-2#tables:'
-   ><b>DynamoDB database</b> for storing sensor data</a><br>
+   ><b>MySQL database</b> for storing sensor data</a><br>
    
    <a target='_blank' href='https://us-west-2.console.aws.amazon.com/lambda/home?region=us-west-2#/functions'><span 
       class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i 
