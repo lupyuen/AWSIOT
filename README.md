@@ -460,6 +460,7 @@ sudo cp -r node_modules /opt/tty.js
 0. Install the service:
    ```
    sudo insserv tty.js
+   (Reboot the pi)
    sudo service tty.js start
    sudo service tty.js status
    ```
