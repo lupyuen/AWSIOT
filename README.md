@@ -478,7 +478,15 @@ destination remote_log_server {
 
 ## Update AWS DNS when local IP address changes
 
-0. Copy https://github.com/lupyuen/RaspberryPiImage/blob/master/home/pi/DNS/update_dns.sh to /home/pi/DNS/update_dns.sh.  This script calls AWS API Gateway to run a Lambda function UpdateDNS that updates the AWS DNS IP address: https://github.com/lupyuen/AWSIOT/blob/master/nodejs/UpdateDNS.js
+0. Copy `update_dns.sh` and `fixpermissions.sh` from
+
+   https://github.com/lupyuen/RaspberryPiImage/blob/master/home/pi/DNS
+   
+   to `/home/pi/DNS` and grant execute permission to the scripts.  This `update_dns.sh` script calls AWS API Gateway to run a Lambda function UpdateDNS that updates the AWS DNS IP address: 
+   
+   https://github.com/lupyuen/AWSIOT/blob/master/nodejs/UpdateDNS.js
+
+   The `fixpermissions.sh` script fixes the filesystem permissions so that the `pi` user has access to all files in the home directory. Copying files over the file share into the Pi will create the files as `root`.
 
 0. Add task to crontab to update the DNS every minute:
    ```
