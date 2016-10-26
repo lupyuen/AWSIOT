@@ -333,6 +333,16 @@ sudo service ajenti restart
    ```
    "port": 80
    ```
+   Change
+   ```
+   "ssl": {
+        "enable": true,
+   ```
+   to
+   ```
+   "ssl": {
+        "enable": false, 
+   ```
 
 0. Browse to
 http://raspberrypi/.
