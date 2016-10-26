@@ -347,8 +347,12 @@ sudo service ajenti restart
 0. Browse to
 http://raspberrypi/.
 Login in as root, password admin
-Change the user authentication to sync with local users.  Ensure pi has all permissions.
-Log out and log in as pi, password raspberry.
+Change the user authentication to sync with local users:
+
+   Configure -> User -> Authentication -> Sync with OS Users
+
+   Ensure pi has all permissions.
+   Restart Ajenti, log in as pi, password raspberry.
 
 0. Copy index.html, auth.html, terminal.html from https://github.com/lupyuen/RaspberryPiImage/tree/master/usr/share/pyshared/ajenti/plugins/main to /usr/share/pyshared/ajenti/plugins/main/content/static and /usr/lib/pymodules/python2.7/ajenti/plugins/main/content/static.  This enables Font Awesome to support icons in the text widget, and hides the SSL warning messages.  Also it allows launching of tty.js as our web terminal.
 
@@ -440,7 +444,7 @@ npm install tty.js
 sudo mkdir /opt/tty.js
 sudo cp -r node_modules /opt/tty.js
    ```
-0. Add files run.sh, daemon.sh from https://github.com/lupyuen/RaspberryPiImage/tree/master/opt/tty.js
+0. In `/opt`, download files run.sh, daemon.sh from https://github.com/lupyuen/RaspberryPiImage/tree/master/opt/tty.js
 
 0. Delete /opt/tty.js/node_modules/tty.js/static/index.html. This file will be rendered after successful token authentication.
 
@@ -501,6 +505,38 @@ destination remote_log_server {
    ```
    sudo apt-get install bluetooth bluez blueman
    ```
+
+## Set up pybluez for scanning beacons
+
+   ```
+cd /home/pi
+sudo apt install bluetooth bluez blueman
+sudo apt install python3-dev
+sudo apt install libbluetooth-dev
+sudo pip3 install pybluez
+sudo apt install libboost-dev
+sudo apt install libboost-python-dev
+sudo apt install libboost-thread-dev
+sudo pip3 install gattlib
+wget https://github.com/karulis/pybluez/zipball/master
+mv master master.zip
+unzip master.zip
+cd karulis-pybluez-*/examples/ble
+sudo python3 beacon_scan.py
+   ```
+
+   beacon_scan.py returns a list of beacons detected:
+   ```
+Beacon: address:C1:8B:BF:C6:4E:56 uuid:b9407f30-f5f8-466e-aff9-25556b57fe6d major:22094 minor:50879 txpower:182 rssi:-75
+Beacon: address:D4:AC:86:66:3A:0D uuid:b9407f30-f5f8-466e-aff9-25556b57fe6d major:3386 minor:26246 txpower:182 rssi:-79
+Beacon: address:D8:22:CB:53:63:B0 uuid:b9407f30-f5f8-466e-aff9-25556b57fe6d major:45155 minor:21451 txpower:182 rssi:-83
+Beacon: address:F7:43:86:4E:B9:CD uuid:b9407f30-f5f8-466e-aff9-25556b57fe6d major:52665 minor:20102 txpower:182 rssi:-68
+Beacon: address:D8:B1:B7:D4:38:AE uuid:b9407f30-f5f8-466e-aff9-25556b57fe6d major:44600 minor:54455 txpower:182 rssi:-79
+   ```
+
+   Installation Log:
+   https://github.com/lupyuen/AWSIOT/blob/master/install_pybluez.log
+
 
 ## Create NOOBS image from SD card
 
@@ -589,13 +625,6 @@ partitions.json
 
 0. To install a new SD Card, copy the entire contents of C:\TP-IoT-NOOBS to the SD Card and boot the Pi with the SD Card.  See https://goo.gl/Vrce5E
 
-## Install Guacamole VNC web client
-
-From https://sourceforge.net/p/guacamole/discussion/1110834/thread/75fd04f0/
-```
-apt-get install guacamole-tomcat
-apt-get install libguac-client-ssh0
-```
 ## Install Custom Domain for API Gateway
 
 Assume that you want to set `api.mydomain.com` as your API Gateway.  We refer to `api.mydomain.com` as `<<API_DOMAIN_NAME>>`.  Setting up a Custom Domain requires an SSL cert.  Let's get the cert from LetsEncrypt.
@@ -626,28 +655,15 @@ sudo certbot certonly
 
 0. LetsEncrypt certs expire every 3 months, so you need to repeat the above process every 3 months. You can load the new cert as a Backup Cert into API Gateway, then rotate the cert
 
-## Install MessagePack
+## For Future Consideration: Install Guacamole VNC web client
 
+From https://sourceforge.net/p/guacamole/discussion/1110834/thread/75fd04f0/
 ```
-cd /home/pi
-wget https://github.com/msgpack/msgpack-c/releases/download/cpp-1.4.1/msgpack-1.4.1.tar.gz
-tar zxvf msgpack-1.4.1.tar.gz
-cd msgpack-1.4.1
-./configure
-make
-sudo make install
-
-cd /home/pi
-wget https://github.com/ludocode/msgpack-tools/releases/download/v0.4/msgpack-tools-0.4.tar.gz
-tar zxvf msgpack-tools-0.4.tar.gz
-cd msgpack-tools-0.4
-./configure
-make
-sudo make install
-
+apt-get install guacamole-tomcat
+apt-get install libguac-client-ssh0
 ```
 
-## Set up LoRa libraries
+## For Future Consideration: Set up LoRa libraries
 
 Based on https://www.cooking-hacks.com/documentation/tutorials/extreme-range-lora-sx1272-module-shield-arduino-raspberry-pi-intel-galileo/
 
@@ -710,41 +726,6 @@ crontab -e
 ```
 sudo apt install wiringpi
 ```
-
-## Set up pybluez for scanning beacons
-
-```
-cd /home/pi
-sudo apt install bluetooth bluez blueman
-sudo cp -r /usr/include old_include
-wget https://github.com/lupyuen/AWSIOT/raw/master/include.zip
-unzip include.zip
-sudo cp -r include/* /usr/include/
-sudo apt install python3-dev
-sudo apt install libbluetooth-dev
-sudo pip3 install pybluez
-sudo apt install libboost-dev
-sudo apt install libboost-python-dev
-sudo apt install libboost-thread-dev
-sudo pip3 install gattlib
-wget https://github.com/karulis/pybluez/zipball/master
-mv master master.zip
-unzip master.zip
-cd karulis-pybluez-*/examples/ble
-sudo python3 beacon_scan.py
-```
-
-beacon_scan.py returns a list of beacons detected:
-```
-Beacon: address:C1:8B:BF:C6:4E:56 uuid:b9407f30-f5f8-466e-aff9-25556b57fe6d major:22094 minor:50879 txpower:182 rssi:-75
-Beacon: address:D4:AC:86:66:3A:0D uuid:b9407f30-f5f8-466e-aff9-25556b57fe6d major:3386 minor:26246 txpower:182 rssi:-79
-Beacon: address:D8:22:CB:53:63:B0 uuid:b9407f30-f5f8-466e-aff9-25556b57fe6d major:45155 minor:21451 txpower:182 rssi:-83
-Beacon: address:F7:43:86:4E:B9:CD uuid:b9407f30-f5f8-466e-aff9-25556b57fe6d major:52665 minor:20102 txpower:182 rssi:-68
-Beacon: address:D8:B1:B7:D4:38:AE uuid:b9407f30-f5f8-466e-aff9-25556b57fe6d major:44600 minor:54455 txpower:182 rssi:-79
-```
-
-Installation Log:
-https://github.com/lupyuen/AWSIOT/blob/master/install_pybluez.log
 
 
 
