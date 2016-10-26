@@ -348,6 +348,14 @@ Change the user authentication to sync with local users:
    
    This enables Font Awesome to support icons in the text widget, and hides the SSL warning messages.  Also it allows launching of tty.js as our web terminal.
 
+0. Copy `main.py` from
+   https://github.com/lupyuen/RaspberryPiImage/tree/master/usr/share/pyshared/ajenti/plugins/main 
+   to 
+   `/usr/share/pyshared/ajenti/plugins/main` and 
+   `/usr/lib/pymodules/python2.7/ajenti/plugins/main`
+   
+   The allows launching of tty.js as our web terminal by passing the authentication token from Ajenti to tty.js.
+   
 0. Add text widget for tty.js web terminal:
    ```
    <b>Welcome to the Ajenti Web Console</b><br>
