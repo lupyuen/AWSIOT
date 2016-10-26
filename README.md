@@ -522,10 +522,12 @@ sudo apt install libboost-dev
 sudo apt install libboost-python-dev
 sudo apt install libboost-thread-dev
 sudo apt install glib-2.0
+sudo apt install libglib2.0-dev
 sudo pip3 install gattlib
 wget https://github.com/karulis/pybluez/zipball/master
 mv master master.zip
 unzip master.zip
+rm master.zip
 cd karulis-pybluez-*/examples/ble
 sudo python3 beacon_scan.py
    ```
