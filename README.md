@@ -222,16 +222,7 @@ cd PIGPIO
 make -j4
 sudo make install
    ```
-
-0. Automatically start pigpiod background process during boot time
-   ```
-   crontab -e
-   ```
-   Add these lines:
-   ```
-# At every reboot, start the pigpiod backgroud process needed for accessing the DHT22 temperature+humidity sensor.
-@reboot sudo pigpiod
-   ```
+   
 0. Install GrovePi for Node.js
    ```
    sudo npm install -g node-grovepi
@@ -326,10 +317,10 @@ pyinstaller --onefile set_wifi_password_from_pi.py
    
 ## Install Ajenti Web Console
 
-0. Install Ajenti: http://support.ajenti.org/topics/1116-installing-on-debian/
+0. Install Ajenti: http://support.ajenti.org/topics/1121-installing-on-ubuntu/
    ```
 sudo bash
-wget -O- https://raw.github.com/ajenti/ajenti/1.x/scripts/install-debian.sh | sh
+wget -O- https://raw.github.com/ajenti/ajenti/1.x/scripts/install-ubuntu.sh | sudo sh
 exit
 sudo service ajenti restart
    ``` 
