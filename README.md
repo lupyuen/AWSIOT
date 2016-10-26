@@ -414,13 +414,33 @@ sudo cp package.json /opt/tty.js
 sudo cp -r node_modules /opt/tty.js
    ```
    
-0. In `/opt/tty.js`, download files run.sh, daemon.sh from https://github.com/lupyuen/RaspberryPiImage/tree/master/opt/tty.js
+0. Copy `run.sh, daemon.sh` from 
 
-0. Delete /opt/tty.js/node_modules/tty.js/static/index.html. This file will be rendered after successful token authentication.
-
-0. Copy index.html and tty.js from https://github.com/lupyuen/RaspberryPiImage/tree/master/opt/tty.js/node_modules/tty.js/lib to /opt/tty.js/node_modules/tty.js/lib.  These files implement the token authentication between Ajenti and tty.js.
+   https://github.com/lupyuen/RaspberryPiImage/tree/master/opt/tty.js
    
-0. Configure tty.js as a service that starts automatically.  Copy tty.js from https://github.com/lupyuen/RaspberryPiImage/tree/master/etc/init.d to /etc/init.d.  Ensure it has execute permission.
+   to `/opt/tty.js`
+
+0. Delete `/opt/tty.js/node_modules/tty.js/static/index.html.` This file will be rendered after successful token authentication.
+
+0. Copy `index.html` and `tty.js` from 
+
+   https://github.com/lupyuen/RaspberryPiImage/tree/master/opt/tty.js/node_modules/tty.js/lib 
+   
+   to `/opt/tty.js/node_modules/tty.js/lib`
+   
+   These files implement the token authentication between Ajenti and tty.js.
+
+0. To open a terminal window automatically upon launch, copy
+
+   https://github.com/lupyuen/RaspberryPiImage/blob/master/opt/tty.js/node_modules/tty.js/static/tty.js
+
+   to `/opt/tty.js/node_modules/tty.js/static/tty.js`
+      
+0. Configure tty.js as a service that starts automatically.  Copy `tty.js` from
+
+   https://github.com/lupyuen/RaspberryPiImage/tree/master/etc/init.d
+
+   to `/etc/init.d.`  Ensure it has execute permission.
 
 0. Install the service:
    ```
