@@ -602,7 +602,7 @@ ls /tmp/noobs
 sudo su
 mkdir /tmp/noobs
 sudo mount /dev/mmcblk0p3 /tmp/noobs
-cd /
+cd /Cre
 tar -cpf /tmp/noobs/root.tar /* --exclude=proc/* --exclude=sys/* --exclude=dev/pts/* --exclude=tmp/noobs/*
 cd /boot
 tar -cpf /tmp/noobs/boot.tar .
@@ -631,6 +631,17 @@ partitions.json
 0. Copy root.tar.xz, boot.tar.xz to C:\TP-IoT-NOOBS\os\TP-IoT\
 
 0. To install a new SD Card, copy the entire contents of C:\TP-IoT-NOOBS to the SD Card and boot the Pi with the SD Card.  See https://goo.gl/Vrce5E
+
+# Creating NOOBS image with Ubuntu VM
+
+```
+cd /media/user/402bfe3d-37db-48a7-a515-31edccf953df
+sudo mkdir /media/sf_Downloads/161027
+sudo tar -cpf /media/sf_Downloads/161027/root.tar . --exclude=proc/* --exclude=sys/* --exclude=dev/pts/* --exclude=tmp/noobs/*
+
+##cd /boot
+##tar -cpf /tmp/noobs/boot.tar .
+```
 
 # Using a Console Cable
 
