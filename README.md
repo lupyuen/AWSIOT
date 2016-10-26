@@ -87,10 +87,16 @@ ssl.OPENSSL_VERSION
    ```
    Ensure that OpenSSL version >=1.0.1
 
+0. Tell Node.js to use python2 instead of python3 for building NPM packages
+
+   ```
+   sudo npm config -g set python /usr/bin/python2.7
+   ```
+
 0. Install common tools
    ```
-sudo apt-get install telnet
-sudo npm config -g set python /usr/bin/python2.7
+sudo apt install htop
+sudo apt install telnet
 sudo apt install cmake
 sudo apt install zsh
 curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
@@ -515,6 +521,7 @@ sudo pip3 install pybluez
 sudo apt install libboost-dev
 sudo apt install libboost-python-dev
 sudo apt install libboost-thread-dev
+sudo apt install glib-2.0
 sudo pip3 install gattlib
 wget https://github.com/karulis/pybluez/zipball/master
 mv master master.zip
