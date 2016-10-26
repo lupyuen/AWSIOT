@@ -464,6 +464,8 @@ sudo cp -r node_modules /opt/tty.js
    sudo service tty.js start
    sudo service tty.js status
    ```
+   
+   tty.js web-based terminal is now running on port 3000.
 
 ## Send Raspberry Pi logs to Sumo Logic 
 
