@@ -100,7 +100,7 @@ const main = (event, context, callback) => {
     //  Write JSON messages to MySQL.
     const promises = [];
     for (const record of records) {
-      const promise = writeDatabase(device, record.extractedFields, context);
+      const promise = writeDatabase(device, record, context);
       promises.push(promise);
     }
     //  Post JSON messages to Sumo Logic.
@@ -410,19 +410,19 @@ const main = (event, context, callback) => {
     //  of JSON objects.  Returns a promise.
     //  Change timestamp to Sumo Logic format: "timestamp":"2016-02-08T00:19:14.325Z" -->
     //    "timestamp":"2016-02-08T00:19:14.325+0000"
-    body = body.replace(/("timestamp":"[^"]+)Z"/g, '$1+0000"');
-    console.log(`postLogsToSumoLogic: body=${body}`);
+    let body2 = body.map(JSON.stringify).join('\n');  //  Convert to list of lines.
+    body2 = body2.replace(/("timestamp":"[^"]+)Z"/g, '$1+0000"');
+    console.log(`postLogsToSumoLogic: body=${body2}`);
     const url_split = url.split('/', 4);
     const host = url_split[2];
     const path = url.substr(url.indexOf(host) + host.length);
-    const body2 = body.map(JSON.stringify).join('\n');  //  Convert to list of lines.
     const request_params = {
       host, path,
       body: body2,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Content-Length': Buffer.byteLength(body),
+        'Content-Length': Buffer.byteLength(body2),
         'X-Sumo-Name': tags || 'Logger',
       },
     };
