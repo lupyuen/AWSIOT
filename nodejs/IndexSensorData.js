@@ -97,14 +97,12 @@ const main = (event, context, callback) => {
     if (!records) return Promise.resolve('Received a control message');
 
     //  awslogsData.logEvents["0"].extractedFields.current.state.reported
-
     //  Write JSON messages to MySQL.
     const promises = [];
     for (const record of records) {
       const promise = writeDatabase(device, record.extractedFields, context);
       promises.push(promise);
     }
-
     //  Post JSON messages to Sumo Logic.
     const promise = postLogsToSumoLogic(url, records, device);
     promises.push(promise);
@@ -113,7 +111,7 @@ const main = (event, context, callback) => {
     return Promise.all(promises);
   }
 
-  function writeDatabase(device, event2, /* context2 */) {
+  function writeDatabase(device, event2 /* context2 */) {
     //  Write the record to MySQL database.  Returns a promise.
     //  If device is g88pi, group is g88
     let group = device;
@@ -200,6 +198,7 @@ const main = (event, context, callback) => {
     if (input.current && input.current.state && input.current.state.reported) {
       sensor_data = JSON.parse(JSON.stringify(input.current.state.reported));
       delete input.current;
+      delete input.previous;  //  Don't log the previous state.
     } else if (input.state && input.state.reported) {
       //  For AWS IoT 2016-03-23-beta, sensor data is located in the field
       //  "state->reported" or "input->state->reported".  We move them up to top level.
@@ -259,9 +258,9 @@ const main = (event, context, callback) => {
   }
 
   function transformLog(payload) {
-    //  Transform the log into Sumo Logic format.
+    //  Transform the log into Sumo Logic format.  Returns an array of JSON objects.
     if (payload.messageType === 'CONTROL_MESSAGE') return null;
-    let bulkRequestBody = '';
+    const bulkRequestBody = [];
     payload.logEvents.forEach((logEvent) => {
       //  Parse any JSON fields.
       if (!logEvent.extractedFields) {
@@ -280,12 +279,13 @@ const main = (event, context, callback) => {
       const source = buildSource(logEvent.message, logEvent.extractedFields);
       //  source['id'] = logEvent.id;  //  Ignore ID because it is very long.
       console.log(`transformLog: ${logEvent.message} =>\n${JSON.stringify(source)}`);
-      bulkRequestBody += `${JSON.stringify(source)}\n`;
+      bulkRequestBody.push(source);
     });
     return bulkRequestBody;
   }
 
   function buildSource(message, extractedFields) {
+    //  Combine the extracted fields with the message fields.
     if (extractedFields) {
       const source = {};
       for (const key in extractedFields) {
@@ -406,7 +406,8 @@ const main = (event, context, callback) => {
   }
 
   function postLogsToSumoLogic(url, body, tags) {
-    //  Post the sensor data logs to Sumo Logic via HTTPS.  Returns a promise.
+    //  Post the sensor data logs to Sumo Logic via HTTPS.  Body contains an array
+    //  of JSON objects.  Returns a promise.
     //  Change timestamp to Sumo Logic format: "timestamp":"2016-02-08T00:19:14.325Z" -->
     //    "timestamp":"2016-02-08T00:19:14.325+0000"
     body = body.replace(/("timestamp":"[^"]+)Z"/g, '$1+0000"');
@@ -414,8 +415,10 @@ const main = (event, context, callback) => {
     const url_split = url.split('/', 4);
     const host = url_split[2];
     const path = url.substr(url.indexOf(host) + host.length);
+    const body2 = body.map(JSON.stringify).join('\n');  //  Convert to list of lines.
     const request_params = {
-      host, path, body,
+      host, path,
+      body: body2,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
