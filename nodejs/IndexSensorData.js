@@ -66,8 +66,8 @@ const main = (event, context, callback) => {
 
   function handler(input, context, callback) {
     //  This is the main program flow after resolving the missing modules.
-    if (input.domain) delete input.domain;  ////  TODO
-    console.log('IndexSensorData Input:', input);
+    if (input.domain) delete input.domain;  ////  TODO: Contains self-reference loop.
+    console.log('IndexSensorData Input:', JSON.stringify(input, null, 2));
     console.log('IndexSensorData Context:', context);
 
     //  Index the sensor data.
@@ -87,7 +87,7 @@ const main = (event, context, callback) => {
       .catch((err) => callback(err));
   }
 
-  function processLogs(url, tags, awslogsData) {
+  function processLogs(url, device, awslogsData) {
     //  Transform the input to JSON messages for indexing, then write to MySQL and Sumo Logic.
     //  Returns a promise.
     let records = transformLog(awslogsData);
@@ -97,22 +97,24 @@ const main = (event, context, callback) => {
     //  Write JSON messages to MySQL.
     const promises = [];
     for (const record of records) {
-      const promise = writeDatabase(record.extractedFields, context);
+      const promise = writeDatabase(device, record.extractedFields, context);
       promises.push(promise);
     }
 
     //  Post JSON messages to Sumo Logic.
-    const promise = postLogsToSumoLogic(url, records, tags);
+    const promise = postLogsToSumoLogic(url, records, device);
     promises.push(promise);
 
     //  We have accumulated a list of MySQL and SumoLogic updates.  Wait for all of them.
     return Promise.all(promises);
   }
 
-  function writeDatabase(event, context) {
+  function writeDatabase(device, event, context) {
     //  Write the record to MySQL database.  Returns a promise.
-    console.log({event});
-    const table = 'g88_sensor_data';  //  TODO
+    //  If device is g88pi, group is g88
+    let group = device;
+    if (group.toLowerCase().endsWith('pi')) group = group.substr(0, group.length - 2);
+    const table = `${group}_sensor_data`;
     //  Connect to the MySQL database.
     return mysql.createConnection({
       host     : 'iotdb.culga9y9tfvw.us-west-2.rds.amazonaws.com',
@@ -149,7 +151,7 @@ const main = (event, context, callback) => {
   let default_device = 'Unknown';
 
   function getDevice(input) {
-    //  Get the device name.
+    //  Get the device name e.g. g88pi.
     if (input.device)
       return input.device;
     let device = default_device;
@@ -697,42 +699,250 @@ const test_input2b =
   }
 };
 
-//  Sensor Data for AWS IoT version 2016-03-23-beta.  Note the new "input->state".
+//  Sensor Data for AWS IoT beta (2016-11-14)
 const test_input3 =
 {
-  "state": {
-    "reported": {
-      "occupied": false,
-      "humidity": 44,
-      "timestamp": "2016-05-13T22:34:29.138750",
-      "temperature": 31.4,
-      "sound_level": 334,
-      "light_level": 267
-    }
-  },
-  "metadata": {
-    "reported": {
-      "humidity": {
-        "timestamp": 1463150093
+  "previous": {
+    "state": {
+      "desired": {
+        "timestamp": "2016-08-12T14:27:52.855202",
+        "led": "on"
       },
-      "timestamp": {
-        "timestamp": 1463150093
-      },
-      "temperature": {
-        "timestamp": 1463150093
-      },
-      "sound_level": {
-        "timestamp": 1463150093
-      },
-      "light_level": {
-        "timestamp": 1463150093
+      "reported": {
+        "humidity": 44,
+        "timestamp": "2016-10-27T00:34:37.746075",
+        "temperature": 34.1,
+        "sound_level": 330,
+        "light_level": 116,
+        "led": "on",
+        "message": "OK",
+        "beacons": {
+          "B_b9407f30f5f8466eaff925556b57fe6d_17850_29219": {
+            "rssi": -65,
+            "uuid": "b9407f30f5f8466eaff925556b57fe6d",
+            "major": 17850,
+            "power": 182,
+            "address": "E0:95:23:72:BA:45",
+            "id": "B_b9407f30f5f8466eaff925556b57fe6d_17850_29219",
+            "minor": 29219
+          },
+          "B_b9407f30f5f8466eaff925556b57fe6d_42535_61733": {
+            "minor": 61733,
+            "power": 182,
+            "major": 42535,
+            "id": "B_b9407f30f5f8466eaff925556b57fe6d_42535_61733",
+            "address": "F8:CA:25:F1:83:35",
+            "rssi": -67,
+            "uuid": "b9407f30f5f8466eaff925556b57fe6d"
+          }
+        }
       }
-    }
+    },
+    "metadata": {
+      "desired": {
+        "timestamp": {
+          "timestamp": 1479112106
+        },
+        "led": {
+          "timestamp": 1479112106
+        }
+      },
+      "reported": {
+        "humidity": {
+          "timestamp": 1479112106
+        },
+        "timestamp": {
+          "timestamp": 1479112106
+        },
+        "temperature": {
+          "timestamp": 1479112106
+        },
+        "sound_level": {
+          "timestamp": 1479112106
+        },
+        "light_level": {
+          "timestamp": 1479112106
+        },
+        "led": {
+          "timestamp": 1479112106
+        },
+        "message": {
+          "timestamp": 1479112106
+        },
+        "beacons": {
+          "B_b9407f30f5f8466eaff925556b57fe6d_17850_29219": {
+            "rssi": {
+              "timestamp": 1479112106
+            },
+            "uuid": {
+              "timestamp": 1479112106
+            },
+            "major": {
+              "timestamp": 1479112106
+            },
+            "power": {
+              "timestamp": 1479112106
+            },
+            "address": {
+              "timestamp": 1479112106
+            },
+            "id": {
+              "timestamp": 1479112106
+            },
+            "minor": {
+              "timestamp": 1479112106
+            }
+          },
+          "B_b9407f30f5f8466eaff925556b57fe6d_42535_61733": {
+            "minor": {
+              "timestamp": 1479112106
+            },
+            "power": {
+              "timestamp": 1479112106
+            },
+            "major": {
+              "timestamp": 1479112106
+            },
+            "id": {
+              "timestamp": 1479112106
+            },
+            "address": {
+              "timestamp": 1479112106
+            },
+            "rssi": {
+              "timestamp": 1479112106
+            },
+            "uuid": {
+              "timestamp": 1479112106
+            }
+          }
+        }
+      }
+    },
+    "version": 19960
   },
-  "version": 9142,
-  "timestamp": 1463150093,
-  "topic": "$aws/things/g87pi/shadow/update/accepted",
-  "traceId": "081f1280-93f9-4b94-88a9-7c3813136398"
+  "current": {
+    "state": {
+      "desired": {
+        "timestamp": "2016-08-12T14:27:52.855202",
+        "led": "on"
+      },
+      "reported": {
+        "humidity": 44,
+        "timestamp": "2016-10-27T00:34:37.746075",
+        "temperature": 34.2,
+        "sound_level": 330,
+        "light_level": 116,
+        "led": "on",
+        "message": "OK",
+        "beacons": {
+          "B_b9407f30f5f8466eaff925556b57fe6d_17850_29219": {
+            "rssi": -65,
+            "uuid": "b9407f30f5f8466eaff925556b57fe6d",
+            "major": 17850,
+            "power": 182,
+            "address": "E0:95:23:72:BA:45",
+            "id": "B_b9407f30f5f8466eaff925556b57fe6d_17850_29219",
+            "minor": 29219
+          },
+          "B_b9407f30f5f8466eaff925556b57fe6d_42535_61733": {
+            "minor": 61733,
+            "power": 182,
+            "major": 42535,
+            "id": "B_b9407f30f5f8466eaff925556b57fe6d_42535_61733",
+            "address": "F8:CA:25:F1:83:35",
+            "rssi": -67,
+            "uuid": "b9407f30f5f8466eaff925556b57fe6d"
+          }
+        }
+      }
+    },
+    "metadata": {
+      "desired": {
+        "timestamp": {
+          "timestamp": 1479119600
+        },
+        "led": {
+          "timestamp": 1479119600
+        }
+      },
+      "reported": {
+        "humidity": {
+          "timestamp": 1479119600
+        },
+        "timestamp": {
+          "timestamp": 1479119600
+        },
+        "temperature": {
+          "timestamp": 1479119600
+        },
+        "sound_level": {
+          "timestamp": 1479119600
+        },
+        "light_level": {
+          "timestamp": 1479119600
+        },
+        "led": {
+          "timestamp": 1479119600
+        },
+        "message": {
+          "timestamp": 1479119600
+        },
+        "beacons": {
+          "B_b9407f30f5f8466eaff925556b57fe6d_17850_29219": {
+            "rssi": {
+              "timestamp": 1479119600
+            },
+            "uuid": {
+              "timestamp": 1479119600
+            },
+            "major": {
+              "timestamp": 1479119600
+            },
+            "power": {
+              "timestamp": 1479119600
+            },
+            "address": {
+              "timestamp": 1479119600
+            },
+            "id": {
+              "timestamp": 1479119600
+            },
+            "minor": {
+              "timestamp": 1479119600
+            }
+          },
+          "B_b9407f30f5f8466eaff925556b57fe6d_42535_61733": {
+            "minor": {
+              "timestamp": 1479119600
+            },
+            "power": {
+              "timestamp": 1479119600
+            },
+            "major": {
+              "timestamp": 1479119600
+            },
+            "id": {
+              "timestamp": 1479119600
+            },
+            "address": {
+              "timestamp": 1479119600
+            },
+            "rssi": {
+              "timestamp": 1479119600
+            },
+            "uuid": {
+              "timestamp": 1479119600
+            }
+          }
+        }
+      }
+    },
+    "version": 19961
+  },
+  "timestamp": 1479119600,
+  "topic": "$aws/things/g88pi/shadow/update/documents",
+  "traceId": "9732304a-57f7-770d-ff5a-b339e8eb0878"
 };
 
 //  Another variant of Sensor Data for AWS IoT version 2016-03-23-beta.  Note the new "input->state".
