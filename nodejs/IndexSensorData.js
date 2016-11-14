@@ -125,10 +125,11 @@ const main = (event, context, callback) => {
       database: 'iotdb',
     })
       .then(conn => {
-        const timestamp = new Date();
+        const timestamp = event2.sensor_timestamp || event2.timestamp || new Date();
         const promises = [];
         //  Insert each sensor value in a separate MySQL row.
         for (const key in event2) {
+          if (key === 'timestamp' || key === 'sensor_timestamp') continue;
           const val = event2[key];
           const row = { timestamp, sensor: key };
           //  Write numbers into 'number' field and strings into 'text' field.
@@ -269,9 +270,14 @@ const main = (event, context, callback) => {
           logEvent.extractedFields = JSON.parse(logEvent.extractedFields);
         } else logEvent.extractedFields = {};
       }
+      //  Save the sensor timestamp for logging to MySQL.
+      if (logEvent.extractedFields.timestamp) {
+        logEvent.extractedFields.sensor_timestamp = logEvent.extractedFields.timestamp;
+      }
       //  Timestamp must be first field or Sumo Logic may pick another field.
       const timestamp = new Date(1 * logEvent.timestamp);
       logEvent.extractedFields.timestamp = timestamp.toISOString();
+
       //  logevent.extractedFields.data contains "EVENT:UpdateThingShadow
       //  TOPICNAME:$aws/things/g88pi/shadow/update THINGNAME:g88pi"
       //  We extract the fields.
