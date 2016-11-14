@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7c392364-e4dd-472f-8964-ecf49ededf90" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/nodejs.iml" afterPath="$PROJECT_DIR$/.idea/nodejs.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/IndexSensorData.js" afterPath="$PROJECT_DIR$/IndexSensorData.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
@@ -69,15 +72,25 @@
       <file leaf-file-name="IndexSensorData.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/IndexSensorData.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="693" column="30" selection-start-line="693" selection-start-column="30" selection-end-line="693" selection-end-column="30" />
+            <state relative-caret-position="252">
+              <caret line="227" column="26" selection-start-line="227" selection-start-column="26" selection-end-line="227" selection-end-column="26" />
               <folding>
-                <element signature="e#31508#34536#0" expanded="false" />
-                <element signature="e#34585#34665#0" expanded="false" />
-                <element signature="e#34912#35620#0" expanded="false" />
-                <element signature="e#35652#37553#0" expanded="false" />
-                <element signature="e#36988#37529#0" expanded="false" />
+                <element signature="e#35088#35796#0" expanded="false" />
+                <element signature="e#35828#37729#0" expanded="false" />
+                <element signature="e#37164#37705#0" expanded="false" />
+                <marker date="1479133023352" expanded="false" signature="31684:34712" ph="{...}" />
+                <marker date="1479133023352" expanded="false" signature="34761:34841" ph="{&quot;timestamp&quot;: &quot;2016-08-12T14:27:52.855202&quot;...}" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".eslintrc" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/.eslintrc">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="270">
+              <caret line="18" column="25" selection-start-line="18" selection-start-column="25" selection-end-line="18" selection-end-column="25" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -104,6 +117,7 @@
         <option value="$PROJECT_DIR$/2015 Oct/LogsToElasticsearch_iot.js" />
         <option value="$PROJECT_DIR$/ExpandSensorData.js" />
         <option value="$PROJECT_DIR$/IndexAWSLogs.js" />
+        <option value="$PROJECT_DIR$/.eslintrc" />
         <option value="$PROJECT_DIR$/IndexSensorData.js" />
       </list>
     </option>
@@ -122,7 +136,7 @@
   <component name="ProjectFrameBounds">
     <option name="x" value="8" />
     <option name="y" value="48" />
-    <option name="width" value="1094" />
+    <option name="width" value="968" />
     <option name="height" value="944" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
@@ -171,21 +185,38 @@
     <panes>
       <pane id="Scratches" />
       <pane id="ProjectPane">
-        <subPane />
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="nodejs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="nodejs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="nodejs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
       </pane>
       <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="settings.editor.selected.configurable" value="settings.nodejs" />
+    <property name="settings.editor.selected.configurable" value="JavaScript.Libraries" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="WebServerToolWindowFactoryState" value="true" />
     <property name="js-jscs-nodeInterpreter" value="/usr/local/bin/node" />
-    <property name="nodejs_interpreter_path" value="/usr/local/bin/node" />
-    <property name="JavaScriptPreferStrict" value="true" />
-    <property name="JavaScriptWeakerCompletionTypeGuess" value="true" />
-    <property name="javascript.nodejs.core.library.configured.version" value="4.4.2" />
+    <property name="nodejs_interpreter_path" value="C:/Program Files/nodejs/node" />
+    <property name="JavaScriptPreferStrict" value="false" />
+    <property name="JavaScriptWeakerCompletionTypeGuess" value="false" />
+    <property name="javascript.nodejs.core.library.configured.version" value="6.3.0" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="137" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
@@ -203,6 +234,8 @@
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder2" value="2" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="937" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder3" value="3" />
+    <property name="js.eslint.eslintPackage" value="C:\Users\guppy\AppData\Roaming\npm\node_modules\eslint" />
+    <property name="js.eslint.nodeInterpreter" value="project" />
   </component>
   <component name="PsiViewer.ProjectComponent">
     <option name="HIGHLIGHT" value="false" />
@@ -290,7 +323,11 @@
       <recursive>false</recursive>
       <method />
     </configuration>
-    <configuration default="false" name="IndexSensorData.js" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="project" path-to-js-file="IndexSensorData.js" working-dir="$PROJECT_DIR$">
+    <configuration default="false" name="IndexSensorData.js" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="C:/Program Files/nodejs/node" path-to-js-file="IndexSensorData.js" working-dir="$PROJECT_DIR$">
+      <profiling v8-profiler-path="" />
+      <EXTENSION ID="com.jetbrains.nodejs.run.NodeJSProfilingRunConfigurationExtension">
+        <profiling v8-profiler-path="" />
+      </EXTENSION>
       <method />
     </configuration>
     <configuration default="false" name="IndexAWSLogs.js" type="NodeJSConfigurationType" factoryName="Node.js" singleton="false" path-to-node="project" path-to-js-file="IndexAWSLogs.js" working-dir="$PROJECT_DIR$">
@@ -356,57 +393,64 @@
       <option name="project" value="LOCAL" />
       <updated>1479118438182</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Before testing">
+      <created>1479120086608</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1479120086608</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
     <option name="totallyTimeSpent" value="60287000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="8" y="48" width="1094" height="944" extended-state="0" />
+    <frame x="8" y="48" width="968" height="944" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="DB Execution Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Gerrit" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23892774" sideWeight="0.65873015" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Code Outline" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295362" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Cabal" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Cabal" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Compare Directories" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Tail" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.16680227" sideWeight="0.73625" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2982353" sideWeight="0.64737797" order="9" side_tool="true" content_ui="tabs" x="60" y="-1201" width="1383" height="470" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.49808916" sideWeight="0.64737797" order="20" side_tool="true" content_ui="tabs" x="60" y="-1201" width="1383" height="470" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32843894" sideWeight="0.58600736" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="SvgViewer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="SvgViewer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="DB Browser" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Regex Tester" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="RemoteSynchronizer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="16" side_tool="false" content_ui="tabs" />
-      <window_info id="PsiViewer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295362" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="PsiViewer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295362" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22061484" sideWeight="0.5069307" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19215687" sideWeight="0.49746192" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.35653237" sideWeight="0.7596207" order="10" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.35653237" sideWeight="0.7596207" order="13" side_tool="true" content_ui="tabs" />
       <window_info id="Unicode Browser" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Graph Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Graph Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3291032" sideWeight="0.49746192" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="GhcMod" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.13113292" sideWeight="0.64705884" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="ReST Console" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13105726" sideWeight="0.64705884" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="ReST Console" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Graph Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="17" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15323646" sideWeight="0.3529412" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Mongo Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Mongo Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Metrics" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Dilbert" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Geek &amp; Poke" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="Geek &amp; Poke" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39945155" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23386115" sideWeight="0.49818748" order="18" side_tool="false" content_ui="tabs" />
-      <window_info id="Floobits" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299373" sideWeight="0.5" order="17" side_tool="false" content_ui="tabs" />
-      <window_info id="Jenkins" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23386115" sideWeight="0.49818748" order="19" side_tool="false" content_ui="tabs" />
+      <window_info id="Floobits" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299373" sideWeight="0.5" order="18" side_tool="false" content_ui="tabs" />
+      <window_info id="Jenkins" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23761262" sideWeight="0.34126985" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -439,7 +483,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/IndexSensorData.js</url>
-          <line>98</line>
+          <line>102</line>
           <properties />
           <option name="timeStamp" value="52" />
         </line-breakpoint>
@@ -477,11 +521,11 @@
         <state relative-caret-position="3225">
           <caret line="215" column="9" selection-start-line="0" selection-start-column="0" selection-end-line="757" selection-end-column="0" />
           <folding>
-            <element signature="e#31508#34536#0" expanded="false" />
-            <element signature="e#34585#34665#0" expanded="false" />
-            <element signature="e#34912#35620#0" expanded="false" />
-            <element signature="e#35652#37553#0" expanded="false" />
-            <element signature="e#36988#37529#0" expanded="false" />
+            <element signature="e#35088#35796#0" expanded="false" />
+            <element signature="e#35828#37729#0" expanded="false" />
+            <element signature="e#37164#37705#0" expanded="false" />
+            <marker date="1479133023352" expanded="false" signature="31684:34712" ph="{...}" />
+            <marker date="1479133023352" expanded="false" signature="34761:34841" ph="{&quot;timestamp&quot;: &quot;2016-08-12T14:27:52.855202&quot;...}" />
           </folding>
         </state>
       </provider>
@@ -501,11 +545,11 @@
         <state relative-caret-position="3225">
           <caret line="215" column="9" selection-start-line="0" selection-start-column="0" selection-end-line="757" selection-end-column="0" />
           <folding>
-            <element signature="e#31508#34536#0" expanded="false" />
-            <element signature="e#34585#34665#0" expanded="false" />
-            <element signature="e#34912#35620#0" expanded="false" />
-            <element signature="e#35652#37553#0" expanded="false" />
-            <element signature="e#36988#37529#0" expanded="false" />
+            <element signature="e#35088#35796#0" expanded="false" />
+            <element signature="e#35828#37729#0" expanded="false" />
+            <element signature="e#37164#37705#0" expanded="false" />
+            <marker date="1479133023352" expanded="false" signature="31684:34712" ph="{...}" />
+            <marker date="1479133023352" expanded="false" signature="34761:34841" ph="{&quot;timestamp&quot;: &quot;2016-08-12T14:27:52.855202&quot;...}" />
           </folding>
         </state>
       </provider>
@@ -525,11 +569,11 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#31508#34536#0" expanded="false" />
-            <element signature="e#34585#34665#0" expanded="false" />
-            <element signature="e#34912#35620#0" expanded="false" />
-            <element signature="e#35652#37553#0" expanded="false" />
-            <element signature="e#36988#37529#0" expanded="false" />
+            <element signature="e#35088#35796#0" expanded="false" />
+            <element signature="e#35828#37729#0" expanded="false" />
+            <element signature="e#37164#37705#0" expanded="false" />
+            <marker date="1479133023352" expanded="false" signature="31684:34712" ph="{...}" />
+            <marker date="1479133023352" expanded="false" signature="34761:34841" ph="{&quot;timestamp&quot;: &quot;2016-08-12T14:27:52.855202&quot;...}" />
           </folding>
         </state>
       </provider>
@@ -549,11 +593,11 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#31508#34536#0" expanded="false" />
-            <element signature="e#34585#34665#0" expanded="false" />
-            <element signature="e#34912#35620#0" expanded="false" />
-            <element signature="e#35652#37553#0" expanded="false" />
-            <element signature="e#36988#37529#0" expanded="false" />
+            <element signature="e#35088#35796#0" expanded="false" />
+            <element signature="e#35828#37729#0" expanded="false" />
+            <element signature="e#37164#37705#0" expanded="false" />
+            <marker date="1479133023352" expanded="false" signature="31684:34712" ph="{...}" />
+            <marker date="1479133023352" expanded="false" signature="34761:34841" ph="{&quot;timestamp&quot;: &quot;2016-08-12T14:27:52.855202&quot;...}" />
           </folding>
         </state>
       </provider>
@@ -573,11 +617,11 @@
         <state relative-caret-position="13000">
           <caret line="756" column="0" selection-start-line="756" selection-start-column="0" selection-end-line="756" selection-end-column="0" />
           <folding>
-            <element signature="e#31508#34536#0" expanded="false" />
-            <element signature="e#34585#34665#0" expanded="false" />
-            <element signature="e#34912#35620#0" expanded="false" />
-            <element signature="e#35652#37553#0" expanded="false" />
-            <element signature="e#36988#37529#0" expanded="false" />
+            <element signature="e#35088#35796#0" expanded="false" />
+            <element signature="e#35828#37729#0" expanded="false" />
+            <element signature="e#37164#37705#0" expanded="false" />
+            <marker date="1479133023352" expanded="false" signature="31684:34712" ph="{...}" />
+            <marker date="1479133023352" expanded="false" signature="34761:34841" ph="{&quot;timestamp&quot;: &quot;2016-08-12T14:27:52.855202&quot;...}" />
           </folding>
         </state>
       </provider>
@@ -597,11 +641,11 @@
         <state relative-caret-position="13000">
           <caret line="756" column="0" selection-start-line="756" selection-start-column="0" selection-end-line="756" selection-end-column="0" />
           <folding>
-            <element signature="e#31508#34536#0" expanded="false" />
-            <element signature="e#34585#34665#0" expanded="false" />
-            <element signature="e#34912#35620#0" expanded="false" />
-            <element signature="e#35652#37553#0" expanded="false" />
-            <element signature="e#36988#37529#0" expanded="false" />
+            <element signature="e#35088#35796#0" expanded="false" />
+            <element signature="e#35828#37729#0" expanded="false" />
+            <element signature="e#37164#37705#0" expanded="false" />
+            <marker date="1479133023352" expanded="false" signature="31684:34712" ph="{...}" />
+            <marker date="1479133023352" expanded="false" signature="34761:34841" ph="{&quot;timestamp&quot;: &quot;2016-08-12T14:27:52.855202&quot;...}" />
           </folding>
         </state>
       </provider>
@@ -621,11 +665,11 @@
         <state relative-caret-position="13000">
           <caret line="756" column="0" selection-start-line="756" selection-start-column="0" selection-end-line="756" selection-end-column="0" />
           <folding>
-            <element signature="e#31508#34536#0" expanded="false" />
-            <element signature="e#34585#34665#0" expanded="false" />
-            <element signature="e#34912#35620#0" expanded="false" />
-            <element signature="e#35652#37553#0" expanded="false" />
-            <element signature="e#36988#37529#0" expanded="false" />
+            <element signature="e#35088#35796#0" expanded="false" />
+            <element signature="e#35828#37729#0" expanded="false" />
+            <element signature="e#37164#37705#0" expanded="false" />
+            <marker date="1479133023352" expanded="false" signature="31684:34712" ph="{...}" />
+            <marker date="1479133023352" expanded="false" signature="34761:34841" ph="{&quot;timestamp&quot;: &quot;2016-08-12T14:27:52.855202&quot;...}" />
           </folding>
         </state>
       </provider>
@@ -662,11 +706,11 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#31508#34536#0" expanded="false" />
-            <element signature="e#34585#34665#0" expanded="false" />
-            <element signature="e#34912#35620#0" expanded="false" />
-            <element signature="e#35652#37553#0" expanded="false" />
-            <element signature="e#36988#37529#0" expanded="false" />
+            <element signature="e#35088#35796#0" expanded="false" />
+            <element signature="e#35828#37729#0" expanded="false" />
+            <element signature="e#37164#37705#0" expanded="false" />
+            <marker date="1479133023352" expanded="false" signature="31684:34712" ph="{...}" />
+            <marker date="1479133023352" expanded="false" signature="34761:34841" ph="{&quot;timestamp&quot;: &quot;2016-08-12T14:27:52.855202&quot;...}" />
           </folding>
         </state>
       </provider>
@@ -710,11 +754,11 @@
         <state relative-caret-position="3740">
           <caret line="187" column="0" selection-start-line="168" selection-start-column="0" selection-end-line="187" selection-end-column="0" />
           <folding>
-            <element signature="e#31508#34536#0" expanded="false" />
-            <element signature="e#34585#34665#0" expanded="false" />
-            <element signature="e#34912#35620#0" expanded="false" />
-            <element signature="e#35652#37553#0" expanded="false" />
-            <element signature="e#36988#37529#0" expanded="false" />
+            <element signature="e#35088#35796#0" expanded="false" />
+            <element signature="e#35828#37729#0" expanded="false" />
+            <element signature="e#37164#37705#0" expanded="false" />
+            <marker date="1479133023352" expanded="false" signature="31684:34712" ph="{...}" />
+            <marker date="1479133023352" expanded="false" signature="34761:34841" ph="{&quot;timestamp&quot;: &quot;2016-08-12T14:27:52.855202&quot;...}" />
           </folding>
         </state>
       </provider>
@@ -741,11 +785,11 @@
         <state relative-caret-position="3740">
           <caret line="187" column="0" selection-start-line="168" selection-start-column="0" selection-end-line="187" selection-end-column="0" />
           <folding>
-            <element signature="e#31508#34536#0" expanded="false" />
-            <element signature="e#34585#34665#0" expanded="false" />
-            <element signature="e#34912#35620#0" expanded="false" />
-            <element signature="e#35652#37553#0" expanded="false" />
-            <element signature="e#36988#37529#0" expanded="false" />
+            <element signature="e#35088#35796#0" expanded="false" />
+            <element signature="e#35828#37729#0" expanded="false" />
+            <element signature="e#37164#37705#0" expanded="false" />
+            <marker date="1479133023352" expanded="false" signature="31684:34712" ph="{...}" />
+            <marker date="1479133023352" expanded="false" signature="34761:34841" ph="{&quot;timestamp&quot;: &quot;2016-08-12T14:27:52.855202&quot;...}" />
           </folding>
         </state>
       </provider>
@@ -762,11 +806,11 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#31508#34536#0" expanded="false" />
-            <element signature="e#34585#34665#0" expanded="false" />
-            <element signature="e#34912#35620#0" expanded="false" />
-            <element signature="e#35652#37553#0" expanded="false" />
-            <element signature="e#36988#37529#0" expanded="false" />
+            <element signature="e#35088#35796#0" expanded="false" />
+            <element signature="e#35828#37729#0" expanded="false" />
+            <element signature="e#37164#37705#0" expanded="false" />
+            <marker date="1479133023352" expanded="false" signature="31684:34712" ph="{...}" />
+            <marker date="1479133023352" expanded="false" signature="34761:34841" ph="{&quot;timestamp&quot;: &quot;2016-08-12T14:27:52.855202&quot;...}" />
           </folding>
         </state>
       </provider>
@@ -871,16 +915,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/.eslintrc">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="18" column="25" selection-start-line="18" selection-start-column="25" selection-end-line="18" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/IndexSensorData.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="693" column="30" selection-start-line="693" selection-start-column="30" selection-end-line="693" selection-end-column="30" />
+        <state relative-caret-position="252">
+          <caret line="227" column="26" selection-start-line="227" selection-start-column="26" selection-end-line="227" selection-end-column="26" />
           <folding>
-            <element signature="e#31508#34536#0" expanded="false" />
-            <element signature="e#34585#34665#0" expanded="false" />
-            <element signature="e#34912#35620#0" expanded="false" />
-            <element signature="e#35652#37553#0" expanded="false" />
-            <element signature="e#36988#37529#0" expanded="false" />
+            <element signature="e#35088#35796#0" expanded="false" />
+            <element signature="e#35828#37729#0" expanded="false" />
+            <element signature="e#37164#37705#0" expanded="false" />
+            <marker date="1479133023352" expanded="false" signature="31684:34712" ph="{...}" />
+            <marker date="1479133023352" expanded="false" signature="34761:34841" ph="{&quot;timestamp&quot;: &quot;2016-08-12T14:27:52.855202&quot;...}" />
           </folding>
         </state>
       </provider>
