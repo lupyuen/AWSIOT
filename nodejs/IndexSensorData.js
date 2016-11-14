@@ -51,19 +51,19 @@ AWS.config.region = 'us-west-2';
 //AWS.config.logger = process.stdout;  //  Debug
 let cloudwatch = new AWS.CloudWatch();
 
-//  This lambda uses autorequire to install any missing require(...) modules 
-//  automatically.  This is useful for AWS Lambda because otherwise we need to 
+//  This lambda uses autorequire to install any missing require(...) modules
+//  automatically.  This is useful for AWS Lambda because otherwise we need to
 //  upload all the modules as a zipped package and we lose the inline editing capability.
 let autorequire = null;
 
 const main = (event, context, callback) => {
-    //  This is the main execution scope.  All non-system require(...) 
+    //  This is the main execution scope.  All non-system require(...)
     //  statements must be put here.
-    
+
     //  This missing module is normally not allowed for inline lambda.  But
     //  autorequire will install the module automatically for us.
     const mysql = require('mysql2/promise');
-    
+
     function writeDatabase(event, context, callback) {
         //  Write the record to MySQL database.
         console.log({event});
@@ -75,47 +75,47 @@ const main = (event, context, callback) => {
             password : 'iotattp4me',
             database : 'iotdb'
         })
-        .then(conn => {
-            const timestamp = new Date();
-            const promises = [];
-            ////  TODO: Check status of insert.
-            for (const key in event) {
-                console.log('Writing key ' + key);
-                const promise = conn.query('insert into ?? set ?', [table, {
-                    timestamp,
-                    sensor: key,
-                    text: event[key] + ''
-                }]);
-                promises.push(promise);
-            }
-            return Promise.all(promises);  ////
-            
-            return conn.query('insert into ?? set ?', [table, {
-                timestamp: new Date(),
-                sensor: 'temperature',
-                number: 27.1
-            }]);
-            //return conn.query('select * from ??', [table]);
-        })
-        .then(res => {
-            //const rows = res[0];
-            //const fields = res[1];
-            //const result = rows.length > 0 ? rows[0] : null;
-            //console.log({a:6, result});
-            const result = "OK"; ////
-            return callback(null, result);
-        })
-        .catch(err => {
-            console.error({handler: err});
-            return callback(err);
-        });
+          .then(conn => {
+              const timestamp = new Date();
+              const promises = [];
+              ////  TODO: Check status of insert.
+              for (const key in event) {
+                  console.log('Writing key ' + key);
+                  const promise = conn.query('insert into ?? set ?', [table, {
+                      timestamp,
+                      sensor: key,
+                      text: event[key] + ''
+                  }]);
+                  promises.push(promise);
+              }
+              return Promise.all(promises);  ////
+
+              return conn.query('insert into ?? set ?', [table, {
+                  timestamp: new Date(),
+                  sensor: 'temperature',
+                  number: 27.1
+              }]);
+              //return conn.query('select * from ??', [table]);
+          })
+          .then(res => {
+              //const rows = res[0];
+              //const fields = res[1];
+              //const result = rows.length > 0 ? rows[0] : null;
+              //console.log({a:6, result});
+              const result = "OK"; ////
+              return callback(null, result);
+          })
+          .catch(err => {
+              console.error({handler: err});
+              return callback(err);
+          });
     }
-    
+
     function handler(input, context, callback) {
         if (input.domain) delete input.domain;  ////  TODO
         console.log('IndexSensorData Input:', input);
         console.log('IndexSensorData Context:', context);
-    
+
         //  Index the sensor data.
         //  Don't index response to set desired state.
         if (input.state && input.state.desired) return callback(null, 'Ignoring response to set desired state');
@@ -129,7 +129,7 @@ const main = (event, context, callback) => {
         for (const record of awslogsData.logEvents)
             writeDatabase(record.extractedFields, context, callback);  ////  TODO: Handle multiple records.
     }
-    
+
     function processLogs(url, tags, awslogsData, callback) {
         //  Transform the input to JSON messages for indexing.
         let records = transformLog(awslogsData);
@@ -147,9 +147,9 @@ const main = (event, context, callback) => {
             return callback(null, result);
         });
     }
-    
+
     let default_device = 'Unknown';
-    
+
     function getDevice(input) {
         //  Get the device name.
         if (input.device)
@@ -174,7 +174,7 @@ const main = (event, context, callback) => {
         }
         return device;
     }
-    
+
     function mapChannelToDevice(channel) {
         //  Map the Slack channel to device name.  e.g. g88a will return g88pi
         for (let key in replaceSlackChannels) {
@@ -183,7 +183,7 @@ const main = (event, context, callback) => {
         }
         return channel + 'pi';
     }
-    
+
     function processSensorData(input, context) {
         //  Format the sensor data into a Sumo Logic update request.
         //console.log(JSON.stringify({input: input})); ////
@@ -211,7 +211,7 @@ const main = (event, context, callback) => {
             for (let key in sensor_data)
                 input[key] = sensor_data[key];
         if (input.metadata) delete input.metadata;
-    
+
         //  Copy the keys and values for indexing.
         let actionCount = 0;
         let sensorData = {};
@@ -231,7 +231,7 @@ const main = (event, context, callback) => {
                 catch(err) { console.error(err, err.stack); }
         }
         if (!extractedFields.event) extractedFields.event = 'IndexSensorData';
-    
+
         let awslogsData = {
             logGroup: device,
             logStream: device,
@@ -249,7 +249,7 @@ const main = (event, context, callback) => {
         });
         return {device: device, actionCount: actionCount, awslogsData: awslogsData};
     }
-    
+
     function transformLog(payload) {
         //  Transform the log into Sumo Logic format.
         if (payload.messageType === 'CONTROL_MESSAGE') return null;
@@ -274,7 +274,7 @@ const main = (event, context, callback) => {
         });
         return bulkRequestBody;
     }
-    
+
     function buildSource(message, extractedFields) {
         if (extractedFields) {
             let source = {};
@@ -298,7 +298,7 @@ const main = (event, context, callback) => {
         }
         return {};
     }
-    
+
     function parseIoTFields(logEvent) {
         // logevent.extractedFields.data contains "EVENT:UpdateThingShadow TOPICNAME:$aws/things/g88pi/shadow/update THINGNAME:g88pi"
         // We extract the fields.  Do the same for logevent.extractedFields.event.  Also we remove "TRACEID:", "PRINCIPALID:", "EVENT:" from the existing fields.
@@ -335,7 +335,7 @@ const main = (event, context, callback) => {
                 break;
         }
     }
-    
+
     function parseIoTData(fields, data) {
         // data contains "EVENT:UpdateThingShadow TOPICNAME:$aws/things/g88pi/shadow/update THINGNAME:g88pi"
         // We extract the fields and populate into the "fields" collection.
@@ -354,7 +354,7 @@ const main = (event, context, callback) => {
                 //  Extract from lastPos to match.pos.
                 let nameAndValue = data.substring(lastPos, match.pos);
                 fields[normaliseFieldName(lastFieldName)] = nameAndValue.substr(
-                    lastFieldName.length + 1).trim();
+                  lastFieldName.length + 1).trim();
                 lastPos = match.pos;
                 lastFieldName = match.fieldName;
                 pos = match.pos + 1;
@@ -364,11 +364,11 @@ const main = (event, context, callback) => {
         if (lastPos >= 0) {
             let nameAndValue2 = data.substr(lastPos);
             fields[normaliseFieldName(lastFieldName)] = nameAndValue2.substr(
-                lastFieldName.length + 1).trim();
+              lastFieldName.length + 1).trim();
         }
         return '';
     }
-    
+
     //  This is the list of fields to match in the log, and the renamed field.
     const fieldNames = {
         'Action': null,
@@ -393,7 +393,7 @@ const main = (event, context, callback) => {
         'THINGNAME': 'device',
         'TOPICNAME': 'topic',
         'TRACEID': 'traceId',
-    
+
         //  Additional fields from SetDesiredState.
         'LoadingFunction': null,
         'ReceivedEvent': null,
@@ -405,7 +405,7 @@ const main = (event, context, callback) => {
         'GotAWSResponse': null,
         'GotAWSResponsePayload': null
     };
-    
+
     function matchIoTField(data, pos) {
         //  event contains "EVENT:UpdateThingShadow TOPICNAME:$aws/things/g88pi/shadow/update THINGNAME:g88pi"
         //  We return the next position on or after pos that matches an IoT field (e.g. "EVENT:"), and return the field name.
@@ -426,7 +426,7 @@ const main = (event, context, callback) => {
             fieldName: matchFieldName
         };
     }
-    
+
     function postLogsToSumoLogic(url, body, tags, callback) {
         //  Post the sensor data logs to Sumo Logic via HTTPS.
         //  Change timestamp to Sumo Logic format: "timestamp":"2016-02-08T00:19:14.325Z" -->
@@ -466,7 +466,7 @@ const main = (event, context, callback) => {
         //  Make the request and wait for callback.
         request.end(request_params.body);
     }
-    
+
     function writeMetricToCloudWatch(device, metric, value) {
         //  Write the sensor data as a metric to CloudWatch.
         console.log('writeMetricToCloudWatch:', device, metric, value);
@@ -489,41 +489,20 @@ const main = (event, context, callback) => {
             console.log('Unable to log to CloudWatch', err);
         }
     }
-    
+
     //  Map group name to the search results for the group (search results -> share):
     //  e.g. g88 -> https://service.us2.sumologic.com/ui/#section/search/w3E1OOZlQuGFikPAy45ejRSyY8Q7KyUenQAMwr8h
     //           -> g88pi AND _sourceCategory=sensor | json auto "device", "temperature", "humidity", "light_level", "sound_level"
     const search_by_group = {
-        g88pi: 'https://service.us2.sumologic.com/ui/#section/search/w3E1OOZlQuGFikPAy45ejRSyY8Q7KyUenQAMwr8h',
-        g41pi: 'https://service.us2.sumologic.com/ui/#section/search/0MjlwG9w5SwXLdKwZ6ljcfLclX6aCJ8xLYG8LypB',
-        g42pi: 'https://service.us2.sumologic.com/ui/#section/search/9GRXc4aQOFJfpwYzp7A64ziFFoEAaGSP0VPbTHxq',
-        g43pi: 'https://service.us2.sumologic.com/ui/#section/search/hjrxNTwNMqS1vITSARVxW1ZirEItJT7hK0FBW9qD',
-        g44pi: 'https://service.us2.sumologic.com/ui/#section/search/UuS6ZcWUUP2bNX4PFFUVLws592hgyi0M1Dgq36zg',
-        g45pi: 'https://service.us2.sumologic.com/ui/#section/search/lg81oOIg4oTmdy8TldKpXyIROdxlHX20hr33q8DI',
-        g46pi: 'https://service.us2.sumologic.com/ui/#section/search/PYb6UR20hLg4NLN6Gf6AWbS2bXiLUiq60XiI4MUo',
-        g47pi: 'https://service.us2.sumologic.com/ui/#section/search/gs308eTeSCOl3ZYcC5cUWQ4COXau9WYtdcltQ84z',
-        g48pi: 'https://service.us2.sumologic.com/ui/#section/search/JjmJHj6rIlZaNxXpI2RH16dHla8vqSbfjAOwbLD3',
-        g49pi: 'https://service.us2.sumologic.com/ui/#section/search/wGJLcAP07a73M0U2JqkgvZnziOAzMHX0nAkw8Hzx',
-        g50pi: 'https://service.us2.sumologic.com/ui/#section/search/yFKkpZWdfCFkGSeHoMwKNKFd8aVoe8k1y1zJq42U',
-        g51pi: 'https://service.us2.sumologic.com/ui/#section/search/WIJZT4cyxKuWfXGhz483FYHEvxWU8FNBROIybAqn',
-        g52pi: 'https://service.us2.sumologic.com/ui/#section/search/40EMgkr3hyhuKQFZWgZ1f8e3mf8k4jsyI3jbMazl',
-        g53pi: 'https://service.us2.sumologic.com/ui/#section/search/JunoyDMGpDI9kHcnpM15H6SYkSFQdJmyLbBslzZ9',
-        g54pi: 'https://service.us2.sumologic.com/ui/#section/search/jrrfLIZ45BbdC2HD5qVE0Mbs8bkoAo30a7f8SOm0',
-        g55pi: 'https://service.us2.sumologic.com/ui/#section/search/8vrWu4uQP7tRjVZRKCg1fGGukI4FYPCjZ0du8jcY',
-        g56pi: 'https://service.us2.sumologic.com/ui/#section/search/R8NXsk38R0HjXgdyqTE9EB5f4r0ADxc7JlrNAaGo',
-        g57pi: 'https://service.us2.sumologic.com/ui/#section/search/Yvs4HnV2jHZ6162b6Pe4sMQFmR78DqTmYEFbIGD4',
-        g58pi: 'https://service.us2.sumologic.com/ui/#section/search/Oj38JZ78jSWg4ckVL8QV69aVoHxvcMUChUIuayZv',
-        g59pi: 'https://service.us2.sumologic.com/ui/#section/search/nQcNr41Oe5OvNaWXAJ0mPN9fSX9xbuwvAYFqVZgq',
-        g60pi: 'https://service.us2.sumologic.com/ui/#section/search/UyIEPvVSYq6PfVx8FM0qyNb6zTqVyCdTIUN1SAYB'
     };
-    
+
     function postSensorDataToSlack(device, sensorData, callback) {
         //  Post the sensor values to a Slack group for the device e.g. g88.
         //  device is assumed to begin with the group name. sensorData contains
         //  the sensor values.
         if (!device) return;
         console.log(JSON.stringify({sensorData: sensorData})); ////
-    
+
         let channel = '';
         let pos = device.indexOf('_');
         if (pos > 0)
@@ -571,7 +550,7 @@ const main = (event, context, callback) => {
         };
         postToSlack(device, [attachment], callback);
     }
-    
+
     function postToSlack(device, textOrAttachments, callback) {
         //  Post a Slack message to the private group of the same name e.g. g88.
         //  device is assumed to begin with the group name. text is the text
@@ -624,7 +603,7 @@ const main = (event, context, callback) => {
         req.write(JSON.stringify(body));
         req.end();
     }
-    
+
     function extractJson(message) {
         //  If the message contains a JSON string, return the JSON.
         if (typeof message !== 'string') return null;
@@ -633,7 +612,7 @@ const main = (event, context, callback) => {
         let jsonSubString = message.substring(jsonStart);
         return isValidJson(jsonSubString) ? jsonSubString : null;
     }
-    
+
     function isValidJson(message) {
         //  Return true if this is a valid JSON string.
         try {
@@ -641,26 +620,26 @@ const main = (event, context, callback) => {
         } catch (e) { return false; }
         return true;
     }
-    
+
     function isNumeric(n) {
         //  Return true if numeric.
         return !isNaN(parseFloat(n)) && isFinite(n);
     }
-    
+
     function normaliseFieldName(fieldName) {
         //  If the field name contains spaces, change them to underscore. Make the field name lowercase.
         //  If we have defined a renamed field, return it.
         if (fieldNames[fieldName]) return fieldNames[fieldName];
         return fieldName.toLowerCase().split(' ').join('_');
     }
-    
+
     function isProduction() {
         //  Return true if this is production server.
         if (process.env.LAMBDA_TASK_ROOT) return true;
         var environment = process.env.NODE_ENV || 'development';
         return environment !== 'development';
     }
-    
+
     //  Unit test cases.
     //  AWS IoT Log
     const test_input1 = {
@@ -668,7 +647,7 @@ const main = (event, context, callback) => {
             "data": "H4sIAAAAAAAAAO2XW2/bNhTHvwph7GED7Jj3i/pkOE5nLDfYbvtQFAEtUbYwWfJEKVla9LvvUHKadK3rtgu2YJtfDPFyePg/P/IcvuttnPd25Ra3W9eLesejxejqbDKfj55Pev1eeVO4CpqFEUoZog03GJrzcvW8Kpst9IxezadlfVqufNc+rytnN2FKzKWzCpM0NXFC7BKn8VJQuxQpwSaV1FjmHKZmKTFVhqZaU6uXKUmETO2SgjnfLH1cZds6K4uTLK9d5XvR696p3SwT2y10NS0S9zs40XrwpnVhcu2KOox818sS8IRRiRWVDEtCNGGcUUEU1UYwRgmWmCjCpWCEc0m5lJJryjmlHDyoM5CnthvYKYyhBFzl3BDSv5MNzFNM5ACLAaYIs4ipiPIjGIIWs9F4Mj2OklTFBms3ENiwAYddDyymeJCkwjChY4wThy5n0/Px9HJ0ChP+qnLo9fT85OINQpOXk/NFdNks88yvW1XQ4uJyOj4fnU2iH+yNH9brrFj54UrrbTb0a5uUN8Nmm9jaoR0Ed9OnBZrXtm58hOYvxmPo7L3vfyqwxAILxQn8EcwEfCsOu8SEUG64AvmZoJJoRQk1ewVm+KDADD81gS+ab5B3aOPYbWuX/FnnYOUrhKYBWEM54xr+Fedcc0wE1VoRhg0VPIzl1EAINN0rtFIHhVbqyQh9Zus4KDprcndSNkXyPXqPT6dgC5wrhvaD+HeWUQWmURpsRwjMXFUuLqvkyrvCl9UVWLKfjQYEQRjNjOQUU2I4UM6YBqEJ4I85J5RobLAy4STsjYYWB6OhxX83GurKxsVXRiTc7IrA7c5Bc8oxptIwYyAMVBM4HZIxySQcIEmx3nfTC5j25YiIIxjyZCJyfFvYTTmKQ76cNyCx948Wk529tMnzW7SFS6pbDHXhOEJnnUrIVlV2DUbKIkJfu2IfdT5HKGmN9tHCLnN3H/MHwe4j9LP161/c7UnmcuAicddZ7Pp3rS9t3rQzYbk+mtli5e7Hfgjyfc9u/H1oF4TsDhskK2nI5+jiWMOhxoQqwZQJFYXhcP5JuISV0HDmQylBhYQ7Ae9LcwLzA3UE0MWfTh3xL6RLf5GsB7R8DNd+WD4hrrP/CW42zz/LFSUcEgGgpCiUkBrLwA9EiAjMgClIMCwkFaEBQLmfqwNZPXD1dLJ6V87/DVxlxXX5K4zM2wVR2hTtmo9FV2e2j052diHKVRGBmajriRo/uIFoDWj08DkV3fkRtU+ZeQvMMfC4KwPHZdIiR+8tI1dVZRWhotmDEddECyY4gR/XAtIdhjoc1pQmvG+IMTK8fhg0mf3XkzAHMRLmf4yeGkZAUBL4qctJbn2dxXNnq3gtvpsnxSD2PLx7mYJLTphQ4EJdRZmE60rBM8QwopmCl4bmYu+1BEQd4gmG/JM8TWazi9kHoObn8y4mJzbLm8o9Gk3BHvTVJWS69s2HYCn43GbxEVqsXReOkPtcy9GN9eiFd9U9Cb720cfRt943G5cMqjJ3w2m5OC1Xq1Cbh09yMx69Va/GKPOoKGtkm3pdVtnbnQ+uSstqEwUn7h6hgC4s78umit2DVQu/D76QSuuyXIP1H+euChVZhEYb+xbO4vn82Q491LHHMXuGJu0eu4bRziEb1G47nqGZ+62BhRBoh1i8BNAAhaWWciAUiweWcTPACXVKJGxpaPLTY50/2GWoEKqVq9GoKr5x+733b97/AU2Sk2ZUEwAA"
         }
     };
-    
+
     //  API Gateway Log
     const test_input2a =
     {
@@ -676,7 +655,7 @@ const main = (event, context, callback) => {
             "data": "H4sIAAAAAAAAAK2VW2/iOBSA/4rFQzU7S0KcxEmMlAcKlF7oDLvQTkerEXJiA1FJnHGcBlr1v+8xDO222pWqdl8i5/jY5ztXP7RyUVVsKWbbUrS6rUFv1ptfDqfT3mjYardkUwgFYkJJGFIcUZ86IF7L5UjJuoSd3uTMGjEtGra1hhuR1jqThTWWy2qON5re3oUkyzqlknx/bqqVYDkcXDjUI8JPOaGuw1iQhimlASNCEI+FzgLUqzqpUpWV5sqTbK2Fqlrdv1pjliec7S+anxVcbHrfpsZi68fOxPBOFNpoPrQyDpY8N3ApJTRyceREUUCx71ASRNjDEXH9KMA49CIfuwHxfMcNfOyblQ8EOoPwaJaDpyD0cBg5jhuRsH0IG1w/1UzprFgicXAfLaRCSvys4WwX8SBimHm+hSmJLIxFYDGKE4uEAcNJ4HIaLlqP7Y/BkjfCns5mE3Qp9EryLpp8nc7a6E9RyVqlAk2YXnVRp5fqGhI6EHdZKk6UzKdrlt5+mDB4I+Ee7hA+VO6gHh4/bD98n334qi2qtIIM/y8c0fs4VoJxqH9A6KWpKHX8ufO5jfprWXPIUaGt60w0Qll9WRdabeOr6YvdE6kaprjg1kRJLeOV1mX1QuOssmYsWYvDTfGCrSvxWuVSJtlavFK5qsBwbwldF+9qJZEaYdtBn37fmel2OqzM7Mps2anMO0qCRvVbG928jWuaQ4fNrl9ZPZWVjp9njL1vP2EZW3VlNRA1y7VZzu5lwZrKWG6jffCsYZFKDhmNl/dZ2eZisYaKf8UjlY5932uj64zF2MYIR9gVEU0SnDJM2YL7kOrQ8xj2ScgjYqeGemGo7UJo9OnZi52vvfze6i+sMx5fJRt6MS83+WlxdjP/OVdjcnO+Ou8v3eaWz5g4Gfat4UB9T+6dDXFu6vPtd+00cfySEFYx8W3XobbrYRtKro3Mv0dtILID93UcB6K61bI8xFGr2uQXNiFzlnkAYlaW6yxlZoh1NlbTNBaMstyq1VqYiAn+8fqn76v/RPItSgTgCKQVKyoDtgOFntDyVhTxkPW/FIu8GRXF2B06x6ugP+udBupIm4ci4/HModOb0beL0V7CZc6yItallUl9BDVsBp7Rw57nArjvEXKUrlhRiLUR953B8feJP/7jSViwXMTLKGJHTx7FTw5BB8DHcY5quNqcv5qOe/2L46+zvWR3uPrVL0C00fERrIzmsTO8DMeDgbcTHKyU2b8GnwY+DYE1hBlL3JD4IVSAF+AwCDwXY4qpBxkxLsGZ/wx+4P8z+MPnp4xBv3PEawi7RKksFtmyVrvAI6GUVF10VZi5YbafEnNI24eBvTcC/6oW6PESRhgAN5lewdhmuob6II7Tevzx+DdLuYWW7QgAAA=="
         }
     };
-    
+
     //  SetDesiredState Lambda Log
     const test_input2b =
     {
@@ -684,7 +663,7 @@ const main = (event, context, callback) => {
             "data": "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"
         }
     }
-    
+
     //  Sensor Data for AWS IoT version 2016-03-23-beta.  Note the new "input->state".
     const test_input3 =
     {
@@ -722,7 +701,7 @@ const main = (event, context, callback) => {
         "topic": "$aws/things/g87pi/shadow/update/accepted",
         "traceId": "081f1280-93f9-4b94-88a9-7c3813136398"
     }
-    
+
     //  Another variant of Sensor Data for AWS IoT version 2016-03-23-beta.  Note the new "input->state".
     const test_input4 =
     {
@@ -761,7 +740,7 @@ const main = (event, context, callback) => {
             "traceId": "33e6c7e3-ba1e-48fe-a535-98ff5b37834f"
         }
     }
-    
+
     //  Sensor Data for AWS IoT version 2015-10-08
     /*
      const test_input = {
@@ -781,7 +760,7 @@ const main = (event, context, callback) => {
      "traceId": "4fb3ed68-ec3f-42b6-a202-4207c9c55a2a"
      };
      */
-    
+
     const test_context = {
         "awsRequestId": "98dc0220-0eba-11e6-b84a-f75570995fc5",
         "invokeid": "98dc0220-0eba-11e6-b84a-f75570995fc5",
@@ -792,7 +771,7 @@ const main = (event, context, callback) => {
         "functionVersion": "$LATEST",
         "invokedFunctionArn": "arn:aws:lambda:us-west-2:595779189490:function:SendSensorDataToElasticsearch2"
     };
-    
+
     //  Run the unit test if we are in development environment.
     function runTest() {
         return exports.handler(test_input3, test_context, function(err, result) {
@@ -800,7 +779,7 @@ const main = (event, context, callback) => {
             else console.log(result);
         });
     }
-    
+
     if (!isProduction()) runTest();
 
     //  This is needed to defer the require(...) statements till later.
@@ -811,8 +790,8 @@ exports.handler = (event, context, callback) => {
     //  Define the entry point for the lambda.  Call autorequire to catch
     //  any missing modules and install them.
     return setupAutoRequire()  //  Wait for autorequire to be set up before calling.
-    .then(res => autorequire(main, __dirname, __filename)(event, context, callback))
-    .catch(err => callback(err));
+      .then(res => autorequire(main, __dirname, __filename)(event, context, callback))
+      .catch(err => callback(err));
 };
 
 function setupAutoRequire() {
@@ -823,10 +802,10 @@ function setupAutoRequire() {
     const fs = require('fs');
     return new Promise((resolve, reject) => {
         require('https').get('https://raw.githubusercontent.com/lupyuen/AWSIOT/master/nodejs/autorequire.js', res => {
-            let body = '';  
+            let body = '';
             res.on('data', chunk => body += chunk); // Accumulate the data chunks.
             res.on('end', () => { //  After downloading from GitHub, save to /tmp amd load the module.
-                fs.writeFileSync('/tmp/autorequire.js', body); 
+                fs.writeFileSync('/tmp/autorequire.js', body);
                 autorequire = require('/tmp/autorequire');
                 return resolve(autorequire);
             })
