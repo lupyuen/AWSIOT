@@ -106,7 +106,7 @@ function updateDeviceState(device, state) {
   }
   const params = {
     payload: JSON.stringify(payload),
-    thingName: device,
+    thingName: device || 'g88pi',
   };
   console.log({ updateThingShadow: params });
   return iotdata.updateThingShadow(params).promise();
@@ -115,6 +115,7 @@ function updateDeviceState(device, state) {
 function decodeMessage(msg) { /* eslint-disable no-bitwise, operator-assignment */
   //  Decode the packed binary SIGFOX message e.g. 920e5a00b051680194597b00
   //  2 bytes name, 2 bytes float * 10, 2 bytes name, 2 bytes float * 10, ...
+  if (!msg) return {};
   const result = {};
   for (let i = 0; i < msg.length; i = i + 8) {
     const name = msg.substring(i, i + 4);
