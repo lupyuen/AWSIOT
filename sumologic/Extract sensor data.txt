@@ -2,4 +2,29 @@ parse regex "\"device\":\"(?<device>.*?)\"" nodrop |
 parse regex "\"temperature\":(?<temperature>.*?)," nodrop | 
 parse regex "\"humidity\":(?<humidity>.*?)," nodrop |
 parse regex "\"light_level\":(?<light_level>.*?)," nodrop |
-parse regex "\"sound_level\":(?<sound_level>.*?)," nodrop
+parse regex "\"sound_level\":(?<sound_level>.*?)," nodrop |
+parse regex "\"ctr\":(?<ctr>.*?)," nodrop |
+parse regex "\"tmp\":(?<tmp>.*?)," nodrop |
+parse regex "\"hmd\":(?<hmd>.*?)," nodrop |
+parse regex "\"vlt\":(?<vlt>.*?)," nodrop |
+parse regex "\"data\":\"(?<data>.*?)\"" nodrop |
+parse regex "\"station\":\"(?<station>.*?)\"" nodrop |
+parse regex "\"device\":\"(?<device>.*?)\"" nodrop |
+parse regex "\"device\":\"(?<device>.*?)\"" nodrop |
+parse regex "\"device\":\"(?<device>.*?)\"" nodrop |
+parse regex "\"device\":\"(?<device>.*?)\"" nodrop |
+parse regex "\"time\":(?<time>.*?)," nodrop |
+parse regex "\"vlt\":(?<vlt>.*?)," nodrop |
+parse regex "\"duplicate\":(?<duplicate>.*?)," nodrop |
+parse regex "\"snr\":(?<snr>.*?)," nodrop |
+parse regex "\"avgSnr\":(?<avgSnr>.*?)," nodrop |
+parse regex "\"lat\":(?<lat>.*?)," nodrop |
+parse regex "\"lng\":(?<lng>.*?)," nodrop |
+parse regex "\"rssi\":(?<rssi>.*?)," nodrop |
+parse regex "\"seqNumber\":(?<seqNumber>.*?)," nodrop |
+parse regex "\"ack\":(?<ack>.*?)," nodrop |
+parse regex "\"longPolling\":(?<longPolling>.*?)," nodrop |
+parse regex "\"deviceLat\":(?<deviceLat>.*?)," nodrop |
+parse regex "\"deviceLng\":(?<deviceLng>.*?)," nodrop |
+parse regex "\"baseStationLat\":(?<baseStationLat>.*?)," nodrop |
+parse regex "\"baseStationLng\":(?<baseStationLng>.*?)," nodrop
