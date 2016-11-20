@@ -1,6 +1,16 @@
 //  AWS Lambda function to process the SIGFOX message passed by UnaBiz Emulator or UnaCloud,
 //  by calling AWS API UpdateThingShadow to update the device state.
 //  Node.js 4.3 / index.handler / lambda_iot / 512 MB / 1 min / No VPC
+
+//  Should expose the lambda through AWS API Gateway as follows:
+//  Go to AWS API Gateway --> Create API --> New API
+//  API Name: SIGFOX
+//  Go to AWS Lambda --> ProcessSIGFOXMessage --> Triggers --> Add Trigger --> API Gateway
+//  API Name: SIGFOX
+//  Deployment Stage: prod
+//  Security: Open
+//  Go to AWS API Gateway --> SIGFOX --> Actions --> Deploy API --> prod
+
 //  This lambda function must be run as role lambda_iot.
 //  lambda_iot must be attached to policy LambdaExecuteIoTUpdate, defined as:
 // {
@@ -51,7 +61,7 @@ AWS.config.logger = process.stdout;  //  Debug
 
 if (!process.env.LAMBDA_TASK_ROOT) {
   //  For unit test, set the credentials.
-  const config = require('../config');
+  const config = require('../../../../SIGFOX/unabiz-emulator/config.json');
   AWS.config.credentials.accessKeyId = config.accessKeyId;
   AWS.config.credentials.secretAccessKey = config.secretAccessKey;
 }
@@ -174,6 +184,7 @@ function runTest() { /* eslint-disable no-debugger */
   return exports.handler(test_input, test_context, (err, result) => {
     if (err) { console.error(err); debugger; }
     console.log(result);
+    process.exit(0);
   });
 }
 
