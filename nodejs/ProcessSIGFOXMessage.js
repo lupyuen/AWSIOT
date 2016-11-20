@@ -89,8 +89,8 @@ exports.handler = (input2, context2, callback2) => {
   }
   //  Update the device/thing state.
   return updateDeviceState(input.device, decoded_data)
-    .then(result => callback2(null, result))
-    .catch(err => callback2(err));
+    .then(result => callback2(null, lambdaProxyFormat(200, result)))
+    .catch(err => callback2(lambdaProxyFormat(500, err)));
 };
 
 function updateDeviceState(device, state) {
@@ -153,6 +153,15 @@ function decodeLetter(code) {
   if (code >= firstLetter && code < firstDigit) return (code - firstLetter) + 'a'.charCodeAt(0);
   if (code >= firstDigit) return (code - firstDigit) + '0'.charCodeAt(0);
   return 0;
+}
+
+function lambdaProxyFormat(statusCode, msg) {
+  //  Format the message as lambda proxy for returning results.
+  return {
+    statusCode,
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(msg),
+  };
 }
 
 //  Unit test cases that will be run on a local PC/Mac instead of AWS Lambda.
