@@ -2,15 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1d59eece-18d0-4e43-81ae-ebb01011c62b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/sumologic/README.md" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/nodejs/ExpandSensorData.js" afterPath="$PROJECT_DIR$/nodejs/2016 Apr/ExpandSensorData.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/nodejs/.idea/jsLibraryMappings.xml" afterPath="$PROJECT_DIR$/nodejs/.idea/jsLibraryMappings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/nodejs/.idea/misc.xml" afterPath="$PROJECT_DIR$/nodejs/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/nodejs/.idea/nodejs.iml" afterPath="$PROJECT_DIR$/nodejs/.idea/nodejs.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/nodejs/.idea/workspace.xml" afterPath="$PROJECT_DIR$/nodejs/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sumologic/Extract sensor data.txt" afterPath="$PROJECT_DIR$/sumologic/Extract sensor data.txt" />
     </list>
     <ignored path="AWSIOT.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -70,12 +62,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Extract sensor data.txt" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Extract sensor data.txt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sumologic/Extract sensor data.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="6" column="18" lean-forward="false" selection-start-line="6" selection-start-column="18" selection-end-line="6" selection-end-column="18" />
+            <state relative-caret-position="200">
+              <caret line="10" column="54" lean-forward="true" selection-start-line="10" selection-start-column="54" selection-end-line="10" selection-end-column="54" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ProcessSIGFOXMessage.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/nodejs/ProcessSIGFOXMessage.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -188,8 +192,8 @@
     <handled-path value="$PROJECT_DIR$/nodejs/node_modules" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="299" />
-    <option name="y" value="41" />
+    <option name="x" value="297" />
+    <option name="y" value="40" />
     <option name="width" value="1296" />
     <option name="height" value="875" />
   </component>
@@ -461,15 +465,23 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1444849209634</updated>
-      <workItem from="1479617897167" duration="1798000" />
+      <workItem from="1479617897167" duration="2469000" />
     </task>
+    <task id="LOCAL-00001" summary="Updated Sumo Logic with SIGFOX fields">
+      <created>1479619932371</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1479619932371</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1798000" />
+    <option name="totallyTimeSpent" value="2469000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="299" y="41" width="1296" height="875" extended-state="0" />
+    <frame x="297" y="40" width="1296" height="875" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -551,6 +563,10 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Updated Sumo Logic with SIGFOX fields" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated Sumo Logic with SIGFOX fields" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <option name="time" value="5" />
@@ -558,14 +574,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/python/GetSetDeviceStateFromSlack.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1080">
-          <caret line="54" column="1" lean-forward="false" selection-start-line="54" selection-start-column="1" selection-end-line="54" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/python/GetSetDeviceState.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -741,9 +749,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/sumologic/Extract sensor data.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="6" column="18" lean-forward="false" selection-start-line="6" selection-start-column="18" selection-end-line="6" selection-end-column="18" />
+        <state relative-caret-position="200">
+          <caret line="10" column="54" lean-forward="true" selection-start-line="10" selection-start-column="54" selection-end-line="10" selection-end-column="54" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nodejs/ProcessSIGFOXMessage.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
