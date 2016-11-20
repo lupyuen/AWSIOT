@@ -70,14 +70,17 @@ const endpoint = 'A1P01IYM2DOZA0.iot.us-west-2.amazonaws.com';
 //  Open the AWS IoT connection with the endpoint.
 const iotdata = new AWS.IotData({ endpoint });
 
-exports.handler = (input, context2, callback2) => {
+exports.handler = (input2, context2, callback2) => {
   /* eslint-disable no-param-reassign, no-restricted-syntax, guard-for-in */
   //  This is the main program flow.
   //  Input must contain "device" (thing name e.g. g88pi) and "data", the encoded fields.
+  let input = input2;
   if (input.domain) delete input.domain;  //  TODO: Contains self-reference loop.
   console.log('ProcessSIGFOXMessage Input:', JSON.stringify(input, null, 2));
   console.log('ProcessSIGFOXMessage Context:', context2);
 
+  //  For API Gateway, message is in the field "body".
+  if (input.body) input = JSON.parse(input.body);
   //  Decode the message.
   const decoded_data = decodeMessage(input.data);
   for (const key in input) {
@@ -86,7 +89,7 @@ exports.handler = (input, context2, callback2) => {
   }
   //  Update the device/thing state.
   return updateDeviceState(input.device, decoded_data)
-    .then(result => callback2(null, { result, decoded_data }))
+    .then(result => callback2(null, result))
     .catch(err => callback2(err));
 };
 
@@ -168,6 +171,62 @@ const test_input = {
   "data": "920e5a00b051680194597b00"
 };
 
+const test_input2 = {  //  API Gateway
+  "resource": "/ProcessSIGFOXMessage",
+  "path": "/ProcessSIGFOXMessage",
+  "httpMethod": "POST",
+  "headers": {
+    "Accept": "*/*",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Accept-Language": "en-US,en;q=0.8,en-GB;q=0.6,zh-CN;q=0.4,zh;q=0.2",
+    "Cache-Control": "no-cache",
+    "CloudFront-Forwarded-Proto": "https",
+    "CloudFront-Is-Desktop-Viewer": "true",
+    "CloudFront-Is-Mobile-Viewer": "false",
+    "CloudFront-Is-SmartTV-Viewer": "false",
+    "CloudFront-Is-Tablet-Viewer": "false",
+    "CloudFront-Viewer-Country": "SG",
+    "Content-Type": "application/json",
+    "Host": "l0043j2svc.execute-api.us-west-2.amazonaws.com",
+    "Origin": "chrome-extension://fhbjgbiflinjbdggehcddcbncdddomop",
+    "Postman-Token": "efc84281-d0fe-493f-5d55-cb6add7ff043",
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.98 Safari/537.36",
+    "Via": "1.1 af70784b6b43d4801d09b1c1699dc86a.cloudfront.net (CloudFront)",
+    "X-Amz-Cf-Id": "yN5SP6MzZB7JGA49hn_SEAabSveBak6A27DrKbLObOpfQdq2uEHplQ==",
+    "X-Forwarded-For": "118.200.15.117, 54.240.148.203",
+    "X-Forwarded-Port": "443",
+    "X-Forwarded-Proto": "https"
+  },
+  "queryStringParameters": null,
+  "pathParameters": null,
+  "stageVariables": null,
+  "requestContext": {
+    "accountId": "595779189490",
+    "resourceId": "s3459w",
+    "stage": "prod",
+    "requestId": "6fe74419-aef0-11e6-b457-9be7dd0b506b",
+    "identity": {
+      "cognitoIdentityPoolId": null,
+      "accountId": null,
+      "cognitoIdentityId": null,
+      "caller": null,
+      "apiKey": null,
+      "sourceIp": "118.200.15.117",
+      "accessKey": null,
+      "cognitoAuthenticationType": null,
+      "cognitoAuthenticationProvider": null,
+      "userArn": null,
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.98 Safari/537.36",
+      "user": null
+    },
+    "resourcePath": "/ProcessSIGFOXMessage",
+    "httpMethod": "POST",
+    "apiId": "l0043j2svc"
+  },
+  "body": "{\n  \"device\": \"g88pi\",\n  \"data\": \"920e5a00b051680194597b00\"\n}",
+  "isBase64Encoded": false
+};
+
 const test_context = {
   "awsRequestId": "98dc0220-0eba-11e6-b84a-f75570995fc5",
   "invokeid": "98dc0220-0eba-11e6-b84a-f75570995fc5",
@@ -181,7 +240,7 @@ const test_context = {
 
 //  Run the unit test if we are in development environment.
 function runTest() { /* eslint-disable no-debugger */
-  return exports.handler(test_input, test_context, (err, result) => {
+  return exports.handler(test_input2, test_context, (err, result) => {
     if (err) { console.error(err); debugger; }
     console.log(result);
     process.exit(0);
