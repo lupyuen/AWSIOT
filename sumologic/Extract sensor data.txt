@@ -7,14 +7,10 @@ parse regex "\"ctr\":(?<ctr>.*?)," nodrop |
 parse regex "\"tmp\":(?<tmp>.*?)," nodrop |
 parse regex "\"hmd\":(?<hmd>.*?)," nodrop |
 parse regex "\"vlt\":(?<vlt>.*?)," nodrop |
+parse regex "\"lig\":(?<lig>.*?)," nodrop |
 parse regex "\"data\":\"(?<data>.*?)\"" nodrop |
 parse regex "\"station\":\"(?<station>.*?)\"" nodrop |
-parse regex "\"device\":\"(?<device>.*?)\"" nodrop |
-parse regex "\"device\":\"(?<device>.*?)\"" nodrop |
-parse regex "\"device\":\"(?<device>.*?)\"" nodrop |
-parse regex "\"device\":\"(?<device>.*?)\"" nodrop |
 parse regex "\"time\":(?<time>.*?)," nodrop |
-parse regex "\"vlt\":(?<vlt>.*?)," nodrop |
 parse regex "\"duplicate\":(?<duplicate>.*?)," nodrop |
 parse regex "\"snr\":(?<snr>.*?)," nodrop |
 parse regex "\"avgSnr\":(?<avgSnr>.*?)," nodrop |

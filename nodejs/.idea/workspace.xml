@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7c392364-e4dd-472f-8964-ecf49ededf90" name="Default" comment="Allow GET request to succeed">
+    <list default="true" id="7c392364-e4dd-472f-8964-ecf49ededf90" name="Default" comment="Fix timestamp when provided by UnaCloud">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../.idea/dbnavigator.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../.idea/jsLibraryMappings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.idea/AWSIOT.iml" afterPath="$PROJECT_DIR$/../.idea/AWSIOT.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.idea/misc.xml" afterPath="$PROJECT_DIR$/../.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.idea/workspace.xml" afterPath="$PROJECT_DIR$/../.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ProcessSIGFOXMessage.js" afterPath="$PROJECT_DIR$/ProcessSIGFOXMessage.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../sumologic/Extract AWS IoT logs.txt" afterPath="$PROJECT_DIR$/../sumologic/Extract AWS IoT logs.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../sumologic/Extract sensor data.txt" afterPath="$PROJECT_DIR$/../sumologic/Extract sensor data.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../sumologic/Extract syslog fields.txt" afterPath="$PROJECT_DIR$/../sumologic/Extract syslog fields.txt" />
     </list>
     <ignored path="nodejs.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -56,10 +63,24 @@
       <file leaf-file-name="ProcessSIGFOXMessage.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ProcessSIGFOXMessage.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="726">
-              <caret line="262" column="0" lean-forward="false" selection-start-line="262" selection-start-column="0" selection-end-line="262" selection-end-column="0" />
+            <state relative-caret-position="470">
+              <caret line="237" column="63" lean-forward="false" selection-start-line="237" selection-start-column="63" selection-end-line="237" selection-end-column="63" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="IndexSensorData.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/IndexSensorData.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="15">
+              <caret line="450" column="25" lean-forward="false" selection-start-line="450" selection-start-column="25" selection-end-line="450" selection-end-column="25" />
               <folding>
-                <element signature="n#!!doc" expanded="true" />
+                <element signature="e#32283#35311#0" expanded="false" />
+                <element signature="e#35360#35440#0" expanded="false" />
+                <element signature="e#35687#36395#0" expanded="false" />
+                <element signature="e#36427#38328#0" expanded="false" />
+                <element signature="e#37763#38304#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -73,6 +94,11 @@
         <option value="JavaScript File" />
       </list>
     </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>cloudwa</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="UPDATE_TYPE" value="MERGE" />
@@ -169,7 +195,7 @@
   <component name="PropertiesComponent">
     <property name="settings.editor.selected.configurable" value="JavaScript.Libraries" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/ProcessSIGFOXMessage.js" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
     <property name="WebServerToolWindowFactoryState" value="true" />
     <property name="js-jscs-nodeInterpreter" value="/usr/local/bin/node" />
     <property name="nodejs_interpreter_path" value="C:/Program Files/nodejs/node" />
@@ -222,6 +248,17 @@
     </option>
   </component>
   <component name="RunManager" selected="Node.js.ProcessSIGFOXMessage.js">
+    <configuration default="true" type="BashConfigurationType" factoryName="Bash">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="INTERPRETER_PATH" value="C:\WINDOWS\system32\bash.exe" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <module name="" />
+      <envs />
+      <method />
+    </configuration>
     <configuration default="true" type="CabalRunConfiguration" factoryName="Haskell">
       <module name="" />
       <setting name="executableName" value="" />
@@ -231,6 +268,12 @@
       <method />
     </configuration>
     <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma">
+      <config-file value="" />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerProtractor" factoryName="Protractor">
       <config-file value="" />
       <node-interpreter value="project" />
       <envs />
@@ -454,7 +497,21 @@
       <option name="project" value="LOCAL" />
       <updated>1479653347145</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Change device to lowercase">
+      <created>1480003033411</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1480003033411</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Fix timestamp when provided by UnaCloud">
+      <created>1480013234853</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1480013234853</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -464,29 +521,32 @@
     <frame x="21" y="47" width="968" height="944" extended-state="0" />
     <editor active="true" />
     <layout>
+      <window_info id="DB Execution Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Gerrit" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23892774" sideWeight="0.65873015" order="0" side_tool="true" content_ui="tabs" />
+      <window_info id="Code Outline" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295362" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Cabal" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Compare Directories" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Tail" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.16680227" sideWeight="0.73625" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.49808916" sideWeight="0.64737797" order="20" side_tool="true" content_ui="tabs" x="60" y="-1201" width="1383" height="470" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32843894" sideWeight="0.58600736" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="SvgViewer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="DB Browser" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="DB Execution Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Gerrit" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Regex Tester" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="RemoteSynchronizer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="16" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23892774" sideWeight="0.65873015" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="PsiViewer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295362" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Code Outline" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295362" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19132653" sideWeight="0.49746192" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22061484" sideWeight="0.5069307" order="4" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.35653237" sideWeight="0.7596207" order="13" side_tool="true" content_ui="tabs" />
       <window_info id="Unicode Browser" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Graph Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3291032" sideWeight="0.49746192" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="GhcMod" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12995595" sideWeight="0.64705884" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12995595" sideWeight="0.64705884" order="0" side_tool="false" content_ui="combo" />
       <window_info id="ReST Console" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Cabal" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Compare Directories" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Graph Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="17" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.16680227" sideWeight="0.73625" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15323646" sideWeight="0.3529412" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -494,15 +554,12 @@
       <window_info id="Mongo Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Metrics" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
-      <window_info id="Tail" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Dilbert" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.49808916" sideWeight="0.64737797" order="20" side_tool="true" content_ui="tabs" x="60" y="-1201" width="1383" height="470" />
       <window_info id="Geek &amp; Poke" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39945155" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23386115" sideWeight="0.49818748" order="19" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.35653237" sideWeight="0.7596207" order="13" side_tool="true" content_ui="tabs" />
       <window_info id="Floobits" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299373" sideWeight="0.5" order="18" side_tool="false" content_ui="tabs" />
       <window_info id="Jenkins" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23761262" sideWeight="0.34126985" order="1" side_tool="false" content_ui="tabs" />
@@ -533,7 +590,9 @@
     <MESSAGE value="Tested OK" />
     <MESSAGE value="Fixed timestamp" />
     <MESSAGE value="Allow GET request to succeed" />
-    <option name="LAST_COMMIT_MESSAGE" value="Allow GET request to succeed" />
+    <MESSAGE value="Change device to lowercase" />
+    <MESSAGE value="Fix timestamp when provided by UnaCloud" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix timestamp when provided by UnaCloud" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -545,7 +604,7 @@
           <properties />
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="63" />
+      <option name="time" value="64" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -559,6 +618,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="12195">
           <caret line="1033" column="0" lean-forward="false" selection-start-line="1022" selection-start-column="0" selection-end-line="1033" selection-end-column="0" />
+          <folding>
+            <element signature="e#32283#35311#0" expanded="false" />
+            <element signature="e#35360#35440#0" expanded="false" />
+            <element signature="e#35687#36395#0" expanded="false" />
+            <element signature="e#36427#38328#0" expanded="false" />
+            <element signature="e#37763#38304#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -574,6 +640,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15495">
           <caret line="1033" column="0" lean-forward="false" selection-start-line="1022" selection-start-column="0" selection-end-line="1033" selection-end-column="0" />
+          <folding>
+            <element signature="e#32283#35311#0" expanded="false" />
+            <element signature="e#35360#35440#0" expanded="false" />
+            <element signature="e#35687#36395#0" expanded="false" />
+            <element signature="e#36427#38328#0" expanded="false" />
+            <element signature="e#37763#38304#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -589,6 +662,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#32283#35311#0" expanded="false" />
+            <element signature="e#35360#35440#0" expanded="false" />
+            <element signature="e#35687#36395#0" expanded="false" />
+            <element signature="e#36427#38328#0" expanded="false" />
+            <element signature="e#37763#38304#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -603,6 +683,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#32283#35311#0" expanded="false" />
+            <element signature="e#35360#35440#0" expanded="false" />
+            <element signature="e#35687#36395#0" expanded="false" />
+            <element signature="e#36427#38328#0" expanded="false" />
+            <element signature="e#37763#38304#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -624,6 +711,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3225">
           <caret line="215" column="9" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="757" selection-end-column="0" />
+          <folding>
+            <element signature="e#32283#35311#0" expanded="false" />
+            <element signature="e#35360#35440#0" expanded="false" />
+            <element signature="e#35687#36395#0" expanded="false" />
+            <element signature="e#36427#38328#0" expanded="false" />
+            <element signature="e#37763#38304#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -638,6 +732,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3225">
           <caret line="215" column="9" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="757" selection-end-column="0" />
+          <folding>
+            <element signature="e#32283#35311#0" expanded="false" />
+            <element signature="e#35360#35440#0" expanded="false" />
+            <element signature="e#35687#36395#0" expanded="false" />
+            <element signature="e#36427#38328#0" expanded="false" />
+            <element signature="e#37763#38304#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -652,6 +753,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#32283#35311#0" expanded="false" />
+            <element signature="e#35360#35440#0" expanded="false" />
+            <element signature="e#35687#36395#0" expanded="false" />
+            <element signature="e#36427#38328#0" expanded="false" />
+            <element signature="e#37763#38304#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -666,6 +774,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#32283#35311#0" expanded="false" />
+            <element signature="e#35360#35440#0" expanded="false" />
+            <element signature="e#35687#36395#0" expanded="false" />
+            <element signature="e#36427#38328#0" expanded="false" />
+            <element signature="e#37763#38304#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -680,6 +795,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="13000">
           <caret line="756" column="0" lean-forward="false" selection-start-line="756" selection-start-column="0" selection-end-line="756" selection-end-column="0" />
+          <folding>
+            <element signature="e#32283#35311#0" expanded="false" />
+            <element signature="e#35360#35440#0" expanded="false" />
+            <element signature="e#35687#36395#0" expanded="false" />
+            <element signature="e#36427#38328#0" expanded="false" />
+            <element signature="e#37763#38304#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -694,6 +816,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="13000">
           <caret line="756" column="0" lean-forward="false" selection-start-line="756" selection-start-column="0" selection-end-line="756" selection-end-column="0" />
+          <folding>
+            <element signature="e#32283#35311#0" expanded="false" />
+            <element signature="e#35360#35440#0" expanded="false" />
+            <element signature="e#35687#36395#0" expanded="false" />
+            <element signature="e#36427#38328#0" expanded="false" />
+            <element signature="e#37763#38304#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -708,6 +837,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="13000">
           <caret line="756" column="0" lean-forward="false" selection-start-line="756" selection-start-column="0" selection-end-line="756" selection-end-column="0" />
+          <folding>
+            <element signature="e#32283#35311#0" expanded="false" />
+            <element signature="e#35360#35440#0" expanded="false" />
+            <element signature="e#35687#36395#0" expanded="false" />
+            <element signature="e#36427#38328#0" expanded="false" />
+            <element signature="e#37763#38304#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -736,6 +872,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#32283#35311#0" expanded="false" />
+            <element signature="e#35360#35440#0" expanded="false" />
+            <element signature="e#35687#36395#0" expanded="false" />
+            <element signature="e#36427#38328#0" expanded="false" />
+            <element signature="e#37763#38304#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -771,6 +914,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3740">
           <caret line="187" column="0" lean-forward="false" selection-start-line="168" selection-start-column="0" selection-end-line="187" selection-end-column="0" />
+          <folding>
+            <element signature="e#32283#35311#0" expanded="false" />
+            <element signature="e#35360#35440#0" expanded="false" />
+            <element signature="e#35687#36395#0" expanded="false" />
+            <element signature="e#36427#38328#0" expanded="false" />
+            <element signature="e#37763#38304#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -792,6 +942,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3740">
           <caret line="187" column="0" lean-forward="false" selection-start-line="168" selection-start-column="0" selection-end-line="187" selection-end-column="0" />
+          <folding>
+            <element signature="e#32283#35311#0" expanded="false" />
+            <element signature="e#35360#35440#0" expanded="false" />
+            <element signature="e#35687#36395#0" expanded="false" />
+            <element signature="e#36427#38328#0" expanded="false" />
+            <element signature="e#37763#38304#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -806,6 +963,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#32283#35311#0" expanded="false" />
+            <element signature="e#35360#35440#0" expanded="false" />
+            <element signature="e#35687#36395#0" expanded="false" />
+            <element signature="e#36427#38328#0" expanded="false" />
+            <element signature="e#37763#38304#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -882,18 +1046,23 @@
     <entry file="file://$PROJECT_DIR$/ExpandSensorData.js" />
     <entry file="file://$PROJECT_DIR$/IndexSensorData.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="101" column="24" lean-forward="false" selection-start-line="101" selection-start-column="24" selection-end-line="101" selection-end-column="24" />
+        <state relative-caret-position="15">
+          <caret line="450" column="25" lean-forward="false" selection-start-line="450" selection-start-column="25" selection-end-line="450" selection-end-column="25" />
+          <folding>
+            <element signature="e#32283#35311#0" expanded="false" />
+            <element signature="e#35360#35440#0" expanded="false" />
+            <element signature="e#35687#36395#0" expanded="false" />
+            <element signature="e#36427#38328#0" expanded="false" />
+            <element signature="e#37763#38304#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ProcessSIGFOXMessage.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="726">
-          <caret line="262" column="0" lean-forward="false" selection-start-line="262" selection-start-column="0" selection-end-line="262" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
+        <state relative-caret-position="470">
+          <caret line="237" column="63" lean-forward="false" selection-start-line="237" selection-start-column="63" selection-end-line="237" selection-end-column="63" />
+          <folding />
         </state>
       </provider>
     </entry>
