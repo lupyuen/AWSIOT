@@ -61,9 +61,13 @@ AWS.config.logger = process.stdout;  //  Debug
 
 if (!process.env.LAMBDA_TASK_ROOT) {
   //  For unit test, set the credentials.
-  const config = require('../../../../SIGFOX/unabiz-emulator/config.json');
-  AWS.config.credentials.accessKeyId = config.accessKeyId;
-  AWS.config.credentials.secretAccessKey = config.secretAccessKey;
+  const config = require('os').platform() === 'win32' ?
+    require('../../../unabiz-emulator/config.json') :
+    require('../../../../SIGFOX/unabiz-emulator/config.json');
+  AWS.config.credentials = {
+    accessKeyId: config.accessKeyId,
+    secretAccessKey: config.secretAccessKey,
+  };
 }
 //  Use AWS command line "aws iot describe-endpoint" to get the endpoint address.
 const endpoint = 'A1P01IYM2DOZA0.iot.us-west-2.amazonaws.com';
@@ -96,16 +100,19 @@ exports.handler = (input2, context2, callback2) => {
 function updateDeviceState(device, state) {
   //  Update the device/thing state.  Returns a promise.
   //  Device must be lower case.
-  device = device.toLowerCase();
+  if (device) device = device.toLowerCase();
   const payload = {
     state: {
       reported: state,
     },
   };
-  if (!payload.state.reported.timestamp) {
-    const localtime = Date.now() + (8 * 60 * 60 * 1000);  //  SG time is GMT+8 hours.
-    payload.state.reported.timestamp = new Date(localtime).toISOString().replace('Z', '');
+  let timestamp = Date.now();
+  //  Timestamp is a string in microseconds.  Convert to local time.
+  if (payload.state.reported.timestamp) {
+    timestamp = parseInt(payload.state.reported.timestamp, 10);
   }
+  const localtime = timestamp + (8 * 60 * 60 * 1000);  //  SG time is GMT+8 hours.
+  payload.state.reported.timestamp = new Date(localtime).toISOString().replace('Z', '');
   const params = {
     payload: JSON.stringify(payload),
     thingName: device || 'g88pi',
@@ -183,7 +190,7 @@ const test_input = {
   "data": "920e5a00b051680194597b00"
 };
 
-const test_input2 = {  //  API Gateway
+const test_input2 = {  //  API Gateway called by Virtual SIGFOX.
   "resource": "/ProcessSIGFOXMessage",
   "path": "/ProcessSIGFOXMessage",
   "httpMethod": "POST",
@@ -239,6 +246,55 @@ const test_input2 = {  //  API Gateway
   "isBase64Encoded": false
 };
 
+const test_input3 = {  //  API Gateway called by UnaCloud.
+  "resource": "/ProcessSIGFOXMessage",
+  "path": "/ProcessSIGFOXMessage",
+  "httpMethod": "POST",
+  "headers": {
+    "CloudFront-Forwarded-Proto": "https",
+    "CloudFront-Is-Desktop-Viewer": "true",
+    "CloudFront-Is-Mobile-Viewer": "false",
+    "CloudFront-Is-SmartTV-Viewer": "false",
+    "CloudFront-Is-Tablet-Viewer": "false",
+    "CloudFront-Viewer-Country": "SG",
+    "Content-Type": "application/json",
+    "Host": "l0043j2svc.execute-api.us-west-2.amazonaws.com",
+    "Via": "1.1 2c87bd533a7f50a11c5be2c69aaef856.cloudfront.net (CloudFront)",
+    "X-Amz-Cf-Id": "aB9VTHO01pvJWFOfAC93ZzCEe9YcMjoVqfQSPLDtYM6kvgWuWgj5cQ==",
+    "X-Forwarded-For": "52.163.211.144, 54.240.148.105",
+    "X-Forwarded-Port": "443",
+    "X-Forwarded-Proto": "https"
+  },
+  "queryStringParameters": null,
+  "pathParameters": null,
+  "stageVariables": null,
+  "requestContext": {
+    "accountId": "595779189490",
+    "resourceId": "s3459w",
+    "stage": "prod",
+    "requestId": "f9d91cd7-b24d-11e6-85b2-0994fdbb92c2",
+    "identity": {
+      "cognitoIdentityPoolId": null,
+      "accountId": null,
+      "cognitoIdentityId": null,
+      "caller": null,
+      "apiKey": null,
+      "sourceIp": "52.163.211.144",
+      "accessKey": null,
+      "cognitoAuthenticationType": null,
+      "cognitoAuthenticationProvider": null,
+      "userArn": null,
+      "userAgent": null,
+      "user": null
+    },
+    "resourcePath": "/ProcessSIGFOXMessage",
+    "httpMethod": "POST",
+    "apiId": "l0043j2svc"
+  },
+  "body": "{\"device\":\"1C864E\",\"data\":\"920e14002731f21cb0514a01\",\"duplicate\":false,\"snr\":12.14,\"station\":\"0466\",\"avgSnr\":13.35,\"lat\":1,\"lng\":104,\"rssi\":-66,\"seqNumber\":285,\"ack\":false,\"longPolling\":false,\"timestamp\":\"1479995863000\",\"baseStationTime\":1479995863,\"baseStationLat\":1.314,\"baseStationLng\":103.867}",
+  "isBase64Encoded": false
+};
+
 const test_context = {
   "awsRequestId": "98dc0220-0eba-11e6-b84a-f75570995fc5",
   "invokeid": "98dc0220-0eba-11e6-b84a-f75570995fc5",
@@ -252,7 +308,7 @@ const test_context = {
 
 //  Run the unit test if we are in development environment.
 function runTest() { /* eslint-disable no-debugger */
-  return exports.handler(test_input2, test_context, (err, result) => {
+  return exports.handler(test_input3, test_context, (err, result) => {
     if (err) { console.error(err); debugger; }
     console.log(result);
     process.exit(0);
