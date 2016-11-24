@@ -95,6 +95,8 @@ exports.handler = (input2, context2, callback2) => {
 
 function updateDeviceState(device, state) {
   //  Update the device/thing state.  Returns a promise.
+  //  Device must be lower case.
+  device = device.toLowerCase();
   const payload = {
     state: {
       reported: state,

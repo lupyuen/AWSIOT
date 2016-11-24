@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7c392364-e4dd-472f-8964-ecf49ededf90" name="Default" comment="">
+    <list default="true" id="7c392364-e4dd-472f-8964-ecf49ededf90" name="Default" comment="Allow GET request to succeed">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ProcessSIGFOXMessage.js" afterPath="$PROJECT_DIR$/ProcessSIGFOXMessage.js" />
     </list>
@@ -53,40 +53,14 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="IndexSensorData.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/IndexSensorData.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="726">
-              <caret line="1033" column="0" lean-forward="false" selection-start-line="1022" selection-start-column="0" selection-end-line="1033" selection-end-column="0" />
-              <folding>
-                <element signature="e#32283#35311#0" expanded="false" />
-                <element signature="e#35360#35440#0" expanded="false" />
-                <element signature="e#35687#36395#0" expanded="false" />
-                <element signature="e#36427#38328#0" expanded="false" />
-                <element signature="e#37763#38304#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="ProcessSIGFOXMessage.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ProcessSIGFOXMessage.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="418">
-              <caret line="109" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="260" selection-end-column="0" />
+            <state relative-caret-position="726">
+              <caret line="262" column="0" lean-forward="false" selection-start-line="262" selection-start-column="0" selection-end-line="262" selection-end-column="0" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name=".eslintrc" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/.eslintrc">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="18" column="25" lean-forward="false" selection-start-line="18" selection-start-column="25" selection-end-line="18" selection-end-column="25" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -174,7 +148,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -189,13 +162,14 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="settings.editor.selected.configurable" value="JavaScript.Libraries" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/ProcessSIGFOXMessage.js" />
     <property name="WebServerToolWindowFactoryState" value="true" />
     <property name="js-jscs-nodeInterpreter" value="/usr/local/bin/node" />
     <property name="nodejs_interpreter_path" value="C:/Program Files/nodejs/node" />
@@ -247,127 +221,7 @@
       </list>
     </option>
   </component>
-  <component name="RestoreUpdateTree" date="Moments ago" ActionInfo="_Update">
-    <UpdatedFiles>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Updated from server" />
-        <option name="myStatusName" value="Changed on server" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="CHANGED_ON_SERVER" />
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Updated" />
-          <option name="myStatusName" value="Changed" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="UPDATED" />
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../.idea/misc.xml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../.idea/workspace.xml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/.idea/jsLibraryMappings.xml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/.idea/misc.xml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/.idea/nodejs.iml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/.idea/workspace.xml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../sumologic/Extract sensor data.txt</PATH>
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Created" />
-          <option name="myStatusName" value="Created" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="CREATED" />
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/2016 Apr/ExpandSensorData.js</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/ProcessSIGFOXMessage.js</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../sumologic/README.md</PATH>
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Deleted" />
-          <option name="myStatusName" value="Deleted" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="true" />
-          <option name="myId" value="REMOVED_FROM_REPOSITORY" />
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/ExpandSensorData.js</PATH>
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Restored" />
-          <option name="myStatusName" value="Will be restored" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="RESTORED" />
-        </FILE-GROUP>
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Modified" />
-        <option name="myStatusName" value="Modified" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MODIFIED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Skipped" />
-        <option name="myStatusName" value="Skipped" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="SKIPPED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Merged with conflicts" />
-        <option name="myStatusName" value="Will be merged with conflicts" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MERGED_WITH_CONFLICTS" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Merged with tree conflicts" />
-        <option name="myStatusName" value="Merged with tree conflicts" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MERGED_WITH_TREE_CONFLICT" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Merged with property conflicts" />
-        <option name="myStatusName" value="Will be merged with property conflicts" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MERGED_WITH_PROPERTY_CONFLICT" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Merged" />
-        <option name="myStatusName" value="Will be merged" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MERGED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Not in repository" />
-        <option name="myStatusName" value="Not in repository" />
-        <option name="mySupportsDeletion" value="true" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="UNKNOWN" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Locally added" />
-        <option name="myStatusName" value="Locally added" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="LOCALLY_ADDED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Locally removed" />
-        <option name="myStatusName" value="Locally removed" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="LOCALLY_REMOVED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Switched" />
-        <option name="myStatusName" value="Switched" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="SWITCHED" />
-      </FILE-GROUP>
-    </UpdatedFiles>
-  </component>
-  <component name="RunManager" selected="Node.js.IndexSensorData.js">
+  <component name="RunManager" selected="Node.js.ProcessSIGFOXMessage.js">
     <configuration default="true" type="CabalRunConfiguration" factoryName="Haskell">
       <module name="" />
       <setting name="executableName" value="" />
@@ -417,23 +271,94 @@
       <recursive>false</recursive>
       <method />
     </configuration>
-    <configuration default="false" name="IndexSensorData.js" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="C:/Program Files/nodejs/node" path-to-js-file="IndexSensorData.js" working-dir="$PROJECT_DIR$">
+    <configuration default="false" name="IndexSensorData.js" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="project" path-to-js-file="IndexSensorData.js" working-dir="$PROJECT_DIR$">
       <profiling v8-profiler-path="" />
+      <EXTENSION ID="com.jetbrains.nodejs.remote.docker.NodeJSDockerRunConfigurationExtension">
+        <option name="envVars">
+          <list />
+        </option>
+        <option name="extraHosts">
+          <list />
+        </option>
+        <option name="links">
+          <list />
+        </option>
+        <option name="networkDisabled" value="false" />
+        <option name="networkMode" value="bridge" />
+        <option name="portBindings">
+          <list />
+        </option>
+        <option name="publishAllPorts" value="false" />
+        <option name="version" value="1" />
+        <option name="volumeBindings">
+          <list />
+        </option>
+      </EXTENSION>
       <EXTENSION ID="com.jetbrains.nodejs.run.NodeJSProfilingRunConfigurationExtension">
         <profiling v8-profiler-path="" />
       </EXTENSION>
       <method />
     </configuration>
     <configuration default="false" name="IndexAWSLogs.js" type="NodeJSConfigurationType" factoryName="Node.js" singleton="false" path-to-node="project" path-to-js-file="IndexAWSLogs.js" working-dir="$PROJECT_DIR$">
+      <profiling v8-profiler-path="" />
+      <EXTENSION ID="com.jetbrains.nodejs.remote.docker.NodeJSDockerRunConfigurationExtension">
+        <option name="envVars">
+          <list />
+        </option>
+        <option name="extraHosts">
+          <list />
+        </option>
+        <option name="links">
+          <list />
+        </option>
+        <option name="networkDisabled" value="false" />
+        <option name="networkMode" value="bridge" />
+        <option name="portBindings">
+          <list />
+        </option>
+        <option name="publishAllPorts" value="false" />
+        <option name="version" value="1" />
+        <option name="volumeBindings">
+          <list />
+        </option>
+      </EXTENSION>
+      <EXTENSION ID="com.jetbrains.nodejs.run.NodeJSProfilingRunConfigurationExtension">
+        <profiling v8-profiler-path="" />
+      </EXTENSION>
       <method />
     </configuration>
-    <configuration default="false" name="ExpandSensorData.js" type="NodeJSConfigurationType" factoryName="Node.js" singleton="false" path-to-node="project" path-to-js-file="ExpandSensorData.js" working-dir="$PROJECT_DIR$">
+    <configuration default="false" name="ProcessSIGFOXMessage.js" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="project" path-to-js-file="ProcessSIGFOXMessage.js" working-dir="$PROJECT_DIR$">
+      <profiling v8-profiler-path="" />
+      <EXTENSION ID="com.jetbrains.nodejs.remote.docker.NodeJSDockerRunConfigurationExtension">
+        <option name="envVars">
+          <list />
+        </option>
+        <option name="extraHosts">
+          <list />
+        </option>
+        <option name="links">
+          <list />
+        </option>
+        <option name="networkDisabled" value="false" />
+        <option name="networkMode" value="bridge" />
+        <option name="portBindings">
+          <list />
+        </option>
+        <option name="publishAllPorts" value="false" />
+        <option name="version" value="1" />
+        <option name="volumeBindings">
+          <list />
+        </option>
+      </EXTENSION>
+      <EXTENSION ID="com.jetbrains.nodejs.run.NodeJSProfilingRunConfigurationExtension">
+        <profiling v8-profiler-path="" />
+      </EXTENSION>
       <method />
     </configuration>
     <list size="3">
       <item index="0" class="java.lang.String" itemvalue="Node.js.IndexSensorData.js" />
       <item index="1" class="java.lang.String" itemvalue="Node.js.IndexAWSLogs.js" />
-      <item index="2" class="java.lang.String" itemvalue="Node.js.ExpandSensorData.js" />
+      <item index="2" class="java.lang.String" itemvalue="Node.js.ProcessSIGFOXMessage.js" />
     </list>
   </component>
   <component name="ShelveChangesManager" show_recycled="false">
@@ -522,7 +447,14 @@
       <option name="project" value="LOCAL" />
       <updated>1479138374137</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Allow GET request to succeed">
+      <created>1479653347145</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1479653347145</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -542,7 +474,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23892774" sideWeight="0.65873015" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="PsiViewer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295362" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Code Outline" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295362" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19132653" sideWeight="0.49746192" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19132653" sideWeight="0.49746192" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22061484" sideWeight="0.5069307" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Unicode Browser" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Graph Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -600,17 +532,11 @@
     <MESSAGE value="Testing" />
     <MESSAGE value="Tested OK" />
     <MESSAGE value="Fixed timestamp" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed timestamp" />
+    <MESSAGE value="Allow GET request to succeed" />
+    <option name="LAST_COMMIT_MESSAGE" value="Allow GET request to succeed" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/IndexSensorData.js</url>
-          <line>101</line>
-          <option name="timeStamp" value="60" />
-        </line-breakpoint>
-      </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
@@ -633,29 +559,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="12195">
           <caret line="1033" column="0" lean-forward="false" selection-start-line="1022" selection-start-column="0" selection-end-line="1033" selection-end-column="0" />
-          <folding>
-            <element signature="e#32283#35311#0" expanded="false" />
-            <element signature="e#35360#35440#0" expanded="false" />
-            <element signature="e#35687#36395#0" expanded="false" />
-            <element signature="e#36427#38328#0" expanded="false" />
-            <element signature="e#37763#38304#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ExpandSensorData.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/ExpandSensorData.js" />
     <entry file="file://$PROJECT_DIR$/.eslintrc">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
           <caret line="18" column="25" lean-forward="false" selection-start-line="18" selection-start-column="25" selection-end-line="18" selection-end-column="25" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -663,29 +574,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15495">
           <caret line="1033" column="0" lean-forward="false" selection-start-line="1022" selection-start-column="0" selection-end-line="1033" selection-end-column="0" />
-          <folding>
-            <element signature="e#32283#35311#0" expanded="false" />
-            <element signature="e#35360#35440#0" expanded="false" />
-            <element signature="e#35687#36395#0" expanded="false" />
-            <element signature="e#36427#38328#0" expanded="false" />
-            <element signature="e#37763#38304#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ExpandSensorData.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/ExpandSensorData.js" />
     <entry file="file://$PROJECT_DIR$/.eslintrc">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
           <caret line="18" column="25" lean-forward="false" selection-start-line="18" selection-start-column="25" selection-end-line="18" selection-end-column="25" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -693,13 +589,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#32283#35311#0" expanded="false" />
-            <element signature="e#35360#35440#0" expanded="false" />
-            <element signature="e#35687#36395#0" expanded="false" />
-            <element signature="e#36427#38328#0" expanded="false" />
-            <element signature="e#37763#38304#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -707,7 +596,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
           <caret line="18" column="25" lean-forward="false" selection-start-line="18" selection-start-column="25" selection-end-line="18" selection-end-column="25" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -715,13 +603,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#32283#35311#0" expanded="false" />
-            <element signature="e#35360#35440#0" expanded="false" />
-            <element signature="e#35687#36395#0" expanded="false" />
-            <element signature="e#36427#38328#0" expanded="false" />
-            <element signature="e#37763#38304#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -729,7 +610,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
           <caret line="18" column="25" lean-forward="false" selection-start-line="18" selection-start-column="25" selection-end-line="18" selection-end-column="25" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -744,13 +624,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3225">
           <caret line="215" column="9" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="757" selection-end-column="0" />
-          <folding>
-            <element signature="e#32283#35311#0" expanded="false" />
-            <element signature="e#35360#35440#0" expanded="false" />
-            <element signature="e#35687#36395#0" expanded="false" />
-            <element signature="e#36427#38328#0" expanded="false" />
-            <element signature="e#37763#38304#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -765,13 +638,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3225">
           <caret line="215" column="9" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="757" selection-end-column="0" />
-          <folding>
-            <element signature="e#32283#35311#0" expanded="false" />
-            <element signature="e#35360#35440#0" expanded="false" />
-            <element signature="e#35687#36395#0" expanded="false" />
-            <element signature="e#36427#38328#0" expanded="false" />
-            <element signature="e#37763#38304#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -786,13 +652,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#32283#35311#0" expanded="false" />
-            <element signature="e#35360#35440#0" expanded="false" />
-            <element signature="e#35687#36395#0" expanded="false" />
-            <element signature="e#36427#38328#0" expanded="false" />
-            <element signature="e#37763#38304#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -807,13 +666,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#32283#35311#0" expanded="false" />
-            <element signature="e#35360#35440#0" expanded="false" />
-            <element signature="e#35687#36395#0" expanded="false" />
-            <element signature="e#36427#38328#0" expanded="false" />
-            <element signature="e#37763#38304#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -828,13 +680,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="13000">
           <caret line="756" column="0" lean-forward="false" selection-start-line="756" selection-start-column="0" selection-end-line="756" selection-end-column="0" />
-          <folding>
-            <element signature="e#32283#35311#0" expanded="false" />
-            <element signature="e#35360#35440#0" expanded="false" />
-            <element signature="e#35687#36395#0" expanded="false" />
-            <element signature="e#36427#38328#0" expanded="false" />
-            <element signature="e#37763#38304#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -849,13 +694,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="13000">
           <caret line="756" column="0" lean-forward="false" selection-start-line="756" selection-start-column="0" selection-end-line="756" selection-end-column="0" />
-          <folding>
-            <element signature="e#32283#35311#0" expanded="false" />
-            <element signature="e#35360#35440#0" expanded="false" />
-            <element signature="e#35687#36395#0" expanded="false" />
-            <element signature="e#36427#38328#0" expanded="false" />
-            <element signature="e#37763#38304#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -870,13 +708,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="13000">
           <caret line="756" column="0" lean-forward="false" selection-start-line="756" selection-start-column="0" selection-end-line="756" selection-end-column="0" />
-          <folding>
-            <element signature="e#32283#35311#0" expanded="false" />
-            <element signature="e#35360#35440#0" expanded="false" />
-            <element signature="e#35687#36395#0" expanded="false" />
-            <element signature="e#36427#38328#0" expanded="false" />
-            <element signature="e#37763#38304#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -905,13 +736,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#32283#35311#0" expanded="false" />
-            <element signature="e#35360#35440#0" expanded="false" />
-            <element signature="e#35687#36395#0" expanded="false" />
-            <element signature="e#36427#38328#0" expanded="false" />
-            <element signature="e#37763#38304#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -947,13 +771,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3740">
           <caret line="187" column="0" lean-forward="false" selection-start-line="168" selection-start-column="0" selection-end-line="187" selection-end-column="0" />
-          <folding>
-            <element signature="e#32283#35311#0" expanded="false" />
-            <element signature="e#35360#35440#0" expanded="false" />
-            <element signature="e#35687#36395#0" expanded="false" />
-            <element signature="e#36427#38328#0" expanded="false" />
-            <element signature="e#37763#38304#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -975,13 +792,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3740">
           <caret line="187" column="0" lean-forward="false" selection-start-line="168" selection-start-column="0" selection-end-line="187" selection-end-column="0" />
-          <folding>
-            <element signature="e#32283#35311#0" expanded="false" />
-            <element signature="e#35360#35440#0" expanded="false" />
-            <element signature="e#35687#36395#0" expanded="false" />
-            <element signature="e#36427#38328#0" expanded="false" />
-            <element signature="e#37763#38304#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -996,13 +806,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#32283#35311#0" expanded="false" />
-            <element signature="e#35360#35440#0" expanded="false" />
-            <element signature="e#35687#36395#0" expanded="false" />
-            <element signature="e#36427#38328#0" expanded="false" />
-            <element signature="e#37763#38304#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1073,36 +876,21 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
           <caret line="18" column="25" lean-forward="false" selection-start-line="18" selection-start-column="25" selection-end-line="18" selection-end-column="25" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ExpandSensorData.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="726">
-          <caret line="78" column="22" lean-forward="false" selection-start-line="78" selection-start-column="22" selection-end-line="78" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/ExpandSensorData.js" />
     <entry file="file://$PROJECT_DIR$/IndexSensorData.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="726">
-          <caret line="1033" column="0" lean-forward="false" selection-start-line="1022" selection-start-column="0" selection-end-line="1033" selection-end-column="0" />
-          <folding>
-            <element signature="e#32283#35311#0" expanded="false" />
-            <element signature="e#35360#35440#0" expanded="false" />
-            <element signature="e#35687#36395#0" expanded="false" />
-            <element signature="e#36427#38328#0" expanded="false" />
-            <element signature="e#37763#38304#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="336">
+          <caret line="101" column="24" lean-forward="false" selection-start-line="101" selection-start-column="24" selection-end-line="101" selection-end-column="24" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ProcessSIGFOXMessage.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="418">
-          <caret line="109" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="260" selection-end-column="0" />
+        <state relative-caret-position="726">
+          <caret line="262" column="0" lean-forward="false" selection-start-line="262" selection-start-column="0" selection-end-line="262" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
