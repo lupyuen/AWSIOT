@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7c392364-e4dd-472f-8964-ecf49ededf90" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../iotrule/sigfox_record_sensor_data.sql" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="nodejs.iws" />
@@ -53,17 +52,48 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="IndexAWSLogs.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="IndexAWSLogs.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/IndexAWSLogs.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1724">
-              <caret line="1232" column="17" lean-forward="true" selection-start-line="1232" selection-start-column="17" selection-end-line="1232" selection-end-column="17" />
+            <state relative-caret-position="262">
+              <caret line="746" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="1607" selection-end-column="0" />
               <folding>
-                <element signature="e#42283#43128#0" expanded="false" />
-                <element signature="e#43170#44611#0" expanded="false" />
-                <element signature="e#44664#46801#0" expanded="false" />
-                <element signature="e#46829#47299#0" expanded="false" />
+                <element signature="e#29447#30880#0" expanded="false" />
+                <element signature="e#30935#33064#0" expanded="false" />
+                <element signature="e#33133#39358#0" expanded="false" />
+                <element signature="e#39483#40270#0" expanded="false" />
+                <element signature="e#40317#55914#0" expanded="false" />
+                <element signature="e#40333#48039#0" expanded="false" />
+                <element signature="e#55938#56408#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="IndexSensorData.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/IndexSensorData.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="202">
+              <caret line="739" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="1607" selection-end-column="0" />
+              <folding>
+                <element signature="e#29447#30880#0" expanded="false" />
+                <element signature="e#30935#33064#0" expanded="false" />
+                <element signature="e#33133#39358#0" expanded="false" />
+                <element signature="e#39483#40270#0" expanded="false" />
+                <element signature="e#40317#55914#0" expanded="false" />
+                <element signature="e#40333#48039#0" expanded="false" />
+                <element signature="e#55938#56408#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".eslintrc" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/.eslintrc">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="380">
+              <caret line="19" column="20" lean-forward="false" selection-start-line="19" selection-start-column="20" selection-end-line="19" selection-end-column="20" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -71,23 +101,10 @@
       <file leaf-file-name="ProcessSIGFOXMessage.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ProcessSIGFOXMessage.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3000">
-              <caret line="202" column="63" lean-forward="false" selection-start-line="202" selection-start-column="63" selection-end-line="202" selection-end-column="63" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="IndexSensorData.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/IndexSensorData.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="1028" column="45" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="1278" selection-end-column="0" />
+            <state relative-caret-position="300">
+              <caret line="15" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
               <folding>
-                <element signature="e#42283#43128#0" expanded="false" />
-                <element signature="e#43170#44611#0" expanded="false" />
-                <element signature="e#44664#46793#0" expanded="false" />
-                <element signature="e#46821#47291#0" expanded="false" />
+                <element signature="n#!!doc" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -104,7 +121,12 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>cloudwa</find>
+      <find>b</find>
+      <find>conn.end</find>
+      <find>putmetr</find>
+      <find>b =</find>
+      <find>b:</find>
+      <find>buildsou</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -139,9 +161,10 @@
     <handled-path value="$PROJECT_DIR$/node_modules" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="y" value="43" />
-    <option name="width" value="1046" />
-    <option name="height" value="921" />
+    <option name="x" value="38" />
+    <option name="y" value="22" />
+    <option name="width" value="1601" />
+    <option name="height" value="963" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -199,15 +222,15 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="settings.editor.selected.configurable" value="JavaScript.Libraries" />
+    <property name="settings.editor.selected.configurable" value="settings.nodejs" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="WebServerToolWindowFactoryState" value="true" />
     <property name="js-jscs-nodeInterpreter" value="/usr/local/bin/node" />
-    <property name="nodejs_interpreter_path" value="C:/Program Files/nodejs/node" />
-    <property name="JavaScriptPreferStrict" value="false" />
-    <property name="JavaScriptWeakerCompletionTypeGuess" value="false" />
-    <property name="javascript.nodejs.core.library.configured.version" value="6.3.0" />
+    <property name="nodejs_interpreter_path" value="/usr/local/bin/node" />
+    <property name="JavaScriptPreferStrict" value="true" />
+    <property name="JavaScriptWeakerCompletionTypeGuess" value="true" />
+    <property name="javascript.nodejs.core.library.configured.version" value="4.4.2" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="137" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
@@ -225,8 +248,7 @@
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder2" value="2" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="937" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder3" value="3" />
-    <property name="js.eslint.eslintPackage" value="C:\Users\guppy\AppData\Roaming\npm\node_modules\eslint" />
-    <property name="js.eslint.nodeInterpreter" value="project" />
+    <property name="js.eslint.eslintPackage" value="/usr/local/lib/node_modules/eslint" />
   </component>
   <component name="PsiViewer.ProjectComponent">
     <option name="HIGHLIGHT" value="false" />
@@ -267,12 +289,12 @@
           <option name="mySupportsDeletion" value="false" />
           <option name="myCanBeAbsent" value="false" />
           <option name="myId" value="UPDATED" />
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/../.idea/AWSIOT.iml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/../.idea/misc.xml</PATH>
           <PATH vcs="Git" revision="">$PROJECT_DIR$/../.idea/workspace.xml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/.eslintrc</PATH>
           <PATH vcs="Git" revision="">$PROJECT_DIR$/.idea/workspace.xml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/IndexAWSLogs.js</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/IndexSensorData.js</PATH>
           <PATH vcs="Git" revision="">$PROJECT_DIR$/ProcessSIGFOXMessage.js</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/../sumologic/Extract sensor data.txt</PATH>
         </FILE-GROUP>
         <FILE-GROUP>
           <option name="myUpdateName" value="Created" />
@@ -280,8 +302,6 @@
           <option name="mySupportsDeletion" value="false" />
           <option name="myCanBeAbsent" value="false" />
           <option name="myId" value="CREATED" />
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../.idea/watcherTasks.xml</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/../policy/LambdaExecuteIoTUpdate.txt</PATH>
         </FILE-GROUP>
         <FILE-GROUP>
           <option name="myUpdateName" value="Deleted" />
@@ -370,29 +390,15 @@
       </FILE-GROUP>
     </UpdatedFiles>
   </component>
-  <component name="RunManager" selected="Node.js.IndexAWSLogs.js">
+  <component name="RunManager" selected="Node.js.IndexSensorData.js">
     <configuration default="true" type="BashConfigurationType" factoryName="Bash">
       <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="INTERPRETER_PATH" value="C:\WINDOWS\system32\bash.exe" />
+      <option name="INTERPRETER_PATH" value="/bin/bash" />
       <option name="WORKING_DIRECTORY" value="" />
       <option name="PARENT_ENVS" value="true" />
       <option name="SCRIPT_NAME" value="" />
       <option name="PARAMETERS" value="" />
       <module name="" />
-      <envs />
-      <method />
-    </configuration>
-    <configuration default="true" type="CabalRunConfiguration" factoryName="Haskell">
-      <module name="" />
-      <setting name="executableName" value="" />
-      <setting name="parameters" value="" />
-      <setting name="workingDir" value="" />
-      <environmetVariables />
-      <method />
-    </configuration>
-    <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma">
-      <config-file value="" />
-      <node-interpreter value="project" />
       <envs />
       <method />
     </configuration>
@@ -403,6 +409,11 @@
       <method />
     </configuration>
     <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
+      <method />
+    </configuration>
+    <configuration default="true" type="MongoRunConfiguration" factoryName="Mongo">
+      <setting name="path" value="" />
+      <setting name="shellParams" value="" />
       <method />
     </configuration>
     <configuration default="true" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="project" working-dir="">
@@ -439,27 +450,6 @@
     </configuration>
     <configuration default="false" name="IndexSensorData.js" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="project" path-to-js-file="IndexSensorData.js" working-dir="$PROJECT_DIR$">
       <profiling v8-profiler-path="" />
-      <EXTENSION ID="com.jetbrains.nodejs.remote.docker.NodeJSDockerRunConfigurationExtension">
-        <option name="envVars">
-          <list />
-        </option>
-        <option name="extraHosts">
-          <list />
-        </option>
-        <option name="links">
-          <list />
-        </option>
-        <option name="networkDisabled" value="false" />
-        <option name="networkMode" value="bridge" />
-        <option name="portBindings">
-          <list />
-        </option>
-        <option name="publishAllPorts" value="false" />
-        <option name="version" value="1" />
-        <option name="volumeBindings">
-          <list />
-        </option>
-      </EXTENSION>
       <EXTENSION ID="com.jetbrains.nodejs.run.NodeJSProfilingRunConfigurationExtension">
         <profiling v8-profiler-path="" />
       </EXTENSION>
@@ -467,55 +457,13 @@
     </configuration>
     <configuration default="false" name="IndexAWSLogs.js" type="NodeJSConfigurationType" factoryName="Node.js" singleton="true" path-to-node="project" path-to-js-file="IndexAWSLogs.js" working-dir="$PROJECT_DIR$">
       <profiling v8-profiler-path="" />
-      <EXTENSION ID="com.jetbrains.nodejs.remote.docker.NodeJSDockerRunConfigurationExtension">
-        <option name="envVars">
-          <list />
-        </option>
-        <option name="extraHosts">
-          <list />
-        </option>
-        <option name="links">
-          <list />
-        </option>
-        <option name="networkDisabled" value="false" />
-        <option name="networkMode" value="bridge" />
-        <option name="portBindings">
-          <list />
-        </option>
-        <option name="publishAllPorts" value="false" />
-        <option name="version" value="1" />
-        <option name="volumeBindings">
-          <list />
-        </option>
-      </EXTENSION>
       <EXTENSION ID="com.jetbrains.nodejs.run.NodeJSProfilingRunConfigurationExtension">
         <profiling v8-profiler-path="" />
       </EXTENSION>
       <method />
     </configuration>
-    <configuration default="false" name="ProcessSIGFOXMessage.js" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="project" path-to-js-file="ProcessSIGFOXMessage.js" working-dir="$PROJECT_DIR$">
+    <configuration default="false" name="ProcessSIGFOXMessage.js" type="NodeJSConfigurationType" factoryName="Node.js" singleton="true" path-to-node="project" path-to-js-file="ProcessSIGFOXMessage.js" working-dir="$PROJECT_DIR$">
       <profiling v8-profiler-path="" />
-      <EXTENSION ID="com.jetbrains.nodejs.remote.docker.NodeJSDockerRunConfigurationExtension">
-        <option name="envVars">
-          <list />
-        </option>
-        <option name="extraHosts">
-          <list />
-        </option>
-        <option name="links">
-          <list />
-        </option>
-        <option name="networkDisabled" value="false" />
-        <option name="networkMode" value="bridge" />
-        <option name="portBindings">
-          <list />
-        </option>
-        <option name="publishAllPorts" value="false" />
-        <option name="version" value="1" />
-        <option name="volumeBindings">
-          <list />
-        </option>
-      </EXTENSION>
       <EXTENSION ID="com.jetbrains.nodejs.run.NodeJSProfilingRunConfigurationExtension">
         <profiling v8-profiler-path="" />
       </EXTENSION>
@@ -556,6 +504,9 @@
       <workItem from="1465134209542" duration="43000" />
       <workItem from="1465174039859" duration="17000" />
       <workItem from="1465525973389" duration="2181000" />
+      <workItem from="1479617825753" duration="73000" />
+      <workItem from="1479620670003" duration="4010000" />
+      <workItem from="1480034092099" duration="9574000" />
     </task>
     <task id="LOCAL-00001" summary="Before patching to fix AWS IoT beta SQL">
       <created>1463147533406</created>
@@ -564,142 +515,93 @@
       <option name="project" value="LOCAL" />
       <updated>1463147533406</updated>
     </task>
-    <task id="LOCAL-00002" summary="Before fixing MySQL">
-      <created>1479112255502</created>
+    <task id="LOCAL-00002" summary="Adding ProcessSIGFOXMessage to AWS API Gateway">
+      <created>1479625396657</created>
       <option name="number" value="00002" />
       <option name="presentableId" value="LOCAL-00002" />
       <option name="project" value="LOCAL" />
-      <updated>1479112255502</updated>
+      <updated>1479625396657</updated>
     </task>
-    <task id="LOCAL-00003" summary="Before testing">
-      <created>1479118438182</created>
+    <task id="LOCAL-00003" summary="Adding ProcessSIGFOXMessage to AWS API Gateway">
+      <created>1479626197933</created>
       <option name="number" value="00003" />
       <option name="presentableId" value="LOCAL-00003" />
       <option name="project" value="LOCAL" />
-      <updated>1479118438182</updated>
+      <updated>1479626197933</updated>
     </task>
-    <task id="LOCAL-00004" summary="Before testing">
-      <created>1479120086608</created>
+    <task id="LOCAL-00004" summary="Adding ProcessSIGFOXMessage to AWS API Gateway">
+      <created>1479626770781</created>
       <option name="number" value="00004" />
       <option name="presentableId" value="LOCAL-00004" />
       <option name="project" value="LOCAL" />
-      <updated>1479120086608</updated>
+      <updated>1479626770781</updated>
     </task>
-    <task id="LOCAL-00005" summary="After eslint">
-      <created>1479133070271</created>
+    <task id="LOCAL-00005" summary="Use connection pooling for MySQL">
+      <created>1480038436473</created>
       <option name="number" value="00005" />
       <option name="presentableId" value="LOCAL-00005" />
       <option name="project" value="LOCAL" />
-      <updated>1479133070271</updated>
+      <updated>1480038436473</updated>
     </task>
-    <task id="LOCAL-00006" summary="Testing">
-      <created>1479134395741</created>
+    <task id="LOCAL-00006" summary="Sync IndexAWSLogs and IndexSensorData">
+      <created>1480043490923</created>
       <option name="number" value="00006" />
       <option name="presentableId" value="LOCAL-00006" />
       <option name="project" value="LOCAL" />
-      <updated>1479134395741</updated>
+      <updated>1480043490923</updated>
     </task>
-    <task id="LOCAL-00007" summary="Tested OK">
-      <created>1479135323733</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1479135323733</updated>
-    </task>
-    <task id="LOCAL-00008" summary="Fixed timestamp">
-      <created>1479138374137</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1479138374137</updated>
-    </task>
-    <task id="LOCAL-00009" summary="Allow GET request to succeed">
-      <created>1479653347145</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1479653347145</updated>
-    </task>
-    <task id="LOCAL-00010" summary="Change device to lowercase">
-      <created>1480003033411</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1480003033411</updated>
-    </task>
-    <task id="LOCAL-00011" summary="Fix timestamp when provided by UnaCloud">
-      <created>1480013234853</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1480013234853</updated>
-    </task>
-    <task id="LOCAL-00012" summary="Create sensor table if missing">
-      <created>1480100174265</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1480100174265</updated>
-    </task>
-    <task id="LOCAL-00013" summary="Fixed test case">
-      <created>1480100537154</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1480100537154</updated>
-    </task>
-    <option name="localTasksCounter" value="14" />
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="60287000" />
+    <option name="totallyTimeSpent" value="73944000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="43" width="1046" height="921" extended-state="0" />
+    <frame x="38" y="22" width="1601" height="963" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="DB Execution Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Gerrit" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23892774" sideWeight="0.65873015" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Code Outline" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295362" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Cabal" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Mongo Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Compare Directories" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Tail" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.16680227" sideWeight="0.73625" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.49737534" sideWeight="0.64737797" order="20" side_tool="true" content_ui="tabs" x="60" y="-1201" width="1383" height="470" />
+      <window_info id="Debug" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30532393" sideWeight="0.56843066" order="13" side_tool="true" content_ui="tabs" x="60" y="-1201" width="1383" height="470" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32843894" sideWeight="0.58600736" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="SvgViewer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="DB Browser" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="SvgViewer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Regex Tester" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="RemoteSynchronizer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="16" side_tool="false" content_ui="tabs" />
       <window_info id="PsiViewer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295362" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19053876" sideWeight="0.49746192" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.43601894" sideWeight="0.43156934" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22061484" sideWeight="0.5069307" order="4" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.35653237" sideWeight="0.7596207" order="13" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.35653237" sideWeight="0.7596207" order="11" side_tool="true" content_ui="tabs" />
       <window_info id="Unicode Browser" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Graph Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Floobits" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299373" sideWeight="0.5" order="17" side_tool="false" content_ui="tabs" />
+      <window_info id="Code Review" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="19" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3291032" sideWeight="0.49746192" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="GhcMod" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.12981744" sideWeight="0.64705884" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="ReST Console" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Graph Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="17" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.112251446" sideWeight="0.64705884" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="ReST Console" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32505912" sideWeight="0.34126985" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Soa Debugger" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="20" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15323646" sideWeight="0.3529412" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Mongo Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="DB Execution Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Gerrit" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Metrics" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Cabal" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Dilbert" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="DB Browser" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Geek &amp; Poke" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39945155" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23386115" sideWeight="0.49818748" order="19" side_tool="false" content_ui="tabs" />
-      <window_info id="Floobits" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299373" sideWeight="0.5" order="18" side_tool="false" content_ui="tabs" />
-      <window_info id="Jenkins" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23761262" sideWeight="0.34126985" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23386115" sideWeight="0.49818748" order="18" side_tool="false" content_ui="tabs" />
+      <window_info id="GhcMod" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Jenkins" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -720,31 +622,18 @@
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="Before patching to fix AWS IoT beta SQL" />
-    <MESSAGE value="Before fixing MySQL" />
-    <MESSAGE value="Before testing" />
-    <MESSAGE value="After eslint" />
-    <MESSAGE value="Testing" />
-    <MESSAGE value="Tested OK" />
-    <MESSAGE value="Fixed timestamp" />
-    <MESSAGE value="Allow GET request to succeed" />
-    <MESSAGE value="Change device to lowercase" />
-    <MESSAGE value="Fix timestamp when provided by UnaCloud" />
-    <MESSAGE value="Create sensor table if missing" />
-    <MESSAGE value="Fixed test case" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed test case" />
+    <MESSAGE value="Adding ProcessSIGFOXMessage to AWS API Gateway" />
+    <MESSAGE value="Use connection pooling for MySQL" />
+    <MESSAGE value="Sync IndexAWSLogs and IndexSensorData" />
+    <option name="LAST_COMMIT_MESSAGE" value="Sync IndexAWSLogs and IndexSensorData" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/IndexAWSLogs.js</url>
-          <line>136</line>
-          <option name="timeStamp" value="65" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/IndexAWSLogs.js</url>
-          <line>494</line>
-          <option name="timeStamp" value="66" />
+          <url>file://$PROJECT_DIR$/ExpandSensorData.js</url>
+          <line>82</line>
+          <option name="timeStamp" value="10" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
@@ -755,7 +644,7 @@
           <properties />
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="69" />
+      <option name="time" value="61" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -767,43 +656,27 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/IndexSensorData.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="12195">
-          <caret line="1033" column="0" lean-forward="false" selection-start-line="1022" selection-start-column="0" selection-end-line="1033" selection-end-column="0" />
+        <state relative-caret-position="4920">
+          <caret line="246" column="24" lean-forward="false" selection-start-line="246" selection-start-column="24" selection-end-line="246" selection-end-column="24" />
           <folding>
-            <element signature="e#42283#43128#0" expanded="false" />
-            <element signature="e#43170#44611#0" expanded="false" />
-            <element signature="e#44664#46793#0" expanded="false" />
-            <element signature="e#46821#47291#0" expanded="false" />
+            <element signature="e#29447#30880#0" expanded="false" />
+            <element signature="e#30935#33064#0" expanded="false" />
+            <element signature="e#33133#39358#0" expanded="false" />
+            <element signature="e#39483#40270#0" expanded="false" />
+            <element signature="e#40317#55914#0" expanded="false" />
+            <element signature="e#40333#48039#0" expanded="false" />
+            <element signature="e#55938#56408#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ExpandSensorData.js" />
-    <entry file="file://$PROJECT_DIR$/.eslintrc">
+    <entry file="file://$PROJECT_DIR$/ProcessSIGFOXMessage.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" column="25" lean-forward="false" selection-start-line="18" selection-start-column="25" selection-end-line="18" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/IndexSensorData.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15495">
-          <caret line="1033" column="0" lean-forward="false" selection-start-line="1022" selection-start-column="0" selection-end-line="1033" selection-end-column="0" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#42283#43128#0" expanded="false" />
-            <element signature="e#43170#44611#0" expanded="false" />
-            <element signature="e#44664#46793#0" expanded="false" />
-            <element signature="e#46821#47291#0" expanded="false" />
+            <element signature="n#!!doc" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ExpandSensorData.js" />
-    <entry file="file://$PROJECT_DIR$/.eslintrc">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" column="25" lean-forward="false" selection-start-line="18" selection-start-column="25" selection-end-line="18" selection-end-column="25" />
         </state>
       </provider>
     </entry>
@@ -812,57 +685,13 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#42283#43128#0" expanded="false" />
-            <element signature="e#43170#44611#0" expanded="false" />
-            <element signature="e#44664#46793#0" expanded="false" />
-            <element signature="e#46821#47291#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.eslintrc">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" column="25" lean-forward="false" selection-start-line="18" selection-start-column="25" selection-end-line="18" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/IndexSensorData.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#42283#43128#0" expanded="false" />
-            <element signature="e#43170#44611#0" expanded="false" />
-            <element signature="e#44664#46793#0" expanded="false" />
-            <element signature="e#46821#47291#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.eslintrc">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" column="25" lean-forward="false" selection-start-line="18" selection-start-column="25" selection-end-line="18" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/IndexAWSLogs.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/IndexSensorData.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3225">
-          <caret line="215" column="9" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="757" selection-end-column="0" />
-          <folding>
-            <element signature="e#42283#43128#0" expanded="false" />
-            <element signature="e#43170#44611#0" expanded="false" />
-            <element signature="e#44664#46793#0" expanded="false" />
-            <element signature="e#46821#47291#0" expanded="false" />
+            <element signature="e#29447#30880#0" expanded="false" />
+            <element signature="e#30935#33064#0" expanded="false" />
+            <element signature="e#33133#39358#0" expanded="false" />
+            <element signature="e#39483#40270#0" expanded="false" />
+            <element signature="e#40317#55914#0" expanded="false" />
+            <element signature="e#40333#48039#0" expanded="false" />
+            <element signature="e#55938#56408#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -871,18 +700,30 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#29447#30880#0" expanded="false" />
+            <element signature="e#30935#33064#0" expanded="false" />
+            <element signature="e#33133#39358#0" expanded="false" />
+            <element signature="e#39483#40270#0" expanded="false" />
+            <element signature="e#40317#55914#0" expanded="false" />
+            <element signature="e#40333#48039#0" expanded="false" />
+            <element signature="e#55938#56408#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/IndexSensorData.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3225">
+        <state relative-caret-position="4300">
           <caret line="215" column="9" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="757" selection-end-column="0" />
           <folding>
-            <element signature="e#42283#43128#0" expanded="false" />
-            <element signature="e#43170#44611#0" expanded="false" />
-            <element signature="e#44664#46793#0" expanded="false" />
-            <element signature="e#46821#47291#0" expanded="false" />
+            <element signature="e#29447#30880#0" expanded="false" />
+            <element signature="e#30935#33064#0" expanded="false" />
+            <element signature="e#33133#39358#0" expanded="false" />
+            <element signature="e#39483#40270#0" expanded="false" />
+            <element signature="e#40317#55914#0" expanded="false" />
+            <element signature="e#40333#48039#0" expanded="false" />
+            <element signature="e#55938#56408#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -891,6 +732,15 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1040">
           <caret line="52" column="49" lean-forward="false" selection-start-line="52" selection-start-column="49" selection-end-line="52" selection-end-column="49" />
+          <folding>
+            <element signature="e#29447#30880#0" expanded="false" />
+            <element signature="e#30935#33064#0" expanded="false" />
+            <element signature="e#33133#39358#0" expanded="false" />
+            <element signature="e#39483#40270#0" expanded="false" />
+            <element signature="e#40317#55914#0" expanded="false" />
+            <element signature="e#40333#48039#0" expanded="false" />
+            <element signature="e#55938#56408#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -899,10 +749,13 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#42283#43128#0" expanded="false" />
-            <element signature="e#43170#44611#0" expanded="false" />
-            <element signature="e#44664#46793#0" expanded="false" />
-            <element signature="e#46821#47291#0" expanded="false" />
+            <element signature="e#29447#30880#0" expanded="false" />
+            <element signature="e#30935#33064#0" expanded="false" />
+            <element signature="e#33133#39358#0" expanded="false" />
+            <element signature="e#39483#40270#0" expanded="false" />
+            <element signature="e#40317#55914#0" expanded="false" />
+            <element signature="e#40333#48039#0" expanded="false" />
+            <element signature="e#55938#56408#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -911,6 +764,15 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1040">
           <caret line="52" column="49" lean-forward="false" selection-start-line="52" selection-start-column="49" selection-end-line="52" selection-end-column="49" />
+          <folding>
+            <element signature="e#29447#30880#0" expanded="false" />
+            <element signature="e#30935#33064#0" expanded="false" />
+            <element signature="e#33133#39358#0" expanded="false" />
+            <element signature="e#39483#40270#0" expanded="false" />
+            <element signature="e#40317#55914#0" expanded="false" />
+            <element signature="e#40333#48039#0" expanded="false" />
+            <element signature="e#55938#56408#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -919,10 +781,13 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#42283#43128#0" expanded="false" />
-            <element signature="e#43170#44611#0" expanded="false" />
-            <element signature="e#44664#46793#0" expanded="false" />
-            <element signature="e#46821#47291#0" expanded="false" />
+            <element signature="e#29447#30880#0" expanded="false" />
+            <element signature="e#30935#33064#0" expanded="false" />
+            <element signature="e#33133#39358#0" expanded="false" />
+            <element signature="e#39483#40270#0" expanded="false" />
+            <element signature="e#40317#55914#0" expanded="false" />
+            <element signature="e#40333#48039#0" expanded="false" />
+            <element signature="e#55938#56408#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -931,46 +796,15 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/IndexSensorData.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="13000">
-          <caret line="756" column="0" lean-forward="false" selection-start-line="756" selection-start-column="0" selection-end-line="756" selection-end-column="0" />
           <folding>
-            <element signature="e#42283#43128#0" expanded="false" />
-            <element signature="e#43170#44611#0" expanded="false" />
-            <element signature="e#44664#46793#0" expanded="false" />
-            <element signature="e#46821#47291#0" expanded="false" />
+            <element signature="e#29447#30880#0" expanded="false" />
+            <element signature="e#30935#33064#0" expanded="false" />
+            <element signature="e#33133#39358#0" expanded="false" />
+            <element signature="e#39483#40270#0" expanded="false" />
+            <element signature="e#40317#55914#0" expanded="false" />
+            <element signature="e#40333#48039#0" expanded="false" />
+            <element signature="e#55938#56408#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/IndexAWSLogs.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/IndexSensorData.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="13000">
-          <caret line="756" column="0" lean-forward="false" selection-start-line="756" selection-start-column="0" selection-end-line="756" selection-end-column="0" />
-          <folding>
-            <element signature="e#42283#43128#0" expanded="false" />
-            <element signature="e#43170#44611#0" expanded="false" />
-            <element signature="e#44664#46793#0" expanded="false" />
-            <element signature="e#46821#47291#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/IndexAWSLogs.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -979,10 +813,13 @@
         <state relative-caret-position="13000">
           <caret line="756" column="0" lean-forward="false" selection-start-line="756" selection-start-column="0" selection-end-line="756" selection-end-column="0" />
           <folding>
-            <element signature="e#42283#43128#0" expanded="false" />
-            <element signature="e#43170#44611#0" expanded="false" />
-            <element signature="e#44664#46793#0" expanded="false" />
-            <element signature="e#46821#47291#0" expanded="false" />
+            <element signature="e#29447#30880#0" expanded="false" />
+            <element signature="e#30935#33064#0" expanded="false" />
+            <element signature="e#33133#39358#0" expanded="false" />
+            <element signature="e#39483#40270#0" expanded="false" />
+            <element signature="e#40317#55914#0" expanded="false" />
+            <element signature="e#40333#48039#0" expanded="false" />
+            <element signature="e#55938#56408#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -991,6 +828,79 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#29447#30880#0" expanded="false" />
+            <element signature="e#30935#33064#0" expanded="false" />
+            <element signature="e#33133#39358#0" expanded="false" />
+            <element signature="e#39483#40270#0" expanded="false" />
+            <element signature="e#40317#55914#0" expanded="false" />
+            <element signature="e#40333#48039#0" expanded="false" />
+            <element signature="e#55938#56408#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/IndexSensorData.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="13000">
+          <caret line="756" column="0" lean-forward="false" selection-start-line="756" selection-start-column="0" selection-end-line="756" selection-end-column="0" />
+          <folding>
+            <element signature="e#29447#30880#0" expanded="false" />
+            <element signature="e#30935#33064#0" expanded="false" />
+            <element signature="e#33133#39358#0" expanded="false" />
+            <element signature="e#39483#40270#0" expanded="false" />
+            <element signature="e#40317#55914#0" expanded="false" />
+            <element signature="e#40333#48039#0" expanded="false" />
+            <element signature="e#55938#56408#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/IndexAWSLogs.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#29447#30880#0" expanded="false" />
+            <element signature="e#30935#33064#0" expanded="false" />
+            <element signature="e#33133#39358#0" expanded="false" />
+            <element signature="e#39483#40270#0" expanded="false" />
+            <element signature="e#40317#55914#0" expanded="false" />
+            <element signature="e#40333#48039#0" expanded="false" />
+            <element signature="e#55938#56408#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/IndexSensorData.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="13000">
+          <caret line="756" column="0" lean-forward="false" selection-start-line="756" selection-start-column="0" selection-end-line="756" selection-end-column="0" />
+          <folding>
+            <element signature="e#29447#30880#0" expanded="false" />
+            <element signature="e#30935#33064#0" expanded="false" />
+            <element signature="e#33133#39358#0" expanded="false" />
+            <element signature="e#39483#40270#0" expanded="false" />
+            <element signature="e#40317#55914#0" expanded="false" />
+            <element signature="e#40333#48039#0" expanded="false" />
+            <element signature="e#55938#56408#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/IndexAWSLogs.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#29447#30880#0" expanded="false" />
+            <element signature="e#30935#33064#0" expanded="false" />
+            <element signature="e#33133#39358#0" expanded="false" />
+            <element signature="e#39483#40270#0" expanded="false" />
+            <element signature="e#40317#55914#0" expanded="false" />
+            <element signature="e#40333#48039#0" expanded="false" />
+            <element signature="e#55938#56408#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -998,6 +908,15 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="8360">
           <caret line="418" column="107" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="613" selection-end-column="0" />
+          <folding>
+            <element signature="e#29447#30880#0" expanded="false" />
+            <element signature="e#30935#33064#0" expanded="false" />
+            <element signature="e#33133#39358#0" expanded="false" />
+            <element signature="e#39483#40270#0" expanded="false" />
+            <element signature="e#40317#55914#0" expanded="false" />
+            <element signature="e#40333#48039#0" expanded="false" />
+            <element signature="e#55938#56408#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1013,10 +932,13 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#42283#43128#0" expanded="false" />
-            <element signature="e#43170#44611#0" expanded="false" />
-            <element signature="e#44664#46793#0" expanded="false" />
-            <element signature="e#46821#47291#0" expanded="false" />
+            <element signature="e#29447#30880#0" expanded="false" />
+            <element signature="e#30935#33064#0" expanded="false" />
+            <element signature="e#33133#39358#0" expanded="false" />
+            <element signature="e#39483#40270#0" expanded="false" />
+            <element signature="e#40317#55914#0" expanded="false" />
+            <element signature="e#40333#48039#0" expanded="false" />
+            <element signature="e#55938#56408#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1025,6 +947,15 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#29447#30880#0" expanded="false" />
+            <element signature="e#30935#33064#0" expanded="false" />
+            <element signature="e#33133#39358#0" expanded="false" />
+            <element signature="e#39483#40270#0" expanded="false" />
+            <element signature="e#40317#55914#0" expanded="false" />
+            <element signature="e#40333#48039#0" expanded="false" />
+            <element signature="e#55938#56408#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1039,6 +970,15 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#29447#30880#0" expanded="false" />
+            <element signature="e#30935#33064#0" expanded="false" />
+            <element signature="e#33133#39358#0" expanded="false" />
+            <element signature="e#39483#40270#0" expanded="false" />
+            <element signature="e#40317#55914#0" expanded="false" />
+            <element signature="e#40333#48039#0" expanded="false" />
+            <element signature="e#55938#56408#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1054,10 +994,13 @@
         <state relative-caret-position="3740">
           <caret line="187" column="0" lean-forward="false" selection-start-line="168" selection-start-column="0" selection-end-line="187" selection-end-column="0" />
           <folding>
-            <element signature="e#42283#43128#0" expanded="false" />
-            <element signature="e#43170#44611#0" expanded="false" />
-            <element signature="e#44664#46793#0" expanded="false" />
-            <element signature="e#46821#47291#0" expanded="false" />
+            <element signature="e#29447#30880#0" expanded="false" />
+            <element signature="e#30935#33064#0" expanded="false" />
+            <element signature="e#33133#39358#0" expanded="false" />
+            <element signature="e#39483#40270#0" expanded="false" />
+            <element signature="e#40317#55914#0" expanded="false" />
+            <element signature="e#40333#48039#0" expanded="false" />
+            <element signature="e#55938#56408#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1066,6 +1009,15 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#29447#30880#0" expanded="false" />
+            <element signature="e#30935#33064#0" expanded="false" />
+            <element signature="e#33133#39358#0" expanded="false" />
+            <element signature="e#39483#40270#0" expanded="false" />
+            <element signature="e#40317#55914#0" expanded="false" />
+            <element signature="e#40333#48039#0" expanded="false" />
+            <element signature="e#55938#56408#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1081,10 +1033,13 @@
         <state relative-caret-position="3740">
           <caret line="187" column="0" lean-forward="false" selection-start-line="168" selection-start-column="0" selection-end-line="187" selection-end-column="0" />
           <folding>
-            <element signature="e#42283#43128#0" expanded="false" />
-            <element signature="e#43170#44611#0" expanded="false" />
-            <element signature="e#44664#46793#0" expanded="false" />
-            <element signature="e#46821#47291#0" expanded="false" />
+            <element signature="e#29447#30880#0" expanded="false" />
+            <element signature="e#30935#33064#0" expanded="false" />
+            <element signature="e#33133#39358#0" expanded="false" />
+            <element signature="e#39483#40270#0" expanded="false" />
+            <element signature="e#40317#55914#0" expanded="false" />
+            <element signature="e#40333#48039#0" expanded="false" />
+            <element signature="e#55938#56408#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1101,10 +1056,13 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#42283#43128#0" expanded="false" />
-            <element signature="e#43170#44611#0" expanded="false" />
-            <element signature="e#44664#46793#0" expanded="false" />
-            <element signature="e#46821#47291#0" expanded="false" />
+            <element signature="e#29447#30880#0" expanded="false" />
+            <element signature="e#30935#33064#0" expanded="false" />
+            <element signature="e#33133#39358#0" expanded="false" />
+            <element signature="e#39483#40270#0" expanded="false" />
+            <element signature="e#40317#55914#0" expanded="false" />
+            <element signature="e#40333#48039#0" expanded="false" />
+            <element signature="e#55938#56408#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1158,6 +1116,7 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/ExpandSensorData.js" />
     <entry file="file://$PROJECT_DIR$/2015 Oct/LogsToElasticsearch_iot.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1440">
@@ -1167,42 +1126,50 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/.eslintrc">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" column="25" lean-forward="false" selection-start-line="18" selection-start-column="25" selection-end-line="18" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ExpandSensorData.js" />
-    <entry file="file://$PROJECT_DIR$/ProcessSIGFOXMessage.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3000">
-          <caret line="202" column="63" lean-forward="false" selection-start-line="202" selection-start-column="63" selection-end-line="202" selection-end-column="63" />
+        <state relative-caret-position="380">
+          <caret line="19" column="20" lean-forward="false" selection-start-line="19" selection-start-column="20" selection-end-line="19" selection-end-column="20" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/IndexSensorData.js">
+    <entry file="file://$PROJECT_DIR$/ProcessSIGFOXMessage.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1028" column="45" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="1278" selection-end-column="0" />
+        <state relative-caret-position="300">
+          <caret line="15" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
           <folding>
-            <element signature="e#42283#43128#0" expanded="false" />
-            <element signature="e#43170#44611#0" expanded="false" />
-            <element signature="e#44664#46793#0" expanded="false" />
-            <element signature="e#46821#47291#0" expanded="false" />
+            <element signature="n#!!doc" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/IndexAWSLogs.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1724">
-          <caret line="1232" column="17" lean-forward="true" selection-start-line="1232" selection-start-column="17" selection-end-line="1232" selection-end-column="17" />
+        <state relative-caret-position="262">
+          <caret line="746" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="1607" selection-end-column="0" />
           <folding>
-            <element signature="e#42283#43128#0" expanded="false" />
-            <element signature="e#43170#44611#0" expanded="false" />
-            <element signature="e#44664#46801#0" expanded="false" />
-            <element signature="e#46829#47299#0" expanded="false" />
+            <element signature="e#29447#30880#0" expanded="false" />
+            <element signature="e#30935#33064#0" expanded="false" />
+            <element signature="e#33133#39358#0" expanded="false" />
+            <element signature="e#39483#40270#0" expanded="false" />
+            <element signature="e#40317#55914#0" expanded="false" />
+            <element signature="e#40333#48039#0" expanded="false" />
+            <element signature="e#55938#56408#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/IndexSensorData.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="202">
+          <caret line="739" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="1607" selection-end-column="0" />
+          <folding>
+            <element signature="e#29447#30880#0" expanded="false" />
+            <element signature="e#30935#33064#0" expanded="false" />
+            <element signature="e#33133#39358#0" expanded="false" />
+            <element signature="e#39483#40270#0" expanded="false" />
+            <element signature="e#40317#55914#0" expanded="false" />
+            <element signature="e#40333#48039#0" expanded="false" />
+            <element signature="e#55938#56408#0" expanded="false" />
           </folding>
         </state>
       </provider>
