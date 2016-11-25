@@ -13,49 +13,60 @@
 
 //  This lambda function must be run as role lambda_iot.
 //  lambda_iot must be attached to policy LambdaExecuteIoTUpdate, defined as:
-// {
-//   "Version": "2012-10-17",
-//   "Statement": [
-//   {
-//     "Effect": "Allow",
-//     "Action": [
-//       "logs:CreateLogGroup",
-//       "logs:CreateLogStream",
-//       "logs:PutLogEvents"
-//     ],
-//     "Resource": "arn:aws:logs:*:*:*"
-//   },
-//   {
-//     "Effect": "Allow",
-//     "Action": [
-//       "iot:GetThingShadow",
-//       "iot:UpdateThingShadow"
-//     ],
-//     "Resource": [
-//       "*"
-//     ]
-//   },
-//   {
-//     "Effect": "Allow",
-//     "Action": [
-//       "kinesis:GetRecords",
-//       "kinesis:GetShardIterator",
-//       "kinesis:DescribeStream",
-//       "kinesis:ListStreams"
-//     ],
-//     "Resource": [
-//       "*"
-//     ]
-//   }
-// ]
-// }
+/*
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "cloudwatch:PutMetricData",
+                "cloudwatch:PutMetricAlarm"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+            ],
+            "Resource": "arn:aws:logs:*:*:*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "iot:GetThingShadow",
+                "iot:UpdateThingShadow"
+            ],
+            "Resource": [
+                "*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "kinesis:GetRecords",
+                "kinesis:GetShardIterator",
+                "kinesis:DescribeStream",
+                "kinesis:ListStreams"
+            ],
+            "Resource": [
+                "*"
+            ]
+        }
+    ]
+}
+ */
 
 'use strict';
 
 console.log('Loading function');
 
-//  Init the AWS connection.
 const AWS = require('aws-sdk');
+
+//  Init the AWS connection.
 AWS.config.region = 'us-west-2';
 AWS.config.logger = process.stdout;  //  Debug
 

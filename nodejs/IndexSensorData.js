@@ -1,7 +1,7 @@
 'use strict';
 
 //  Send IoT sensor data and AWS IoT Logs to Sumo Logic and Slack for searching and dashboards
-//  Node.js 4.3 / index.handler / lambda_basic_execution / 512 MB / 1 min / No VPC
+//  Node.js 4.3 / index.handler / lambda_iot / 512 MB / 1 min / No VPC
 //  This AWS Lambda function accepts a JSON input of sensor values and sends them to Sumo Logic
 //  search engine for indexing.  It also sends to AWS CloudWatch and posts a message to Slack.
 //  The input looks like:
@@ -15,24 +15,53 @@
 //  Select "IndexAWSLogs"
 //  Select Log Format = Other, set Subscription Filter Pattern to blank
 
-//  Make sure the role executing this Lambda function has CloudWatch PutMetricData and
-//  PutMetricAlarm permissions.  Attach the following policy SendCloudWatchData to role
-//  lambda_basic_execution:
+//  This lambda function must be run as role lambda_iot.
+//  lambda_iot must be attached to policy LambdaExecuteIoTUpdate, defined as:
 /*
- {
- "Version": "2012-10-17",
- "Statement": [
- {
- "Sid": "SendCloudWatchData",
- "Resource": "*",
- "Action": [
- "cloudwatch:PutMetricData",
- "cloudwatch:PutMetricAlarm"
- ],
- "Effect": "Allow"
- }
- ]
- }
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "cloudwatch:PutMetricData",
+                "cloudwatch:PutMetricAlarm"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+            ],
+            "Resource": "arn:aws:logs:*:*:*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "iot:GetThingShadow",
+                "iot:UpdateThingShadow"
+            ],
+            "Resource": [
+                "*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "kinesis:GetRecords",
+                "kinesis:GetShardIterator",
+                "kinesis:DescribeStream",
+                "kinesis:ListStreams"
+            ],
+            "Resource": [
+                "*"
+            ]
+        }
+    ]
+}
  */
 
 console.log('Loading function');
@@ -45,11 +74,21 @@ const replaceSlackChannels = {
 };
 
 const https = require('https');
+const AWS = require('aws-sdk');
 
 //  Init the AWS connection.
-const AWS = require('aws-sdk');
 AWS.config.region = 'us-west-2';
-//  AWS.config.logger = process.stdout;  //  Debug
+AWS.config.logger = process.stdout;  //  Debug
+if (!process.env.LAMBDA_TASK_ROOT) { /* eslint-disable import/no-unresolved */
+  //  For unit test, set the credentials.
+  const config = require('os').platform() === 'win32' ?
+    require('../../../unabiz-emulator/config.json') :
+    require('../../../../SIGFOX/unabiz-emulator/config.json');
+  AWS.config.credentials = {
+    accessKeyId: config.accessKeyId,
+    secretAccessKey: config.secretAccessKey,
+  };
+} /* eslint-enable import/no-unresolved */
 const cloudwatch = new AWS.CloudWatch();
 
 //  This lambda uses autorequire to install any missing require(...) modules
@@ -64,6 +103,14 @@ const main = (event, context, callback) => {
   //  This missing module is normally not allowed for inline lambda.  But
   //  autorequire will install the module automatically for us.
   const mysql = require('mysql2/promise');
+
+  //  Create pool of database connections.
+  const pool = mysql.createPool({
+    host: 'iotdb.culga9y9tfvw.us-west-2.rds.amazonaws.com',
+    user: 'root',
+    password: 'iotattp4me',
+    database: 'iotdb',
+  });
 
   function handler(input, context2, callback2) {
     //  This is the main program flow after resolving the missing modules.
@@ -84,9 +131,9 @@ const main = (event, context, callback) => {
     //  Process the logs, write to MySQL and Sumo Logic.
     return processLogs(url, device, awslogsData)
     //  If no errors, return the result to AWS.
-      .then((res) => callback2(null, res))
+      .then(res => callback2(null, res))
       //  Or return the error to AWS.
-      .catch((err) => callback2(err));
+      .catch(err => callback2(err));
   }
 
   function processLogs(url, device, awslogsData) {
@@ -118,18 +165,13 @@ const main = (event, context, callback) => {
     if (group.toLowerCase().endsWith('pi')) group = group.substr(0, group.length - 2);
     const table = `${group}_sensor_data`;
     //  Connect to the MySQL database.
-    return mysql.createConnection({
-      host: 'iotdb.culga9y9tfvw.us-west-2.rds.amazonaws.com',
-      user: 'root',
-      password: 'iotattp4me',
-      database: 'iotdb',
-    })
-      .then(conn => {
+    return pool.getConnection()
+      .then((conn) => {
         const timestamp = event2.sensor_timestamp || event2.timestamp || new Date();
         const promises = [];
         //  Insert each sensor value in a separate MySQL row.
-        for (const key in event2) {
-          if (key === 'timestamp' || key === 'sensor_timestamp') continue;
+        for (const key in event2) { /* eslint-disable no-continue */
+          if (key === 'timestamp' || key === 'sensor_timestamp') continue; /* eslint-enable no-continue */
           const val = event2[key];
           const row = { timestamp, sensor: key };
           //  Write numbers into 'number' field and strings into 'text' field.
@@ -143,9 +185,13 @@ const main = (event, context, callback) => {
           promises.push(promise);
         }
         //  Wait for all queries to complete.
-        return Promise.all(promises);
+        return Promise.all(promises)
+          .then((res) => {
+            conn.release();
+            return res;
+          });
       })
-      .catch(err => {
+      .catch((err) => {
         console.error({ handler: err });
         throw err;
       });
@@ -224,20 +270,21 @@ const main = (event, context, callback) => {
     //  Copy the keys and values for indexing.
     let actionCount = 0;
     const sensorData = {};
+    const promises = [];
     for (const key in input) {
       const value = input[key];
       extractedFields[key] = value;
       if (action.length > 0) action = `${action}, `;
       action = `${action}${key}: ${value}`;
-      actionCount++;
+      actionCount += 1;
       //  Don't send non-sensor fields to Slack.
-      if (key === 'traceId') continue;
+      /* eslint-disable no-continue */
+      if (key === 'traceId') continue; /* eslint-enable no-continue */
       sensorData[key] = value;
       //  If the value is numeric, send the metric to CloudWatch.
-      if (key !== 'version' && !isNaN(value)) {
-        try {
-          writeMetricToCloudWatch(device, key, value);
-        } catch (err) { console.error(err, err.stack); }
+      if (key !== 'version' && !isNaN(value) && typeof value === 'number') {
+        const promise = writeMetricToCloudWatch(device, key, value);
+        promises.push(promise);  //  Don't wait for completion.
       }
     }
     if (!extractedFields.event) extractedFields.event = 'IndexSensorData';
@@ -423,7 +470,8 @@ const main = (event, context, callback) => {
     const host = url_split[2];
     const path = url.substr(url.indexOf(host) + host.length);
     const request_params = {
-      host, path,
+      host,
+      path,
       body: body2,
       method: 'POST',
       headers: {
@@ -456,25 +504,27 @@ const main = (event, context, callback) => {
   }
 
   function writeMetricToCloudWatch(device, metric, value) {
-    //  Write the sensor data as a metric to CloudWatch.
-    console.log('writeMetricToCloudWatch:', device, metric, value);
-    try {
-      const params = {
-        MetricData: [{
-          MetricName: metric,
-          Timestamp: new Date(),
-          Unit: 'None',
-          Value: value,
-        }],
-        Namespace: device,
-      };
-      cloudwatch.putMetricData(params, (err, data) => {
-        if (err) return console.log('putMetricData error:', err, err.stack); // an error occurred
-        return console.log('putMetricData: ', data);  // successful response
+    //  Write the sensor data as a metric to CloudWatch.  Returns a promise.
+    if (typeof value !== 'number') return Promise.resolve(null);
+    //  console.log('writeMetricToCloudWatch:', device, metric, value);
+    const params = {
+      MetricData: [{
+        MetricName: metric,
+        Timestamp: new Date(),
+        Unit: 'None',
+        Value: value,
+      }],
+      Namespace: device,
+    };
+    return cloudwatch.putMetricData(params).promise()
+      .then((data) => {
+        //  console.log('putMetricData: ', data);  // successful response
+        return data;
+      })
+      .catch((error) => {
+        console.log('putMetricData error:', { error, device, metric, value });
+        return null;  //  Suppress error.
       });
-    } catch (err) {
-      console.log('Unable to log to CloudWatch', err);
-    }
   }
 
   //  Map group name to the search results for the group (search results -> share):
@@ -563,7 +613,7 @@ const main = (event, context, callback) => {
     };
     console.log('Slack request =', JSON.stringify(body));
     return new Promise((resolve, reject) => {
-      const req = https.request(options, res => {
+      const req = https.request(options, (res) => {
         let body2 = '';
         // console.log('Status:', res.statusCode);
         // console.log('Headers:', JSON.stringify(res.headers));
@@ -580,7 +630,7 @@ const main = (event, context, callback) => {
           return resolve(body2);
         });
       });
-      req.on('error', e => {
+      req.on('error', (e) => {
         console.error('Slack Error', e, e.stack);
         return reject(e);
       });
@@ -674,15 +724,16 @@ function setupAutoRequire() {
   //  TODO: If script already in /tmp, use it.  Else download from GitHub.
   const fs = require('fs');
   return new Promise((resolve, reject) => {
-    require('https').get('https://raw.githubusercontent.com/lupyuen/AWSIOT/master/nodejs/autorequire.js', res => {
+    require('https').get('https://raw.githubusercontent.com/lupyuen/AWSIOT/master/nodejs/autorequire.js', (res) => {
       let body = '';
       res.on('data', (chunk) => { body += chunk; }); // Accumulate the data chunks.
       res.on('end', () => { //  After downloading from GitHub, save to /tmp amd load the module.
         fs.writeFileSync('/tmp/autorequire.js', body);
+        /* eslint-disable import/no-absolute-path, import/no-unresolved */
         autorequire = require('/tmp/autorequire');
         return resolve(autorequire);
       });
-    }).on('error', err => { console.error({ setupAutoRequire: err }); return reject(err); });
+    }).on('error', (err) => { console.error({ setupAutoRequire: err }); return reject(err); });
   });
 }
 
@@ -1000,25 +1051,554 @@ const test_input4 = {
   }
 };
 
-//  Sensor Data for AWS IoT version 2015-10-08
-/*
- const test_input = {
- "timestamp": 1462090920,
- "version": 1227,
- "metadata": {
- "timestamp": 1462090920
- },
- "reported": {
- "sound_level": 324,
- "timestamp": "2016-05-01T16:22:00.347743",
- "humidity": 45,
- "temperature": 33,
- "light_level": 792
- },
- "topic": "$aws/things/g87pi/shadow/update/accepted",
- "traceId": "4fb3ed68-ec3f-42b6-a202-4207c9c55a2a"
- };
- */
+//  SIGFOX message
+const test_input5 = {
+  "previous": {
+    "state": {
+      "reported": {
+        "humidity": 50,
+        "timestamp": "2016-11-24T21:48:19.034",
+        "temperature": 28,
+        "sound_level": 300,
+        "light_level": 200,
+        "led": "on",
+        "message": "OK",
+        "beacons": {
+          "B_b9407f30f5f8466eaff925556b57fe6d_17850_29219": {
+            "uuid": "b9407f30f5f8466eaff925556b57fe6d",
+            "major": 17850,
+            "power": 182,
+            "address": "E0:95:23:72:BA:45",
+            "id": "B_b9407f30f5f8466eaff925556b57fe6d_17850_29219",
+            "minor": 29219
+          },
+          "B_b9407f30f5f8466eaff925556b57fe6d_42535_61733": {
+            "minor": 61733,
+            "power": 182,
+            "major": 42535,
+            "id": "B_b9407f30f5f8466eaff925556b57fe6d_42535_61733",
+            "address": "F8:CA:25:F1:83:35",
+            "uuid": "b9407f30f5f8466eaff925556b57fe6d"
+          }
+        },
+        "ctr": 9,
+        "tmp": 36,
+        "vlt": 12.3,
+        "device": "g88pi",
+        "data": "920e5a00b051680194597b00",
+        "key3": "value3",
+        "key2": "value2",
+        "key1": "value1",
+        "resource": "/ProcessSIGFOXMessage",
+        "path": "/ProcessSIGFOXMessage",
+        "httpMethod": "GET",
+        "headers": {
+          "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+          "Accept-Encoding": "gzip, deflate, sdch, br",
+          "Accept-Language": "en-US,en;q=0.8",
+          "Cache-Control": "max-age=0",
+          "CloudFront-Forwarded-Proto": "https",
+          "CloudFront-Is-Desktop-Viewer": "true",
+          "CloudFront-Is-Mobile-Viewer": "false",
+          "CloudFront-Is-SmartTV-Viewer": "false",
+          "CloudFront-Is-Tablet-Viewer": "false",
+          "CloudFront-Viewer-Country": "SG",
+          "Host": "l0043j2svc.execute-api.us-west-2.amazonaws.com",
+          "Upgrade-Insecure-Requests": "1",
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2925.0 Safari/537.36",
+          "Via": "1.1 c038088d4b94486d7346fd44d03188a0.cloudfront.net (CloudFront)",
+          "X-Amz-Cf-Id": "omfPxBotRHWplmFzvDR6ZNoL720H0B-WtVemWCyLtXPfJLu21BGWDA==",
+          "X-Forwarded-For": "118.200.15.117, 54.240.148.212",
+          "X-Forwarded-Port": "443",
+          "X-Forwarded-Proto": "https"
+        },
+        "requestContext": {
+          "accountId": "595779189490",
+          "resourceId": "s3459w",
+          "stage": "prod",
+          "requestId": "59036929-af32-11e6-97da-112ad8d13953",
+          "identity": {
+            "sourceIp": "118.200.15.117",
+            "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2925.0 Safari/537.36"
+          },
+          "resourcePath": "/ProcessSIGFOXMessage",
+          "httpMethod": "GET",
+          "apiId": "l0043j2svc"
+        },
+        "isBase64Encoded": false,
+        "lig": 49
+      }
+    },
+    "metadata": {
+      "reported": {
+        "humidity": {
+          "timestamp": 1479620449
+        },
+        "timestamp": {
+          "timestamp": 1479995299
+        },
+        "temperature": {
+          "timestamp": 1479620449
+        },
+        "sound_level": {
+          "timestamp": 1479620449
+        },
+        "light_level": {
+          "timestamp": 1479620449
+        },
+        "led": {
+          "timestamp": 1479620449
+        },
+        "message": {
+          "timestamp": 1479620449
+        },
+        "beacons": {
+          "B_b9407f30f5f8466eaff925556b57fe6d_17850_29219": {
+            "uuid": {
+              "timestamp": 1479620449
+            },
+            "major": {
+              "timestamp": 1479620449
+            },
+            "power": {
+              "timestamp": 1479620449
+            },
+            "address": {
+              "timestamp": 1479620449
+            },
+            "id": {
+              "timestamp": 1479620449
+            },
+            "minor": {
+              "timestamp": 1479620449
+            }
+          },
+          "B_b9407f30f5f8466eaff925556b57fe6d_42535_61733": {
+            "minor": {
+              "timestamp": 1479620449
+            },
+            "power": {
+              "timestamp": 1479620449
+            },
+            "major": {
+              "timestamp": 1479620449
+            },
+            "id": {
+              "timestamp": 1479620449
+            },
+            "address": {
+              "timestamp": 1479620449
+            },
+            "uuid": {
+              "timestamp": 1479620449
+            }
+          }
+        },
+        "ctr": {
+          "timestamp": 1479995299
+        },
+        "tmp": {
+          "timestamp": 1479995299
+        },
+        "vlt": {
+          "timestamp": 1479995299
+        },
+        "device": {
+          "timestamp": 1479995299
+        },
+        "data": {
+          "timestamp": 1479995299
+        },
+        "key3": {
+          "timestamp": 1479651128
+        },
+        "key2": {
+          "timestamp": 1479651128
+        },
+        "key1": {
+          "timestamp": 1479651128
+        },
+        "resource": {
+          "timestamp": 1479654145
+        },
+        "path": {
+          "timestamp": 1479654145
+        },
+        "httpMethod": {
+          "timestamp": 1479654145
+        },
+        "headers": {
+          "Accept": {
+            "timestamp": 1479654145
+          },
+          "Accept-Encoding": {
+            "timestamp": 1479654145
+          },
+          "Accept-Language": {
+            "timestamp": 1479654145
+          },
+          "Cache-Control": {
+            "timestamp": 1479654145
+          },
+          "CloudFront-Forwarded-Proto": {
+            "timestamp": 1479654145
+          },
+          "CloudFront-Is-Desktop-Viewer": {
+            "timestamp": 1479654145
+          },
+          "CloudFront-Is-Mobile-Viewer": {
+            "timestamp": 1479654145
+          },
+          "CloudFront-Is-SmartTV-Viewer": {
+            "timestamp": 1479654145
+          },
+          "CloudFront-Is-Tablet-Viewer": {
+            "timestamp": 1479654145
+          },
+          "CloudFront-Viewer-Country": {
+            "timestamp": 1479654145
+          },
+          "Host": {
+            "timestamp": 1479654145
+          },
+          "Upgrade-Insecure-Requests": {
+            "timestamp": 1479654145
+          },
+          "User-Agent": {
+            "timestamp": 1479654145
+          },
+          "Via": {
+            "timestamp": 1479654145
+          },
+          "X-Amz-Cf-Id": {
+            "timestamp": 1479654145
+          },
+          "X-Forwarded-For": {
+            "timestamp": 1479654145
+          },
+          "X-Forwarded-Port": {
+            "timestamp": 1479654145
+          },
+          "X-Forwarded-Proto": {
+            "timestamp": 1479654145
+          }
+        },
+        "requestContext": {
+          "accountId": {
+            "timestamp": 1479654145
+          },
+          "resourceId": {
+            "timestamp": 1479654145
+          },
+          "stage": {
+            "timestamp": 1479654145
+          },
+          "requestId": {
+            "timestamp": 1479654145
+          },
+          "identity": {
+            "sourceIp": {
+              "timestamp": 1479654145
+            },
+            "userAgent": {
+              "timestamp": 1479654145
+            }
+          },
+          "resourcePath": {
+            "timestamp": 1479654145
+          },
+          "httpMethod": {
+            "timestamp": 1479654145
+          },
+          "apiId": {
+            "timestamp": 1479654145
+          }
+        },
+        "isBase64Encoded": {
+          "timestamp": 1479654145
+        },
+        "lig": {
+          "timestamp": 1479924321
+        }
+      }
+    },
+    "version": 20621
+  },
+  "current": {
+    "state": {
+      "reported": {
+        "humidity": 50,
+        "timestamp": new Date().toISOString().replace('Z', ''),
+        "temperature": 28,
+        "sound_level": 300,
+        "light_level": 200,
+        "led": "on",
+        "message": "OK",
+        "beacons": {
+          "B_b9407f30f5f8466eaff925556b57fe6d_17850_29219": {
+            "uuid": "b9407f30f5f8466eaff925556b57fe6d",
+            "major": 17850,
+            "power": 182,
+            "address": "E0:95:23:72:BA:45",
+            "id": "B_b9407f30f5f8466eaff925556b57fe6d_17850_29219",
+            "minor": 29219
+          },
+          "B_b9407f30f5f8466eaff925556b57fe6d_42535_61733": {
+            "minor": 61733,
+            "power": 182,
+            "major": 42535,
+            "id": "B_b9407f30f5f8466eaff925556b57fe6d_42535_61733",
+            "address": "F8:CA:25:F1:83:35",
+            "uuid": "b9407f30f5f8466eaff925556b57fe6d"
+          }
+        },
+        "ctr": 9,
+        "tmp": 36,
+        "vlt": 12.3,
+        "device": "g88pi",
+        "data": "920e5a00b051680194597b00",
+        "key3": "value3",
+        "key2": "value2",
+        "key1": "value1",
+        "resource": "/ProcessSIGFOXMessage",
+        "path": "/ProcessSIGFOXMessage",
+        "httpMethod": "GET",
+        "headers": {
+          "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+          "Accept-Encoding": "gzip, deflate, sdch, br",
+          "Accept-Language": "en-US,en;q=0.8",
+          "Cache-Control": "max-age=0",
+          "CloudFront-Forwarded-Proto": "https",
+          "CloudFront-Is-Desktop-Viewer": "true",
+          "CloudFront-Is-Mobile-Viewer": "false",
+          "CloudFront-Is-SmartTV-Viewer": "false",
+          "CloudFront-Is-Tablet-Viewer": "false",
+          "CloudFront-Viewer-Country": "SG",
+          "Host": "l0043j2svc.execute-api.us-west-2.amazonaws.com",
+          "Upgrade-Insecure-Requests": "1",
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2925.0 Safari/537.36",
+          "Via": "1.1 c038088d4b94486d7346fd44d03188a0.cloudfront.net (CloudFront)",
+          "X-Amz-Cf-Id": "omfPxBotRHWplmFzvDR6ZNoL720H0B-WtVemWCyLtXPfJLu21BGWDA==",
+          "X-Forwarded-For": "118.200.15.117, 54.240.148.212",
+          "X-Forwarded-Port": "443",
+          "X-Forwarded-Proto": "https"
+        },
+        "requestContext": {
+          "accountId": "595779189490",
+          "resourceId": "s3459w",
+          "stage": "prod",
+          "requestId": "59036929-af32-11e6-97da-112ad8d13953",
+          "identity": {
+            "sourceIp": "118.200.15.117",
+            "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2925.0 Safari/537.36"
+          },
+          "resourcePath": "/ProcessSIGFOXMessage",
+          "httpMethod": "GET",
+          "apiId": "l0043j2svc"
+        },
+        "isBase64Encoded": false,
+        "lig": 49
+      }
+    },
+    "metadata": {
+      "reported": {
+        "humidity": {
+          "timestamp": 1479620449
+        },
+        "timestamp": {
+          "timestamp": 1480013409
+        },
+        "temperature": {
+          "timestamp": 1479620449
+        },
+        "sound_level": {
+          "timestamp": 1479620449
+        },
+        "light_level": {
+          "timestamp": 1479620449
+        },
+        "led": {
+          "timestamp": 1479620449
+        },
+        "message": {
+          "timestamp": 1479620449
+        },
+        "beacons": {
+          "B_b9407f30f5f8466eaff925556b57fe6d_17850_29219": {
+            "uuid": {
+              "timestamp": 1479620449
+            },
+            "major": {
+              "timestamp": 1479620449
+            },
+            "power": {
+              "timestamp": 1479620449
+            },
+            "address": {
+              "timestamp": 1479620449
+            },
+            "id": {
+              "timestamp": 1479620449
+            },
+            "minor": {
+              "timestamp": 1479620449
+            }
+          },
+          "B_b9407f30f5f8466eaff925556b57fe6d_42535_61733": {
+            "minor": {
+              "timestamp": 1479620449
+            },
+            "power": {
+              "timestamp": 1479620449
+            },
+            "major": {
+              "timestamp": 1479620449
+            },
+            "id": {
+              "timestamp": 1479620449
+            },
+            "address": {
+              "timestamp": 1479620449
+            },
+            "uuid": {
+              "timestamp": 1479620449
+            }
+          }
+        },
+        "ctr": {
+          "timestamp": 1479995299
+        },
+        "tmp": {
+          "timestamp": 1479995299
+        },
+        "vlt": {
+          "timestamp": 1479995299
+        },
+        "device": {
+          "timestamp": 1479995299
+        },
+        "data": {
+          "timestamp": 1479995299
+        },
+        "key3": {
+          "timestamp": 1480013409
+        },
+        "key2": {
+          "timestamp": 1480013409
+        },
+        "key1": {
+          "timestamp": 1480013409
+        },
+        "resource": {
+          "timestamp": 1479654145
+        },
+        "path": {
+          "timestamp": 1479654145
+        },
+        "httpMethod": {
+          "timestamp": 1479654145
+        },
+        "headers": {
+          "Accept": {
+            "timestamp": 1479654145
+          },
+          "Accept-Encoding": {
+            "timestamp": 1479654145
+          },
+          "Accept-Language": {
+            "timestamp": 1479654145
+          },
+          "Cache-Control": {
+            "timestamp": 1479654145
+          },
+          "CloudFront-Forwarded-Proto": {
+            "timestamp": 1479654145
+          },
+          "CloudFront-Is-Desktop-Viewer": {
+            "timestamp": 1479654145
+          },
+          "CloudFront-Is-Mobile-Viewer": {
+            "timestamp": 1479654145
+          },
+          "CloudFront-Is-SmartTV-Viewer": {
+            "timestamp": 1479654145
+          },
+          "CloudFront-Is-Tablet-Viewer": {
+            "timestamp": 1479654145
+          },
+          "CloudFront-Viewer-Country": {
+            "timestamp": 1479654145
+          },
+          "Host": {
+            "timestamp": 1479654145
+          },
+          "Upgrade-Insecure-Requests": {
+            "timestamp": 1479654145
+          },
+          "User-Agent": {
+            "timestamp": 1479654145
+          },
+          "Via": {
+            "timestamp": 1479654145
+          },
+          "X-Amz-Cf-Id": {
+            "timestamp": 1479654145
+          },
+          "X-Forwarded-For": {
+            "timestamp": 1479654145
+          },
+          "X-Forwarded-Port": {
+            "timestamp": 1479654145
+          },
+          "X-Forwarded-Proto": {
+            "timestamp": 1479654145
+          }
+        },
+        "requestContext": {
+          "accountId": {
+            "timestamp": 1479654145
+          },
+          "resourceId": {
+            "timestamp": 1479654145
+          },
+          "stage": {
+            "timestamp": 1479654145
+          },
+          "requestId": {
+            "timestamp": 1479654145
+          },
+          "identity": {
+            "sourceIp": {
+              "timestamp": 1479654145
+            },
+            "userAgent": {
+              "timestamp": 1479654145
+            }
+          },
+          "resourcePath": {
+            "timestamp": 1479654145
+          },
+          "httpMethod": {
+            "timestamp": 1479654145
+          },
+          "apiId": {
+            "timestamp": 1479654145
+          }
+        },
+        "isBase64Encoded": {
+          "timestamp": 1479654145
+        },
+        "lig": {
+          "timestamp": 1479924321
+        }
+      }
+    },
+    "version": 20622
+  },
+  "timestamp": 1480013410,
+  "topic": "$aws/things/g88pi/shadow/update/documents",
+  "traceId": "4c8301c7-4911-e943-1671-29f7770b8aa0"
+};
 
 const test_context = {
   "awsRequestId": "98dc0220-0eba-11e6-b84a-f75570995fc5",
@@ -1033,9 +1613,9 @@ const test_context = {
 
 //  Run the unit test if we are in development environment.
 function runTest() {
-  return exports.handler(test_input3, test_context, (err, result) => {
-    if (err) console.error(err);
-    else console.log(result);
+  return exports.handler(test_input5, test_context, (err, result) => {
+    if (err) console.error(JSON.stringify(err, null, 2));
+    else console.log(JSON.stringify(result, null, 2));
   });
 }
 
