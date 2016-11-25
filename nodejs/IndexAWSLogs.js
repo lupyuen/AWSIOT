@@ -71,8 +71,8 @@ const main = (event, context, callback) => {
   function handler(input, context2, callback2) {
     //  This is the main program flow after resolving the missing modules.
     if (input.domain) delete input.domain;  //  TODO: Contains self-reference loop.
-    console.log('IndexSensorData Input:', JSON.stringify(input, null, 2));
-    console.log('IndexSensorData Context:', context2);
+    console.log('Input:', JSON.stringify(input, null, 2));
+    console.log('Context:', context2);
     //  Don't index response to set desired state.
     if (input.state && input.state.desired) {
       return callback2(null, 'Ignoring response to set desired state');
@@ -150,12 +150,15 @@ const main = (event, context, callback) => {
     const table = `${group}_sensor_data`;
     //  Connect to the MySQL database.
     return pool.getConnection()
+    //  Create table if it doesn't exist.
+      .then(conn => createTable(table, conn))
       .then((conn) => {
         const timestamp = event2.sensor_timestamp || event2.timestamp || new Date();
         const promises = [];
         //  Insert each sensor value in a separate MySQL row.
         for (const key in event2) { /* eslint-disable no-continue */
-          if (key === 'timestamp' || key === 'sensor_timestamp') continue; /* eslint-enable no-continue */
+          if (key === 'timestamp' || key === 'sensor_timestamp') continue;
+          /* eslint-enable no-continue */
           const val = event2[key];
           const row = { timestamp, sensor: key };
           //  Write numbers into 'number' field and strings into 'text' field.
@@ -178,6 +181,31 @@ const main = (event, context, callback) => {
       .catch((err) => {
         console.error({ handler: err });
         throw err;
+      });
+  }
+
+  function createTable(table, conn) {
+    //  Create the xx_sensor_data table in MySQL if it doesn't exist.  Returns a promise.
+    const sql = `
+      CREATE TABLE ?? (
+        timestamp datetime NOT NULL,
+        sensor varchar(64) NOT NULL,
+        number double DEFAULT NULL,
+        text varchar(256) DEFAULT NULL,
+        PRIMARY KEY (timestamp, sensor)
+      ) ENGINE=InnoDB DEFAULT CHARSET=latin1;    
+    `;
+    return conn.query(sql, [table])
+      .then((res) => {
+        console.log(JSON.stringify({ createTable: { table, res } }, null, 2));
+        return conn;
+      })
+      .catch((err) => {
+        //  Suppress errors in case table already exists.
+        if (err.code !== 'ER_TABLE_EXISTS_ERROR') {
+          console.log(JSON.stringify({ createTable: { table, err } }, null, 2));
+        }
+        return conn;
       });
   }
 
@@ -731,857 +759,578 @@ function isProduction() {
 }
 
 /* eslint-disable no-unused-vars, quotes, quote-props, max-len, comma-dangle */
-//  AWS IoT Log
-const test_aws_log = {
-  "awslogs": {
-    "data": "H4sIAAAAAAAAANWTWW+jMBSF/4qF5jEUr4D9hhJSMcrWkM6iqooIOCmaBEcGmlZV//tckrTSbGpHmpd5Q/bxdw/n2E/OTtd1ttGLx712lDOIFtFyHKdpdBk7PcccKm1hWUgRBJKEkksMy1uzubSm3cNO9DlNTDMym/q0njZWZ7ufjnjRfBp9vKbx1dXXwfV0sBj5tH+1nFmTw/Q0uRxOv4xPPv5CCgPrdlXnttw3pamG5bbRtnbUjTPKdqsiO1lZJlWhH8Dm0ePt0WR8r6umUz45ZQFeGcOYh4IFAQ0I86nvY0FZQLiUkmHKsY+J9AmngsA3lwELRMh9Dg6aEgJssh1kQXggZRiGVGLKei/BAp5i4ruEuJQjQhXGisoLkKDFPOrHyUBJJnHG89xd+WvsYhrkLiNi5cpQ4MJn+QpLgWbzZNJPZtEIDrydrXp/tr+VoptkMpzeIhR/iicLNc6a/K6sNvN2q4emrQq0mM6S/iQax+pDdqi9ptutvQ0l+9Kr77LCHLx2X2SN9gqTt7sub9QfJQAD/5WXofMle0UjC2y07uAKAWdpdW5ssax1VRu7BFTmPPd+KSyUTAjGBRE+dCdZyKUgVFAhJKekq0t2rVEquaDyT4VByW8VBpL/qLDTC4jy7mGkbd7J/11lZ+C63W4fUVndm2+6QNvjRLRuq+PQC/RiLLO2vAeBqRR69+AeOnlXZ24PDc9gBcBKAUeddlRbuwdo1KU/pKxejKjj+0+Pt2gAlwilTda0dd8UWiEKvb+SkbbWWIUq+C/n+fb5Oz8htQccBQAA"
-  }
-};
+const test_input = {
 
-//  API Gateway Log
-const test_input2a = {
-  "awslogs": {
-    "data": "H4sIAAAAAAAAAK2VW2/iOBSA/4rFQzU7S0KcxEmMlAcKlF7oDLvQTkerEXJiA1FJnHGcBlr1v+8xDO222pWqdl8i5/jY5ztXP7RyUVVsKWbbUrS6rUFv1ptfDqfT3mjYardkUwgFYkJJGFIcUZ86IF7L5UjJuoSd3uTMGjEtGra1hhuR1jqThTWWy2qON5re3oUkyzqlknx/bqqVYDkcXDjUI8JPOaGuw1iQhimlASNCEI+FzgLUqzqpUpWV5sqTbK2Fqlrdv1pjliec7S+anxVcbHrfpsZi68fOxPBOFNpoPrQyDpY8N3ApJTRyceREUUCx71ASRNjDEXH9KMA49CIfuwHxfMcNfOyblQ8EOoPwaJaDpyD0cBg5jhuRsH0IG1w/1UzprFgicXAfLaRCSvys4WwX8SBimHm+hSmJLIxFYDGKE4uEAcNJ4HIaLlqP7Y/BkjfCns5mE3Qp9EryLpp8nc7a6E9RyVqlAk2YXnVRp5fqGhI6EHdZKk6UzKdrlt5+mDB4I+Ee7hA+VO6gHh4/bD98n334qi2qtIIM/y8c0fs4VoJxqH9A6KWpKHX8ufO5jfprWXPIUaGt60w0Qll9WRdabeOr6YvdE6kaprjg1kRJLeOV1mX1QuOssmYsWYvDTfGCrSvxWuVSJtlavFK5qsBwbwldF+9qJZEaYdtBn37fmel2OqzM7Mps2anMO0qCRvVbG928jWuaQ4fNrl9ZPZWVjp9njL1vP2EZW3VlNRA1y7VZzu5lwZrKWG6jffCsYZFKDhmNl/dZ2eZisYaKf8UjlY5932uj64zF2MYIR9gVEU0SnDJM2YL7kOrQ8xj2ScgjYqeGemGo7UJo9OnZi52vvfze6i+sMx5fJRt6MS83+WlxdjP/OVdjcnO+Ou8v3eaWz5g4Gfat4UB9T+6dDXFu6vPtd+00cfySEFYx8W3XobbrYRtKro3Mv0dtILID93UcB6K61bI8xFGr2uQXNiFzlnkAYlaW6yxlZoh1NlbTNBaMstyq1VqYiAn+8fqn76v/RPItSgTgCKQVKyoDtgOFntDyVhTxkPW/FIu8GRXF2B06x6ugP+udBupIm4ci4/HModOb0beL0V7CZc6yItallUl9BDVsBp7Rw57nArjvEXKUrlhRiLUR953B8feJP/7jSViwXMTLKGJHTx7FTw5BB8DHcY5quNqcv5qOe/2L46+zvWR3uPrVL0C00fERrIzmsTO8DMeDgbcTHKyU2b8GnwY+DYE1hBlL3JD4IVSAF+AwCDwXY4qpBxkxLsGZ/wx+4P8z+MPnp4xBv3PEawi7RKksFtmyVrvAI6GUVF10VZi5YbafEnNI24eBvTcC/6oW6PESRhgAN5lewdhmuob6II7Tevzx+DdLuYWW7QgAAA=="
-  }
-};
-
-//  SetDesiredState Lambda Log
-const test_input2b = {
-  "awslogs": {
-    "data": "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"
-  }
-};
-
-//  Sensor Data for AWS IoT beta (2016-11-14)
-const test_input3 = {
-  "previous": {
-    "state": {
-      "desired": {
-        "timestamp": "2016-08-12T14:27:52.855202",
-        "led": "on"
-      },
-      "reported": {
-        "humidity": 44,
-        "timestamp": "2016-10-27T00:34:37.746075",
-        "temperature": 34.1,
-        "sound_level": 330,
-        "light_level": 116,
-        "led": "on",
-        "message": "OK",
-        "beacons": {
-          "B_b9407f30f5f8466eaff925556b57fe6d_17850_29219": {
-            "rssi": -65,
-            "uuid": "b9407f30f5f8466eaff925556b57fe6d",
-            "major": 17850,
-            "power": 182,
-            "address": "E0:95:23:72:BA:45",
-            "id": "B_b9407f30f5f8466eaff925556b57fe6d_17850_29219",
-            "minor": 29219
-          },
-          "B_b9407f30f5f8466eaff925556b57fe6d_42535_61733": {
-            "minor": 61733,
-            "power": 182,
-            "major": 42535,
-            "id": "B_b9407f30f5f8466eaff925556b57fe6d_42535_61733",
-            "address": "F8:CA:25:F1:83:35",
-            "rssi": -67,
-            "uuid": "b9407f30f5f8466eaff925556b57fe6d"
-          }
-        }
-      }
-    },
-    "metadata": {
-      "desired": {
-        "timestamp": {
-          "timestamp": 1479112106
-        },
-        "led": {
-          "timestamp": 1479112106
-        }
-      },
-      "reported": {
-        "humidity": {
-          "timestamp": 1479112106
-        },
-        "timestamp": {
-          "timestamp": 1479112106
-        },
-        "temperature": {
-          "timestamp": 1479112106
-        },
-        "sound_level": {
-          "timestamp": 1479112106
-        },
-        "light_level": {
-          "timestamp": 1479112106
-        },
-        "led": {
-          "timestamp": 1479112106
-        },
-        "message": {
-          "timestamp": 1479112106
-        },
-        "beacons": {
-          "B_b9407f30f5f8466eaff925556b57fe6d_17850_29219": {
-            "rssi": {
-              "timestamp": 1479112106
+  //  SIGFOX message
+  IndexSensorData: {
+    "previous": {
+      "state": {
+        "reported": {
+          "humidity": 50,
+          "timestamp": "2016-11-24T21:48:19.034",
+          "temperature": 28,
+          "sound_level": 300,
+          "light_level": 200,
+          "led": "on",
+          "message": "OK",
+          "beacons": {
+            "B_b9407f30f5f8466eaff925556b57fe6d_17850_29219": {
+              "uuid": "b9407f30f5f8466eaff925556b57fe6d",
+              "major": 17850,
+              "power": 182,
+              "address": "E0:95:23:72:BA:45",
+              "id": "B_b9407f30f5f8466eaff925556b57fe6d_17850_29219",
+              "minor": 29219
             },
-            "uuid": {
-              "timestamp": 1479112106
-            },
-            "major": {
-              "timestamp": 1479112106
-            },
-            "power": {
-              "timestamp": 1479112106
-            },
-            "address": {
-              "timestamp": 1479112106
-            },
-            "id": {
-              "timestamp": 1479112106
-            },
-            "minor": {
-              "timestamp": 1479112106
+            "B_b9407f30f5f8466eaff925556b57fe6d_42535_61733": {
+              "minor": 61733,
+              "power": 182,
+              "major": 42535,
+              "id": "B_b9407f30f5f8466eaff925556b57fe6d_42535_61733",
+              "address": "F8:CA:25:F1:83:35",
+              "uuid": "b9407f30f5f8466eaff925556b57fe6d"
             }
           },
-          "B_b9407f30f5f8466eaff925556b57fe6d_42535_61733": {
-            "minor": {
-              "timestamp": 1479112106
-            },
-            "power": {
-              "timestamp": 1479112106
-            },
-            "major": {
-              "timestamp": 1479112106
-            },
-            "id": {
-              "timestamp": 1479112106
-            },
-            "address": {
-              "timestamp": 1479112106
-            },
-            "rssi": {
-              "timestamp": 1479112106
-            },
-            "uuid": {
-              "timestamp": 1479112106
-            }
-          }
-        }
-      }
-    },
-    "version": 19960
-  },
-  "current": {
-    "state": {
-      "desired": {
-        "timestamp": "2016-08-12T14:27:52.855202",
-        "led": "on"
-      },
-      "reported": {
-        "humidity": 44,
-        "timestamp": "2016-10-27T00:34:37.746075",
-        "temperature": 34.2,
-        "sound_level": 330,
-        "light_level": 116,
-        "led": "on",
-        "message": "OK",
-        "beacons": {
-          "B_b9407f30f5f8466eaff925556b57fe6d_17850_29219": {
-            "rssi": -65,
-            "uuid": "b9407f30f5f8466eaff925556b57fe6d",
-            "major": 17850,
-            "power": 182,
-            "address": "E0:95:23:72:BA:45",
-            "id": "B_b9407f30f5f8466eaff925556b57fe6d_17850_29219",
-            "minor": 29219
-          },
-          "B_b9407f30f5f8466eaff925556b57fe6d_42535_61733": {
-            "minor": 61733,
-            "power": 182,
-            "major": 42535,
-            "id": "B_b9407f30f5f8466eaff925556b57fe6d_42535_61733",
-            "address": "F8:CA:25:F1:83:35",
-            "rssi": -67,
-            "uuid": "b9407f30f5f8466eaff925556b57fe6d"
-          }
-        }
-      }
-    },
-    "metadata": {
-      "desired": {
-        "timestamp": {
-          "timestamp": 1479119600
-        },
-        "led": {
-          "timestamp": 1479119600
-        }
-      },
-      "reported": {
-        "humidity": {
-          "timestamp": 1479119600
-        },
-        "timestamp": {
-          "timestamp": 1479119600
-        },
-        "temperature": {
-          "timestamp": 1479119600
-        },
-        "sound_level": {
-          "timestamp": 1479119600
-        },
-        "light_level": {
-          "timestamp": 1479119600
-        },
-        "led": {
-          "timestamp": 1479119600
-        },
-        "message": {
-          "timestamp": 1479119600
-        },
-        "beacons": {
-          "B_b9407f30f5f8466eaff925556b57fe6d_17850_29219": {
-            "rssi": {
-              "timestamp": 1479119600
-            },
-            "uuid": {
-              "timestamp": 1479119600
-            },
-            "major": {
-              "timestamp": 1479119600
-            },
-            "power": {
-              "timestamp": 1479119600
-            },
-            "address": {
-              "timestamp": 1479119600
-            },
-            "id": {
-              "timestamp": 1479119600
-            },
-            "minor": {
-              "timestamp": 1479119600
-            }
-          },
-          "B_b9407f30f5f8466eaff925556b57fe6d_42535_61733": {
-            "minor": {
-              "timestamp": 1479119600
-            },
-            "power": {
-              "timestamp": 1479119600
-            },
-            "major": {
-              "timestamp": 1479119600
-            },
-            "id": {
-              "timestamp": 1479119600
-            },
-            "address": {
-              "timestamp": 1479119600
-            },
-            "rssi": {
-              "timestamp": 1479119600
-            },
-            "uuid": {
-              "timestamp": 1479119600
-            }
-          }
-        }
-      }
-    },
-    "version": 19961
-  },
-  "timestamp": 1479119600,
-  "topic": "$aws/things/g88pi/shadow/update/documents",
-  "traceId": "9732304a-57f7-770d-ff5a-b339e8eb0878"
-};
-
-//  Another variant of Sensor Data for AWS IoT version 2016-03-23-beta.  Note the new "input->state".
-const test_input4 = {
-  "input": {
-    "state": {
-      "reported": {
-        "humidity": 44,
-        "timestamp": "2016-05-09T07:58:29.138750",
-        "temperature": 31.1,
-        "sound_level": 334,
-        "light_level": 267
-      }
-    },
-    "metadata": {
-      "reported": {
-        "humidity": {
-          "timestamp": 1463146990
-        },
-        "timestamp": {
-          "timestamp": 1463146990
-        },
-        "temperature": {
-          "timestamp": 1463146990
-        },
-        "sound_level": {
-          "timestamp": 1463146990
-        },
-        "light_level": {
-          "timestamp": 1463146990
-        }
-      }
-    },
-    "version": 9139,
-    "timestamp": 1463146990,
-    "topic": "$aws/things/g87pi/shadow/update/accepted",
-    "traceId": "33e6c7e3-ba1e-48fe-a535-98ff5b37834f"
-  }
-};
-
-//  SIGFOX message
-const test_sensor_data = {
-  "previous": {
-    "state": {
-      "reported": {
-        "humidity": 50,
-        "timestamp": "2016-11-24T21:48:19.034",
-        "temperature": 28,
-        "sound_level": 300,
-        "light_level": 200,
-        "led": "on",
-        "message": "OK",
-        "beacons": {
-          "B_b9407f30f5f8466eaff925556b57fe6d_17850_29219": {
-            "uuid": "b9407f30f5f8466eaff925556b57fe6d",
-            "major": 17850,
-            "power": 182,
-            "address": "E0:95:23:72:BA:45",
-            "id": "B_b9407f30f5f8466eaff925556b57fe6d_17850_29219",
-            "minor": 29219
-          },
-          "B_b9407f30f5f8466eaff925556b57fe6d_42535_61733": {
-            "minor": 61733,
-            "power": 182,
-            "major": 42535,
-            "id": "B_b9407f30f5f8466eaff925556b57fe6d_42535_61733",
-            "address": "F8:CA:25:F1:83:35",
-            "uuid": "b9407f30f5f8466eaff925556b57fe6d"
-          }
-        },
-        "ctr": 9,
-        "tmp": 36,
-        "vlt": 12.3,
-        "device": "g88pi",
-        "data": "920e5a00b051680194597b00",
-        "key3": "value3",
-        "key2": "value2",
-        "key1": "value1",
-        "resource": "/ProcessSIGFOXMessage",
-        "path": "/ProcessSIGFOXMessage",
-        "httpMethod": "GET",
-        "headers": {
-          "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-          "Accept-Encoding": "gzip, deflate, sdch, br",
-          "Accept-Language": "en-US,en;q=0.8",
-          "Cache-Control": "max-age=0",
-          "CloudFront-Forwarded-Proto": "https",
-          "CloudFront-Is-Desktop-Viewer": "true",
-          "CloudFront-Is-Mobile-Viewer": "false",
-          "CloudFront-Is-SmartTV-Viewer": "false",
-          "CloudFront-Is-Tablet-Viewer": "false",
-          "CloudFront-Viewer-Country": "SG",
-          "Host": "l0043j2svc.execute-api.us-west-2.amazonaws.com",
-          "Upgrade-Insecure-Requests": "1",
-          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2925.0 Safari/537.36",
-          "Via": "1.1 c038088d4b94486d7346fd44d03188a0.cloudfront.net (CloudFront)",
-          "X-Amz-Cf-Id": "omfPxBotRHWplmFzvDR6ZNoL720H0B-WtVemWCyLtXPfJLu21BGWDA==",
-          "X-Forwarded-For": "118.200.15.117, 54.240.148.212",
-          "X-Forwarded-Port": "443",
-          "X-Forwarded-Proto": "https"
-        },
-        "requestContext": {
-          "accountId": "595779189490",
-          "resourceId": "s3459w",
-          "stage": "prod",
-          "requestId": "59036929-af32-11e6-97da-112ad8d13953",
-          "identity": {
-            "sourceIp": "118.200.15.117",
-            "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2925.0 Safari/537.36"
-          },
-          "resourcePath": "/ProcessSIGFOXMessage",
+          "ctr": 9,
+          "tmp": 36,
+          "vlt": 12.3,
+          "device": "temp_pi",
+          "data": "920e5a00b051680194597b00",
+          "key3": "value3",
+          "key2": "value2",
+          "key1": "value1",
+          "resource": "/ProcessSIGFOXMessage",
+          "path": "/ProcessSIGFOXMessage",
           "httpMethod": "GET",
-          "apiId": "l0043j2svc"
-        },
-        "isBase64Encoded": false,
-        "lig": 49
-      }
-    },
-    "metadata": {
-      "reported": {
-        "humidity": {
-          "timestamp": 1479620449
-        },
-        "timestamp": {
-          "timestamp": 1479995299
-        },
-        "temperature": {
-          "timestamp": 1479620449
-        },
-        "sound_level": {
-          "timestamp": 1479620449
-        },
-        "light_level": {
-          "timestamp": 1479620449
-        },
-        "led": {
-          "timestamp": 1479620449
-        },
-        "message": {
-          "timestamp": 1479620449
-        },
-        "beacons": {
-          "B_b9407f30f5f8466eaff925556b57fe6d_17850_29219": {
-            "uuid": {
-              "timestamp": 1479620449
+          "headers": {
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+            "Accept-Encoding": "gzip, deflate, sdch, br",
+            "Accept-Language": "en-US,en;q=0.8",
+            "Cache-Control": "max-age=0",
+            "CloudFront-Forwarded-Proto": "https",
+            "CloudFront-Is-Desktop-Viewer": "true",
+            "CloudFront-Is-Mobile-Viewer": "false",
+            "CloudFront-Is-SmartTV-Viewer": "false",
+            "CloudFront-Is-Tablet-Viewer": "false",
+            "CloudFront-Viewer-Country": "SG",
+            "Host": "l0043j2svc.execute-api.us-west-2.amazonaws.com",
+            "Upgrade-Insecure-Requests": "1",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2925.0 Safari/537.36",
+            "Via": "1.1 c038088d4b94486d7346fd44d03188a0.cloudfront.net (CloudFront)",
+            "X-Amz-Cf-Id": "omfPxBotRHWplmFzvDR6ZNoL720H0B-WtVemWCyLtXPfJLu21BGWDA==",
+            "X-Forwarded-For": "118.200.15.117, 54.240.148.212",
+            "X-Forwarded-Port": "443",
+            "X-Forwarded-Proto": "https"
+          },
+          "requestContext": {
+            "accountId": "595779189490",
+            "resourceId": "s3459w",
+            "stage": "prod",
+            "requestId": "59036929-af32-11e6-97da-112ad8d13953",
+            "identity": {
+              "sourceIp": "118.200.15.117",
+              "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2925.0 Safari/537.36"
             },
-            "major": {
-              "timestamp": 1479620449
+            "resourcePath": "/ProcessSIGFOXMessage",
+            "httpMethod": "GET",
+            "apiId": "l0043j2svc"
+          },
+          "isBase64Encoded": false,
+          "lig": 49
+        }
+      },
+      "metadata": {
+        "reported": {
+          "humidity": {
+            "timestamp": 1479620449
+          },
+          "timestamp": {
+            "timestamp": 1479995299
+          },
+          "temperature": {
+            "timestamp": 1479620449
+          },
+          "sound_level": {
+            "timestamp": 1479620449
+          },
+          "light_level": {
+            "timestamp": 1479620449
+          },
+          "led": {
+            "timestamp": 1479620449
+          },
+          "message": {
+            "timestamp": 1479620449
+          },
+          "beacons": {
+            "B_b9407f30f5f8466eaff925556b57fe6d_17850_29219": {
+              "uuid": {
+                "timestamp": 1479620449
+              },
+              "major": {
+                "timestamp": 1479620449
+              },
+              "power": {
+                "timestamp": 1479620449
+              },
+              "address": {
+                "timestamp": 1479620449
+              },
+              "id": {
+                "timestamp": 1479620449
+              },
+              "minor": {
+                "timestamp": 1479620449
+              }
             },
-            "power": {
-              "timestamp": 1479620449
-            },
-            "address": {
-              "timestamp": 1479620449
-            },
-            "id": {
-              "timestamp": 1479620449
-            },
-            "minor": {
-              "timestamp": 1479620449
+            "B_b9407f30f5f8466eaff925556b57fe6d_42535_61733": {
+              "minor": {
+                "timestamp": 1479620449
+              },
+              "power": {
+                "timestamp": 1479620449
+              },
+              "major": {
+                "timestamp": 1479620449
+              },
+              "id": {
+                "timestamp": 1479620449
+              },
+              "address": {
+                "timestamp": 1479620449
+              },
+              "uuid": {
+                "timestamp": 1479620449
+              }
             }
           },
-          "B_b9407f30f5f8466eaff925556b57fe6d_42535_61733": {
-            "minor": {
-              "timestamp": 1479620449
-            },
-            "power": {
-              "timestamp": 1479620449
-            },
-            "major": {
-              "timestamp": 1479620449
-            },
-            "id": {
-              "timestamp": 1479620449
-            },
-            "address": {
-              "timestamp": 1479620449
-            },
-            "uuid": {
-              "timestamp": 1479620449
-            }
-          }
-        },
-        "ctr": {
-          "timestamp": 1479995299
-        },
-        "tmp": {
-          "timestamp": 1479995299
-        },
-        "vlt": {
-          "timestamp": 1479995299
-        },
-        "device": {
-          "timestamp": 1479995299
-        },
-        "data": {
-          "timestamp": 1479995299
-        },
-        "key3": {
-          "timestamp": 1479651128
-        },
-        "key2": {
-          "timestamp": 1479651128
-        },
-        "key1": {
-          "timestamp": 1479651128
-        },
-        "resource": {
-          "timestamp": 1479654145
-        },
-        "path": {
-          "timestamp": 1479654145
-        },
-        "httpMethod": {
-          "timestamp": 1479654145
-        },
-        "headers": {
-          "Accept": {
+          "ctr": {
+            "timestamp": 1479995299
+          },
+          "tmp": {
+            "timestamp": 1479995299
+          },
+          "vlt": {
+            "timestamp": 1479995299
+          },
+          "device": {
+            "timestamp": 1479995299
+          },
+          "data": {
+            "timestamp": 1479995299
+          },
+          "key3": {
+            "timestamp": 1479651128
+          },
+          "key2": {
+            "timestamp": 1479651128
+          },
+          "key1": {
+            "timestamp": 1479651128
+          },
+          "resource": {
             "timestamp": 1479654145
           },
-          "Accept-Encoding": {
-            "timestamp": 1479654145
-          },
-          "Accept-Language": {
-            "timestamp": 1479654145
-          },
-          "Cache-Control": {
-            "timestamp": 1479654145
-          },
-          "CloudFront-Forwarded-Proto": {
-            "timestamp": 1479654145
-          },
-          "CloudFront-Is-Desktop-Viewer": {
-            "timestamp": 1479654145
-          },
-          "CloudFront-Is-Mobile-Viewer": {
-            "timestamp": 1479654145
-          },
-          "CloudFront-Is-SmartTV-Viewer": {
-            "timestamp": 1479654145
-          },
-          "CloudFront-Is-Tablet-Viewer": {
-            "timestamp": 1479654145
-          },
-          "CloudFront-Viewer-Country": {
-            "timestamp": 1479654145
-          },
-          "Host": {
-            "timestamp": 1479654145
-          },
-          "Upgrade-Insecure-Requests": {
-            "timestamp": 1479654145
-          },
-          "User-Agent": {
-            "timestamp": 1479654145
-          },
-          "Via": {
-            "timestamp": 1479654145
-          },
-          "X-Amz-Cf-Id": {
-            "timestamp": 1479654145
-          },
-          "X-Forwarded-For": {
-            "timestamp": 1479654145
-          },
-          "X-Forwarded-Port": {
-            "timestamp": 1479654145
-          },
-          "X-Forwarded-Proto": {
-            "timestamp": 1479654145
-          }
-        },
-        "requestContext": {
-          "accountId": {
-            "timestamp": 1479654145
-          },
-          "resourceId": {
-            "timestamp": 1479654145
-          },
-          "stage": {
-            "timestamp": 1479654145
-          },
-          "requestId": {
-            "timestamp": 1479654145
-          },
-          "identity": {
-            "sourceIp": {
-              "timestamp": 1479654145
-            },
-            "userAgent": {
-              "timestamp": 1479654145
-            }
-          },
-          "resourcePath": {
+          "path": {
             "timestamp": 1479654145
           },
           "httpMethod": {
             "timestamp": 1479654145
           },
-          "apiId": {
+          "headers": {
+            "Accept": {
+              "timestamp": 1479654145
+            },
+            "Accept-Encoding": {
+              "timestamp": 1479654145
+            },
+            "Accept-Language": {
+              "timestamp": 1479654145
+            },
+            "Cache-Control": {
+              "timestamp": 1479654145
+            },
+            "CloudFront-Forwarded-Proto": {
+              "timestamp": 1479654145
+            },
+            "CloudFront-Is-Desktop-Viewer": {
+              "timestamp": 1479654145
+            },
+            "CloudFront-Is-Mobile-Viewer": {
+              "timestamp": 1479654145
+            },
+            "CloudFront-Is-SmartTV-Viewer": {
+              "timestamp": 1479654145
+            },
+            "CloudFront-Is-Tablet-Viewer": {
+              "timestamp": 1479654145
+            },
+            "CloudFront-Viewer-Country": {
+              "timestamp": 1479654145
+            },
+            "Host": {
+              "timestamp": 1479654145
+            },
+            "Upgrade-Insecure-Requests": {
+              "timestamp": 1479654145
+            },
+            "User-Agent": {
+              "timestamp": 1479654145
+            },
+            "Via": {
+              "timestamp": 1479654145
+            },
+            "X-Amz-Cf-Id": {
+              "timestamp": 1479654145
+            },
+            "X-Forwarded-For": {
+              "timestamp": 1479654145
+            },
+            "X-Forwarded-Port": {
+              "timestamp": 1479654145
+            },
+            "X-Forwarded-Proto": {
+              "timestamp": 1479654145
+            }
+          },
+          "requestContext": {
+            "accountId": {
+              "timestamp": 1479654145
+            },
+            "resourceId": {
+              "timestamp": 1479654145
+            },
+            "stage": {
+              "timestamp": 1479654145
+            },
+            "requestId": {
+              "timestamp": 1479654145
+            },
+            "identity": {
+              "sourceIp": {
+                "timestamp": 1479654145
+              },
+              "userAgent": {
+                "timestamp": 1479654145
+              }
+            },
+            "resourcePath": {
+              "timestamp": 1479654145
+            },
+            "httpMethod": {
+              "timestamp": 1479654145
+            },
+            "apiId": {
+              "timestamp": 1479654145
+            }
+          },
+          "isBase64Encoded": {
             "timestamp": 1479654145
+          },
+          "lig": {
+            "timestamp": 1479924321
           }
-        },
-        "isBase64Encoded": {
-          "timestamp": 1479654145
-        },
-        "lig": {
-          "timestamp": 1479924321
         }
-      }
+      },
+      "version": 20621
     },
-    "version": 20621
-  },
-  "current": {
-    "state": {
-      "reported": {
-        "humidity": 50,
-        "timestamp": new Date().toISOString().replace('Z', ''),
-        "temperature": 28,
-        "sound_level": 300,
-        "light_level": 200,
-        "led": "on",
-        "message": "OK",
-        "beacons": {
-          "B_b9407f30f5f8466eaff925556b57fe6d_17850_29219": {
-            "uuid": "b9407f30f5f8466eaff925556b57fe6d",
-            "major": 17850,
-            "power": 182,
-            "address": "E0:95:23:72:BA:45",
-            "id": "B_b9407f30f5f8466eaff925556b57fe6d_17850_29219",
-            "minor": 29219
+    "current": {
+      "state": {
+        "reported": {
+          "humidity": 50,
+          "timestamp": new Date().toISOString().replace('Z', ''),
+          "temperature": 28,
+          "sound_level": 300,
+          "light_level": 200,
+          "led": "on",
+          "message": "OK",
+          "beacons": {
+            "B_b9407f30f5f8466eaff925556b57fe6d_17850_29219": {
+              "uuid": "b9407f30f5f8466eaff925556b57fe6d",
+              "major": 17850,
+              "power": 182,
+              "address": "E0:95:23:72:BA:45",
+              "id": "B_b9407f30f5f8466eaff925556b57fe6d_17850_29219",
+              "minor": 29219
+            },
+            "B_b9407f30f5f8466eaff925556b57fe6d_42535_61733": {
+              "minor": 61733,
+              "power": 182,
+              "major": 42535,
+              "id": "B_b9407f30f5f8466eaff925556b57fe6d_42535_61733",
+              "address": "F8:CA:25:F1:83:35",
+              "uuid": "b9407f30f5f8466eaff925556b57fe6d"
+            }
           },
-          "B_b9407f30f5f8466eaff925556b57fe6d_42535_61733": {
-            "minor": 61733,
-            "power": 182,
-            "major": 42535,
-            "id": "B_b9407f30f5f8466eaff925556b57fe6d_42535_61733",
-            "address": "F8:CA:25:F1:83:35",
-            "uuid": "b9407f30f5f8466eaff925556b57fe6d"
-          }
-        },
-        "ctr": 9,
-        "tmp": 36,
-        "vlt": 12.3,
-        "device": "g88pi",
-        "data": "920e5a00b051680194597b00",
-        "key3": "value3",
-        "key2": "value2",
-        "key1": "value1",
-        "resource": "/ProcessSIGFOXMessage",
-        "path": "/ProcessSIGFOXMessage",
-        "httpMethod": "GET",
-        "headers": {
-          "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-          "Accept-Encoding": "gzip, deflate, sdch, br",
-          "Accept-Language": "en-US,en;q=0.8",
-          "Cache-Control": "max-age=0",
-          "CloudFront-Forwarded-Proto": "https",
-          "CloudFront-Is-Desktop-Viewer": "true",
-          "CloudFront-Is-Mobile-Viewer": "false",
-          "CloudFront-Is-SmartTV-Viewer": "false",
-          "CloudFront-Is-Tablet-Viewer": "false",
-          "CloudFront-Viewer-Country": "SG",
-          "Host": "l0043j2svc.execute-api.us-west-2.amazonaws.com",
-          "Upgrade-Insecure-Requests": "1",
-          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2925.0 Safari/537.36",
-          "Via": "1.1 c038088d4b94486d7346fd44d03188a0.cloudfront.net (CloudFront)",
-          "X-Amz-Cf-Id": "omfPxBotRHWplmFzvDR6ZNoL720H0B-WtVemWCyLtXPfJLu21BGWDA==",
-          "X-Forwarded-For": "118.200.15.117, 54.240.148.212",
-          "X-Forwarded-Port": "443",
-          "X-Forwarded-Proto": "https"
-        },
-        "requestContext": {
-          "accountId": "595779189490",
-          "resourceId": "s3459w",
-          "stage": "prod",
-          "requestId": "59036929-af32-11e6-97da-112ad8d13953",
-          "identity": {
-            "sourceIp": "118.200.15.117",
-            "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2925.0 Safari/537.36"
-          },
-          "resourcePath": "/ProcessSIGFOXMessage",
+          "ctr": 9,
+          "tmp": 36,
+          "vlt": 12.3,
+          "device": "g88pi",
+          "data": "920e5a00b051680194597b00",
+          "key3": "value3",
+          "key2": "value2",
+          "key1": "value1",
+          "resource": "/ProcessSIGFOXMessage",
+          "path": "/ProcessSIGFOXMessage",
           "httpMethod": "GET",
-          "apiId": "l0043j2svc"
-        },
-        "isBase64Encoded": false,
-        "lig": 49
-      }
-    },
-    "metadata": {
-      "reported": {
-        "humidity": {
-          "timestamp": 1479620449
-        },
-        "timestamp": {
-          "timestamp": 1480013409
-        },
-        "temperature": {
-          "timestamp": 1479620449
-        },
-        "sound_level": {
-          "timestamp": 1479620449
-        },
-        "light_level": {
-          "timestamp": 1479620449
-        },
-        "led": {
-          "timestamp": 1479620449
-        },
-        "message": {
-          "timestamp": 1479620449
-        },
-        "beacons": {
-          "B_b9407f30f5f8466eaff925556b57fe6d_17850_29219": {
-            "uuid": {
-              "timestamp": 1479620449
+          "headers": {
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+            "Accept-Encoding": "gzip, deflate, sdch, br",
+            "Accept-Language": "en-US,en;q=0.8",
+            "Cache-Control": "max-age=0",
+            "CloudFront-Forwarded-Proto": "https",
+            "CloudFront-Is-Desktop-Viewer": "true",
+            "CloudFront-Is-Mobile-Viewer": "false",
+            "CloudFront-Is-SmartTV-Viewer": "false",
+            "CloudFront-Is-Tablet-Viewer": "false",
+            "CloudFront-Viewer-Country": "SG",
+            "Host": "l0043j2svc.execute-api.us-west-2.amazonaws.com",
+            "Upgrade-Insecure-Requests": "1",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2925.0 Safari/537.36",
+            "Via": "1.1 c038088d4b94486d7346fd44d03188a0.cloudfront.net (CloudFront)",
+            "X-Amz-Cf-Id": "omfPxBotRHWplmFzvDR6ZNoL720H0B-WtVemWCyLtXPfJLu21BGWDA==",
+            "X-Forwarded-For": "118.200.15.117, 54.240.148.212",
+            "X-Forwarded-Port": "443",
+            "X-Forwarded-Proto": "https"
+          },
+          "requestContext": {
+            "accountId": "595779189490",
+            "resourceId": "s3459w",
+            "stage": "prod",
+            "requestId": "59036929-af32-11e6-97da-112ad8d13953",
+            "identity": {
+              "sourceIp": "118.200.15.117",
+              "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2925.0 Safari/537.36"
             },
-            "major": {
-              "timestamp": 1479620449
+            "resourcePath": "/ProcessSIGFOXMessage",
+            "httpMethod": "GET",
+            "apiId": "l0043j2svc"
+          },
+          "isBase64Encoded": false,
+          "lig": 49
+        }
+      },
+      "metadata": {
+        "reported": {
+          "humidity": {
+            "timestamp": 1479620449
+          },
+          "timestamp": {
+            "timestamp": 1480013409
+          },
+          "temperature": {
+            "timestamp": 1479620449
+          },
+          "sound_level": {
+            "timestamp": 1479620449
+          },
+          "light_level": {
+            "timestamp": 1479620449
+          },
+          "led": {
+            "timestamp": 1479620449
+          },
+          "message": {
+            "timestamp": 1479620449
+          },
+          "beacons": {
+            "B_b9407f30f5f8466eaff925556b57fe6d_17850_29219": {
+              "uuid": {
+                "timestamp": 1479620449
+              },
+              "major": {
+                "timestamp": 1479620449
+              },
+              "power": {
+                "timestamp": 1479620449
+              },
+              "address": {
+                "timestamp": 1479620449
+              },
+              "id": {
+                "timestamp": 1479620449
+              },
+              "minor": {
+                "timestamp": 1479620449
+              }
             },
-            "power": {
-              "timestamp": 1479620449
-            },
-            "address": {
-              "timestamp": 1479620449
-            },
-            "id": {
-              "timestamp": 1479620449
-            },
-            "minor": {
-              "timestamp": 1479620449
+            "B_b9407f30f5f8466eaff925556b57fe6d_42535_61733": {
+              "minor": {
+                "timestamp": 1479620449
+              },
+              "power": {
+                "timestamp": 1479620449
+              },
+              "major": {
+                "timestamp": 1479620449
+              },
+              "id": {
+                "timestamp": 1479620449
+              },
+              "address": {
+                "timestamp": 1479620449
+              },
+              "uuid": {
+                "timestamp": 1479620449
+              }
             }
           },
-          "B_b9407f30f5f8466eaff925556b57fe6d_42535_61733": {
-            "minor": {
-              "timestamp": 1479620449
-            },
-            "power": {
-              "timestamp": 1479620449
-            },
-            "major": {
-              "timestamp": 1479620449
-            },
-            "id": {
-              "timestamp": 1479620449
-            },
-            "address": {
-              "timestamp": 1479620449
-            },
-            "uuid": {
-              "timestamp": 1479620449
-            }
-          }
-        },
-        "ctr": {
-          "timestamp": 1479995299
-        },
-        "tmp": {
-          "timestamp": 1479995299
-        },
-        "vlt": {
-          "timestamp": 1479995299
-        },
-        "device": {
-          "timestamp": 1479995299
-        },
-        "data": {
-          "timestamp": 1479995299
-        },
-        "key3": {
-          "timestamp": 1480013409
-        },
-        "key2": {
-          "timestamp": 1480013409
-        },
-        "key1": {
-          "timestamp": 1480013409
-        },
-        "resource": {
-          "timestamp": 1479654145
-        },
-        "path": {
-          "timestamp": 1479654145
-        },
-        "httpMethod": {
-          "timestamp": 1479654145
-        },
-        "headers": {
-          "Accept": {
+          "ctr": {
+            "timestamp": 1479995299
+          },
+          "tmp": {
+            "timestamp": 1479995299
+          },
+          "vlt": {
+            "timestamp": 1479995299
+          },
+          "device": {
+            "timestamp": 1479995299
+          },
+          "data": {
+            "timestamp": 1479995299
+          },
+          "key3": {
+            "timestamp": 1480013409
+          },
+          "key2": {
+            "timestamp": 1480013409
+          },
+          "key1": {
+            "timestamp": 1480013409
+          },
+          "resource": {
             "timestamp": 1479654145
           },
-          "Accept-Encoding": {
-            "timestamp": 1479654145
-          },
-          "Accept-Language": {
-            "timestamp": 1479654145
-          },
-          "Cache-Control": {
-            "timestamp": 1479654145
-          },
-          "CloudFront-Forwarded-Proto": {
-            "timestamp": 1479654145
-          },
-          "CloudFront-Is-Desktop-Viewer": {
-            "timestamp": 1479654145
-          },
-          "CloudFront-Is-Mobile-Viewer": {
-            "timestamp": 1479654145
-          },
-          "CloudFront-Is-SmartTV-Viewer": {
-            "timestamp": 1479654145
-          },
-          "CloudFront-Is-Tablet-Viewer": {
-            "timestamp": 1479654145
-          },
-          "CloudFront-Viewer-Country": {
-            "timestamp": 1479654145
-          },
-          "Host": {
-            "timestamp": 1479654145
-          },
-          "Upgrade-Insecure-Requests": {
-            "timestamp": 1479654145
-          },
-          "User-Agent": {
-            "timestamp": 1479654145
-          },
-          "Via": {
-            "timestamp": 1479654145
-          },
-          "X-Amz-Cf-Id": {
-            "timestamp": 1479654145
-          },
-          "X-Forwarded-For": {
-            "timestamp": 1479654145
-          },
-          "X-Forwarded-Port": {
-            "timestamp": 1479654145
-          },
-          "X-Forwarded-Proto": {
-            "timestamp": 1479654145
-          }
-        },
-        "requestContext": {
-          "accountId": {
-            "timestamp": 1479654145
-          },
-          "resourceId": {
-            "timestamp": 1479654145
-          },
-          "stage": {
-            "timestamp": 1479654145
-          },
-          "requestId": {
-            "timestamp": 1479654145
-          },
-          "identity": {
-            "sourceIp": {
-              "timestamp": 1479654145
-            },
-            "userAgent": {
-              "timestamp": 1479654145
-            }
-          },
-          "resourcePath": {
+          "path": {
             "timestamp": 1479654145
           },
           "httpMethod": {
             "timestamp": 1479654145
           },
-          "apiId": {
+          "headers": {
+            "Accept": {
+              "timestamp": 1479654145
+            },
+            "Accept-Encoding": {
+              "timestamp": 1479654145
+            },
+            "Accept-Language": {
+              "timestamp": 1479654145
+            },
+            "Cache-Control": {
+              "timestamp": 1479654145
+            },
+            "CloudFront-Forwarded-Proto": {
+              "timestamp": 1479654145
+            },
+            "CloudFront-Is-Desktop-Viewer": {
+              "timestamp": 1479654145
+            },
+            "CloudFront-Is-Mobile-Viewer": {
+              "timestamp": 1479654145
+            },
+            "CloudFront-Is-SmartTV-Viewer": {
+              "timestamp": 1479654145
+            },
+            "CloudFront-Is-Tablet-Viewer": {
+              "timestamp": 1479654145
+            },
+            "CloudFront-Viewer-Country": {
+              "timestamp": 1479654145
+            },
+            "Host": {
+              "timestamp": 1479654145
+            },
+            "Upgrade-Insecure-Requests": {
+              "timestamp": 1479654145
+            },
+            "User-Agent": {
+              "timestamp": 1479654145
+            },
+            "Via": {
+              "timestamp": 1479654145
+            },
+            "X-Amz-Cf-Id": {
+              "timestamp": 1479654145
+            },
+            "X-Forwarded-For": {
+              "timestamp": 1479654145
+            },
+            "X-Forwarded-Port": {
+              "timestamp": 1479654145
+            },
+            "X-Forwarded-Proto": {
+              "timestamp": 1479654145
+            }
+          },
+          "requestContext": {
+            "accountId": {
+              "timestamp": 1479654145
+            },
+            "resourceId": {
+              "timestamp": 1479654145
+            },
+            "stage": {
+              "timestamp": 1479654145
+            },
+            "requestId": {
+              "timestamp": 1479654145
+            },
+            "identity": {
+              "sourceIp": {
+                "timestamp": 1479654145
+              },
+              "userAgent": {
+                "timestamp": 1479654145
+              }
+            },
+            "resourcePath": {
+              "timestamp": 1479654145
+            },
+            "httpMethod": {
+              "timestamp": 1479654145
+            },
+            "apiId": {
+              "timestamp": 1479654145
+            }
+          },
+          "isBase64Encoded": {
             "timestamp": 1479654145
+          },
+          "lig": {
+            "timestamp": 1479924321
           }
-        },
-        "isBase64Encoded": {
-          "timestamp": 1479654145
-        },
-        "lig": {
-          "timestamp": 1479924321
         }
-      }
+      },
+      "version": 20622
     },
-    "version": 20622
+    "timestamp": 1480013410,
+    "topic": "$aws/things/g88pi/shadow/update/documents",
+    "traceId": "4c8301c7-4911-e943-1671-29f7770b8aa0"
   },
-  "timestamp": 1480013410,
-  "topic": "$aws/things/g88pi/shadow/update/documents",
-  "traceId": "4c8301c7-4911-e943-1671-29f7770b8aa0"
+
+  //  AWS IoT Log
+  IndexAWSLogs: {
+    "awslogs": {
+      "data": "H4sIAAAAAAAAANWTWW+jMBSF/4qF5jEUr4D9hhJSMcrWkM6iqooIOCmaBEcGmlZV//tckrTSbGpHmpd5Q/bxdw/n2E/OTtd1ttGLx712lDOIFtFyHKdpdBk7PcccKm1hWUgRBJKEkksMy1uzubSm3cNO9DlNTDMym/q0njZWZ7ufjnjRfBp9vKbx1dXXwfV0sBj5tH+1nFmTw/Q0uRxOv4xPPv5CCgPrdlXnttw3pamG5bbRtnbUjTPKdqsiO1lZJlWhH8Dm0ePt0WR8r6umUz45ZQFeGcOYh4IFAQ0I86nvY0FZQLiUkmHKsY+J9AmngsA3lwELRMh9Dg6aEgJssh1kQXggZRiGVGLKei/BAp5i4ruEuJQjQhXGisoLkKDFPOrHyUBJJnHG89xd+WvsYhrkLiNi5cpQ4MJn+QpLgWbzZNJPZtEIDrydrXp/tr+VoptkMpzeIhR/iicLNc6a/K6sNvN2q4emrQq0mM6S/iQax+pDdqi9ptutvQ0l+9Kr77LCHLx2X2SN9gqTt7sub9QfJQAD/5WXofMle0UjC2y07uAKAWdpdW5ssax1VRu7BFTmPPd+KSyUTAjGBRE+dCdZyKUgVFAhJKekq0t2rVEquaDyT4VByW8VBpL/qLDTC4jy7mGkbd7J/11lZ+C63W4fUVndm2+6QNvjRLRuq+PQC/RiLLO2vAeBqRR69+AeOnlXZ24PDc9gBcBKAUeddlRbuwdo1KU/pKxejKjj+0+Pt2gAlwilTda0dd8UWiEKvb+SkbbWWIUq+C/n+fb5Oz8htQccBQAA"
+    }
+  },
+
+  //  API Gateway Log
+  IndexAWSLogs2: {
+    "awslogs": {
+      "data": "H4sIAAAAAAAAAK2VW2/iOBSA/4rFQzU7S0KcxEmMlAcKlF7oDLvQTkerEXJiA1FJnHGcBlr1v+8xDO222pWqdl8i5/jY5ztXP7RyUVVsKWbbUrS6rUFv1ptfDqfT3mjYardkUwgFYkJJGFIcUZ86IF7L5UjJuoSd3uTMGjEtGra1hhuR1jqThTWWy2qON5re3oUkyzqlknx/bqqVYDkcXDjUI8JPOaGuw1iQhimlASNCEI+FzgLUqzqpUpWV5sqTbK2Fqlrdv1pjliec7S+anxVcbHrfpsZi68fOxPBOFNpoPrQyDpY8N3ApJTRyceREUUCx71ASRNjDEXH9KMA49CIfuwHxfMcNfOyblQ8EOoPwaJaDpyD0cBg5jhuRsH0IG1w/1UzprFgicXAfLaRCSvys4WwX8SBimHm+hSmJLIxFYDGKE4uEAcNJ4HIaLlqP7Y/BkjfCns5mE3Qp9EryLpp8nc7a6E9RyVqlAk2YXnVRp5fqGhI6EHdZKk6UzKdrlt5+mDB4I+Ee7hA+VO6gHh4/bD98n334qi2qtIIM/y8c0fs4VoJxqH9A6KWpKHX8ufO5jfprWXPIUaGt60w0Qll9WRdabeOr6YvdE6kaprjg1kRJLeOV1mX1QuOssmYsWYvDTfGCrSvxWuVSJtlavFK5qsBwbwldF+9qJZEaYdtBn37fmel2OqzM7Mps2anMO0qCRvVbG928jWuaQ4fNrl9ZPZWVjp9njL1vP2EZW3VlNRA1y7VZzu5lwZrKWG6jffCsYZFKDhmNl/dZ2eZisYaKf8UjlY5932uj64zF2MYIR9gVEU0SnDJM2YL7kOrQ8xj2ScgjYqeGemGo7UJo9OnZi52vvfze6i+sMx5fJRt6MS83+WlxdjP/OVdjcnO+Ou8v3eaWz5g4Gfat4UB9T+6dDXFu6vPtd+00cfySEFYx8W3XobbrYRtKro3Mv0dtILID93UcB6K61bI8xFGr2uQXNiFzlnkAYlaW6yxlZoh1NlbTNBaMstyq1VqYiAn+8fqn76v/RPItSgTgCKQVKyoDtgOFntDyVhTxkPW/FIu8GRXF2B06x6ugP+udBupIm4ci4/HModOb0beL0V7CZc6yItallUl9BDVsBp7Rw57nArjvEXKUrlhRiLUR953B8feJP/7jSViwXMTLKGJHTx7FTw5BB8DHcY5quNqcv5qOe/2L46+zvWR3uPrVL0C00fERrIzmsTO8DMeDgbcTHKyU2b8GnwY+DYE1hBlL3JD4IVSAF+AwCDwXY4qpBxkxLsGZ/wx+4P8z+MPnp4xBv3PEawi7RKksFtmyVrvAI6GUVF10VZi5YbafEnNI24eBvTcC/6oW6PESRhgAN5lewdhmuob6II7Tevzx+DdLuYWW7QgAAA=="
+    }
+  },
+
+  //  SetDesiredState Lambda Log
+  IndexAWSLogs3: {
+    "awslogs": {
+      "data": "H4sIAAAAAAAAAO1ZC2/bNhD+K4I3IBsa2yQlkqIwDHAaNy2WtFnsrtviwKUlKtYsi55EJfEC//edHnacJm4TNN0aNAFiSDzqHt/dR/Kky8ZUZZk8Vf35TDW8xm6n3xkedHu9zl63sd3Q54lKYZgKyrnArnAEguFYn+6lOp+BpC3Ps3Ysp6NAtnvK7KosSlXQM9KoamLPpEpOYSZBmLURbWO7ffz9fqff7fVPMA9DR/nEtrnjqICMEOUjMgoVHynb4RRUZPko89NoZiKdvIhio9Ks4R039kuTlfLhqyRQF513vX19mjVOSrPdM5WYYuZlIwrAuk0YEYIK7lKECbMFZbbtYgK3iGLmcPh3McRpC465zSgmjo2QCx6YCDAycgrhYofZmLsIVCC+vcQO1Pf6naO+daT+zmHqq8CzAupICGHUxIK6TYwVa0rqkqa0sSzsSh/71m8QDITlWTUeg6Sx2P48h8UdHb4cNMbGzJpTZcY6GDQ8a9A4fAMuNLbhyqgLU43FKngWxjIbk0oiZ1FzouaVcDkZUhDVOvpI9H7fe/fL3pos0FMZJZUcTEbaXOlaPocvjJiccRpFlSzPVNqUabJuSBU5rQaOlK+iMxV0q6FSm+/rPDErjVd6Vs69LZzr/slQJfPHMklUvBI/R7s7fxw6+79W4kznqa+a0aySUqdFkGgRG7eI4657ebpyqxdLfzLSxsItZP3wrEA489ptCLSVFaKWr6ftVMOM7MdKQ6pqMzNpxpWSdsc3OfBnV51FvnqR6mmpdi2eRE5VnZ58Ns9VUoO9zHsNaZl7LoRoIfgT4krDOkIrD5YwsEkUT+waAwPRVcOztKiT6omyzFcPFLXOlKDrtc58uA1trjDHIK+rx5dxfN36MgdXIZ26rqzj0RNVF0BXPn+dhNPzvSTZJ120M2bP+52XLK29VGkB1SqR2LaJ62DHpnTQWHw+qzD6tlhV1tsTtZ6o9R9QC39b1DqCbf7RM0sak0aj3KgV5F+YcUkex7cRLCi1rop7Fn0NvDuTcV4bWC/Ex0FHcnc6Fsm4FswSfigP6Y+nxQG8kB1fFtk0cT0RugQTJadWULUKVlb0CjVEOtY1lOdAJZj1Ibs9PVPJMIxiNQx1HKjUs4alAm9o3SarjXjDwSAZeufybD4MICXel7ocVg5P00lwngyrNeR4GUAhCSMVBwDLyfpNhVE21mkZpklz9UEhvX//vuifmghK0O4T4hHkIeA04hxTEC45s0J5lUMP6mLb+rT6qlRvUwX0LpRUHkO1j0r+bkylB8YGJc0grYNiYnlfz1kbuWJ4OVb8bo6xkG6Xc+KlkuK3JhhcLRaLpZM10yofv7ti2dpy3FNJ0Nf1UnQ7bwQwixHMkE2QzYAIWCAGbSrjgiHugFwQQWwmBOe2s7Hvoty9K29g2ZrpJKsFevLEpic2PQo27WlTUuloVcAPQCm6sem6Sam66gsoVtBUdx8c3D8CSRlUrILrO/dicevK0XnX2xCkC4Ew4bgQgwv7KSOEIpcJjF2HuwRTQgQnGMGWSwkWhG8IkhDs/H9BQkIhwqt03lydLvOtmZzHWgZbnvUTnA21r1PVWk5qVW/moJx3dDC39Ogv5RtLGgtd8NBl1B0JJTD6edvaWlo5UEYG0kjQd7n1st8/LF4i5tlzHSgYIgiVc+sXbDCyFYa+HwifNcNRyJqO7ePmSLlhk6FAhIFDRtglW2UdP0CeNr0I/JrydFgl5Hq6hrPl6E0XrqKoD8Zf1O+z6m1nIRIAa7my1zn/tNXNri/WTH5k1qJy4tuu4k2nlFuq+D6n+7WTxqletlTXN7eq/7PGMrMyZa7vcVaW+z7YDqHLm9/YMO/x5AMe/1xi2w5nBFEqGIVuj2GXOgy2LNi0COGwVyGGoGUqdiNMNrVNsJ2xBz/+PTq473g+KDAHbAmADj0qcVwO8MKxgLmQCBekgLtNqAPdru0KSjdjfu180H29e98vMw/gHbujd0fdwzf3/3Q0MLt5Kk358QhzglqUWNNsYHaiGJZCa00IJkFiDcyBmup0bvWif+BQiYlrHezAoLywasHbDE6mFqHleAHAyeJfehKfqh4cAAA="
+    }
+  },
+
 };
 
 const test_context = {
@@ -1597,7 +1346,9 @@ const test_context = {
 
 //  Run the unit test if we are in development environment.
 function runTest() {
-  return exports.handler(test_aws_log, test_context, (err, result) => {
+  const path = require('path');
+  const script = path.basename(__filename).replace('.js', '');
+  return exports.handler(test_input[script], test_context, (err, result) => {
     if (err) console.error(JSON.stringify(err, null, 2));
     else console.log(JSON.stringify(result, null, 2));
     process.exit(0);
