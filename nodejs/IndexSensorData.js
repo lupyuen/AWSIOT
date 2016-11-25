@@ -16,7 +16,8 @@
 //  Select Log Format = Other, set Subscription Filter Pattern to blank
 
 //  This lambda function must be run as role lambda_iot.
-//  lambda_iot must be attached to policy LambdaExecuteIoTUpdate, see github.com/lupyuen/AWSIOT/policy/LambdaExecuteIoTUpdate
+//  lambda_iot must be attached to policy LambdaExecuteIoTUpdate,
+//  see github.com/lupyuen/AWSIOT/policy/LambdaExecuteIoTUpdate.txt
 
 console.log('Loading function');
 
@@ -28,6 +29,7 @@ const replaceSlackChannels = {
 };
 
 const https = require('https');
+const zlib = require('zlib');
 const AWS = require('aws-sdk');
 
 //  Init the AWS connection.
@@ -71,23 +73,48 @@ const main = (event, context, callback) => {
     if (input.domain) delete input.domain;  //  TODO: Contains self-reference loop.
     console.log('IndexSensorData Input:', JSON.stringify(input, null, 2));
     console.log('IndexSensorData Context:', context2);
-
-    //  Index the sensor data.
     //  Don't index response to set desired state.
     if (input.state && input.state.desired) {
       return callback2(null, 'Ignoring response to set desired state');
     }
-    //  This Sumo Logic Collector URL is unique to us: Sensor Data Logs
-    const url = 'https://endpoint1.collection.us2.sumologic.com/receiver/v1/http/ZaVnC4dhaV2spqT2JdXJBek02aporY-ujTTn2eTcc3XfNomF_U94P6-YIpFZ6FIyAJqG9rNtzNK0JmP13upzBiH8FUfaSMyQmXqgfMdfSGazF6czrBHHxw==';
-    const ret = processSensorData(input, context2);
-    const device = ret.device;
-    const awslogsData = ret.awslogsData;
-    //  Process the logs, write to MySQL and Sumo Logic.
-    return processLogs(url, device, awslogsData)
-    //  If no errors, return the result to AWS.
+    let device = null;
+    //  Unzip the logs if we are processing CloudWatch logs (IndexAWSLogs).
+    return unzipLogs(input)
+      .then((awslogsData) => {
+        if (awslogsData) return awslogsData;
+        //  Else index the sensor data (IndexSensorData).
+        const ret = processSensorData(input, context2);
+        device = ret.device;
+        return ret.awslogsData;
+      })
+      .then((awslogsData) => {
+        //  This Sumo Logic Collector URL is unique to us: Sensor Data Logs
+        const url = 'https://endpoint1.collection.us2.sumologic.com/receiver/v1/http/ZaVnC4dhaV2spqT2JdXJBek02aporY-ujTTn2eTcc3XfNomF_U94P6-YIpFZ6FIyAJqG9rNtzNK0JmP13upzBiH8FUfaSMyQmXqgfMdfSGazF6czrBHHxw==';
+        //  Process the logs, write to MySQL and Sumo Logic.
+        return processLogs(url, device, awslogsData);
+      })
+      //  If no errors, return the result to AWS.
       .then(res => callback2(null, res))
       //  Or return the error to AWS.
       .catch(err => callback2(err));
+  }
+
+  function unzipLogs(input) {
+    //  Unzip the log records.  Returns a promise.
+    //  Index the AWS Logs.  Decode input from base64.
+    if (!input.awslogs) return Promise.resolve(null);
+    const zippedInput = new Buffer(input.awslogs.data, 'base64');
+    //  Decompress the input
+    return new Promise((resolve, reject) => {
+      return zlib.gunzip(zippedInput, (e, buffer) => {
+        if (e) {
+          console.error(e);
+          return reject(e);
+        }
+        const awslogsData = JSON.parse(buffer.toString('ascii'));
+        return resolve(awslogsData);
+      });
+    });
   }
 
   function processLogs(url, device, awslogsData) {
@@ -100,9 +127,11 @@ const main = (event, context, callback) => {
     //  awslogsData.logEvents["0"].extractedFields.current.state.reported
     //  Write JSON messages to MySQL.
     const promises = [];
-    for (const record of records) {
-      const promise = writeDatabase(device, record, context);
-      promises.push(promise);
+    if (device && device.toLowerCase() !== 'unknown') {
+      for (const record of records) {
+        const promise = writeDatabase(device, record, context);
+        promises.push(promise);
+      }
     }
     //  Post JSON messages to Sumo Logic.
     const promise = postLogsToSumoLogic(url, records, device);
@@ -114,6 +143,7 @@ const main = (event, context, callback) => {
 
   function writeDatabase(device, event2 /* context2 */) {
     //  Write the record to MySQL database.  Returns a promise.
+    if (!device) return Promise.resolve(null);
     //  If device is g88pi, group is g88
     let group = device;
     if (group.toLowerCase().endsWith('pi')) group = group.substr(0, group.length - 2);
@@ -187,7 +217,7 @@ const main = (event, context, callback) => {
   }
 
   function processSensorData(input, context2) {
-    //  Format the sensor data into a Sumo Logic update request.
+    //  Format the sensor data into a Sumo Logic update request.  Returns the log records.
     //  console.log(JSON.stringify({input: input})); ////
     const extractedFields = {};
     let action = '';
@@ -702,9 +732,9 @@ function isProduction() {
 
 /* eslint-disable no-unused-vars, quotes, quote-props, max-len, comma-dangle */
 //  AWS IoT Log
-const test_input1 = {
+const test_aws_log = {
   "awslogs": {
-    "data": "H4sIAAAAAAAAAO2XW2/bNhTHvwph7GED7Jj3i/pkOE5nLDfYbvtQFAEtUbYwWfJEKVla9LvvUHKadK3rtgu2YJtfDPFyePg/P/IcvuttnPd25Ra3W9eLesejxejqbDKfj55Pev1eeVO4CpqFEUoZog03GJrzcvW8Kpst9IxezadlfVqufNc+rytnN2FKzKWzCpM0NXFC7BKn8VJQuxQpwSaV1FjmHKZmKTFVhqZaU6uXKUmETO2SgjnfLH1cZds6K4uTLK9d5XvR696p3SwT2y10NS0S9zs40XrwpnVhcu2KOox818sS8IRRiRWVDEtCNGGcUUEU1UYwRgmWmCjCpWCEc0m5lJJryjmlHDyoM5CnthvYKYyhBFzl3BDSv5MNzFNM5ACLAaYIs4ipiPIjGIIWs9F4Mj2OklTFBms3ENiwAYddDyymeJCkwjChY4wThy5n0/Px9HJ0ChP+qnLo9fT85OINQpOXk/NFdNks88yvW1XQ4uJyOj4fnU2iH+yNH9brrFj54UrrbTb0a5uUN8Nmm9jaoR0Ed9OnBZrXtm58hOYvxmPo7L3vfyqwxAILxQn8EcwEfCsOu8SEUG64AvmZoJJoRQk1ewVm+KDADD81gS+ab5B3aOPYbWuX/FnnYOUrhKYBWEM54xr+Fedcc0wE1VoRhg0VPIzl1EAINN0rtFIHhVbqyQh9Zus4KDprcndSNkXyPXqPT6dgC5wrhvaD+HeWUQWmURpsRwjMXFUuLqvkyrvCl9UVWLKfjQYEQRjNjOQUU2I4UM6YBqEJ4I85J5RobLAy4STsjYYWB6OhxX83GurKxsVXRiTc7IrA7c5Bc8oxptIwYyAMVBM4HZIxySQcIEmx3nfTC5j25YiIIxjyZCJyfFvYTTmKQ76cNyCx948Wk529tMnzW7SFS6pbDHXhOEJnnUrIVlV2DUbKIkJfu2IfdT5HKGmN9tHCLnN3H/MHwe4j9LP161/c7UnmcuAicddZ7Pp3rS9t3rQzYbk+mtli5e7Hfgjyfc9u/H1oF4TsDhskK2nI5+jiWMOhxoQqwZQJFYXhcP5JuISV0HDmQylBhYQ7Ae9LcwLzA3UE0MWfTh3xL6RLf5GsB7R8DNd+WD4hrrP/CW42zz/LFSUcEgGgpCiUkBrLwA9EiAjMgClIMCwkFaEBQLmfqwNZPXD1dLJ6V87/DVxlxXX5K4zM2wVR2hTtmo9FV2e2j052diHKVRGBmajriRo/uIFoDWj08DkV3fkRtU+ZeQvMMfC4KwPHZdIiR+8tI1dVZRWhotmDEddECyY4gR/XAtIdhjoc1pQmvG+IMTK8fhg0mf3XkzAHMRLmf4yeGkZAUBL4qctJbn2dxXNnq3gtvpsnxSD2PLx7mYJLTphQ4EJdRZmE60rBM8QwopmCl4bmYu+1BEQd4gmG/JM8TWazi9kHoObn8y4mJzbLm8o9Gk3BHvTVJWS69s2HYCn43GbxEVqsXReOkPtcy9GN9eiFd9U9Cb720cfRt943G5cMqjJ3w2m5OC1Xq1Cbh09yMx69Va/GKPOoKGtkm3pdVtnbnQ+uSstqEwUn7h6hgC4s78umit2DVQu/D76QSuuyXIP1H+euChVZhEYb+xbO4vn82Q491LHHMXuGJu0eu4bRziEb1G47nqGZ+62BhRBoh1i8BNAAhaWWciAUiweWcTPACXVKJGxpaPLTY50/2GWoEKqVq9GoKr5x+733b97/AU2Sk2ZUEwAA"
+    "data": "H4sIAAAAAAAAANWTWW+jMBSF/4qF5jEUr4D9hhJSMcrWkM6iqooIOCmaBEcGmlZV//tckrTSbGpHmpd5Q/bxdw/n2E/OTtd1ttGLx712lDOIFtFyHKdpdBk7PcccKm1hWUgRBJKEkksMy1uzubSm3cNO9DlNTDMym/q0njZWZ7ufjnjRfBp9vKbx1dXXwfV0sBj5tH+1nFmTw/Q0uRxOv4xPPv5CCgPrdlXnttw3pamG5bbRtnbUjTPKdqsiO1lZJlWhH8Dm0ePt0WR8r6umUz45ZQFeGcOYh4IFAQ0I86nvY0FZQLiUkmHKsY+J9AmngsA3lwELRMh9Dg6aEgJssh1kQXggZRiGVGLKei/BAp5i4ruEuJQjQhXGisoLkKDFPOrHyUBJJnHG89xd+WvsYhrkLiNi5cpQ4MJn+QpLgWbzZNJPZtEIDrydrXp/tr+VoptkMpzeIhR/iicLNc6a/K6sNvN2q4emrQq0mM6S/iQax+pDdqi9ptutvQ0l+9Kr77LCHLx2X2SN9gqTt7sub9QfJQAD/5WXofMle0UjC2y07uAKAWdpdW5ssax1VRu7BFTmPPd+KSyUTAjGBRE+dCdZyKUgVFAhJKekq0t2rVEquaDyT4VByW8VBpL/qLDTC4jy7mGkbd7J/11lZ+C63W4fUVndm2+6QNvjRLRuq+PQC/RiLLO2vAeBqRR69+AeOnlXZ24PDc9gBcBKAUeddlRbuwdo1KU/pKxejKjj+0+Pt2gAlwilTda0dd8UWiEKvb+SkbbWWIUq+C/n+fb5Oz8htQccBQAA"
   }
 };
 
@@ -1006,7 +1036,7 @@ const test_input4 = {
 };
 
 //  SIGFOX message
-const test_input5 = {
+const test_sensor_data = {
   "previous": {
     "state": {
       "reported": {
@@ -1567,9 +1597,10 @@ const test_context = {
 
 //  Run the unit test if we are in development environment.
 function runTest() {
-  return exports.handler(test_input5, test_context, (err, result) => {
+  return exports.handler(test_sensor_data, test_context, (err, result) => {
     if (err) console.error(JSON.stringify(err, null, 2));
     else console.log(JSON.stringify(result, null, 2));
+    process.exit(0);
   });
 }
 
