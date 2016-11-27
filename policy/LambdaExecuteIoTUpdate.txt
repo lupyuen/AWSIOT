@@ -4,6 +4,13 @@
         {
             "Effect": "Allow",
             "Action": [
+                "SNS:Publish"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
                 "cloudwatch:PutMetricData",
                 "cloudwatch:PutMetricAlarm"
             ],
