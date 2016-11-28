@@ -4,6 +4,15 @@
         {
             "Effect": "Allow",
             "Action": [
+                "route53:ChangeResourceRecordSets"
+            ],
+            "Resource": [
+                "*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
                 "SNS:Publish"
             ],
             "Resource": "*"
@@ -29,7 +38,8 @@
             "Effect": "Allow",
             "Action": [
                 "iot:GetThingShadow",
-                "iot:UpdateThingShadow"
+                "iot:UpdateThingShadow",
+                "iot:Publish"
             ],
             "Resource": [
                 "*"

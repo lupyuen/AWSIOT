@@ -12,7 +12,7 @@
 //  Go to AWS API Gateway --> SIGFOX --> Actions --> Deploy API --> prod
 
 //  This lambda function must be run as role lambda_iot.
-//  lambda_iot must be attached to policy LambdaExecuteIoTUpdate, see github.com/lupyuen/AWSIOT/policy/LambdaExecuteIoTUpdate
+//  lambda_iot must be attached to policy LambdaExecuteIoTUpdate, see github.com/lupyuen/AWSIOT/policy/LambdaExecuteIoTUpdate.json
 
 'use strict';
 

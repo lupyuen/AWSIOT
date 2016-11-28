@@ -17,7 +17,7 @@
 
 //  This lambda function must be run as role lambda_iot.
 //  lambda_iot must be attached to policy LambdaExecuteIoTUpdate,
-//  see github.com/lupyuen/AWSIOT/policy/LambdaExecuteIoTUpdate.txt
+//  see github.com/lupyuen/AWSIOT/policy/LambdaExecuteIoTUpdate.json
 
 console.log('Loading function');
 
