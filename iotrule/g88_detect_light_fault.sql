@@ -18,22 +18,10 @@ lambda_iot
 
 SELECT
 
-  '+6587177328' as phone,
-  'g88lamppost light is faulty ' +
-  cast(
-    (
-      cast(substring(current.state.reported.timestamp, 11, 13) as int) * 60 * 60 +
-      cast(substring(current.state.reported.timestamp, 14, 16) as int) * 60 +
-      cast(substring(current.state.reported.timestamp, 17, 19) as int)
-     -
-
-      cast(substring(current.state.reported.light_off_timestamp, 11, 13) as int) * 60 * 60 +
-      cast(substring(current.state.reported.light_off_timestamp, 14, 16) as int) * 60 +
-      cast(substring(current.state.reported.light_off_timestamp, 17, 19) as int)
-    )
-    as string
-  )
-  as message
+  '+6587177328'
+    as phone,
+  'g88lamppost light is faulty'
+    as message
 
 FROM
 
