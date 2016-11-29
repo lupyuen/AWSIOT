@@ -9,10 +9,7 @@ doesn't cater for rollover at midnight.
 SQL Version = beta
 
 Action:
-Republish messages to an AWS IoT topic
-
-Topic: (note the double "$")
-$$aws/things/g88lamppost/shadow/update
+Run Lambda Function SendSMS
 
 IAM Role Name:
 lambda_iot

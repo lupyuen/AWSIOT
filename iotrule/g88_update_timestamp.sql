@@ -14,7 +14,6 @@ $$aws/things/g88lamppost/shadow/update
 
 IAM Role Name:
 lambda_iot
-
 */
 
 SELECT
@@ -25,3 +24,8 @@ SELECT
 FROM
 
   $aws/things/g88pi/shadow/update/documents
+
+INTO
+
+  $$aws/things/g88lamppost/shadow/update
+
