@@ -46,7 +46,8 @@ network={
    sudo dhclient
    ```
 
-0. Click Menu -> Preferences -> Raspberry Pi Configuration.  Click Interfaces. Enable SSH, SPI, I2C and Serial.  Set time zone to GMT+8.  Set keyboard to US.  Set locale to English US UTF-8 (en_US.UTF-8).  Reboot.
+0. Click Menu -> Preferences -> Raspberry Pi Configuration.  Click Interfaces. Enable SSH, SPI, I2C and Serial.  Set time zone to GMT+8.  Set keyboard to US.  Set locale to English US UTF-8 (en_US.UTF-8). From the advanced menu, change the memory split for the GPU to “16”.
+Reboot.
 
 0. Install latest "Latest Features" Node.js from https://nodejs.org/en/download/ (ARMv7)
    ```
