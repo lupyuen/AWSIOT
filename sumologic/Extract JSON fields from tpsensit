@@ -1,0 +1,7 @@
+json "device", "action", "duration", "status", "error", "url", "source", "sourceId", "sourceType", "eventType", "severity", "deviceInfo", "id", "lastDay", "lastWeek", "lastMonth", "latitude", "longitude", "name", "type", "typeName", "site" nodrop
+| json "duplicate", "snr", "station", "avgSnr", "rssi", "seqNumber", 
+    "ack", "longPolling", "baseStationTime", "baseStationLat", "baseStationLng", "deviceLat", "deviceLng"  nodrop
+| json "sensit", "modbus", "battery" nodrop
+| json field=sensit "temperature", "humidity", "light_detections", 
+    "light_level", "vibration_detections", "door_openings",
+    "magnet_detections", "magnet_state" nodrop
