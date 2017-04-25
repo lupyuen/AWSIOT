@@ -1,1 +1,1087 @@
-[{"id":"b6055a58.28c248","type":"comment","z":"c6d1c41a.4c8f98","name":"⬇︎ MACRO LEVEL","info":"","x":1550,"y":680,"wires":[]},{"id":"84c90de.a809df","type":"comment","z":"c6d1c41a.4c8f98","name":"Device","info":"","x":190,"y":80,"wires":[]},{"id":"26d8f7b1.05eed8","type":"comment","z":"c6d1c41a.4c8f98","name":"Setup","info":"","x":210,"y":120,"wires":[]},{"id":"197d9805.3c6d68","type":"comment","z":"c6d1c41a.4c8f98","name":"Loop","info":"","x":210,"y":160,"wires":[]},{"id":"951f3741.88f4c8","type":"inject","z":"c6d1c41a.4c8f98","name":"Every 10 sec","topic":"","payload":"500","payloadType":"num","repeat":"10","crontab":"","once":false,"x":260,"y":220,"wires":[["2934c5b1.ff353a"]]},{"id":"2716ee99.271842","type":"comment","z":"c6d1c41a.4c8f98","name":"Transmit","info":"","x":420,"y":80,"wires":[]},{"id":"50cca980.abbb68","type":"comment","z":"c6d1c41a.4c8f98","name":"IoT Gateway","info":"","x":590,"y":80,"wires":[]},{"id":"e6337274.2e4b2","type":"comment","z":"c6d1c41a.4c8f98","name":"Rule Engine","info":"","x":830,"y":80,"wires":[]},{"id":"8ecd97e4.5d8838","type":"comment","z":"c6d1c41a.4c8f98","name":"Alerts","info":"","x":1510,"y":360,"wires":[]},{"id":"900fca22.f684b8","type":"comment","z":"c6d1c41a.4c8f98","name":"Dashboard","info":"","x":1340,"y":540,"wires":[]},{"id":"c2b67e69.c6fa8","type":"comment","z":"c6d1c41a.4c8f98","name":"Sensor","info":"","x":50,"y":80,"wires":[]},{"id":"d97a8289.1174d","type":"comment","z":"c6d1c41a.4c8f98","name":"Sensor Data Store","info":"- Preferably a Time Series Database like InfluxDB\n- MySQL works fine for low data volume","x":750,"y":480,"wires":[]},{"id":"790e40ae.8ea66","type":"comment","z":"c6d1c41a.4c8f98","name":"IoT Analytics","info":"","x":850,"y":680,"wires":[]},{"id":"a46d89f3.465808","type":"comment","z":"c6d1c41a.4c8f98","name":"IoT Machine Learning","info":"","x":1100,"y":680,"wires":[]},{"id":"687a467d.be7598","type":"comment","z":"c6d1c41a.4c8f98","name":"Deep IoT","info":"","x":120,"y":680,"wires":[]},{"id":"4b02030e.de319c","type":"comment","z":"c6d1c41a.4c8f98","name":"Wide IoT","info":"","x":280,"y":680,"wires":[]},{"id":"f3be27e6.752e28","type":"comment","z":"c6d1c41a.4c8f98","name":"Mobile App","info":"","x":620,"y":680,"wires":[]},{"id":"6f9e8c3a.8d7564","type":"e-mail","z":"c6d1c41a.4c8f98","server":"smtp.gmail.com","port":"465","secure":true,"name":"","dname":"","x":1530,"y":400,"wires":[]},{"id":"8f3ff88.b472408","type":"comment","z":"c6d1c41a.4c8f98","name":"Physical Device State","info":"","x":1220,"y":80,"wires":[]},{"id":"faf6f05b.fd7f5","type":"comment","z":"c6d1c41a.4c8f98","name":"Logical Device State","info":"","x":1330,"y":200,"wires":[]},{"id":"2934c5b1.ff353a","type":"function","z":"c6d1c41a.4c8f98","name":"display","func":"//  Display the received payload.\nnode.status({\n    fill: 'green',\n    shape: 'dot',\n    text: JSON.stringify(msg.payload, null, 2)\n});\n\n//  Pass through the message with no changes.\nreturn msg;","outputs":1,"noerr":0,"x":440,"y":120,"wires":[["8b44b3e2.e8136"]]},{"id":"8b44b3e2.e8136","type":"function","z":"c6d1c41a.4c8f98","name":"convert to json","func":"//  Construct a JSON payload containing the \n//  timestamp and sensor data.\nvar result = {\n    //  We will be returning a payload\n    //  instead of a top-level object.\n    payload: {\n        //  \"timestamp\" is number of milliseconds elapsed \n        //  since 1 Jan 1970 00:00:00 UTC.\n        timestamp: Date.now(),\n        \n        //  \"lig\" is the light level, e.g. 500.\n        lig: msg.payload\n    }\n};\n\n//  Display the received payload.\nnode.status({\n    fill: 'green',\n    shape: 'dot',\n    //  Convert the payload to JSON.\n    text: JSON.stringify(result.payload)\n});\n\n//  Return the new message.\nreturn result;\n","outputs":1,"noerr":0,"x":620,"y":120,"wires":[["8accef7c.bea25","340cdcb.24a0924"]]},{"id":"d5e21e1d.048e8","type":"gpio in","z":"c6d1c41a.4c8f98","name":"Light Sensor (A0)","state":"ANALOG","samplingInterval":"10000","pin":"0","board":"7b8704c4.af953c","x":260,"y":280,"wires":[["2934c5b1.ff353a","8f299fa1.317e1"]]},{"id":"b3c91298.5f28b","type":"gpio out","z":"c6d1c41a.4c8f98","name":"LED (D13)","state":"OUTPUT","pin":"13","i2cDelay":"0","i2cAddress":"","i2cRegister":"","outputs":0,"board":"7b8704c4.af953c","x":500,"y":400,"wires":[]},{"id":"8f299fa1.317e1","type":"function","z":"c6d1c41a.4c8f98","name":"Toggle output on input","func":"//  Display the received payload.\nnode.status({\n    fill: 'green',\n    shape: 'dot',\n    text: JSON.stringify(msg.payload, null, 2)\n});\n\n// If it does exist make it the inverse of what it was or else initialise it to false\n// (context variables persist between calls to the function)\ncontext.level = !context.level || false;\n\n// set the payload to the level and return\nmsg.payload = context.level;\nreturn msg;","outputs":1,"noerr":0,"x":380,"y":340,"wires":[["b3c91298.5f28b"]]},{"id":"f3bb7d12.e2079","type":"ui_chart","z":"c6d1c41a.4c8f98","name":"","group":"712f4a57.a07534","order":0,"width":0,"height":0,"label":"chart","chartType":"line","legend":"false","xformat":"HH:mm:ss","interpolate":"linear","nodata":"","ymin":"","ymax":"","removeOlder":1,"removeOlderPoints":"","removeOlderUnit":"3600","cutout":0,"colors":["#1f77b4","#aec7e8","#ff7f0e","#2ca02c","#98df8a","#d62728","#ff9896","#9467bd","#c5b0d5"],"x":1350,"y":580,"wires":[[],[]]},{"id":"a3cb898e.d5eba8","type":"comment","z":"c6d1c41a.4c8f98","name":"⬅︎ HARDWARE","info":"","x":80,"y":20,"wires":[]},{"id":"624a84b8.b948fc","type":"comment","z":"c6d1c41a.4c8f98","name":"SOFTWARE ➡︎","info":"","x":1360,"y":20,"wires":[]},{"id":"87debb53.ec9c18","type":"comment","z":"c6d1c41a.4c8f98","name":"⬆︎ MICRO LEVEL","info":"","x":1540,"y":80,"wires":[]},{"id":"610e60e9.3534","type":"change","z":"c6d1c41a.4c8f98","name":"light is on","rules":[{"t":"set","p":"payload","pt":"msg","to":"{ \"light_detected\": true }","tot":"json"}],"action":"","property":"","from":"","to":"","reg":false,"x":940,"y":200,"wires":[["1b5c527.0c150ae"]]},{"id":"e8f34bac.2fb108","type":"change","z":"c6d1c41a.4c8f98","name":"light is off","rules":[{"t":"set","p":"payload","pt":"msg","to":"{ \"light_detected\": false }","tot":"json"}],"action":"","property":"","from":"","to":"","reg":false,"x":940,"y":240,"wires":[["1b5c527.0c150ae","dedf5253.85c3"]]},{"id":"a1355236.9f2a7","type":"function","z":"c6d1c41a.4c8f98","name":"save physical device state","func":"//  Save the physical device state into memory.\nflow.set('last_physical_device_state', msg.payload);\n\n//  Display the physical device state saved.\nnode.status({\n    fill: 'green',\n    shape: 'dot',\n    text: 'Saved state ' + JSON.stringify(msg.payload)\n});\n\n//  Pass through the original message.\nreturn msg;\n","outputs":1,"noerr":0,"x":1260,"y":120,"wires":[["7b99a101.c1c28"]]},{"id":"8accef7c.bea25","type":"function","z":"c6d1c41a.4c8f98","name":"display","func":"node.status({\n    fill: 'green',\n    shape: 'dot',\n    text: JSON.stringify(msg.payload, null, 2)\n});\nreturn msg;","outputs":1,"noerr":0,"x":840,"y":120,"wires":[["a1355236.9f2a7"]]},{"id":"1b5c527.0c150ae","type":"function","z":"c6d1c41a.4c8f98","name":"save logical device state","func":"//  Inject the timestamp if there was no timestamp.\n//  If there was a saved state, inject the previous\n//  fields that were not changed.\nmsg.payload = Object.assign(\n    //  Object.assign will merge the following\n    //  items in the sequence below.\n    {},\n    flow.get('last_logical_device_state'),\n    { timestamp: Date.now() },\n    msg.payload\n);\n\n//  Save the logical device state into memory.\nflow.set('last_logical_device_state', msg.payload);\n\n//  Display the logical device state saved.\nnode.status({\n    fill: 'green',\n    shape: 'dot',\n    text: 'Saved state ' + JSON.stringify(msg.payload)\n});\n\n//  Pass through the original message.\nreturn msg;\n","outputs":1,"noerr":0,"x":1370,"y":240,"wires":[["1d30325b.3d26fe"]]},{"id":"87ffd4ab.3ffde8","type":"comment","z":"c6d1c41a.4c8f98","name":"Simulated","info":"","x":80,"y":220,"wires":[]},{"id":"543475ec.390a1c","type":"comment","z":"c6d1c41a.4c8f98","name":"Arduino","info":"","x":70,"y":280,"wires":[]},{"id":"340cdcb.24a0924","type":"switch","z":"c6d1c41a.4c8f98","name":"is light on?","property":"payload.lig","propertyType":"msg","rules":[{"t":"gte","v":"500","vt":"num"},{"t":"else"}],"checkall":"false","outputs":2,"x":770,"y":200,"wires":[["610e60e9.3534"],["e8f34bac.2fb108"]]},{"id":"5adf2563.74d8ec","type":"change","z":"c6d1c41a.4c8f98","name":"light changed from on to off","rules":[{"t":"set","p":"payload","pt":"msg","to":"{\t    \"light_detected\": false,\t    \"light_off_timestamp\": Date.now()\t}","tot":"jsonata"}],"action":"","property":"","from":"","to":"","reg":false,"x":1100,"y":300,"wires":[["1b5c527.0c150ae"]]},{"id":"208dfd4e.064d02","type":"change","z":"c6d1c41a.4c8f98","name":"light has not changed","rules":[],"action":"","property":"","from":"","to":"","reg":false,"x":1080,"y":340,"wires":[[]]},{"id":"dedf5253.85c3","type":"switch","z":"c6d1c41a.4c8f98","name":"has light changed?","property":"payload.light_detected","propertyType":"msg","rules":[{"t":"neq","v":"","vt":"prev"},{"t":"else"}],"checkall":"false","outputs":2,"x":850,"y":320,"wires":[["5adf2563.74d8ec"],["208dfd4e.064d02"]]},{"id":"c35efcb8.57fb5","type":"function","z":"c6d1c41a.4c8f98","name":"current physical device state","func":"//  Display the physical device state.\nnode.status({\n    fill: 'green',\n    shape: 'dot',\n    text: JSON.stringify(msg.payload)\n});\n\n//  Pass through the original message.\nreturn msg;\n","outputs":1,"noerr":0,"x":840,"y":520,"wires":[["92c7d6ac.883c18"]]},{"id":"92c7d6ac.883c18","type":"file","z":"c6d1c41a.4c8f98","name":"","filename":"physical-device-state.json","appendNewline":true,"createDir":false,"overwriteFile":"false","x":1120,"y":520,"wires":[]},{"id":"b725b3e9.7b3c6","type":"function","z":"c6d1c41a.4c8f98","name":"current logical device state","func":"//  Display the logical device state.\nnode.status({\n    fill: 'green',\n    shape: 'dot',\n    text: JSON.stringify(msg.payload)\n});\n\n//  Pass through the original message.\nreturn msg;\n","outputs":1,"noerr":0,"x":840,"y":580,"wires":[["24593ffe.a589f","f3bb7d12.e2079"]]},{"id":"24593ffe.a589f","type":"file","z":"c6d1c41a.4c8f98","name":"","filename":"logical-device-state.json","appendNewline":true,"createDir":false,"overwriteFile":"false","x":1110,"y":560,"wires":[]},{"id":"7b99a101.c1c28","type":"link out","z":"c6d1c41a.4c8f98","name":"Physical Device State","links":["71925655.45a1c8"],"x":1415,"y":120,"wires":[]},{"id":"71925655.45a1c8","type":"link in","z":"c6d1c41a.4c8f98","name":"Physical Device State","links":["7b99a101.c1c28"],"x":675,"y":520,"wires":[["c35efcb8.57fb5"]]},{"id":"ed3ab9b1.b4d718","type":"link in","z":"c6d1c41a.4c8f98","name":"Logical Device State","links":["1d30325b.3d26fe"],"x":675,"y":580,"wires":[["b725b3e9.7b3c6"]]},{"id":"1d30325b.3d26fe","type":"link out","z":"c6d1c41a.4c8f98","name":"Logical Device State","links":["ed3ab9b1.b4d718"],"x":1515,"y":240,"wires":[]},{"id":"c8a647bc.48d908","type":"inject","z":"c6d1c41a.4c8f98","name":"Every 30 sec","topic":"","payload":"","payloadType":"date","repeat":"30","crontab":"","once":false,"x":760,"y":400,"wires":[["3b1bce72.b5fbf2"]]},{"id":"8633e67e.072398","type":"switch","z":"c6d1c41a.4c8f98","name":"if light was off for 30 secs or more","property":"Date.now() - \tflow.get('last_logical_device_state').light_off_timestamp\t","propertyType":"jsonata","rules":[{"t":"gte","v":"30000","vt":"num"},{"t":"else"}],"checkall":"false","outputs":2,"x":1160,"y":400,"wires":[["c15d849c.41bdd8"],[]]},{"id":"3b1bce72.b5fbf2","type":"switch","z":"c6d1c41a.4c8f98","name":"if light is off","property":"last_logical_device_state.light_detected","propertyType":"flow","rules":[{"t":"false"},{"t":"else"}],"checkall":"false","outputs":2,"x":930,"y":400,"wires":[["8633e67e.072398"],[]]},{"id":"c15d849c.41bdd8","type":"function","z":"c6d1c41a.4c8f98","name":"display","func":"//  Get the last logical device state.\nvar logical_device_state = flow.get('last_logical_device_state');\n\n//  Display the logical device state.\nnode.status({\n    fill: 'green',\n    shape: 'dot',\n    text: JSON.stringify(logical_device_state)\n});\n\n//  Return the logicla device state.\nreturn {\n    payload: logical_device_state\n};\n","outputs":1,"noerr":0,"x":1380,"y":400,"wires":[["6f9e8c3a.8d7564"]]},{"id":"7b8704c4.af953c","type":"nodebot","z":"","name":"","username":"","password":"","boardType":"firmata","serialportName":"/dev/cu.usbmodem1411","connectionType":"local","mqttServer":"","socketServer":"","pubTopic":"","subTopic":"","tcpHost":"","tcpPort":"","sparkId":"","sparkToken":"","beanId":"","impId":"","meshbluServer":"https://meshblu.octoblu.com","uuid":"","token":"","sendUuid":""},{"id":"712f4a57.a07534","type":"ui_group","z":"","name":"Default","tab":"9c5ec672.dbb3f8","disp":true,"width":"6"},{"id":"9c5ec672.dbb3f8","type":"ui_tab","name":"Tab","icon":"dashboard","order":0}]
+[
+    {
+        "id": "f9e4f512.a52518",
+        "type": "comment",
+        "z": "22b0f1d0.de306e",
+        "name": "SOFTWARE ▶️",
+        "info": "",
+        "x": 1260,
+        "y": 20,
+        "wires": []
+    },
+    {
+        "id": "30a0c327.4b42dc",
+        "type": "comment",
+        "z": "22b0f1d0.de306e",
+        "name": "🔻 MACRO LEVEL",
+        "info": "",
+        "x": 1430,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "551ae155.dfedf",
+        "type": "comment",
+        "z": "22b0f1d0.de306e",
+        "name": "Device",
+        "info": "",
+        "x": 190,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "eede08a6.8a9f28",
+        "type": "comment",
+        "z": "22b0f1d0.de306e",
+        "name": "Setup",
+        "info": "",
+        "x": 210,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "69312226.bf9d7c",
+        "type": "comment",
+        "z": "22b0f1d0.de306e",
+        "name": "Loop",
+        "info": "",
+        "x": 210,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "3ed56287.d62d8e",
+        "type": "inject",
+        "z": "22b0f1d0.de306e",
+        "name": "send every 10 sec",
+        "topic": "",
+        "payload": "simulated_sensor_data",
+        "payloadType": "flow",
+        "repeat": "10",
+        "crontab": "",
+        "once": false,
+        "x": 130,
+        "y": 320,
+        "wires": [
+            [
+                "edde5cb8.5144b"
+            ]
+        ]
+    },
+    {
+        "id": "c403ea19.e18478",
+        "type": "comment",
+        "z": "22b0f1d0.de306e",
+        "name": "Transmit",
+        "info": "",
+        "x": 420,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "310acb9c.3dabb4",
+        "type": "comment",
+        "z": "22b0f1d0.de306e",
+        "name": "IoT Gateway",
+        "info": "",
+        "x": 590,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "726245fd.85ea9c",
+        "type": "comment",
+        "z": "22b0f1d0.de306e",
+        "name": "Rule Engine",
+        "info": "",
+        "x": 830,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "92991f22.e5d12",
+        "type": "comment",
+        "z": "22b0f1d0.de306e",
+        "name": "Alerts",
+        "info": "",
+        "x": 1290,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "c86ab13c.0f41d",
+        "type": "comment",
+        "z": "22b0f1d0.de306e",
+        "name": "Dashboard",
+        "info": "",
+        "x": 1300,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "42eb30d5.7a61",
+        "type": "comment",
+        "z": "22b0f1d0.de306e",
+        "name": "Sensor",
+        "info": "",
+        "x": 50,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "34ef8398.3d5d0c",
+        "type": "comment",
+        "z": "22b0f1d0.de306e",
+        "name": "Sensor Data Store",
+        "info": "- Preferably a Time Series Database like InfluxDB\n- MySQL works fine for low data volume",
+        "x": 750,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "6c869053.5d17f",
+        "type": "comment",
+        "z": "22b0f1d0.de306e",
+        "name": "IoT Analytics",
+        "info": "",
+        "x": 850,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "a06d4705.66bad8",
+        "type": "comment",
+        "z": "22b0f1d0.de306e",
+        "name": "IoT Machine Learning",
+        "info": "",
+        "x": 1100,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "6a60419e.4bb9f",
+        "type": "comment",
+        "z": "22b0f1d0.de306e",
+        "name": "Deep IoT",
+        "info": "",
+        "x": 120,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "f602edd2.72ca3",
+        "type": "comment",
+        "z": "22b0f1d0.de306e",
+        "name": "Wide IoT",
+        "info": "",
+        "x": 280,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "b8c50d55.fb2c1",
+        "type": "comment",
+        "z": "22b0f1d0.de306e",
+        "name": "Mobile App",
+        "info": "",
+        "x": 620,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "8b2a540e.5a8f18",
+        "type": "e-mail",
+        "z": "22b0f1d0.de306e",
+        "server": "smtp.gmail.com",
+        "port": "465",
+        "secure": true,
+        "name": "",
+        "dname": "send email",
+        "x": 1330,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "65698d2d.e15af4",
+        "type": "comment",
+        "z": "22b0f1d0.de306e",
+        "name": "Physical Device State",
+        "info": "",
+        "x": 1220,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "a9037c20.8e228",
+        "type": "comment",
+        "z": "22b0f1d0.de306e",
+        "name": "Logical Device State",
+        "info": "",
+        "x": 1330,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "5b42deab.53281",
+        "type": "function",
+        "z": "22b0f1d0.de306e",
+        "name": "transmit",
+        "func": "//  Initiate a transmission flow.\n\n//  Cycle though ring and dot icons, across various colors.\nvar fillSequence = ['green', 'green', 'yellow', 'yellow', 'blue', 'blue', 'grey', 'grey']\nvar shapeSequence = ['ring', 'dot'];\nvar sequence = flow.get('display-sequence') || 0;\nvar fill = fillSequence[sequence % fillSequence.length];\nvar shape = shapeSequence[sequence % shapeSequence.length];\nflow.set('display-fill', fill);\nflow.set('display-shape', shape);\nflow.set('display-sequence', sequence + 1);\n\n//  Display the received payload.\nnode.status({\n    fill: flow.get('display-fill'),\n    shape: flow.get('display-shape'),\n    text: JSON.stringify(msg.payload, null, 2)\n});\n\n//  Clear the status after 9 seconds.\nsetTimeout(function() {\n    node.status({});\n}, 9000);\n\n//  Pass through the message with no changes.\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 450,
+        "y": 120,
+        "wires": [
+            [
+                "79a0f8d3.be8b48"
+            ]
+        ]
+    },
+    {
+        "id": "79a0f8d3.be8b48",
+        "type": "function",
+        "z": "22b0f1d0.de306e",
+        "name": "convert to json",
+        "func": "//  Construct a JSON payload containing the \n//  timestamp and sensor data.\nvar result = {\n    //  We will be returning a payload\n    //  instead of a top-level object.\n    payload: {\n        //  \"timestamp\" is number of milliseconds elapsed \n        //  since 1 Jan 1970 00:00:00 UTC.\n        timestamp: Date.now(),\n        \n        //  \"lig\" is the light level, e.g. 500.\n        lig: msg.payload\n    }\n};\n\n//  Display the received payload.\nnode.status({\n    //  Fill and shape are cycled by the \"transmit\" node.\n    fill: flow.get('display-fill'),\n    shape: flow.get('display-shape'),\n    //  Convert the payload to JSON.\n    text: JSON.stringify(result.payload)\n});\n\n//  Return the new message.\nreturn result;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 620,
+        "y": 120,
+        "wires": [
+            [
+                "f6309a03.fc1688",
+                "3f4ee674.470a0a",
+                "77261e73.4f1e8"
+            ]
+        ]
+    },
+    {
+        "id": "eb098c4e.4c335",
+        "type": "gpio in",
+        "z": "22b0f1d0.de306e",
+        "name": "Light Sensor (A0)",
+        "state": "ANALOG",
+        "samplingInterval": "10000",
+        "pin": "0",
+        "board": "c686ea3a.788a38",
+        "x": 140,
+        "y": 500,
+        "wires": [
+            [
+                "90eba967.91a5b8",
+                "709d7c3e.2607d4"
+            ]
+        ]
+    },
+    {
+        "id": "4c828832.09e138",
+        "type": "gpio out",
+        "z": "22b0f1d0.de306e",
+        "name": "LED (D13)",
+        "state": "OUTPUT",
+        "pin": "13",
+        "i2cDelay": "0",
+        "i2cAddress": "",
+        "i2cRegister": "",
+        "outputs": 0,
+        "board": "c686ea3a.788a38",
+        "x": 450,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "90eba967.91a5b8",
+        "type": "function",
+        "z": "22b0f1d0.de306e",
+        "name": "toggle output on input",
+        "func": "//  Display the received payload.\nnode.status({\n    fill: 'green',\n    shape: 'dot',\n    text: JSON.stringify(msg.payload, null, 2)\n});\n\n// Invert the level that is stored in the context.\n// (context variables persist between calls to the function)\ncontext.level = !context.level || false;\n\n// Set the payload to the level and return.\nmsg.payload = context.level;\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 260,
+        "y": 560,
+        "wires": [
+            [
+                "4c828832.09e138"
+            ]
+        ]
+    },
+    {
+        "id": "f586bb69.a0a358",
+        "type": "ui_chart",
+        "z": "22b0f1d0.de306e",
+        "name": "",
+        "group": "804ac77a.de1298",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "label": "chart",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "x": 1310,
+        "y": 580,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "65526406.5d874c",
+        "type": "comment",
+        "z": "22b0f1d0.de306e",
+        "name": "◀️ HARDWARE",
+        "info": "",
+        "x": 80,
+        "y": 20,
+        "wires": []
+    },
+    {
+        "id": "e09dc8a9.b9b4c8",
+        "type": "comment",
+        "z": "22b0f1d0.de306e",
+        "name": "🔺 MICRO LEVEL",
+        "info": "",
+        "x": 1450,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "9a93ffad.44ac7",
+        "type": "function",
+        "z": "22b0f1d0.de306e",
+        "name": "save physical device state",
+        "func": "//  Save the physical device state into memory.\nflow.set('last_physical_device_state', msg.payload);\n\n//  Display the physical device state saved.\nnode.status({\n    //  Fill and shape are cycled by the \"transmit\" node.\n    fill: flow.get('display-fill'),\n    shape: flow.get('display-shape'),\n    text: 'Saved state ' + JSON.stringify(msg.payload)\n});\n\n//  Pass through the original message.\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1260,
+        "y": 120,
+        "wires": [
+            [
+                "fb635f78.738eb"
+            ]
+        ]
+    },
+    {
+        "id": "f6309a03.fc1688",
+        "type": "function",
+        "z": "22b0f1d0.de306e",
+        "name": "display",
+        "func": "//  Display the payload.\nnode.status({\n    //  Fill and shape are cycled by the \"transmit\" node.\n    fill: flow.get('display-fill'),\n    shape: flow.get('display-shape'),\n    text: JSON.stringify(msg.payload, null, 2)\n});\n\n//  Pass through the message.\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 840,
+        "y": 120,
+        "wires": [
+            [
+                "9a93ffad.44ac7"
+            ]
+        ]
+    },
+    {
+        "id": "32e39e66.8807b2",
+        "type": "function",
+        "z": "22b0f1d0.de306e",
+        "name": "save logical device state",
+        "func": "//  Inject the timestamp if there was no timestamp.\n//  If there was a saved state, inject the previous\n//  fields that were not changed.\nmsg.payload = Object.assign(\n    //  Object.assign will merge the following\n    //  items in the sequence below.\n    {},\n    flow.get('last_logical_device_state'),\n    { timestamp: Date.now() },\n    msg.payload\n);\n\n//  Save the logical device state into memory.\nflow.set('last_logical_device_state', msg.payload);\n\n//  Display the logical device state saved.\nnode.status({\n    //  Fill and shape are cycled by the \"transmit\" node.\n    fill: flow.get('display-fill'),\n    shape: flow.get('display-shape'),\n    text: 'Saved state ' + JSON.stringify(msg.payload)\n});\n\n//  Pass through the original message.\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1370,
+        "y": 220,
+        "wires": [
+            [
+                "6fc702c3.0709ac"
+            ]
+        ]
+    },
+    {
+        "id": "91e44ac5.da2778",
+        "type": "comment",
+        "z": "22b0f1d0.de306e",
+        "name": "Simulated Sensor",
+        "info": "",
+        "x": 100,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "2b4878a8.969fe8",
+        "type": "comment",
+        "z": "22b0f1d0.de306e",
+        "name": "Arduino Sensor",
+        "info": "",
+        "x": 100,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "b76cbba6.87ff28",
+        "type": "function",
+        "z": "22b0f1d0.de306e",
+        "name": "current physical device state",
+        "func": "//  Display the physical device state.\nnode.status({\n    //  Fill and shape are cycled by the \"transmit\" node.\n    fill: flow.get('display-fill'),\n    shape: flow.get('display-shape'),\n    text: JSON.stringify(msg.payload)\n});\n\n//  Pass through the original message.\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 840,
+        "y": 520,
+        "wires": [
+            [
+                "3611b1e6.31bc4e"
+            ]
+        ]
+    },
+    {
+        "id": "3611b1e6.31bc4e",
+        "type": "file",
+        "z": "22b0f1d0.de306e",
+        "name": "",
+        "filename": "physical-device-state.json",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "false",
+        "x": 1110,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "166ba899.a8fbb7",
+        "type": "function",
+        "z": "22b0f1d0.de306e",
+        "name": "current logical device state",
+        "func": "//  Display the logical device state.\nnode.status({\n    //  Fill and shape are cycled by the \"transmit\" node.\n    fill: flow.get('display-fill'),\n    shape: flow.get('display-shape'),\n    text: JSON.stringify(msg.payload)\n});\n\n//  Pass through the original message.\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 840,
+        "y": 580,
+        "wires": [
+            [
+                "59e652d9.c743ac",
+                "f586bb69.a0a358"
+            ]
+        ]
+    },
+    {
+        "id": "59e652d9.c743ac",
+        "type": "file",
+        "z": "22b0f1d0.de306e",
+        "name": "",
+        "filename": "logical-device-state.json",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "false",
+        "x": 1110,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "fb635f78.738eb",
+        "type": "link out",
+        "z": "22b0f1d0.de306e",
+        "name": "Physical Device State",
+        "links": [
+            "58415aa7.6343d4"
+        ],
+        "x": 1415,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "58415aa7.6343d4",
+        "type": "link in",
+        "z": "22b0f1d0.de306e",
+        "name": "Physical Device State",
+        "links": [
+            "fb635f78.738eb"
+        ],
+        "x": 675,
+        "y": 520,
+        "wires": [
+            [
+                "b76cbba6.87ff28"
+            ]
+        ]
+    },
+    {
+        "id": "ab992be0.dfd108",
+        "type": "link in",
+        "z": "22b0f1d0.de306e",
+        "name": "Logical Device State",
+        "links": [
+            "6fc702c3.0709ac"
+        ],
+        "x": 675,
+        "y": 580,
+        "wires": [
+            [
+                "166ba899.a8fbb7"
+            ]
+        ]
+    },
+    {
+        "id": "6fc702c3.0709ac",
+        "type": "link out",
+        "z": "22b0f1d0.de306e",
+        "name": "Logical Device State",
+        "links": [
+            "ab992be0.dfd108"
+        ],
+        "x": 1515,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "503fdcb9.157784",
+        "type": "inject",
+        "z": "22b0f1d0.de306e",
+        "name": "every 10 sec",
+        "topic": "",
+        "payload": "last_logical_device_state.light_off_timestamp",
+        "payloadType": "flow",
+        "repeat": "10",
+        "crontab": "",
+        "once": false,
+        "x": 820,
+        "y": 360,
+        "wires": [
+            [
+                "ad0d1ce3.e9e3e"
+            ]
+        ]
+    },
+    {
+        "id": "8d38aef1.f8cb2",
+        "type": "function",
+        "z": "22b0f1d0.de306e",
+        "name": "display",
+        "func": "//  Get the last logical device state.\nvar logical_device_state = flow.get('last_logical_device_state');\n\n//  Display the logical device state.\nnode.status({\n    //  Fill and shape are cycled by the \"transmit\" node.\n    fill: flow.get('display-fill'),\n    shape: flow.get('display-shape'),\n    text: JSON.stringify(logical_device_state)\n});\n\n//  Clear the status after 9 seconds.\nsetTimeout(function() {\n    node.status({});\n}, 9000);\n\n//  Return the logicla device state.\nreturn {\n    payload: logical_device_state\n};\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1310,
+        "y": 480,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "299c7538.2cfa6a",
+        "type": "inject",
+        "z": "22b0f1d0.de306e",
+        "name": "light level = 500",
+        "topic": "",
+        "payload": "500",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "x": 120,
+        "y": 200,
+        "wires": [
+            [
+                "1ac57e80.f3fe31"
+            ]
+        ]
+    },
+    {
+        "id": "1ac57e80.f3fe31",
+        "type": "change",
+        "z": "22b0f1d0.de306e",
+        "name": "mock sensor",
+        "rules": [
+            {
+                "t": "set",
+                "p": "simulated_sensor_data",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 290,
+        "y": 220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "566a6ba.a5dce94",
+        "type": "inject",
+        "z": "22b0f1d0.de306e",
+        "name": "light level = 0",
+        "topic": "",
+        "payload": "0",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 110,
+        "y": 240,
+        "wires": [
+            [
+                "1ac57e80.f3fe31"
+            ]
+        ]
+    },
+    {
+        "id": "3d4ce611.d2d32a",
+        "type": "comment",
+        "z": "22b0f1d0.de306e",
+        "name": "Setup",
+        "info": "",
+        "x": 210,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "5034ae0d.63a53",
+        "type": "comment",
+        "z": "22b0f1d0.de306e",
+        "name": "Loop",
+        "info": "",
+        "x": 210,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "4ef82bb0.ecc624",
+        "type": "function",
+        "z": "22b0f1d0.de306e",
+        "name": "tick",
+        "func": "//  Display a tick.\nnode.status({\n    //  Fill and shape are cycled by the \"transmit\" node.\n    fill: flow.get('display-fill'),\n    shape: flow.get('display-shape'),\n    text: '✓ Set light_detected to false'\n});\n\n//  Clear the status after 9 seconds.\nsetTimeout(function() {\n    node.status({});\n}, 9000);\n\n//  Pass through the original message.\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 870,
+        "y": 240,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1c900f34.194931",
+        "type": "function",
+        "z": "22b0f1d0.de306e",
+        "name": "tick",
+        "func": "//  Display a tick.\nnode.status({\n    //  Fill and shape are cycled by the \"transmit\" node.\n    fill: flow.get('display-fill'),\n    shape: flow.get('display-shape'),\n    text: '✓ Set light_detected to true'\n});\n\n//  Clear the status after 9 seconds.\nsetTimeout(function() {\n    node.status({});\n}, 9000);\n\n//  Pass through the original message.\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1050,
+        "y": 200,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d2a3360d.a23f18",
+        "type": "function",
+        "z": "22b0f1d0.de306e",
+        "name": "tick",
+        "func": "//  Display a tick.\nnode.status({\n    //  Fill and shape are cycled by the \"transmit\" node.\n    fill: flow.get('display-fill'),\n    shape: flow.get('display-shape'),\n    text: '✓'\n});\n\n//  Clear the status after 9 seconds.\nsetTimeout(function() {\n    node.status({});\n}, 9000);\n\n//  Pass through the original message.\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 910,
+        "y": 300,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "37e6fdb9.3d4962",
+        "type": "function",
+        "z": "22b0f1d0.de306e",
+        "name": "tick",
+        "func": "//  Display a tick.\nnode.status({\n    //  Fill and shape are cycled by the \"transmit\" node.\n    fill: flow.get('display-fill'),\n    shape: flow.get('display-shape'),\n    text: '✓'\n});\n\n//  Clear the status after 9 seconds.\nsetTimeout(function() {\n    node.status({});\n}, 9000);\n\n//  Pass through the original message.\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1110,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e6db8907.899dc8",
+        "type": "function",
+        "z": "22b0f1d0.de306e",
+        "name": "tick",
+        "func": "//  Display a tick.\nnode.status({\n    //  Fill and shape are cycled by the \"transmit\" node.\n    fill: flow.get('display-fill'),\n    shape: flow.get('display-shape'),\n    text: '✓ Set light_off_timestamp to current time'\n});\n\n//  Clear the status after 9 seconds.\nsetTimeout(function() {\n    node.status({});\n}, 9000);\n\n//  Pass through the original message.\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1130,
+        "y": 320,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e71b3a03.bb0b98",
+        "type": "change",
+        "z": "22b0f1d0.de306e",
+        "name": "light is on",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{ \"light_detected\": true }",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1060,
+        "y": 200,
+        "wires": [
+            [
+                "32e39e66.8807b2"
+            ]
+        ]
+    },
+    {
+        "id": "f65ef27a.0359f",
+        "type": "change",
+        "z": "22b0f1d0.de306e",
+        "name": "light is off",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{ \"light_detected\": false }",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 880,
+        "y": 240,
+        "wires": [
+            [
+                "f4a63a52.74cda8",
+                "d2a3360d.a23f18"
+            ]
+        ]
+    },
+    {
+        "id": "f4a63a52.74cda8",
+        "type": "switch",
+        "z": "22b0f1d0.de306e",
+        "name": "has light changed?",
+        "property": "payload.light_detected",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "last_logical_device_state.light_detected",
+                "vt": "flow"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "false",
+        "outputs": 2,
+        "x": 950,
+        "y": 300,
+        "wires": [
+            [
+                "bd60b483.773678",
+                "37e6fdb9.3d4962"
+            ],
+            [
+                "cdc177e6.3ccba8",
+                "e6db8907.899dc8"
+            ]
+        ]
+    },
+    {
+        "id": "bd60b483.773678",
+        "type": "change",
+        "z": "22b0f1d0.de306e",
+        "name": "unchanged",
+        "rules": [],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1130,
+        "y": 260,
+        "wires": [
+            [
+                "32e39e66.8807b2"
+            ]
+        ]
+    },
+    {
+        "id": "cdc177e6.3ccba8",
+        "type": "change",
+        "z": "22b0f1d0.de306e",
+        "name": "from on to off",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload.light_off_timestamp",
+                "pt": "msg",
+                "to": "",
+                "tot": "date"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1150,
+        "y": 320,
+        "wires": [
+            [
+                "32e39e66.8807b2"
+            ]
+        ]
+    },
+    {
+        "id": "9761b624.447be8",
+        "type": "function",
+        "z": "22b0f1d0.de306e",
+        "name": "tick",
+        "func": "//  Display a tick.\nnode.status({\n    //  Fill and shape are cycled by the \"transmit\" node.\n    fill: flow.get('display-fill'),\n    shape: flow.get('display-shape'),\n    text: '✓'\n});\n\n//  Clear the status after 9 seconds.\nsetTimeout(function() {\n    node.status({});\n}, 9000);\n\n//  Pass through the original message.\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1070,
+        "y": 400,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "85159370.347a1",
+        "type": "function",
+        "z": "22b0f1d0.de306e",
+        "name": "tick",
+        "func": "//  Display a tick.\nnode.status({\n    //  Fill and shape are cycled by the \"transmit\" node.\n    fill: flow.get('display-fill'),\n    shape: flow.get('display-shape'),\n    text: '✓'\n});\n\n//  Clear the status after 9 seconds.\nsetTimeout(function() {\n    node.status({});\n}, 9000);\n\n//  Pass through the original message.\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1090,
+        "y": 460,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "59d8f349.77598c",
+        "type": "switch",
+        "z": "22b0f1d0.de306e",
+        "name": "if light is off",
+        "property": "last_logical_device_state.light_detected",
+        "propertyType": "flow",
+        "rules": [
+            {
+                "t": "false"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "false",
+        "outputs": 2,
+        "x": 1090,
+        "y": 400,
+        "wires": [
+            [
+                "4edce1c3.87efe",
+                "85159370.347a1"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "4edce1c3.87efe",
+        "type": "switch",
+        "z": "22b0f1d0.de306e",
+        "name": "if off for >= 30 secs",
+        "property": "last_logical_device_state.light_off_duration",
+        "propertyType": "flow",
+        "rules": [
+            {
+                "t": "gte",
+                "v": "30000",
+                "vt": "num"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "false",
+        "outputs": 2,
+        "x": 1130,
+        "y": 460,
+        "wires": [
+            [
+                "8d38aef1.f8cb2",
+                "8b2a540e.5a8f18"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "77261e73.4f1e8",
+        "type": "function",
+        "z": "22b0f1d0.de306e",
+        "name": "tick",
+        "func": "//  Display a tick.\nnode.status({\n    //  Fill and shape are cycled by the \"transmit\" node.\n    fill: flow.get('display-fill'),\n    shape: flow.get('display-shape'),\n    text: '✓'\n});\n\n//  Clear the status after 9 seconds.\nsetTimeout(function() {\n    node.status({});\n}, 9000);\n\n//  Pass through the original message.\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 790,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3f4ee674.470a0a",
+        "type": "switch",
+        "z": "22b0f1d0.de306e",
+        "name": "is light on?",
+        "property": "payload.lig",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "gte",
+                "v": "500",
+                "vt": "num"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "false",
+        "outputs": 2,
+        "x": 810,
+        "y": 180,
+        "wires": [
+            [
+                "e71b3a03.bb0b98",
+                "1c900f34.194931"
+            ],
+            [
+                "f65ef27a.0359f",
+                "4ef82bb0.ecc624"
+            ]
+        ]
+    },
+    {
+        "id": "ad0d1ce3.e9e3e",
+        "type": "function",
+        "z": "22b0f1d0.de306e",
+        "name": "compute light off duration",
+        "func": "//  Compute how long the light has been off\n//  and store in the logical device state.\n\n//  Get the logical device state from the flow context.\nvar last_logical_device_state = flow.get('last_logical_device_state');\nif (!last_logical_device_state) return msg;  //  Quit if no state.\n\n//  Get the light off timestamp.\nvar light_off_timestamp = last_logical_device_state.light_off_timestamp;\nif (!light_off_timestamp) return msg;  //  Quit if no timestamp.\n\n//  Compute the time diff in milliseconds and \n//  store in the state.\nvar light_off_duration = Date.now() - light_off_timestamp;\nlast_logical_device_state = Object.assign(\n    //  Object.assign will merge the following objects\n    //  in the order below.\n    {},\n    last_logical_device_state,\n    { light_off_duration: light_off_duration }\n);\n\n//  Display the time diff.\nnode.status({\n    //  Fill and shape are cycled by the \"transmit\" node.\n    fill: flow.get('display-fill'),\n    shape: flow.get('display-shape'),\n    text: 'Set light_off_duration to ' + light_off_duration + ' millisec'\n});\n\n//  Store the state in the flow context.\nflow.set('last_logical_device_state', last_logical_device_state);\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 890,
+        "y": 420,
+        "wires": [
+            [
+                "9761b624.447be8",
+                "59d8f349.77598c"
+            ]
+        ]
+    },
+    {
+        "id": "edde5cb8.5144b",
+        "type": "function",
+        "z": "22b0f1d0.de306e",
+        "name": "connect to \"transmit\"",
+        "func": "//  Display the received payload.\nnode.status({\n    text: 'Sensor value is ' + JSON.stringify(msg.payload)\n});\n\n//  Clear the status after 9 seconds.\nsetTimeout(function() {\n    node.status({});\n}, 9000);\n\n//  Pass through the original message.\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 340,
+        "y": 320,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "709d7c3e.2607d4",
+        "type": "function",
+        "z": "22b0f1d0.de306e",
+        "name": "connect to \"transmit\"",
+        "func": "//  Display the received payload.\nnode.status({\n    text: 'Sensor value is ' + JSON.stringify(msg.payload)\n});\n\n//  Clear the status after 9 seconds.\nsetTimeout(function() {\n    node.status({});\n}, 9000);\n\n//  Pass through the original message.\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 360,
+        "y": 500,
+        "wires": [
+            [
+                "5b42deab.53281"
+            ]
+        ]
+    },
+    {
+        "id": "c686ea3a.788a38",
+        "type": "nodebot",
+        "z": "",
+        "name": "",
+        "username": "",
+        "password": "",
+        "boardType": "firmata",
+        "serialportName": "COM4",
+        "connectionType": "local",
+        "mqttServer": "",
+        "socketServer": "",
+        "pubTopic": "",
+        "subTopic": "",
+        "tcpHost": "",
+        "tcpPort": "",
+        "sparkId": "",
+        "sparkToken": "",
+        "beanId": "",
+        "impId": "",
+        "meshbluServer": "https://meshblu.octoblu.com",
+        "uuid": "",
+        "token": "",
+        "sendUuid": ""
+    },
+    {
+        "id": "804ac77a.de1298",
+        "type": "ui_group",
+        "z": "",
+        "name": "Default",
+        "tab": "33370f0f.fe62b",
+        "disp": true,
+        "width": "6"
+    },
+    {
+        "id": "33370f0f.fe62b",
+        "type": "ui_tab",
+        "name": "Tab",
+        "icon": "dashboard",
+        "order": 0
+    }
+]
