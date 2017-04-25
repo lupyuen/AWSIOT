@@ -1,13 +1,141 @@
 [
     {
-        "id": "c403ea19.e18478",
-        "type": "comment",
-        "z": "22b0f1d0.de306e",
-        "name": "Transmit",
-        "info": "",
-        "x": 420,
-        "y": 80,
-        "wires": []
+        "id": "22b0f1d0.de306e",
+        "type": "tab",
+        "label": "IoT Architecture"
+    },
+    {
+        "id": "fbe6b929.b91aa8",
+        "type": "ui_base",
+        "theme": {
+            "name": "theme-light",
+            "lightTheme": {
+                "default": "#0094CE",
+                "baseColor": "#0094CE",
+                "baseFont": "Helvetica Neue",
+                "edited": true,
+                "reset": false
+            },
+            "darkTheme": {
+                "default": "#097479",
+                "baseColor": "#097479",
+                "baseFont": "Helvetica Neue",
+                "edited": false
+            },
+            "customTheme": {
+                "name": "Untitled Theme 1",
+                "default": "#4B7930",
+                "baseColor": "#4B7930",
+                "baseFont": "Helvetica Neue"
+            },
+            "themeState": {
+                "base-color": {
+                    "default": "#0094CE",
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-titlebar-backgroundColor": {
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-backgroundColor": {
+                    "value": "#fafafa",
+                    "edited": false
+                },
+                "page-sidebar-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-textColor": {
+                    "value": "#000000",
+                    "edited": false
+                },
+                "group-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "widget-textColor": {
+                    "value": "#111111",
+                    "edited": false
+                },
+                "widget-backgroundColor": {
+                    "value": "#0094ce",
+                    "edited": false
+                },
+                "widget-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                }
+            }
+        },
+        "site": {
+            "name": "Node-RED Dashboard",
+            "hideToolbar": "false",
+            "allowSwipe": "false",
+            "dateFormat": "DD/MM/YYYY",
+            "sizes": {
+                "sx": 48,
+                "sy": 48,
+                "gx": 6,
+                "gy": 6,
+                "cx": 6,
+                "cy": 6,
+                "px": 0,
+                "py": 0
+            }
+        }
+    },
+    {
+        "id": "b9ba5876.098478",
+        "type": "ui_tab",
+        "name": "Tab",
+        "icon": "dashboard",
+        "order": 0
+    },
+    {
+        "id": "c686ea3a.788a38",
+        "type": "nodebot",
+        "z": "",
+        "name": "",
+        "username": "",
+        "password": "",
+        "boardType": "firmata",
+        "serialportName": "COM4",
+        "connectionType": "local",
+        "mqttServer": "",
+        "socketServer": "",
+        "pubTopic": "",
+        "subTopic": "",
+        "tcpHost": "",
+        "tcpPort": "",
+        "sparkId": "",
+        "sparkToken": "",
+        "beanId": "",
+        "impId": "",
+        "meshbluServer": "https://meshblu.octoblu.com",
+        "uuid": "",
+        "token": "",
+        "sendUuid": ""
+    },
+    {
+        "id": "804ac77a.de1298",
+        "type": "ui_group",
+        "z": "",
+        "name": "Default",
+        "tab": "33370f0f.fe62b",
+        "disp": true,
+        "width": "6"
+    },
+    {
+        "id": "33370f0f.fe62b",
+        "type": "ui_tab",
+        "name": "Tab",
+        "icon": "dashboard",
+        "order": 0
     },
     {
         "id": "30a0c327.4b42dc",
@@ -67,6 +195,16 @@
                 "edde5cb8.5144b"
             ]
         ]
+    },
+    {
+        "id": "c403ea19.e18478",
+        "type": "comment",
+        "z": "22b0f1d0.de306e",
+        "name": "Transmit",
+        "info": "",
+        "x": 420,
+        "y": 80,
+        "wires": []
     },
     {
         "id": "310acb9c.3dabb4",
@@ -1024,7 +1162,9 @@
         "x": 340,
         "y": 320,
         "wires": [
-            []
+            [
+                "5b42deab.53281"
+            ]
         ]
     },
     {
@@ -1038,50 +1178,7 @@
         "x": 360,
         "y": 500,
         "wires": [
-            [
-                "5b42deab.53281"
-            ]
+            []
         ]
-    },
-    {
-        "id": "c686ea3a.788a38",
-        "type": "nodebot",
-        "z": "",
-        "name": "",
-        "username": "",
-        "password": "",
-        "boardType": "firmata",
-        "serialportName": "COM4",
-        "connectionType": "local",
-        "mqttServer": "",
-        "socketServer": "",
-        "pubTopic": "",
-        "subTopic": "",
-        "tcpHost": "",
-        "tcpPort": "",
-        "sparkId": "",
-        "sparkToken": "",
-        "beanId": "",
-        "impId": "",
-        "meshbluServer": "https://meshblu.octoblu.com",
-        "uuid": "",
-        "token": "",
-        "sendUuid": ""
-    },
-    {
-        "id": "804ac77a.de1298",
-        "type": "ui_group",
-        "z": "",
-        "name": "Default",
-        "tab": "33370f0f.fe62b",
-        "disp": true,
-        "width": "6"
-    },
-    {
-        "id": "33370f0f.fe62b",
-        "type": "ui_tab",
-        "name": "Tab",
-        "icon": "dashboard",
-        "order": 0
     }
 ]
