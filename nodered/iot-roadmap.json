@@ -201,7 +201,7 @@
         "type": "comment",
         "z": "b7d8e22.e9be92",
         "name": "Transmit",
-        "info": "- In the **Transmit** stage, the sensor data\n  is transmitted to the **IoT Gateway.**",
+        "info": "- In the **Transmit** stage, the sensor data\n  is transmitted to the **IoT Gateway.**\n\n- When the Arduino board is used with a **Sigfox\n  Shield,** the sensor data will be broadcast\n  3 times on different frequencies (Frequency Hopping)\n\n- Nearby **Sigfox Basestations** that receive\n  the message will forward it to the **Sigfox Cloud.**\n\n- If the message was received by 2 or more\n  basestations, the Sigfox Cloud marks the\n  duplicate messages with a **\"Duplicate\"** flag.\n  The IoT Gateway may be configured to accept or\n  reject duplicate messages.\n\n",
         "x": 420,
         "y": 80,
         "wires": []
@@ -211,7 +211,7 @@
         "type": "comment",
         "z": "b7d8e22.e9be92",
         "name": "IoT Gateway",
-        "info": "",
+        "info": "- The **IoT Gateway** resides in the **IoT Cloud**\n  and is responsible for receiving sensor data messages\n  and forwarding them to the **Rule Engine** for processing.\n\n- In an upcoming practical, we shall adopt **AWS IoT**\n  as the IoT Cloud.  The IoT Gateway shall be\n  the **MQTT Message Queue Gateway** in **AWS IoT.**\n",
         "x": 590,
         "y": 80,
         "wires": []
