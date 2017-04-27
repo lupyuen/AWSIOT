@@ -152,7 +152,7 @@
         "type": "comment",
         "z": "b7d8e22.e9be92",
         "name": "Device",
-        "info": "- The components here represent a real IoT device\n  (e.g. Arduino Uno) or a simulated IoT device.\n\n- We organise the components here according to the \n  Arduino programming convention\n\n- All Arduino programs start execution at the `setup()` \n  function. The `setup()` function is called once\n  to perform any device or sensor initialisation.\n\n- When using a Sigfox shield with Arduino, we\n  normally initialise the Sigfox module in the `setup()` function.\n  Some Sigfox modules include a Power Amplifier\n  and may need some time to power up.\n\n- The `loop()` function is called repeatedly\n  to allow the Arduino program to perform any required\n  tasks.  A typical `loop()` function will:\n\n0. Read data from a sensor.\n1. Process the data read. Possibly encode to save space.\n2. Transmit the data e.g. over Sigfox. \n3. Delay a few seconds before restarting the loop\n\n-  The Sigfox shield will not allow two transmissions within 10 seconds.\n   So it's a good practice to insert a delay of 10 seconds at \n   the end of the `loop()` function.\n",
+        "info": "- The components below represent a real IoT device\n  (e.g. Arduino Uno) or a simulated IoT device.\n\n- We organise the components here according to the \n  Arduino programming convention\n\n- All Arduino programs start execution at the `setup()` \n  function. The `setup()` function is called once\n  to perform any device or sensor initialisation.\n\n- When using a Sigfox shield with Arduino, we\n  normally initialise the Sigfox module in the `setup()` function.\n  Some Sigfox modules include a Power Amplifier\n  and may need some time to power up.\n\n- The `loop()` function is called repeatedly\n  to allow the Arduino program to perform any required\n  tasks.  A typical `loop()` function will:\n\n0. Read data from a sensor.\n1. Process the data read. Possibly encode to save space.\n2. Transmit the data e.g. over Sigfox. \n3. Delay a few seconds before restarting the loop\n\n-  The Sigfox shield will not allow two transmissions within 10 seconds.\n   So it's a good practice to insert a delay of 10 seconds at \n   the end of the `loop()` function.\n",
         "x": 190,
         "y": 80,
         "wires": []
@@ -162,7 +162,7 @@
         "type": "comment",
         "z": "b7d8e22.e9be92",
         "name": "Setup",
-        "info": "",
+        "info": "- **Setup** is run once upon startup.  Corresponds\n  to the `setup()` function in Arduino sketches.\n\n- The flow starts running with value 500, i.e.\n  light was detected. This value is injected\n  every 10 seconds.\n\n- Pressing the inject button for **\"light level = 0\"**\n  will switch the sensor to send value 0\n  every 10 seconds.\n\n- Pressing the inject button for **\"light level = 500\"**\n  will switch the sensor to send value 500\n  every 10 seconds.\n",
         "x": 210,
         "y": 160,
         "wires": []
@@ -172,7 +172,7 @@
         "type": "comment",
         "z": "b7d8e22.e9be92",
         "name": "Loop",
-        "info": "",
+        "info": "- **Loop** is run repeatedly after **Setup.**  Corresponds\n  to the `loop()` function in Arduino sketches.\n\n- Injects the sensor value 0 or 500 into the flow\n  depending on the button that was pressed above.\n\n- The sensor value is injected every 10 seconds.\n\n- The **\"Connect To Transmit\"** node should be\n  connected to the **Transmit** node for the\n  sensor value to be injected into the flow.\n\n- No other nodes should be connected to the\n  **Transmit** node\n\n",
         "x": 210,
         "y": 280,
         "wires": []
@@ -201,7 +201,7 @@
         "type": "comment",
         "z": "b7d8e22.e9be92",
         "name": "Transmit",
-        "info": "",
+        "info": "- In the **Transmit** stage, the sensor data\n  is transmitted to the **IoT Gateway.**",
         "x": 420,
         "y": 80,
         "wires": []
@@ -251,7 +251,7 @@
         "type": "comment",
         "z": "b7d8e22.e9be92",
         "name": "Sensor",
-        "info": "",
+        "info": "- The components below represent a real IoT \n  sensor (e.g. Grove light sensor) \n  or a simulated IoT sensor.\n\n- The Sensor marks the start of the IoT flow.\n  Sensor values are injected into the flow\n  every 10 seconds.\n\n- The Sensor values will be transmitted to\n  the IoT Gateway and processed according\n  to the rules in the Rule Engine.\n\n- Historical Sensor values will be recorded\n  into the Sensor data store for analytics\n  and possibly machine learning.\n\n",
         "x": 50,
         "y": 80,
         "wires": []
@@ -555,7 +555,7 @@
         "type": "comment",
         "z": "b7d8e22.e9be92",
         "name": "Simulated Sensor",
-        "info": "",
+        "info": "- This sensor simulates a light sensor for\n  a streetlight monitoring system.\n\n- The sensor returns either 500, to represent\n  the detection of light, or 0 to represent\n  the absence of light.\n\n- The flow starts running with value 500, i.e.\n  light was detected. This value is injected\n  every 10 seconds.\n\n- Pressing the inject button for **\"light level = 0\"**\n  will switch the sensor to send value 0\n  every 10 seconds.\n\n- Pressing the inject button for **\"light level = 500\"**\n  will switch the sensor to send value 500\n  every 10 seconds.\n\n",
         "x": 100,
         "y": 120,
         "wires": []
@@ -565,7 +565,7 @@
         "type": "comment",
         "z": "b7d8e22.e9be92",
         "name": "Arduino Sensor",
-        "info": "",
+        "info": "- This sensor connects to a real Arduino Uno\n  via USB/serial port and reads the value \n  of the Grove light sensor connected to the\n  Uno.\n\n- The sensor value is read every 10 seconds.\n\n- The Arduino Uno must be running the\n  **StandardFirmataPlus** sketch.  This is a\n  remote control program that receives \n  commands from Node-RED via USB/serial port,\n  executes them and returns the results.\n\n- Uses the **Johnny5 Arduino** module.  We selected\n  this module over the basic Node-RED Arduino \n  module because it supports more Arduino\n  functions.\n\n",
         "x": 100,
         "y": 380,
         "wires": []
@@ -786,7 +786,7 @@
         "type": "comment",
         "z": "b7d8e22.e9be92",
         "name": "Setup",
-        "info": "",
+        "info": "- **Setup** is run once upon startup.  Corresponds\n  to the `setup()` function in Arduino sketches.\n\n- **Setup** is empty when the Arduino Uno is\n  controlled by Node-RED over StandardFirmataPlus.\n\n- When using a Sigfox shield with Arduino, we\n  normally initialise the Sigfox module in the `setup()` function.\n  Some Sigfox modules include a Power Amplifier\n  and may need some time to power up.\n\n- The `setup()` function should also\n  initialise the Arduino sensor.\n",
         "x": 210,
         "y": 420,
         "wires": []
@@ -796,7 +796,7 @@
         "type": "comment",
         "z": "b7d8e22.e9be92",
         "name": "Loop",
-        "info": "",
+        "info": "- **Loop** is run repeatedly after **Setup.**  Corresponds\n  to the `loop()` function in Arduino sketches.\n\n- Reads the sensor value from the Arduino\n  light sensor and injects the value into the\n  flow.\n\n- The light sensor should be connected to \n  **Port A0** of the Grove Shield.  This is\n  an **Analog Port,** since the light sensor\n  is an analog sensor.\n\n- The sensor value is injected every 10 seconds.\n\n- The **\"Connect To Transmit\"** node should be\n  connected to the **Transmit** node for the\n  sensor value to be injected into the flow.\n\n- No other nodes should be connected to the\n  **Transmit** node\n\n- We flash the LED on Arduino pin D13 every\n  10 seconds, to provide feedback that the\n  flow is running. The Arduino Uno has\n  an onboard LED (coloured orange) on\n  pin D13.\n\n-  When running with a real Sigfox shield,\n   we should insert a delay of 10 seconds \n   at the end of the `loop()` function.\n   We should not send more than 1 message\n   within 10 seconds.\n\n",
         "x": 210,
         "y": 460,
         "wires": []
