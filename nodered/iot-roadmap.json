@@ -291,7 +291,7 @@
         "type": "comment",
         "z": "b7d8e22.e9be92",
         "name": "Deep IoT",
-        "info": "",
+        "info": "- **Deep IoT** refers to devices that tend\n  to do more processing locally, so the require\n  more network bandwidth, more power\n\n- **Amazon Echo / Alexa** is a good example.\n  It performs some audio processing locally\n  and it uses WiFi to send/receive data.\n  It's not meant to run on battery power.\n\n- This has been the traditional model for\n  IoT: smart, localised devices that have\n  constraints on location, power, network\n  connectivity.\n\n- **Deep IoT** has also been noted to have a\n  higher Total Cost of Ownership because\n  more things can go wrong locally.  Think\n  about a Raspberry Pi and the possibility\n  that its SD card could be corrupted beyond repair.\n  Compare that with an Arduino Uno that has\n  no filesystem.\n\n- In this course we'll focus on a more challenging\n  and impactful class of IoT devices called\n  **Wide IoT** devices that have much fewer\n  constraints on location, power and \n  network connectivity\n",
         "x": 120,
         "y": 640,
         "wires": []
@@ -301,7 +301,7 @@
         "type": "comment",
         "z": "b7d8e22.e9be92",
         "name": "Wide IoT",
-        "info": "",
+        "info": "- In this course we'll focus on a more challenging\n  and impactful class of IoT devices called\n  **Wide IoT** devices that have much fewer\n  constraints on location, power and \n  network connectivity\n\n- **Wide IoT** devices are designed for\n  widespread deployment. They use \n  **Low Power Wide Area Networks (LPWAN)** like \n  **Sigfox, LoRa, NB-IoT**\n\n- They are designed to run on battery power,\n  up to months and years of battery life.\n  The networks are available city-wide, e.g.\n  most parts of Singapore are already covered\n  by Sigfox.  So the devices will work anywhere\n  without a power outlet.\n\n- The **Arduino Uno with UnaShield Sigfox Shield**\n  makes a good device for **Wide IoT** because\n  it runs on battery power and can transmit\n  sensor data from most areas in Singapore.\n\n- **Wide IoT** devices like the \n  **Arduino Uno with UnaShield** also tend\n  to be lower in cost than **Deep IoT** devices.\n\n- The Total Cost of Ownership of these devices\n  tend to be lower because they have fewer\n  components that may cause problems",
         "x": 280,
         "y": 640,
         "wires": []
