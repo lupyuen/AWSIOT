@@ -138,6 +138,47 @@
         "order": 0
     },
     {
+        "id": "91aaeddd.4b692",
+        "type": "nodebot",
+        "z": "",
+        "name": "",
+        "username": "",
+        "password": "",
+        "boardType": "firmata",
+        "serialportName": "COM4",
+        "connectionType": "local",
+        "mqttServer": "",
+        "socketServer": "",
+        "pubTopic": "",
+        "subTopic": "",
+        "tcpHost": "",
+        "tcpPort": "",
+        "sparkId": "",
+        "sparkToken": "",
+        "beanId": "",
+        "impId": "",
+        "meshbluServer": "https://meshblu.octoblu.com",
+        "uuid": "",
+        "token": "",
+        "sendUuid": ""
+    },
+    {
+        "id": "9fd6a59b.70fc48",
+        "type": "ui_group",
+        "z": "",
+        "name": "Default",
+        "tab": "af28cc48.24dcb",
+        "disp": true,
+        "width": "6"
+    },
+    {
+        "id": "af28cc48.24dcb",
+        "type": "ui_tab",
+        "name": "Tab",
+        "icon": "dashboard",
+        "order": 0
+    },
+    {
         "id": "e6c3e312.b4639",
         "type": "comment",
         "z": "b7d8e22.e9be92",
@@ -221,7 +262,7 @@
         "type": "comment",
         "z": "b7d8e22.e9be92",
         "name": "Rule Engine",
-        "info": "",
+        "info": "- The **Rule Engine** is the component in the\n  Cloud IoT platform (e.g. AWS IoT, Azure IoT)\n  that executes rules to process any sensor\n  data received.\n\n- Most Cloud IoT platforms support `if ... then ... else ... `\n  kind of rules. A rule could trigger an **alert** \n  (e.g. email, SMS alerts),\n  update a **database** (for rendering dashboards)\n  or execute an **external service** (e.g. predict\n  sensor values based on machine learning)\n\n- In this example the rules update the **Physical\n  and Logical Device States** to record the\n  variables needed for business logic e.g.\n  \"Is the light on?\" \"What time did the light turn off?\"\n",
         "x": 830,
         "y": 80,
         "wires": []
@@ -231,7 +272,7 @@
         "type": "comment",
         "z": "b7d8e22.e9be92",
         "name": "Alerts",
-        "info": "",
+        "info": "- **Alerts** are notifications to a person or to\n  another system, triggered by rules in the **Rule Engine.**\n\n- In **AWS IoT** we will learn to send alerts for\n  **email, SMS and automated voice call.**",
         "x": 1290,
         "y": 380,
         "wires": []
@@ -241,7 +282,7 @@
         "type": "comment",
         "z": "b7d8e22.e9be92",
         "name": "Dashboard",
-        "info": "",
+        "info": "- The **Dashboard** renders realtime data from the\n  **Physical and Logical Device States.**\n\n- When designing a **Dashboard,** think carefully\n  what information we need to present in order\n  to derive the most value.\n\n- For example, showing a chart of **Light Level**\n  against time wouldn't be as useful as the number\n  of **Light Failures** per day / week / month.\n",
         "x": 1300,
         "y": 540,
         "wires": []
@@ -261,7 +302,7 @@
         "type": "comment",
         "z": "b7d8e22.e9be92",
         "name": "Sensor Data Store",
-        "info": "- Preferably a Time Series Database like InfluxDB\n- MySQL works fine for low data volume",
+        "info": "- The **Sensor Data Store** keeps a historical\n  record of every sensor data record, i.e. the\n  past and present **Physical Device States.**\n\n- It also stores all past and present **Logical Device States**\n  that have been computed by the system. \n\n- The **Sensor Data Store** will enable business\n  reports and **Dashboards** to be created across\n  various time periods (e.g. by hour, by day, by week).\n\n- Such reports and dashboards will require past\n  and present data to be aggregated across time period\n  (e.g. one week)in an efficient way. Also we\n  may not be required to generate detailed past reports \n  beyond a certain number of days.\n\n- For these reasons, a **Time Series Database** (like\n  **InfluxDB**) may be more suitable for storing\n  historical IoT data.  A **Time Series Database**\n  allows sensor data to be aggregated efficient across\n  time periods, and supports auto-archival of old\n  sensor data.\n\n- Since the sensor data volume is low for our projects, \n  we shall be using **MySQL hosted at AWS** to store\n  and query our sensor data in subsequent lessons.\n\n- Also since many of us are familiar with **MySQL,**\n  it helps to speed up the development of reports,\n  dashboards and mobile apps.\n\n- For the simulation we shall be appending records to\n  the text\n  files **physical-device-state.json** and\n  **logical-device-state.json,** which are located\n  in the `c:/users/username/.node-red` folder.\n\n",
         "x": 750,
         "y": 480,
         "wires": []
@@ -271,7 +312,7 @@
         "type": "comment",
         "z": "b7d8e22.e9be92",
         "name": "IoT Analytics",
-        "info": "",
+        "info": "- With **Wide IoT** and **LPWAN** becoming available everywhere,\n  we will see many more IoT devices deployed.\n\n- Processing the sensor data from so many IoT devices\n  will become a serious challenge unless we had\n  tools for **IoT Analytics**\n\n- Tools for **IoT Analytics** can process large volumes of\n  data at very affordable prices. A good example\n  is **Google BigQuery,** a data warehouse that can manage huge\n  volumes of data with just a few dollars of \n  data hostinf charges per month.\n",
         "x": 850,
         "y": 640,
         "wires": []
@@ -281,7 +322,7 @@
         "type": "comment",
         "z": "b7d8e22.e9be92",
         "name": "IoT Machine Learning",
-        "info": "",
+        "info": "- After gathering sufficient sensor data in the\n  **Sensor Data Store**, it may be possible to\n  run a **Machine Learning** program to learn \n  the patterns of the historical sensor data\n  and predict future sensor data.\n\n- For example, we may use past light sensor data\n  to predict when a light is most likely to fail.\n\n- **Machine Learning** may also be used to detect\n  anomalies in the sensor data. For example, it\n  may help to identify cases where the Arduino\n  device is down, due to the huge lapse of missing\n  sensor data.\n\n- Some applications use **Machine Learning** to\n  perform automated classification of data,\n  e.g. credit card fraud detection.\n\n  ",
         "x": 1100,
         "y": 640,
         "wires": []
@@ -334,7 +375,7 @@
         "type": "comment",
         "z": "b7d8e22.e9be92",
         "name": "Physical Device State",
-        "info": "",
+        "info": "-- The **Physical Device State** contains the \n   sensor values before executing any rules\n   in the Rule Engine.\n   \n-- In **AWS IoT** the **Physical Device State** is\n   also known as the **Device Shadow,** because it\n   remembers (shadows) the last known state of the device\n   (e.g. Arduino Uno) and its sensors (e.g. Light Sensor).\n   \n-- In this simulation, the rules in the Rule Engine\n   will read the **Physical Device State** to get the\n   light sensor value and compute whether the light\n   is on (`light_detected = true / false`). \n   `light_detected` is stored in the **Logical Device State.**\n   \n-- In this simulation, the rules in the Rule Engine\n   will read the **Physical Device State** to get the\n   light sensor value and compute whether the light\n   is on.\n   \n-- In this simulation, the **Physical Device State**\n   is stored in a variable named `last_physical_device_state`\n   in the Node-RED flow context.\n",
         "x": 1220,
         "y": 80,
         "wires": []
@@ -344,7 +385,7 @@
         "type": "comment",
         "z": "b7d8e22.e9be92",
         "name": "Logical Device State",
-        "info": "",
+        "info": "-- The **Logical Device State** contains the \n   sensor values before executing any rules\n   in the Rule Engine.\n   \n-- The rules in the Rule Engine may make use of the\n   **Physical Device State** to derive the\n   **Logical Device State,** which is more\n   business-oriented\n\n-- In this simulation, the rules in the Rule Engine\n   will read the **Physical Device State** to get the\n   light sensor value and compute whether the light\n   is on (`light_detected = true / false`). \n   `light_detected` is stored in the **Logical Device State.**\n\n-- The second set of rules below will read the\n   `light_detected` status from the **Logical Device State**\n   and compute `light_off_timestamp`, `light_off_duration`,\n   which will be stored in the **Logical Device State**\n   \n-- In this simulation, the **Logical Device State**\n   is stored in a variable named `last_logical_device_state`\n   in the Node-RED flow context.\n",
         "x": 1330,
         "y": 180,
         "wires": []
@@ -1180,5 +1221,15 @@
         "wires": [
             []
         ]
+    },
+    {
+        "id": "b381a19a.29c69",
+        "type": "comment",
+        "z": "b7d8e22.e9be92",
+        "name": "Version 1.1 (28 Apr 2017)",
+        "info": "",
+        "x": 1434,
+        "y": 321,
+        "wires": []
     }
 ]
