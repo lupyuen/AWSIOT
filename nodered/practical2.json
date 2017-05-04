@@ -1,0 +1,97 @@
+[
+    {
+        "id": "1b30a089.420ecf",
+        "type": "tab",
+        "label": "Practical 2 - Arduino Programming"
+    },
+    {
+        "id": "6fc99b6e.8b34c4",
+        "type": "comment",
+        "z": "1b30a089.420ecf",
+        "name": "Arduino Sensor",
+        "info": "- This sensor connects to a real Arduino Uno\n  via USB/serial port and reads the value \n  of the Grove light sensor connected to the\n  Uno.\n\n- The sensor value is read every 10 seconds.\n\n- The Arduino Uno must be running the\n  **StandardFirmataPlus** sketch.  This is a\n  remote control program that receives \n  commands from Node-RED via USB/serial port,\n  executes them and returns the results.\n\n- Uses the **Johnny5 Arduino** module.  We selected\n  this module over the basic Node-RED Arduino \n  module because it supports more Arduino\n  functions.\n\n",
+        "x": 85,
+        "y": 20,
+        "wires": []
+    },
+    {
+        "id": "234d1be7.9c09f4",
+        "type": "comment",
+        "z": "1b30a089.420ecf",
+        "name": "Setup",
+        "info": "- **Setup** is run once upon startup.  Corresponds\n  to the `setup()` function in Arduino sketches.\n\n- **Setup** is empty when the Arduino Uno is\n  controlled by Node-RED over StandardFirmataPlus.\n\n- When using a Sigfox shield with Arduino, we\n  normally initialise the Sigfox module in the `setup()` function.\n  Some Sigfox modules include a Power Amplifier\n  and may need some time to power up.\n\n- The `setup()` function should also\n  initialise the Arduino sensor.\n\nhttps://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L31-L54\n\n",
+        "x": 195,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "6b0c0d84.566634",
+        "type": "comment",
+        "z": "1b30a089.420ecf",
+        "name": "Loop",
+        "info": "- **Loop** is run repeatedly after **Setup.**  Corresponds\n  to the `loop()` function in Arduino sketches.\n\n- Reads the sensor value from the Arduino\n  light sensor and injects the value into the\n  flow.\n\n- The light sensor should be connected to \n  **Port A0** of the Grove Shield.  This is\n  an **Analog Port,** since the light sensor\n  is an analog sensor.\n\n- The sensor value is injected every 10 seconds.\n\n- The **\"Connect To Transmit\"** node should be\n  connected to the **Transmit** node for the\n  sensor value to be injected into the flow.\n\n- No other nodes should be connected to the\n  **Transmit** node\n\n- We flash the LED on Arduino pin D13 every\n  10 seconds, to provide feedback that the\n  flow is running. The Arduino Uno has\n  an onboard LED (coloured orange) on\n  pin D13.\n\n-  When running with a real Sigfox shield,\n   we should insert a delay of 10 seconds \n   at the end of the `loop()` function.\n   We should not send more than 1 message\n   within 10 seconds.\n\nhttps://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L56-L76\n",
+        "x": 192,
+        "y": 242,
+        "wires": []
+    },
+    {
+        "id": "9dfebfca.fd33d",
+        "type": "comment",
+        "z": "1b30a089.420ecf",
+        "name": "General Setup",
+        "info": "https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L32-L39",
+        "x": 270,
+        "y": 103,
+        "wires": []
+    },
+    {
+        "id": "de8edb41.c9b578",
+        "type": "comment",
+        "z": "1b30a089.420ecf",
+        "name": "Sensor Setup",
+        "info": "https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L41-L47",
+        "x": 271,
+        "y": 147,
+        "wires": []
+    },
+    {
+        "id": "d793028a.587ea",
+        "type": "comment",
+        "z": "1b30a089.420ecf",
+        "name": "Sigfox Module Setup",
+        "info": "https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L41-L47",
+        "x": 301,
+        "y": 190,
+        "wires": []
+    },
+    {
+        "id": "233d5fce.b0be3",
+        "type": "comment",
+        "z": "1b30a089.420ecf",
+        "name": "Sensor Loop",
+        "info": "https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L57-L65",
+        "x": 269,
+        "y": 291,
+        "wires": []
+    },
+    {
+        "id": "332d57e1.5db738",
+        "type": "comment",
+        "z": "1b30a089.420ecf",
+        "name": "Sigfox Module Loop",
+        "info": "https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L67-L71",
+        "x": 291,
+        "y": 338,
+        "wires": []
+    },
+    {
+        "id": "91158d13.f5d5a",
+        "type": "comment",
+        "z": "1b30a089.420ecf",
+        "name": "Loop Delay",
+        "info": "https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L67-L71",
+        "x": 270,
+        "y": 384,
+        "wires": []
+    }
+]
