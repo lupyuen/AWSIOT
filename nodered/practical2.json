@@ -5,12 +5,661 @@
         "label": "Practical 2 - Arduino Programming"
     },
     {
+        "id": "4174cb0.9774634",
+        "type": "ui_base",
+        "theme": {
+            "name": "theme-light",
+            "lightTheme": {
+                "default": "#0094CE",
+                "baseColor": "#0094CE",
+                "baseFont": "Helvetica Neue",
+                "edited": true,
+                "reset": false
+            },
+            "darkTheme": {
+                "default": "#097479",
+                "baseColor": "#097479",
+                "baseFont": "Helvetica Neue",
+                "edited": false
+            },
+            "customTheme": {
+                "name": "Untitled Theme 1",
+                "default": "#4B7930",
+                "baseColor": "#4B7930",
+                "baseFont": "Helvetica Neue"
+            },
+            "themeState": {
+                "base-color": {
+                    "default": "#0094CE",
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-titlebar-backgroundColor": {
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-backgroundColor": {
+                    "value": "#fafafa",
+                    "edited": false
+                },
+                "page-sidebar-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-textColor": {
+                    "value": "#000000",
+                    "edited": false
+                },
+                "group-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "widget-textColor": {
+                    "value": "#111111",
+                    "edited": false
+                },
+                "widget-backgroundColor": {
+                    "value": "#0094ce",
+                    "edited": false
+                },
+                "widget-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                }
+            }
+        },
+        "site": {
+            "name": "Node-RED Dashboard",
+            "hideToolbar": "false",
+            "allowSwipe": "false",
+            "dateFormat": "DD/MM/YYYY",
+            "sizes": {
+                "sx": 48,
+                "sy": 48,
+                "gx": 6,
+                "gy": 6,
+                "cx": 6,
+                "cy": 6,
+                "px": 0,
+                "py": 0
+            }
+        }
+    },
+    {
+        "id": "9c5ec672.dbb3f8",
+        "type": "ui_tab",
+        "name": "Tab",
+        "icon": "dashboard",
+        "order": 0
+    },
+    {
+        "id": "712f4a57.a07534",
+        "type": "ui_group",
+        "z": "",
+        "name": "Default",
+        "tab": "9c5ec672.dbb3f8",
+        "disp": true,
+        "width": "6"
+    },
+    {
+        "id": "bb0e7104.8a233",
+        "type": "websocket-client",
+        "z": "",
+        "path": "ws://testcloud.unamakers.com/unabellmwc",
+        "wholemsg": "false"
+    },
+    {
+        "id": "40836cc8.af1ea4",
+        "type": "ui_group",
+        "name": "Group",
+        "tab": "9c5ec672.dbb3f8",
+        "order": null,
+        "disp": true,
+        "width": 6
+    },
+    {
+        "id": "ed04753f.4a4078",
+        "type": "ui_base",
+        "theme": {
+            "name": "theme-light",
+            "lightTheme": {
+                "default": "#0094CE",
+                "baseColor": "#0094CE",
+                "baseFont": "Helvetica Neue",
+                "edited": true,
+                "reset": false
+            },
+            "darkTheme": {
+                "default": "#097479",
+                "baseColor": "#097479",
+                "baseFont": "Helvetica Neue",
+                "edited": false
+            },
+            "customTheme": {
+                "name": "Untitled Theme 1",
+                "default": "#4B7930",
+                "baseColor": "#4B7930",
+                "baseFont": "Helvetica Neue"
+            },
+            "themeState": {
+                "base-color": {
+                    "default": "#0094CE",
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-titlebar-backgroundColor": {
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-backgroundColor": {
+                    "value": "#fafafa",
+                    "edited": false
+                },
+                "page-sidebar-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-textColor": {
+                    "value": "#000000",
+                    "edited": false
+                },
+                "group-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "widget-textColor": {
+                    "value": "#111111",
+                    "edited": false
+                },
+                "widget-backgroundColor": {
+                    "value": "#0094ce",
+                    "edited": false
+                },
+                "widget-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                }
+            }
+        },
+        "site": {
+            "name": "Node-RED Dashboard",
+            "hideToolbar": "false",
+            "allowSwipe": "false",
+            "dateFormat": "DD/MM/YYYY",
+            "sizes": {
+                "sx": 48,
+                "sy": 48,
+                "gx": 6,
+                "gy": 6,
+                "cx": 6,
+                "cy": 6,
+                "px": 0,
+                "py": 0
+            }
+        }
+    },
+    {
+        "id": "3775758e.aa828a",
+        "type": "ui_tab",
+        "name": "Tab",
+        "icon": "dashboard",
+        "order": 0
+    },
+    {
+        "id": "9418ed2d.2de7b",
+        "type": "ui_group",
+        "z": "",
+        "name": "Default",
+        "tab": "d1d27d53.414d",
+        "disp": true,
+        "width": "6"
+    },
+    {
+        "id": "d1d27d53.414d",
+        "type": "ui_tab",
+        "name": "Tab",
+        "icon": "dashboard",
+        "order": 0
+    },
+    {
+        "id": "4362e252.65ca3c",
+        "type": "ui_base",
+        "theme": {
+            "name": "theme-light",
+            "lightTheme": {
+                "default": "#0094CE",
+                "baseColor": "#0094CE",
+                "baseFont": "Helvetica Neue",
+                "edited": true,
+                "reset": false
+            },
+            "darkTheme": {
+                "default": "#097479",
+                "baseColor": "#097479",
+                "baseFont": "Helvetica Neue",
+                "edited": false
+            },
+            "customTheme": {
+                "name": "Untitled Theme 1",
+                "default": "#4B7930",
+                "baseColor": "#4B7930",
+                "baseFont": "Helvetica Neue"
+            },
+            "themeState": {
+                "base-color": {
+                    "default": "#0094CE",
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-titlebar-backgroundColor": {
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-backgroundColor": {
+                    "value": "#fafafa",
+                    "edited": false
+                },
+                "page-sidebar-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-textColor": {
+                    "value": "#000000",
+                    "edited": false
+                },
+                "group-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "widget-textColor": {
+                    "value": "#111111",
+                    "edited": false
+                },
+                "widget-backgroundColor": {
+                    "value": "#0094ce",
+                    "edited": false
+                },
+                "widget-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                }
+            }
+        },
+        "site": {
+            "name": "Node-RED Dashboard",
+            "hideToolbar": "false",
+            "allowSwipe": "false",
+            "dateFormat": "DD/MM/YYYY",
+            "sizes": {
+                "sx": 48,
+                "sy": 48,
+                "gx": 6,
+                "gy": 6,
+                "cx": 6,
+                "cy": 6,
+                "px": 0,
+                "py": 0
+            }
+        }
+    },
+    {
+        "id": "e104b9f4.b2bd88",
+        "type": "ui_tab",
+        "name": "Tab",
+        "icon": "dashboard",
+        "order": 0
+    },
+    {
+        "id": "66728cda.006db4",
+        "type": "ui_group",
+        "z": "",
+        "name": "Default",
+        "tab": "507ab148.8452f",
+        "disp": true,
+        "width": "6"
+    },
+    {
+        "id": "507ab148.8452f",
+        "type": "ui_tab",
+        "name": "Tab",
+        "icon": "dashboard",
+        "order": 0
+    },
+    {
+        "id": "bf7c60f8.2154c",
+        "type": "nodebot",
+        "z": "",
+        "name": "",
+        "username": "",
+        "password": "",
+        "boardType": "firmata",
+        "serialportName": "/dev/cu.usbmodem1411",
+        "connectionType": "local",
+        "mqttServer": "",
+        "socketServer": "",
+        "pubTopic": "",
+        "subTopic": "",
+        "tcpHost": "",
+        "tcpPort": "",
+        "sparkId": "",
+        "sparkToken": "",
+        "beanId": "",
+        "impId": "",
+        "meshbluServer": "https://meshblu.octoblu.com",
+        "uuid": "",
+        "token": "",
+        "sendUuid": ""
+    },
+    {
+        "id": "b54b41ba.2202f",
+        "type": "ui_base",
+        "theme": {
+            "name": "theme-light",
+            "lightTheme": {
+                "default": "#0094CE",
+                "baseColor": "#0094CE",
+                "baseFont": "Helvetica Neue",
+                "edited": true,
+                "reset": false
+            },
+            "darkTheme": {
+                "default": "#097479",
+                "baseColor": "#097479",
+                "baseFont": "Helvetica Neue",
+                "edited": false
+            },
+            "customTheme": {
+                "name": "Untitled Theme 1",
+                "default": "#4B7930",
+                "baseColor": "#4B7930",
+                "baseFont": "Helvetica Neue"
+            },
+            "themeState": {
+                "base-color": {
+                    "default": "#0094CE",
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-titlebar-backgroundColor": {
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-backgroundColor": {
+                    "value": "#fafafa",
+                    "edited": false
+                },
+                "page-sidebar-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-textColor": {
+                    "value": "#000000",
+                    "edited": false
+                },
+                "group-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "widget-textColor": {
+                    "value": "#111111",
+                    "edited": false
+                },
+                "widget-backgroundColor": {
+                    "value": "#0094ce",
+                    "edited": false
+                },
+                "widget-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                }
+            }
+        },
+        "site": {
+            "name": "Node-RED Dashboard",
+            "hideToolbar": "false",
+            "allowSwipe": "false",
+            "dateFormat": "DD/MM/YYYY",
+            "sizes": {
+                "sx": 48,
+                "sy": 48,
+                "gx": 6,
+                "gy": 6,
+                "cx": 6,
+                "cy": 6,
+                "px": 0,
+                "py": 0
+            }
+        }
+    },
+    {
+        "id": "5436d2ed.fe470c",
+        "type": "ui_tab",
+        "name": "Tab",
+        "icon": "dashboard",
+        "order": 0
+    },
+    {
+        "id": "c08f468f.c11308",
+        "type": "nodebot",
+        "z": "",
+        "name": "",
+        "username": "",
+        "password": "",
+        "boardType": "firmata",
+        "serialportName": "COM4",
+        "connectionType": "local",
+        "mqttServer": "",
+        "socketServer": "",
+        "pubTopic": "",
+        "subTopic": "",
+        "tcpHost": "",
+        "tcpPort": "",
+        "sparkId": "",
+        "sparkToken": "",
+        "beanId": "",
+        "impId": "",
+        "meshbluServer": "https://meshblu.octoblu.com",
+        "uuid": "",
+        "token": "",
+        "sendUuid": ""
+    },
+    {
+        "id": "637a05f1.d0fddc",
+        "type": "ui_group",
+        "z": "",
+        "name": "Default",
+        "tab": "71b3ca2b.6b0174",
+        "disp": true,
+        "width": "6"
+    },
+    {
+        "id": "71b3ca2b.6b0174",
+        "type": "ui_tab",
+        "name": "Tab",
+        "icon": "dashboard",
+        "order": 0
+    },
+    {
+        "id": "8e4fce5.e7e463",
+        "type": "ui_base",
+        "theme": {
+            "name": "theme-light",
+            "lightTheme": {
+                "default": "#0094CE",
+                "baseColor": "#0094CE",
+                "baseFont": "Helvetica Neue",
+                "edited": true,
+                "reset": false
+            },
+            "darkTheme": {
+                "default": "#097479",
+                "baseColor": "#097479",
+                "baseFont": "Helvetica Neue",
+                "edited": false
+            },
+            "customTheme": {
+                "name": "Untitled Theme 1",
+                "default": "#4B7930",
+                "baseColor": "#4B7930",
+                "baseFont": "Helvetica Neue"
+            },
+            "themeState": {
+                "base-color": {
+                    "default": "#0094CE",
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-titlebar-backgroundColor": {
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-backgroundColor": {
+                    "value": "#fafafa",
+                    "edited": false
+                },
+                "page-sidebar-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-textColor": {
+                    "value": "#000000",
+                    "edited": false
+                },
+                "group-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "widget-textColor": {
+                    "value": "#111111",
+                    "edited": false
+                },
+                "widget-backgroundColor": {
+                    "value": "#0094ce",
+                    "edited": false
+                },
+                "widget-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                }
+            }
+        },
+        "site": {
+            "name": "Node-RED Dashboard",
+            "hideToolbar": "false",
+            "allowSwipe": "false",
+            "dateFormat": "DD/MM/YYYY",
+            "sizes": {
+                "sx": 48,
+                "sy": 48,
+                "gx": 6,
+                "gy": 6,
+                "cx": 6,
+                "cy": 6,
+                "px": 0,
+                "py": 0
+            }
+        }
+    },
+    {
+        "id": "744f17e2.927548",
+        "type": "ui_tab",
+        "name": "Tab",
+        "icon": "dashboard",
+        "order": 0
+    },
+    {
+        "id": "cff671ac.d5a5c",
+        "type": "nodebot",
+        "z": "",
+        "name": "",
+        "username": "",
+        "password": "",
+        "boardType": "firmata",
+        "serialportName": "COM4",
+        "connectionType": "local",
+        "mqttServer": "",
+        "socketServer": "",
+        "pubTopic": "",
+        "subTopic": "",
+        "tcpHost": "",
+        "tcpPort": "",
+        "sparkId": "",
+        "sparkToken": "",
+        "beanId": "",
+        "impId": "",
+        "meshbluServer": "https://meshblu.octoblu.com",
+        "uuid": "",
+        "token": "",
+        "sendUuid": ""
+    },
+    {
+        "id": "30305f9e.ee137",
+        "type": "ui_group",
+        "z": "",
+        "name": "Default",
+        "tab": "4c7b61f7.a2683",
+        "disp": true,
+        "width": "6"
+    },
+    {
+        "id": "4c7b61f7.a2683",
+        "type": "ui_tab",
+        "name": "Tab",
+        "icon": "dashboard",
+        "order": 0
+    },
+    {
+        "id": "79e2335a.55f05c",
+        "type": "nodebot",
+        "z": "",
+        "name": "",
+        "username": "",
+        "password": "",
+        "boardType": "firmata",
+        "serialportName": "COM4",
+        "connectionType": "local",
+        "mqttServer": "",
+        "socketServer": "",
+        "pubTopic": "",
+        "subTopic": "",
+        "tcpHost": "",
+        "tcpPort": "",
+        "sparkId": "",
+        "sparkToken": "",
+        "beanId": "",
+        "impId": "",
+        "meshbluServer": "https://meshblu.octoblu.com",
+        "uuid": "",
+        "token": "",
+        "sendUuid": ""
+    },
+    {
         "id": "6fc99b6e.8b34c4",
         "type": "comment",
         "z": "1b30a089.420ecf",
-        "name": "Arduino Sensor",
-        "info": "- This sensor connects to a real Arduino Uno\n  via USB/serial port and reads the value \n  of the Grove light sensor connected to the\n  Uno.\n\n- The sensor value is read every 10 seconds.\n\n- The Arduino Uno must be running the\n  **StandardFirmataPlus** sketch.  This is a\n  remote control program that receives \n  commands from Node-RED via USB/serial port,\n  executes them and returns the results.\n\n- Uses the **Johnny5 Arduino** module.  We selected\n  this module over the basic Node-RED Arduino \n  module because it supports more Arduino\n  functions.\n\n",
-        "x": 85,
+        "name": "Arduino Sketch for reading Grove light sensor",
+        "info": "- Source code for the Arduino sketch:\n  \nhttps://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino\n\n- This Arduino sketch reads the sensor data \n  from the light sensor and displays the data. \n\n- This sensor connects to a real Arduino Uno\n  via USB/serial port and reads the value \n  of the Grove light sensor connected to the\n  Uno.\n\n- The sensor value is read every 10 seconds.\n\n- The Arduino code was derived from the official sensor specifications and sample code:\n\nhttp://wiki.seeed.cc/Grove-Light_Sensor/\n\nhttps://github.com/Seeed-Studio/Light_Sensor/blob/master/examples/Light_Sensor/Light_Sensor.ino \n",
+        "x": 175,
         "y": 20,
         "wires": []
     },
@@ -20,8 +669,8 @@
         "z": "1b30a089.420ecf",
         "name": "Setup",
         "info": "- **Setup** is run once upon startup.  Corresponds\n  to the `setup()` function in Arduino sketches.\n\n- **Setup** is empty when the Arduino Uno is\n  controlled by Node-RED over StandardFirmataPlus.\n\n- When using a Sigfox shield with Arduino, we\n  normally initialise the Sigfox module in the `setup()` function.\n  Some Sigfox modules include a Power Amplifier\n  and may need some time to power up.\n\n- The `setup()` function should also\n  initialise the Arduino sensor.\n\nhttps://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L31-L54\n\n",
-        "x": 195,
-        "y": 60,
+        "x": 117,
+        "y": 244,
         "wires": []
     },
     {
@@ -30,8 +679,8 @@
         "z": "1b30a089.420ecf",
         "name": "Loop",
         "info": "- **Loop** is run repeatedly after **Setup.**  Corresponds\n  to the `loop()` function in Arduino sketches.\n\n- Reads the sensor value from the Arduino\n  light sensor and injects the value into the\n  flow.\n\n- The light sensor should be connected to \n  **Port A0** of the Grove Shield.  This is\n  an **Analog Port,** since the light sensor\n  is an analog sensor.\n\n- The sensor value is injected every 10 seconds.\n\n- The **\"Connect To Transmit\"** node should be\n  connected to the **Transmit** node for the\n  sensor value to be injected into the flow.\n\n- No other nodes should be connected to the\n  **Transmit** node\n\n- We flash the LED on Arduino pin D13 every\n  10 seconds, to provide feedback that the\n  flow is running. The Arduino Uno has\n  an onboard LED (coloured orange) on\n  pin D13.\n\n-  When running with a real Sigfox shield,\n   we should insert a delay of 10 seconds \n   at the end of the `loop()` function.\n   We should not send more than 1 message\n   within 10 seconds.\n\nhttps://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L56-L76\n",
-        "x": 192,
-        "y": 242,
+        "x": 114,
+        "y": 426,
         "wires": []
     },
     {
@@ -40,8 +689,8 @@
         "z": "1b30a089.420ecf",
         "name": "General Setup",
         "info": "https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L32-L39",
-        "x": 270,
-        "y": 103,
+        "x": 192,
+        "y": 287,
         "wires": []
     },
     {
@@ -50,8 +699,8 @@
         "z": "1b30a089.420ecf",
         "name": "Sensor Setup",
         "info": "https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L41-L47",
-        "x": 271,
-        "y": 147,
+        "x": 193,
+        "y": 331,
         "wires": []
     },
     {
@@ -60,8 +709,8 @@
         "z": "1b30a089.420ecf",
         "name": "Sigfox Module Setup",
         "info": "https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L41-L47",
-        "x": 301,
-        "y": 190,
+        "x": 223,
+        "y": 374,
         "wires": []
     },
     {
@@ -70,8 +719,8 @@
         "z": "1b30a089.420ecf",
         "name": "Sensor Loop",
         "info": "https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L57-L65",
-        "x": 269,
-        "y": 291,
+        "x": 191,
+        "y": 475,
         "wires": []
     },
     {
@@ -80,8 +729,8 @@
         "z": "1b30a089.420ecf",
         "name": "Sigfox Module Loop",
         "info": "https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L67-L71",
-        "x": 291,
-        "y": 338,
+        "x": 213,
+        "y": 522,
         "wires": []
     },
     {
@@ -90,8 +739,48 @@
         "z": "1b30a089.420ecf",
         "name": "Loop Delay",
         "info": "https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L67-L71",
-        "x": 270,
-        "y": 384,
+        "x": 192,
+        "y": 568,
+        "wires": []
+    },
+    {
+        "id": "c0204b4d.52da28",
+        "type": "comment",
+        "z": "1b30a089.420ecf",
+        "name": "Declarations",
+        "info": "https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L1-L29",
+        "x": 135,
+        "y": 68,
+        "wires": []
+    },
+    {
+        "id": "b33f2055.116c1",
+        "type": "comment",
+        "z": "1b30a089.420ecf",
+        "name": "Sensor Declarations",
+        "info": "https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L11-L23",
+        "x": 214,
+        "y": 147,
+        "wires": []
+    },
+    {
+        "id": "96681618.0c24a8",
+        "type": "comment",
+        "z": "1b30a089.420ecf",
+        "name": "Sigfox Module Declarations",
+        "info": "https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L25-L29",
+        "x": 243,
+        "y": 189,
+        "wires": []
+    },
+    {
+        "id": "bd813800.b31da8",
+        "type": "comment",
+        "z": "1b30a089.420ecf",
+        "name": "General Declarations",
+        "info": "https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L1-L9",
+        "x": 224,
+        "y": 107,
         "wires": []
     }
 ]
