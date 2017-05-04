@@ -659,8 +659,8 @@
         "z": "1b30a089.420ecf",
         "name": "Arduino Sketch for reading Grove light sensor",
         "info": "- Source code for the Arduino sketch:\n  \nhttps://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino\n\n- This Arduino sketch reads the sensor data \n  from the Grove light sensor and displays the data. \n\n- The sensor value is read every 10 seconds.\n\n- When we write Arduino code, normally we don't\n  write from scratch. We use the code that's\n  provided by the maker of the sensor or\n  communications module (Bluetooth, WiFi, Sigfox etc)\n \n- The Arduino code here was derived from the \n  official sensor specifications and sample code:\n\nhttp://wiki.seeed.cc/Grove-Light_Sensor/\n\nhttps://github.com/Seeed-Studio/Light_Sensor/blob/master/examples/Light_Sensor/Light_Sensor.ino \n\n- Check the above links and compare the\n  similarity of the code\n\n- We will likely be using various Grove sensors \n  for our project because they are easy to connect.\n  Here is the list of Grove sensors available,\n  please choose sensors that are compatible with Arduino:\n\nhttp://wiki.seeed.cc/Grove_System/\n\n- SeeedStudio provides sample Arduino code for Grove Sensors on wiki.seeed.cc, e.g.\n\nhttp://wiki.seeed.cc/Grove-Sound_Sensor/ \n\n- Every Arduino Sketch has 3 sections: **Declarations, Setup, Loop**. Click the nodes to learn more.\n",
-        "x": 175,
-        "y": 20,
+        "x": 196,
+        "y": 46,
         "wires": []
     },
     {
@@ -669,8 +669,8 @@
         "z": "1b30a089.420ecf",
         "name": "Setup",
         "info": "- Click here: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L31-L54\n\n- Every Arduino program has a **Setup** function\n  that is run once upon startup.\n\n- We use this section to initialise the sensor\n\n- When using a Sigfox shield with Arduino, we\n  normally initialise the Sigfox module in the `setup()` function.\n  Some Sigfox modules include a Power Amplifier\n  and may need some time to power up.\n\n\n",
-        "x": 117,
-        "y": 244,
+        "x": 138,
+        "y": 270,
         "wires": []
     },
     {
@@ -678,9 +678,9 @@
         "type": "comment",
         "z": "1b30a089.420ecf",
         "name": "Loop",
-        "info": "- **Loop** is run repeatedly after **Setup.**  Corresponds\n  to the `loop()` function in Arduino sketches.\n\n- Reads the sensor value from the Arduino\n  light sensor and injects the value into the\n  flow.\n\n- The light sensor should be connected to \n  **Port A0** of the Grove Shield.  This is\n  an **Analog Port,** since the light sensor\n  is an analog sensor.\n\n- The sensor value is injected every 10 seconds.\n\n- The **\"Connect To Transmit\"** node should be\n  connected to the **Transmit** node for the\n  sensor value to be injected into the flow.\n\n- No other nodes should be connected to the\n  **Transmit** node\n\n- We flash the LED on Arduino pin D13 every\n  10 seconds, to provide feedback that the\n  flow is running. The Arduino Uno has\n  an onboard LED (coloured orange) on\n  pin D13.\n\n-  When running with a real Sigfox shield,\n   we should insert a delay of 10 seconds \n   at the end of the `loop()` function.\n   We should not send more than 1 message\n   within 10 seconds.\n\nhttps://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L56-L76\n",
-        "x": 114,
-        "y": 426,
+        "info": "- Click here: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L56-L76\n\n- Every Arduino sketch has a **Loop** function\n  that is run repeatedly after **Setup.**  \n\n- Here we read the sensor value from the Arduino\n  light sensor and display it\n\n- The light sensor should be connected to \n  **Port A0** of the Grove Shield.  This is\n  an **Analog Port,** since the light sensor\n  is an analog sensor.\n\n- The sensor value is read every 10 seconds.\n\n-  When running with a real Sigfox shield,\n   we should insert a delay of 10 seconds \n   at the end of the `loop()` function.\n   We should not send more than 1 message\n   within 10 seconds.\n\n",
+        "x": 135,
+        "y": 452,
         "wires": []
     },
     {
@@ -688,9 +688,9 @@
         "type": "comment",
         "z": "1b30a089.420ecf",
         "name": "General Setup",
-        "info": "- Click here: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L32-L39\n\n- We declare the **Setup** function as `void setup()`.\n  This means it accepts no parameters and \n  returns no values.\n\n- When we use the **Serial Monitor** we are\n  actually connecting through our computer's\n  COM serial port to the USB interface to\n  another serial port located on the Arduino board.\n  The Arduino's serial port is also known as \n  **UART - Universal Asynchronous Receiver / Transmitter**\n\nhttps://en.wikipedia.org/wiki/Universal_asynchronous_receiver/transmitter\n\n- In most Arduino sketches we use the serial\n  port to display debug messages. That's why\n  the serial port is connected to the\n  Serial Monitor\n\n- By convention, we use 9,600 bits per second\n  to connect to the serial port.  This is set\n  through `Serial.begin(9600)`\n\n- We use `Serial.println` to output messages\n  to the serial port / Serial Monitor.\n  This section will print `Running setup...`\n  when the sketch starts running.\n\n- Why did we call function `F(...)`? Because\n  RAM is severely limited. By calling `F(...)`\n  we store the `Running setup...` string\n  in **Flash Memory** instead of RAM, \n  so we have more usable memory.  \n\n- When you compile a sketch you may see:\n\n```\nSketch uses 19,168 bytes (59%) of program storage space. Maximum is 32,256 bytes.\nGlobal variables use 1,376 bytes (67%) of dynamic memory, leaving 672 bytes for local variables. Maximum is 2,048 bytes.\n```\n\n- That means the Arduino Uno has only **2KB of usuable RAM**.\n  The sketch occupies 19KB of Flash Memory, which is a lot bigger\n  than available RAM.",
-        "x": 192,
-        "y": 287,
+        "info": "- Click here: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L32-L39\n\n- We declare the **Setup** function as `void setup()`.\n  This means it accepts no parameters and \n  returns no values.  In C++, functions start\n  with `{` and end with `}`.\n\n- When we use the **Serial Monitor** we are\n  actually connecting through our computer's\n  COM serial port to the USB interface to\n  another serial port located on the Arduino board.\n  The Arduino's serial port is also known as \n  **UART - Universal Asynchronous Receiver / Transmitter**\n\nhttps://en.wikipedia.org/wiki/Universal_asynchronous_receiver/transmitter\n\n- In most Arduino sketches we use the serial\n  port to display debug messages. That's why\n  the serial port is connected to the\n  Serial Monitor\n\n- By convention, we use 9,600 bits per second\n  to connect to the serial port.  This is set\n  through `Serial.begin(9600)`\n\n- We use `Serial.println` to output messages\n  to the serial port / Serial Monitor.\n  This section will print `Running setup...`\n  when the sketch starts running.\n\n- Why did we call function `F(...)`? Because\n  RAM is severely limited. By calling `F(...)`\n  we store the `Running setup...` string\n  in **Flash Memory** instead of RAM, \n  so we have more usable memory.  \n\n- When you compile a sketch you may see:\n\n```\nSketch uses 19,168 bytes (59%) of program storage space. Maximum is 32,256 bytes.\nGlobal variables use 1,376 bytes (67%) of dynamic memory, leaving 672 bytes for local variables. Maximum is 2,048 bytes.\n```\n\n- That means the Arduino Uno has only **2KB of usuable RAM**.\n  The sketch occupies 19KB of Flash Memory, which is a lot bigger\n  than available RAM.",
+        "x": 213,
+        "y": 313,
         "wires": []
     },
     {
@@ -699,8 +699,8 @@
         "z": "1b30a089.420ecf",
         "name": "Sensor Setup",
         "info": "- Click here: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L41-L47\n\n- There is no sensor setup needed for the Grove Light Sensor.\n\n- Some smart sensors (e.g. air pressure sensor)\n  may need some time to start up and warm up.\n\n\n",
-        "x": 193,
-        "y": 331,
+        "x": 214,
+        "y": 357,
         "wires": []
     },
     {
@@ -709,8 +709,8 @@
         "z": "1b30a089.420ecf",
         "name": "Sigfox Module Setup",
         "info": "- Click here: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L41-L47\n\n- This will be used to initialise the Sigfox\n  module before transmitting Sigfox messages\n\n",
-        "x": 223,
-        "y": 374,
+        "x": 244,
+        "y": 400,
         "wires": []
     },
     {
@@ -718,9 +718,9 @@
         "type": "comment",
         "z": "1b30a089.420ecf",
         "name": "Sensor Loop",
-        "info": "https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L57-L65",
-        "x": 191,
-        "y": 475,
+        "info": "- Click here: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L57-L65\n\n- In this section we read the sensor data.\n\n- `int light_level` declares an Integer variable\n  named `light_level` which we will use\n  to save the sensor value\n\n- `light_level = analogRead(LIGHT_SENSOR)` reads\n  the value of Analog Port 0, i.e. A0.\n  We declared `LIGHT_SENSOR` to be `A0`\n  in the **General Declarations** section\n\n- All C++ statements must end with `;`\n\n- Then we print the `light_level` to the\n  serial port / Serial Monitor\n\n- Why didn't we call `F(...)` for `light_level`?\n  Because `light_level` is a variable and\n  can't be stored in Flash Memory, which is\n  read-only. `F(...)` should be called for\n  text strings that never change.\n\n",
+        "x": 212,
+        "y": 501,
         "wires": []
     },
     {
@@ -728,9 +728,9 @@
         "type": "comment",
         "z": "1b30a089.420ecf",
         "name": "Sigfox Module Loop",
-        "info": "https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L67-L71",
-        "x": 213,
-        "y": 522,
+        "info": "- Click here: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L67-L71\n\n- We'll use this section in the next Practical\n  to send the sensor data via Sigfox\n\n",
+        "x": 234,
+        "y": 548,
         "wires": []
     },
     {
@@ -738,9 +738,9 @@
         "type": "comment",
         "z": "1b30a089.420ecf",
         "name": "Loop Delay",
-        "info": "https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L67-L71",
-        "x": 192,
-        "y": 568,
+        "info": "- Click here: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L73-L75\n\n- Remember that we are not supposed to send\n  2 Sigfox messages within 10 seconds.  In fact\n  the guideline is that we should only send\n  maximum 140 messages in a day.\n\n- Also we shouldn't read sensors too often. This drains\n  the battery faster.\n\n- By calling `delay(10000)` we introduce a\n  10-second delay into the loop.  We specify\n  10,000 because the unit is milliseconds,\n  so 10 seconds = 10000 milliseconds\n\n- So the program pauses here for 10 seconds\n  before running `loop()` again\n\n- Unlike normal computers, a microcontroller\n  like Arduino doesn't know how to end / exit / quit!\n  It will happily run `loop()` forever\n  until you disconnect the power.\n\n\n",
+        "x": 213,
+        "y": 594,
         "wires": []
     },
     {
@@ -749,8 +749,8 @@
         "z": "1b30a089.420ecf",
         "name": "Declarations",
         "info": "- Click to see the section: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L1-L29\n\n- All Arduino programs have a **Declarations** section\n  at the beginning to declare any required\n  library functions or global constants / variables\n\n- An Arduino Sketch is a C++ program, so we\n  use `//` and `/* ... */` to denote comments\n\n",
-        "x": 135,
-        "y": 68,
+        "x": 156,
+        "y": 94,
         "wires": []
     },
     {
@@ -759,8 +759,8 @@
         "z": "1b30a089.420ecf",
         "name": "Sensor Declarations",
         "info": "- Click here: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L11-L23\n\n- Here we declare any library functions, constants\n  and variables used by the sensor\n\n- The Grove Light Sensor uses the standard\n  Analog port and doesn't require any libraries\n\n- The `#ifdef ... #endif` is a C++ Preprocessor\n  Directive. During the C++ compilation, the\n  C++ compiler checks whether we are compiling\n  for the Bean Arduino Device, and if so\n  use port A2 instead of the default A0 for\n  connecting to the light sensor.  We are\n  using the Arduino Uno, so `LIGHT_SENSOR`\n  will be set to `A0`.\n\n\n",
-        "x": 214,
-        "y": 147,
+        "x": 235,
+        "y": 173,
         "wires": []
     },
     {
@@ -769,8 +769,8 @@
         "z": "1b30a089.420ecf",
         "name": "Sigfox Module Declarations",
         "info": "- Click here: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L25-L29\n\n- This section will be used in the next Practical\n  to declare the library functions, constants\n  and variables needed for the Sigfox transmission\n\n",
-        "x": 243,
-        "y": 189,
+        "x": 264,
+        "y": 215,
         "wires": []
     },
     {
@@ -779,8 +779,8 @@
         "z": "1b30a089.420ecf",
         "name": "General Declarations",
         "info": "- Click here: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L1-L9\n\n- This is a comment (marked by `//`) that describes the program\n  features. \n\n- The connections for the Arduino Pins is\n  described in Exercise 1",
-        "x": 224,
-        "y": 107,
+        "x": 245,
+        "y": 133,
         "wires": []
     }
 ]
