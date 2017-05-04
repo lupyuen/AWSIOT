@@ -658,7 +658,7 @@
         "type": "comment",
         "z": "1b30a089.420ecf",
         "name": "Arduino Sketch for reading Grove light sensor",
-        "info": "- Source code for the Arduino sketch:\n  \nhttps://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino\n\n- This Arduino sketch reads the sensor data \n  from the Grove light sensor and displays the data. \n\n- The sensor value is read every 10 seconds.\n\n- When we write Arduino code, normally we don't\n  write from scratch. We use the code that's\n  provided by the maker of the sensor or\n  communications module (Bluetooth, WiFi, Sigfox etc)\n \n- The Arduino code here was derived from the \n  official sensor specifications and sample code:\n\nhttp://wiki.seeed.cc/Grove-Light_Sensor/\n\nhttps://github.com/Seeed-Studio/Light_Sensor/blob/master/examples/Light_Sensor/Light_Sensor.ino \n\n- Check the above links and compare the\n  similarity of the code\n\n- We will likely be using various Grove sensors \n  for our project because they are easy to connect.\n  Here is the list of Grove sensors available,\n  please choose sensors that are compatible with Arduino:\n\nhttp://wiki.seeed.cc/Grove_System/\n\n- SeeedStudio provides sample Arduino code for Grove Sensors on wiki.seeed.cc, e.g.\n\nhttp://wiki.seeed.cc/Grove-Sound_Sensor/ \n\n",
+        "info": "- Source code for the Arduino sketch:\n  \nhttps://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino\n\n- This Arduino sketch reads the sensor data \n  from the Grove light sensor and displays the data. \n\n- The sensor value is read every 10 seconds.\n\n- When we write Arduino code, normally we don't\n  write from scratch. We use the code that's\n  provided by the maker of the sensor or\n  communications module (Bluetooth, WiFi, Sigfox etc)\n \n- The Arduino code here was derived from the \n  official sensor specifications and sample code:\n\nhttp://wiki.seeed.cc/Grove-Light_Sensor/\n\nhttps://github.com/Seeed-Studio/Light_Sensor/blob/master/examples/Light_Sensor/Light_Sensor.ino \n\n- Check the above links and compare the\n  similarity of the code\n\n- We will likely be using various Grove sensors \n  for our project because they are easy to connect.\n  Here is the list of Grove sensors available,\n  please choose sensors that are compatible with Arduino:\n\nhttp://wiki.seeed.cc/Grove_System/\n\n- SeeedStudio provides sample Arduino code for Grove Sensors on wiki.seeed.cc, e.g.\n\nhttp://wiki.seeed.cc/Grove-Sound_Sensor/ \n\n- Every Arduino Sketch has 3 sections: **Declarations, Setup, Loop**. Click the nodes to learn more.\n",
         "x": 175,
         "y": 20,
         "wires": []
@@ -668,7 +668,7 @@
         "type": "comment",
         "z": "1b30a089.420ecf",
         "name": "Setup",
-        "info": "- **Setup** is run once upon startup.  Corresponds\n  to the `setup()` function in Arduino sketches.\n\n- **Setup** is empty when the Arduino Uno is\n  controlled by Node-RED over StandardFirmataPlus.\n\n- When using a Sigfox shield with Arduino, we\n  normally initialise the Sigfox module in the `setup()` function.\n  Some Sigfox modules include a Power Amplifier\n  and may need some time to power up.\n\n- The `setup()` function should also\n  initialise the Arduino sensor.\n\nhttps://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L31-L54\n\n",
+        "info": "- Click here: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L31-L54\n\n- Every Arduino program has a **Setup** function\n  that is run once upon startup.\n\n- We use this section to initialise the sensor\n\n- When using a Sigfox shield with Arduino, we\n  normally initialise the Sigfox module in the `setup()` function.\n  Some Sigfox modules include a Power Amplifier\n  and may need some time to power up.\n\n\n",
         "x": 117,
         "y": 244,
         "wires": []
@@ -748,7 +748,7 @@
         "type": "comment",
         "z": "1b30a089.420ecf",
         "name": "Declarations",
-        "info": "https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L1-L29",
+        "info": "- Click to see the section: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L1-L29\n\n- All Arduino programs have a **Declarations** section\n  at the beginning to declare any required\n  library functions or global constants / variables\n\n- An Arduino Sketch is a C++ program, so we\n  use `//` and `/* ... */` to denote comments\n\n",
         "x": 135,
         "y": 68,
         "wires": []
@@ -758,7 +758,7 @@
         "type": "comment",
         "z": "1b30a089.420ecf",
         "name": "Sensor Declarations",
-        "info": "https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L11-L23",
+        "info": "- Click here: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L11-L23\n\n- Here we declare any library functions, constants\n  and variables used by the sensor\n\n- The Grove Light Sensor uses the standard\n  Analog port and doesn't require any libraries\n\n- The `#ifdef ... #endif` is a C++ Preprocessor\n  Directive. During the C++ compilation, the\n  C++ compiler checks whether we are compiling\n  for the Bean Arduino Device, and if so\n  use port A2 instead of the default A0 for\n  connecting to the light sensor.  We are\n  using the Arduino Uno, so `LIGHT_SENSOR`\n  will be set to `A0`.\n\n\n",
         "x": 214,
         "y": 147,
         "wires": []
@@ -768,7 +768,7 @@
         "type": "comment",
         "z": "1b30a089.420ecf",
         "name": "Sigfox Module Declarations",
-        "info": "https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L25-L29",
+        "info": "- Click here: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L25-L29\n\n- This section will be used in the next Practical\n  to declare the library functions, constants\n  and variables needed for the Sigfox transmission\n\n",
         "x": 243,
         "y": 189,
         "wires": []
@@ -778,7 +778,7 @@
         "type": "comment",
         "z": "1b30a089.420ecf",
         "name": "General Declarations",
-        "info": "https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L1-L9",
+        "info": "- Click here: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L1-L9\n\n- This is a comment (marked by `//`) that describes the program\n  features. \n\n- The connections for the Arduino Pins is\n  described in Exercise 1",
         "x": 224,
         "y": 107,
         "wires": []
