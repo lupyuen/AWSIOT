@@ -5,16 +5,6 @@
         "label": "Practical 3 - Sigfox Programming"
     },
     {
-        "id": "4225878c.4c8458",
-        "type": "tab",
-        "label": "Practical 2 - Arduino Programming"
-    },
-    {
-        "id": "50b98762.fa6988",
-        "type": "tab",
-        "label": "IoT Roadmap"
-    },
-    {
         "id": "4174cb0.9774634",
         "type": "ui_base",
         "theme": {
@@ -912,1195 +902,11 @@
         "sendUuid": ""
     },
     {
-        "id": "87dcd762.b12788",
-        "type": "comment",
-        "z": "4225878c.4c8458",
-        "name": "Arduino Sketch for reading Grove light sensor",
-        "info": "- Source code for the Arduino sketch:\n  \nhttps://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino\n\n- This Arduino sketch reads the sensor data \n  from the Grove light sensor and displays the data. \n\n- The sensor value is read every 10 seconds.\n\n- When we write Arduino code, normally we don't\n  write from scratch. We use the code that's\n  provided by the maker of the sensor or\n  communications module (Bluetooth, WiFi, Sigfox etc)\n \n- The Arduino code here was derived from the \n  official sensor specifications and sample code:\n\nhttp://wiki.seeed.cc/Grove-Light_Sensor/\n\nhttps://github.com/Seeed-Studio/Light_Sensor/blob/master/examples/Light_Sensor/Light_Sensor.ino \n\n- Check the above links and compare the\n  similarity of the code\n\n- We will likely be using various Grove sensors \n  for our project because they are easy to connect.\n  Here is the list of Grove sensors available,\n  please choose sensors that are compatible with Arduino:\n\nhttp://wiki.seeed.cc/Grove_System/\n\n- SeeedStudio provides sample Arduino code for Grove Sensors on wiki.seeed.cc, e.g.\n\nhttp://wiki.seeed.cc/Grove-Sound_Sensor/ \n\n- Every Arduino Sketch has 3 sections: **Declarations, Setup, Loop**. Click the nodes to learn more.\n",
-        "x": 196,
-        "y": 46,
-        "wires": []
-    },
-    {
-        "id": "56b29f8.5362b6",
-        "type": "comment",
-        "z": "4225878c.4c8458",
-        "name": "Setup",
-        "info": "- Click here: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L31-L54\n\n- Every Arduino program has a **Setup** function\n  that is run once upon startup.\n\n- We use this section to initialise the sensor\n\n- When using a Sigfox shield with Arduino, we\n  normally initialise the Sigfox module in the `setup()` function.\n  Some Sigfox modules include a Power Amplifier\n  and may need some time to power up.\n\n\n",
-        "x": 138,
-        "y": 270,
-        "wires": []
-    },
-    {
-        "id": "cf10755a.117748",
-        "type": "comment",
-        "z": "4225878c.4c8458",
-        "name": "Loop",
-        "info": "- Click here: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L56-L76\n\n- Every Arduino sketch has a **Loop** function\n  that is run repeatedly after **Setup.**  \n\n- Here we read the sensor value from the Arduino\n  light sensor and display it\n\n- The light sensor should be connected to \n  **Port A0** of the Grove Shield.  This is\n  an **Analog Port,** since the light sensor\n  is an analog sensor.\n\n- The sensor value is read every 10 seconds.\n\n-  When running with a real Sigfox shield,\n   we should insert a delay of 10 seconds \n   at the end of the `loop()` function.\n   We should not send more than 1 message\n   within 10 seconds.\n\n",
-        "x": 135,
-        "y": 452,
-        "wires": []
-    },
-    {
-        "id": "81951142.1c095",
-        "type": "comment",
-        "z": "4225878c.4c8458",
-        "name": "General Setup",
-        "info": "- Click here: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L32-L39\n\n- We declare the **Setup** function as `void setup()`.\n  This means it accepts no parameters and \n  returns no values.  In C++, functions start\n  with `{` and end with `}`.\n\n- When we use the **Serial Monitor** we are\n  actually connecting through our computer's\n  COM serial port to the USB interface to\n  another serial port located on the Arduino board.\n  The Arduino's serial port is also known as \n  **UART - Universal Asynchronous Receiver / Transmitter**\n\nhttps://en.wikipedia.org/wiki/Universal_asynchronous_receiver/transmitter\n\n- In most Arduino sketches we use the serial\n  port to display debug messages. That's why\n  the serial port is connected to the\n  Serial Monitor\n\n- By convention, we use 9,600 bits per second\n  to connect to the serial port.  This is set\n  through `Serial.begin(9600)`\n\n- We use `Serial.println` to output messages\n  to the serial port / Serial Monitor.\n  This section will print `Running setup...`\n  when the sketch starts running.\n\n- Why did we call function `F(...)`? Because\n  RAM is severely limited. By calling `F(...)`\n  we store the `Running setup...` string\n  in **Flash Memory** instead of RAM, \n  so we have more usable memory.  \n\n- When you compile a sketch you may see:\n\n```\nSketch uses 19,168 bytes (59%) of program storage space. Maximum is 32,256 bytes.\nGlobal variables use 1,376 bytes (67%) of dynamic memory, leaving 672 bytes for local variables. Maximum is 2,048 bytes.\n```\n\n- That means the Arduino Uno has only **2KB of usuable RAM**.\n  The sketch occupies 19KB of Flash Memory, which is a lot bigger\n  than available RAM.",
-        "x": 213,
-        "y": 313,
-        "wires": []
-    },
-    {
-        "id": "bb962ddd.58b67",
-        "type": "comment",
-        "z": "4225878c.4c8458",
-        "name": "Sensor Setup",
-        "info": "- Click here: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L41-L47\n\n- There is no sensor setup needed for the Grove Light Sensor.\n\n- Some smart sensors (e.g. air pressure sensor)\n  may need some time to start up and warm up.\n\n\n",
-        "x": 214,
-        "y": 357,
-        "wires": []
-    },
-    {
-        "id": "582ad1da.a676c",
-        "type": "comment",
-        "z": "4225878c.4c8458",
-        "name": "Sigfox Module Setup",
-        "info": "- Click here: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L41-L47\n\n- This will be used to initialise the Sigfox\n  module before transmitting Sigfox messages\n\n",
-        "x": 244,
-        "y": 400,
-        "wires": []
-    },
-    {
-        "id": "7290137c.833f6c",
-        "type": "comment",
-        "z": "4225878c.4c8458",
-        "name": "Sensor Loop",
-        "info": "- Click here: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L57-L65\n\n- In this section we read the sensor data.\n\n- `int light_level` declares an Integer variable\n  named `light_level` which we will use\n  to save the sensor value\n\n- `light_level = analogRead(LIGHT_SENSOR)` reads\n  the value of Analog Port 0, i.e. A0.\n  We declared `LIGHT_SENSOR` to be `A0`\n  in the **General Declarations** section\n\n- All C++ statements must end with `;`\n\n- Then we print the `light_level` to the\n  serial port / Serial Monitor\n\n- Why didn't we call `F(...)` for `light_level`?\n  Because `light_level` is a variable and\n  can't be stored in Flash Memory, which is\n  read-only. `F(...)` should be called for\n  text strings that never change.\n\n",
-        "x": 212,
-        "y": 501,
-        "wires": []
-    },
-    {
-        "id": "5cd16cbd.3c3a54",
-        "type": "comment",
-        "z": "4225878c.4c8458",
-        "name": "Sigfox Module Loop",
-        "info": "- Click here: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L67-L71\n\n- We'll use this section in the next Practical\n  to send the sensor data via Sigfox\n\n",
-        "x": 234,
-        "y": 548,
-        "wires": []
-    },
-    {
-        "id": "c9c007be.719e88",
-        "type": "comment",
-        "z": "4225878c.4c8458",
-        "name": "Loop Delay",
-        "info": "- Click here: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L73-L75\n\n- Remember that we are not supposed to send\n  2 Sigfox messages within 10 seconds.  In fact\n  the guideline is that we should only send\n  maximum 140 messages in a day.\n\n- Also we shouldn't read sensors too often. This drains\n  the battery faster.\n\n- By calling `delay(10000)` we introduce a\n  10-second delay into the loop.  We specify\n  10,000 because the unit is milliseconds,\n  so 10 seconds = 10000 milliseconds\n\n- So the program pauses here for 10 seconds\n  before running `loop()` again\n\n- Unlike normal computers, a microcontroller\n  like Arduino doesn't know how to end / exit / quit!\n  It will happily run `loop()` forever\n  until you disconnect the power.\n\n\n",
-        "x": 213,
-        "y": 594,
-        "wires": []
-    },
-    {
-        "id": "49f9fdbe.bab014",
-        "type": "comment",
-        "z": "4225878c.4c8458",
-        "name": "Declarations",
-        "info": "- Click to see the section: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L1-L29\n\n- All Arduino programs have a **Declarations** section\n  at the beginning to declare any required\n  library functions or global constants / variables\n\n- An Arduino Sketch is a C++ program, so we\n  use `//` and `/* ... */` to denote comments\n\n",
-        "x": 156,
-        "y": 94,
-        "wires": []
-    },
-    {
-        "id": "a7ca321.2844ad",
-        "type": "comment",
-        "z": "4225878c.4c8458",
-        "name": "Sensor Declarations",
-        "info": "- Click here: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L11-L23\n\n- Here we declare any library functions, constants\n  and variables used by the sensor\n\n- The Grove Light Sensor uses the standard\n  Analog port and doesn't require any libraries\n\n- The `#ifdef ... #endif` is a C++ Preprocessor\n  Directive. During the C++ compilation, the\n  C++ compiler checks whether we are compiling\n  for the Bean Arduino Device, and if so\n  use port A2 instead of the default A0 for\n  connecting to the light sensor.  We are\n  using the Arduino Uno, so `LIGHT_SENSOR`\n  will be set to `A0`.\n\n\n",
-        "x": 235,
-        "y": 173,
-        "wires": []
-    },
-    {
-        "id": "3fc382fd.9b98be",
-        "type": "comment",
-        "z": "4225878c.4c8458",
-        "name": "Sigfox Module Declarations",
-        "info": "- Click here: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L25-L29\n\n- This section will be used in the next Practical\n  to declare the library functions, constants\n  and variables needed for the Sigfox transmission\n\n",
-        "x": 264,
-        "y": 215,
-        "wires": []
-    },
-    {
-        "id": "3d40cdf5.ff3862",
-        "type": "comment",
-        "z": "4225878c.4c8458",
-        "name": "General Declarations",
-        "info": "- Click here: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L1-L9\n\n- This is a comment (marked by `//`) that describes the program\n  features. \n\n- The connections for the Arduino Pins is\n  described in Exercise 1",
-        "x": 245,
-        "y": 133,
-        "wires": []
-    },
-    {
-        "id": "62cf07e8.b0acb8",
-        "type": "comment",
-        "z": "50b98762.fa6988",
-        "name": "🔻 MACRO LEVEL",
-        "info": "",
-        "x": 1430,
-        "y": 640,
-        "wires": []
-    },
-    {
-        "id": "bc8179c6.bc3b18",
-        "type": "comment",
-        "z": "50b98762.fa6988",
-        "name": "Device",
-        "info": "- The components below represent a real IoT device\n  (e.g. Arduino Uno) or a simulated IoT device.\n\n- We organise the components here according to the \n  Arduino programming convention\n\n- All Arduino programs start execution at the `setup()` \n  function. The `setup()` function is called once\n  to perform any device or sensor initialisation.\n\n- When using a Sigfox shield with Arduino, we\n  normally initialise the Sigfox module in the `setup()` function.\n  Some Sigfox modules include a Power Amplifier\n  and may need some time to power up.\n\n- The `loop()` function is called repeatedly\n  to allow the Arduino program to perform any required\n  tasks.  A typical `loop()` function will:\n\n0. Read data from a sensor.\n1. Process the data read. Possibly encode to save space.\n2. Transmit the data e.g. over Sigfox. \n3. Delay a few seconds before restarting the loop\n\n-  The Sigfox shield will not allow two transmissions within 10 seconds.\n   So it's a good practice to insert a delay of 10 seconds at \n   the end of the `loop()` function.\n",
-        "x": 190,
-        "y": 80,
-        "wires": []
-    },
-    {
-        "id": "8f1c5894.10a038",
-        "type": "comment",
-        "z": "50b98762.fa6988",
-        "name": "Setup",
-        "info": "- **Setup** is run once upon startup.  Corresponds\n  to the `setup()` function in Arduino sketches.\n\n- The flow starts running with value 500, i.e.\n  light was detected. This value is injected\n  every 10 seconds.\n\n- Pressing the inject button for **\"light level = 0\"**\n  will switch the sensor to send value 0\n  every 10 seconds.\n\n- Pressing the inject button for **\"light level = 500\"**\n  will switch the sensor to send value 500\n  every 10 seconds.\n",
-        "x": 210,
-        "y": 160,
-        "wires": []
-    },
-    {
-        "id": "92ab9788.beb8d8",
-        "type": "comment",
-        "z": "50b98762.fa6988",
-        "name": "Loop",
-        "info": "- **Loop** is run repeatedly after **Setup.**  Corresponds\n  to the `loop()` function in Arduino sketches.\n\n- Injects the sensor value 0 or 500 into the flow\n  depending on the button that was pressed above.\n\n- The sensor value is injected every 10 seconds.\n\n- The **\"Connect To Transmit\"** node should be\n  connected to the **Transmit** node for the\n  sensor value to be injected into the flow.\n\n- No other nodes should be connected to the\n  **Transmit** node\n\n",
-        "x": 210,
-        "y": 280,
-        "wires": []
-    },
-    {
-        "id": "d44a29aa.cddf08",
-        "type": "inject",
-        "z": "50b98762.fa6988",
-        "name": "send every 10 sec",
-        "topic": "",
-        "payload": "simulated_sensor_data",
-        "payloadType": "flow",
-        "repeat": "10",
-        "crontab": "",
-        "once": false,
-        "x": 130,
-        "y": 320,
-        "wires": [
-            [
-                "b46be269.d5851"
-            ]
-        ]
-    },
-    {
-        "id": "f81d4e91.34d4b",
-        "type": "comment",
-        "z": "50b98762.fa6988",
-        "name": "Transmit",
-        "info": "- In the **Transmit** stage, the sensor data\n  is transmitted to the **IoT Gateway.**\n\n- When the Arduino board is used with a **Sigfox\n  Shield,** the sensor data will be broadcast\n  3 times on different frequencies (Frequency Hopping)\n\n- Nearby **Sigfox Basestations** that receive\n  the message will forward it to the **Sigfox Cloud.**\n\n- If the message was received by 2 or more\n  basestations, the Sigfox Cloud marks the\n  duplicate messages with a **\"Duplicate\"** flag.\n  The IoT Gateway may be configured to accept or\n  reject duplicate messages.\n\n",
-        "x": 420,
-        "y": 80,
-        "wires": []
-    },
-    {
-        "id": "fd29346a.eedc88",
-        "type": "comment",
-        "z": "50b98762.fa6988",
-        "name": "IoT Gateway",
-        "info": "- The **IoT Gateway** resides in the **IoT Cloud**\n  and is responsible for receiving sensor data messages\n  and forwarding them to the **Rule Engine** for processing.\n\n- In an upcoming practical, we shall adopt **AWS IoT**\n  as the IoT Cloud.  The IoT Gateway shall be\n  the **MQTT Message Queue Gateway** in **AWS IoT.**\n",
-        "x": 590,
-        "y": 80,
-        "wires": []
-    },
-    {
-        "id": "1f98fdcf.fdd4c2",
-        "type": "comment",
-        "z": "50b98762.fa6988",
-        "name": "Rule Engine",
-        "info": "- The **Rule Engine** is the component in the\n  Cloud IoT platform (e.g. AWS IoT, Azure IoT)\n  that executes rules to process any sensor\n  data received.\n\n- Most Cloud IoT platforms support `if ... then ... else ... `\n  kind of rules. A rule could trigger an **alert** \n  (e.g. email, SMS alerts),\n  update a **database** (for rendering dashboards)\n  or execute an **external service** (e.g. predict\n  sensor values based on machine learning)\n\n- In this example the rules update the **Physical\n  and Logical Device States** to record the\n  variables needed for business logic e.g.\n  \"Is the light on?\" \"What time did the light turn off?\"\n",
-        "x": 830,
-        "y": 80,
-        "wires": []
-    },
-    {
-        "id": "e22b57a2.7af328",
-        "type": "comment",
-        "z": "50b98762.fa6988",
-        "name": "Alerts",
-        "info": "- **Alerts** are notifications to a person or to\n  another system, triggered by rules in the **Rule Engine.**\n\n- In **AWS IoT** we will learn to send alerts for\n  **email, SMS and automated voice call.**",
-        "x": 1290,
-        "y": 380,
-        "wires": []
-    },
-    {
-        "id": "3a801cfb.502904",
-        "type": "comment",
-        "z": "50b98762.fa6988",
-        "name": "Dashboard",
-        "info": "- The **Dashboard** renders realtime data from the\n  **Physical and Logical Device States.**\n\n- When designing a **Dashboard,** think carefully\n  what information we need to present in order\n  to derive the most value.\n\n- For example, showing a chart of **Light Level**\n  against time wouldn't be as useful as the number\n  of **Light Failures** per day / week / month.\n",
-        "x": 1300,
-        "y": 540,
-        "wires": []
-    },
-    {
-        "id": "33ede43d.fe75cc",
-        "type": "comment",
-        "z": "50b98762.fa6988",
-        "name": "Sensor",
-        "info": "- The components below represent a real IoT \n  sensor (e.g. Grove light sensor) \n  or a simulated IoT sensor.\n\n- The Sensor marks the start of the IoT flow.\n  Sensor values are injected into the flow\n  every 10 seconds.\n\n- The Sensor values will be transmitted to\n  the IoT Gateway and processed according\n  to the rules in the Rule Engine.\n\n- Historical Sensor values will be recorded\n  into the Sensor data store for analytics\n  and possibly machine learning.\n\n",
-        "x": 50,
-        "y": 80,
-        "wires": []
-    },
-    {
-        "id": "e0a71c4b.0dfaf",
-        "type": "comment",
-        "z": "50b98762.fa6988",
-        "name": "Sensor Data Store",
-        "info": "- The **Sensor Data Store** keeps a historical\n  record of every sensor data record, i.e. the\n  past and present **Physical Device States.**\n\n- It also stores all past and present **Logical Device States**\n  that have been computed by the system. \n\n- The **Sensor Data Store** will enable business\n  reports and **Dashboards** to be created across\n  various time periods (e.g. by hour, by day, by week).\n\n- Such reports and dashboards will require past\n  and present data to be aggregated across time period\n  (e.g. one week)in an efficient way. Also we\n  may not be required to generate detailed past reports \n  beyond a certain number of days.\n\n- For these reasons, a **Time Series Database** (like\n  **InfluxDB**) may be more suitable for storing\n  historical IoT data.  A **Time Series Database**\n  allows sensor data to be aggregated efficient across\n  time periods, and supports auto-archival of old\n  sensor data.\n\n- Since the sensor data volume is low for our projects, \n  we shall be using **MySQL hosted at AWS** to store\n  and query our sensor data in subsequent lessons.\n\n- Also since many of us are familiar with **MySQL,**\n  it helps to speed up the development of reports,\n  dashboards and mobile apps.\n\n- For the simulation we shall be appending records to\n  the text\n  files **physical-device-state.json** and\n  **logical-device-state.json,** which are located\n  in the `c:/users/username/.node-red` folder.\n\n",
-        "x": 750,
-        "y": 480,
-        "wires": []
-    },
-    {
-        "id": "b0221fef.928af",
-        "type": "comment",
-        "z": "50b98762.fa6988",
-        "name": "IoT Analytics",
-        "info": "- With **Wide IoT** and **LPWAN** becoming available everywhere,\n  we will see many more IoT devices deployed.\n\n- Processing the sensor data from so many IoT devices\n  will become a serious challenge unless we had\n  tools for **IoT Analytics**\n\n- Tools for **IoT Analytics** can process large volumes of\n  data at very affordable prices. A good example\n  is **Google BigQuery,** a data warehouse that can manage huge\n  volumes of data with just a few dollars of \n  data hostinf charges per month.\n",
-        "x": 850,
-        "y": 640,
-        "wires": []
-    },
-    {
-        "id": "940261af.9c284",
-        "type": "comment",
-        "z": "50b98762.fa6988",
-        "name": "IoT Machine Learning",
-        "info": "- After gathering sufficient sensor data in the\n  **Sensor Data Store**, it may be possible to\n  run a **Machine Learning** program to learn \n  the patterns of the historical sensor data\n  and predict future sensor data.\n\n- For example, we may use past light sensor data\n  to predict when a light is most likely to fail.\n\n- **Machine Learning** may also be used to detect\n  anomalies in the sensor data. For example, it\n  may help to identify cases where the Arduino\n  device is down, due to the huge lapse of missing\n  sensor data.\n\n- Some applications use **Machine Learning** to\n  perform automated classification of data,\n  e.g. credit card fraud detection.\n\n  ",
-        "x": 1100,
-        "y": 640,
-        "wires": []
-    },
-    {
-        "id": "377d565f.fc00ea",
-        "type": "comment",
-        "z": "50b98762.fa6988",
-        "name": "Deep IoT",
-        "info": "- **Deep IoT** refers to devices that tend\n  to do more processing locally, so the require\n  more network bandwidth, more power\n\n- **Amazon Echo / Alexa** is a good example.\n  It performs some audio processing locally\n  and it uses WiFi to send/receive data.\n  It's not meant to run on battery power.\n\n- This has been the traditional model for\n  IoT: smart, localised devices that have\n  constraints on location, power, network\n  connectivity.\n\n- **Deep IoT** has also been noted to have a\n  higher Total Cost of Ownership because\n  more things can go wrong locally.  Think\n  about a Raspberry Pi and the possibility\n  that its SD card could be corrupted beyond repair.\n  Compare that with an Arduino Uno that has\n  no filesystem.\n\n- In this course we'll focus on a more challenging\n  and impactful class of IoT devices called\n  **Wide IoT** devices that have much fewer\n  constraints on location, power and \n  network connectivity\n",
-        "x": 120,
-        "y": 640,
-        "wires": []
-    },
-    {
-        "id": "316cccd9.90c014",
-        "type": "comment",
-        "z": "50b98762.fa6988",
-        "name": "Wide IoT",
-        "info": "- In this course we'll focus on a more challenging\n  and impactful class of IoT devices called\n  **Wide IoT** devices that have much fewer\n  constraints on location, power and \n  network connectivity\n\n- **Wide IoT** devices are designed for\n  widespread deployment. They use \n  **Low Power Wide Area Networks (LPWAN)** like \n  **Sigfox, LoRa, NB-IoT**\n\n- They are designed to run on battery power,\n  up to months and years of battery life.\n  The networks are available city-wide, e.g.\n  most parts of Singapore are already covered\n  by Sigfox.  So the devices will work anywhere\n  without a power outlet.\n\n- The **Arduino Uno with UnaShield Sigfox Shield**\n  makes a good device for **Wide IoT** because\n  it runs on battery power and can transmit\n  sensor data from most areas in Singapore.\n\n- **Wide IoT** devices like the \n  **Arduino Uno with UnaShield** also tend\n  to be lower in cost than **Deep IoT** devices.\n\n- The Total Cost of Ownership of these devices\n  tend to be lower because they have fewer\n  components that may cause problems",
-        "x": 280,
-        "y": 640,
-        "wires": []
-    },
-    {
-        "id": "da1f61b2.ed51e",
-        "type": "comment",
-        "z": "50b98762.fa6988",
-        "name": "Mobile App",
-        "info": "- Depending on the nature of the IoT application,\n  a **Mobile App (Android/iOS)** may be necessary.\n\n- In the streetlight monitoring example,\n  a field staff who is dispatched to repair\n  a faulty light may need to use the Mobile App\n  to check on the history of faults.  \n\n- Or the\n  field staff may use the mobile app to\n  test whether the streetlight monitoring\n  device is sending the right data to the\n  IoT Cloud.\n\n- **Slack** could be the simplest option for\n  mobile access. Slack is suitable for\n  observing realtime messages generated by\n  a device.  Slack commands may also be\n  programmed to control or configure a \n  device if necessary.  We will explore the Slack\n  integration in a future practical.\n\n- A **Mobile Website** could also be used.\n  It offers more flexibility than Slack\n  but the UI may not be as rich as a native mobile\n  app. Consider using the **React Web** framework\n  for creating your mobile website.\n  \n- For the best mobile experience while\n  maintaining the same code base across\n  Android and iOS, consider **React Native.**\n\n- IoT Platforms like **AWS IoT** allow sensor\n  data and functions to be exposed as\n  **REST/JSON services,** so that the mobile apps\n  may consume them. For AWS IoT, the\n  standard way to expose sensor data and\n  functions is to use **AWS API Gateway.**\n",
-        "x": 620,
-        "y": 640,
-        "wires": []
-    },
-    {
-        "id": "ba90d421.82d238",
-        "type": "e-mail",
-        "z": "50b98762.fa6988",
-        "server": "smtp.gmail.com",
-        "port": "465",
-        "secure": true,
-        "name": "",
-        "dname": "send email",
-        "x": 1330,
-        "y": 420,
-        "wires": []
-    },
-    {
-        "id": "4392e60.7effa1c",
-        "type": "comment",
-        "z": "50b98762.fa6988",
-        "name": "Physical Device State",
-        "info": "-- The **Physical Device State** contains the \n   sensor values before executing any rules\n   in the Rule Engine.\n   \n-- In **AWS IoT** the **Physical Device State** is\n   also known as the **Device Shadow,** because it\n   remembers (shadows) the last known state of the device\n   (e.g. Arduino Uno) and its sensors (e.g. Light Sensor).\n   \n-- In this simulation, the rules in the Rule Engine\n   will read the **Physical Device State** to get the\n   light sensor value and compute whether the light\n   is on (`light_detected = true / false`). \n   `light_detected` is stored in the **Logical Device State.**\n   \n-- In this simulation, the rules in the Rule Engine\n   will read the **Physical Device State** to get the\n   light sensor value and compute whether the light\n   is on.\n   \n-- In this simulation, the **Physical Device State**\n   is stored in a variable named `last_physical_device_state`\n   in the Node-RED flow context.\n",
-        "x": 1220,
-        "y": 80,
-        "wires": []
-    },
-    {
-        "id": "95804992.7aa248",
-        "type": "comment",
-        "z": "50b98762.fa6988",
-        "name": "Logical Device State",
-        "info": "-- The **Logical Device State** contains the \n   sensor values before executing any rules\n   in the Rule Engine.\n   \n-- The rules in the Rule Engine may make use of the\n   **Physical Device State** to derive the\n   **Logical Device State,** which is more\n   business-oriented\n\n-- In this simulation, the rules in the Rule Engine\n   will read the **Physical Device State** to get the\n   light sensor value and compute whether the light\n   is on (`light_detected = true / false`). \n   `light_detected` is stored in the **Logical Device State.**\n\n-- The second set of rules below will read the\n   `light_detected` status from the **Logical Device State**\n   and compute `light_off_timestamp`, `light_off_duration`,\n   which will be stored in the **Logical Device State**\n   \n-- In this simulation, the **Logical Device State**\n   is stored in a variable named `last_logical_device_state`\n   in the Node-RED flow context.\n",
-        "x": 1330,
-        "y": 180,
-        "wires": []
-    },
-    {
-        "id": "d903ad8e.9b886",
-        "type": "function",
-        "z": "50b98762.fa6988",
-        "name": "transmit",
-        "func": "//  Initiate a transmission flow.\n\n//  Cycle though ring and dot icons, across various colors.\nvar fillSequence = ['green', 'green', 'yellow', 'yellow', 'blue', 'blue', 'grey', 'grey']\nvar shapeSequence = ['ring', 'dot'];\nvar sequence = flow.get('display-sequence') || 0;\nvar fill = fillSequence[sequence % fillSequence.length];\nvar shape = shapeSequence[sequence % shapeSequence.length];\nflow.set('display-fill', fill);\nflow.set('display-shape', shape);\nflow.set('display-sequence', sequence + 1);\n\n//  Initialise the logical device state.\n//  Get the logical device state from the flow context.\nvar last_logical_device_state = flow.get('last_logical_device_state');\n//  If the state is missing, store an empty state in the flow context.\nif (!last_logical_device_state) {\n    flow.set('last_logical_device_state', {});\n}\n\n//  Display the received payload.\nnode.status({\n    fill: flow.get('display-fill'),\n    shape: flow.get('display-shape'),\n    text: JSON.stringify(msg.payload, null, 2)\n});\n\n//  Clear the status after 9 seconds.\nsetTimeout(function() {\n    node.status({});\n}, 9000);\n\n//  Pass through the message with no changes.\nreturn msg;\n",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 450,
-        "y": 120,
-        "wires": [
-            [
-                "1aa657f.3b465a8"
-            ]
-        ]
-    },
-    {
-        "id": "1aa657f.3b465a8",
-        "type": "function",
-        "z": "50b98762.fa6988",
-        "name": "convert to json",
-        "func": "//  Construct a JSON payload containing the \n//  timestamp and sensor data.\nvar result = {\n    //  We will be returning a payload\n    //  instead of a top-level object.\n    payload: {\n        //  \"timestamp\" is number of milliseconds elapsed \n        //  since 1 Jan 1970 00:00:00 UTC.\n        timestamp: Date.now(),\n        \n        //  \"lig\" is the light level, e.g. 500.\n        lig: msg.payload\n    }\n};\n\n//  Display the received payload.\nnode.status({\n    //  Fill and shape are cycled by the \"transmit\" node.\n    fill: flow.get('display-fill'),\n    shape: flow.get('display-shape'),\n    //  Convert the payload to JSON.\n    text: JSON.stringify(result.payload)\n});\n\n//  Return the new message.\nreturn result;\n",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 620,
-        "y": 120,
-        "wires": [
-            [
-                "67f398b3.3dffd8",
-                "76b639bd.5b0618",
-                "46be80c0.81b62"
-            ]
-        ]
-    },
-    {
-        "id": "8cb36d34.89431",
-        "type": "gpio in",
-        "z": "50b98762.fa6988",
-        "name": "Light Sensor (A0)",
-        "state": "ANALOG",
-        "samplingInterval": "10000",
-        "pin": "0",
-        "board": "bf7c60f8.2154c",
-        "x": 140,
-        "y": 500,
-        "wires": [
-            [
-                "132278f1.56a297",
-                "3aa8d60a.b952aa"
-            ]
-        ]
-    },
-    {
-        "id": "327ab4ce.df343c",
-        "type": "gpio out",
-        "z": "50b98762.fa6988",
-        "name": "LED (D13)",
-        "state": "OUTPUT",
-        "pin": "13",
-        "i2cDelay": "0",
-        "i2cAddress": "",
-        "i2cRegister": "",
-        "outputs": 0,
-        "board": "bf7c60f8.2154c",
-        "x": 450,
-        "y": 560,
-        "wires": []
-    },
-    {
-        "id": "132278f1.56a297",
-        "type": "function",
-        "z": "50b98762.fa6988",
-        "name": "toggle output on input",
-        "func": "// Invert the level that is stored in the context.\n// (context variables persist between calls to the function)\ncontext.level = !context.level || false;\n\n// Set the payload to the level and return.\nmsg.payload = context.level;\n\n//  Display the payload.\nnode.status({\n    text: 'Output is ' + JSON.stringify(msg.payload)\n});\nreturn msg;\n",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 260,
-        "y": 560,
-        "wires": [
-            [
-                "327ab4ce.df343c"
-            ]
-        ]
-    },
-    {
-        "id": "cb12546e.eae238",
-        "type": "ui_chart",
-        "z": "50b98762.fa6988",
-        "name": "",
-        "group": "f642235f.1992",
-        "order": 0,
-        "width": 0,
-        "height": 0,
-        "label": "chart",
-        "chartType": "line",
-        "legend": "false",
-        "xformat": "HH:mm:ss",
-        "interpolate": "linear",
-        "nodata": "",
-        "ymin": "",
-        "ymax": "",
-        "removeOlder": 1,
-        "removeOlderPoints": "",
-        "removeOlderUnit": "3600",
-        "cutout": 0,
-        "colors": [
-            "#1f77b4",
-            "#aec7e8",
-            "#ff7f0e",
-            "#2ca02c",
-            "#98df8a",
-            "#d62728",
-            "#ff9896",
-            "#9467bd",
-            "#c5b0d5"
-        ],
-        "x": 1310,
-        "y": 580,
-        "wires": [
-            [],
-            []
-        ]
-    },
-    {
-        "id": "2747a267.1eceee",
-        "type": "comment",
-        "z": "50b98762.fa6988",
-        "name": "◀️ HARDWARE",
-        "info": "",
-        "x": 80,
-        "y": 20,
-        "wires": []
-    },
-    {
-        "id": "d07028df.0ad0a8",
-        "type": "comment",
-        "z": "50b98762.fa6988",
-        "name": "SOFTWARE ▶️",
-        "info": "",
-        "x": 1260,
-        "y": 20,
-        "wires": []
-    },
-    {
-        "id": "20654505.da5e5a",
-        "type": "comment",
-        "z": "50b98762.fa6988",
-        "name": "🔺 MICRO LEVEL",
-        "info": "",
-        "x": 1450,
-        "y": 80,
-        "wires": []
-    },
-    {
-        "id": "20c0f559.08ecca",
-        "type": "function",
-        "z": "50b98762.fa6988",
-        "name": "save physical device state",
-        "func": "//  Save the physical device state into memory.\nflow.set('last_physical_device_state', msg.payload);\n\n//  Display the physical device state saved.\nnode.status({\n    //  Fill and shape are cycled by the \"transmit\" node.\n    fill: flow.get('display-fill'),\n    shape: flow.get('display-shape'),\n    text: 'Saved state ' + JSON.stringify(msg.payload)\n});\n\n//  Pass through the original message.\nreturn msg;\n",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 1260,
-        "y": 120,
-        "wires": [
-            [
-                "da31bc0.2e26648"
-            ]
-        ]
-    },
-    {
-        "id": "67f398b3.3dffd8",
-        "type": "function",
-        "z": "50b98762.fa6988",
-        "name": "display",
-        "func": "//  Display the payload.\nnode.status({\n    //  Fill and shape are cycled by the \"transmit\" node.\n    fill: flow.get('display-fill'),\n    shape: flow.get('display-shape'),\n    text: JSON.stringify(msg.payload, null, 2)\n});\n\n//  Pass through the message.\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 840,
-        "y": 120,
-        "wires": [
-            [
-                "20c0f559.08ecca"
-            ]
-        ]
-    },
-    {
-        "id": "88e2437d.0b6f",
-        "type": "function",
-        "z": "50b98762.fa6988",
-        "name": "save logical device state",
-        "func": "//  Inject the timestamp if there was no timestamp.\n//  If there was a saved state, inject the previous\n//  fields that were not changed.\nmsg.payload = Object.assign(\n    //  Object.assign will merge the following\n    //  items in the sequence below.\n    {},\n    flow.get('last_logical_device_state'),\n    { timestamp: Date.now() },\n    msg.payload\n);\n\n//  Save the logical device state into memory.\nflow.set('last_logical_device_state', msg.payload);\n\n//  Display the logical device state saved.\nnode.status({\n    //  Fill and shape are cycled by the \"transmit\" node.\n    fill: flow.get('display-fill'),\n    shape: flow.get('display-shape'),\n    text: 'Saved state ' + JSON.stringify(msg.payload)\n});\n\n//  Pass through the original message.\nreturn msg;\n",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 1370,
-        "y": 220,
-        "wires": [
-            [
-                "3eddea7e.4bb3e6"
-            ]
-        ]
-    },
-    {
-        "id": "4cf20fd0.8a90e",
-        "type": "comment",
-        "z": "50b98762.fa6988",
-        "name": "Simulated Sensor",
-        "info": "- This sensor simulates a light sensor for\n  a streetlight monitoring system.\n\n- The sensor returns either 500, to represent\n  the detection of light, or 0 to represent\n  the absence of light.\n\n- The flow starts running with value 500, i.e.\n  light was detected. This value is injected\n  every 10 seconds.\n\n- Pressing the inject button for **\"light level = 0\"**\n  will switch the sensor to send value 0\n  every 10 seconds.\n\n- Pressing the inject button for **\"light level = 500\"**\n  will switch the sensor to send value 500\n  every 10 seconds.\n\n",
-        "x": 100,
-        "y": 120,
-        "wires": []
-    },
-    {
-        "id": "ee2316d2.ae35d8",
-        "type": "comment",
-        "z": "50b98762.fa6988",
-        "name": "Arduino Sensor",
-        "info": "- This sensor connects to a real Arduino Uno\n  via USB/serial port and reads the value \n  of the Grove light sensor connected to the\n  Uno.\n\n- The sensor value is read every 10 seconds.\n\n- The Arduino Uno must be running the\n  **StandardFirmataPlus** sketch.  This is a\n  remote control program that receives \n  commands from Node-RED via USB/serial port,\n  executes them and returns the results.\n\n- Uses the **Johnny5 Arduino** module.  We selected\n  this module over the basic Node-RED Arduino \n  module because it supports more Arduino\n  functions.\n\n",
-        "x": 100,
-        "y": 380,
-        "wires": []
-    },
-    {
-        "id": "fd526368.53c2",
-        "type": "function",
-        "z": "50b98762.fa6988",
-        "name": "current physical device state",
-        "func": "//  Display the physical device state.\nnode.status({\n    //  Fill and shape are cycled by the \"transmit\" node.\n    fill: flow.get('display-fill'),\n    shape: flow.get('display-shape'),\n    text: JSON.stringify(msg.payload)\n});\n\n//  Pass through the original message.\nreturn msg;\n",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 840,
-        "y": 520,
-        "wires": [
-            [
-                "d1d94e7c.13b99"
-            ]
-        ]
-    },
-    {
-        "id": "d1d94e7c.13b99",
-        "type": "file",
-        "z": "50b98762.fa6988",
-        "name": "",
-        "filename": "physical-device-state.json",
-        "appendNewline": true,
-        "createDir": false,
-        "overwriteFile": "false",
-        "x": 1110,
-        "y": 520,
-        "wires": []
-    },
-    {
-        "id": "6854d91a.9b3348",
-        "type": "function",
-        "z": "50b98762.fa6988",
-        "name": "current logical device state",
-        "func": "//  Display the logical device state.\nnode.status({\n    //  Fill and shape are cycled by the \"transmit\" node.\n    fill: flow.get('display-fill'),\n    shape: flow.get('display-shape'),\n    text: JSON.stringify(msg.payload)\n});\n\n//  Pass through the original message.\nreturn msg;\n",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 840,
-        "y": 580,
-        "wires": [
-            [
-                "14d844fd.714c3b",
-                "cb12546e.eae238"
-            ]
-        ]
-    },
-    {
-        "id": "14d844fd.714c3b",
-        "type": "file",
-        "z": "50b98762.fa6988",
-        "name": "",
-        "filename": "logical-device-state.json",
-        "appendNewline": true,
-        "createDir": false,
-        "overwriteFile": "false",
-        "x": 1110,
-        "y": 560,
-        "wires": []
-    },
-    {
-        "id": "da31bc0.2e26648",
-        "type": "link out",
-        "z": "50b98762.fa6988",
-        "name": "Physical Device State",
-        "links": [
-            "667467da.2d4d38"
-        ],
-        "x": 1415,
-        "y": 120,
-        "wires": []
-    },
-    {
-        "id": "667467da.2d4d38",
-        "type": "link in",
-        "z": "50b98762.fa6988",
-        "name": "Physical Device State",
-        "links": [
-            "da31bc0.2e26648"
-        ],
-        "x": 675,
-        "y": 520,
-        "wires": [
-            [
-                "fd526368.53c2"
-            ]
-        ]
-    },
-    {
-        "id": "64a76654.816bf8",
-        "type": "link in",
-        "z": "50b98762.fa6988",
-        "name": "Logical Device State",
-        "links": [
-            "3eddea7e.4bb3e6"
-        ],
-        "x": 675,
-        "y": 580,
-        "wires": [
-            [
-                "6854d91a.9b3348"
-            ]
-        ]
-    },
-    {
-        "id": "3eddea7e.4bb3e6",
-        "type": "link out",
-        "z": "50b98762.fa6988",
-        "name": "Logical Device State",
-        "links": [
-            "64a76654.816bf8"
-        ],
-        "x": 1515,
-        "y": 220,
-        "wires": []
-    },
-    {
-        "id": "b6609145.8432e",
-        "type": "inject",
-        "z": "50b98762.fa6988",
-        "name": "every 10 sec",
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "repeat": "10",
-        "crontab": "",
-        "once": false,
-        "x": 820,
-        "y": 360,
-        "wires": [
-            [
-                "7b955570.8f60cc"
-            ]
-        ]
-    },
-    {
-        "id": "fdb7c90c.f30888",
-        "type": "function",
-        "z": "50b98762.fa6988",
-        "name": "display",
-        "func": "//  Get the last logical device state.\nvar logical_device_state = flow.get('last_logical_device_state');\n\n//  Display the logical device state.\nnode.status({\n    //  Fill and shape are cycled by the \"transmit\" node.\n    fill: flow.get('display-fill'),\n    shape: flow.get('display-shape'),\n    text: JSON.stringify(logical_device_state)\n});\n\n//  Clear the status after 9 seconds.\nsetTimeout(function() {\n    node.status({});\n}, 9000);\n\n//  Return the logicla device state.\nreturn {\n    payload: logical_device_state\n};\n",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 1310,
-        "y": 480,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "db6554cc.1d3328",
-        "type": "inject",
-        "z": "50b98762.fa6988",
-        "name": "light level = 500",
-        "topic": "",
-        "payload": "500",
-        "payloadType": "num",
-        "repeat": "",
-        "crontab": "",
-        "once": true,
-        "x": 120,
-        "y": 200,
-        "wires": [
-            [
-                "db023401.1413a8"
-            ]
-        ]
-    },
-    {
-        "id": "db023401.1413a8",
-        "type": "change",
-        "z": "50b98762.fa6988",
-        "name": "mock sensor",
-        "rules": [
-            {
-                "t": "set",
-                "p": "simulated_sensor_data",
-                "pt": "flow",
-                "to": "payload",
-                "tot": "msg"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 290,
-        "y": 220,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "50efc362.a7913c",
-        "type": "inject",
-        "z": "50b98762.fa6988",
-        "name": "light level = 0",
-        "topic": "",
-        "payload": "0",
-        "payloadType": "num",
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "x": 110,
-        "y": 240,
-        "wires": [
-            [
-                "db023401.1413a8"
-            ]
-        ]
-    },
-    {
-        "id": "c2dc5528.44e508",
-        "type": "comment",
-        "z": "50b98762.fa6988",
-        "name": "Setup",
-        "info": "- **Setup** is run once upon startup.  Corresponds\n  to the `setup()` function in Arduino sketches.\n\n- **Setup** is empty when the Arduino Uno is\n  controlled by Node-RED over StandardFirmataPlus.\n\n- When using a Sigfox shield with Arduino, we\n  normally initialise the Sigfox module in the `setup()` function.\n  Some Sigfox modules include a Power Amplifier\n  and may need some time to power up.\n\n- The `setup()` function should also\n  initialise the Arduino sensor.\n",
-        "x": 210,
-        "y": 420,
-        "wires": []
-    },
-    {
-        "id": "e0543c6.6f9e6c",
-        "type": "comment",
-        "z": "50b98762.fa6988",
-        "name": "Loop",
-        "info": "- **Loop** is run repeatedly after **Setup.**  Corresponds\n  to the `loop()` function in Arduino sketches.\n\n- Reads the sensor value from the Arduino\n  light sensor and injects the value into the\n  flow.\n\n- The light sensor should be connected to \n  **Port A0** of the Grove Shield.  This is\n  an **Analog Port,** since the light sensor\n  is an analog sensor.\n\n- The sensor value is injected every 10 seconds.\n\n- The **\"Connect To Transmit\"** node should be\n  connected to the **Transmit** node for the\n  sensor value to be injected into the flow.\n\n- No other nodes should be connected to the\n  **Transmit** node\n\n- We flash the LED on Arduino pin D13 every\n  10 seconds, to provide feedback that the\n  flow is running. The Arduino Uno has\n  an onboard LED (coloured orange) on\n  pin D13.\n\n-  When running with a real Sigfox shield,\n   we should insert a delay of 10 seconds \n   at the end of the `loop()` function.\n   We should not send more than 1 message\n   within 10 seconds.\n\n",
-        "x": 210,
-        "y": 460,
-        "wires": []
-    },
-    {
-        "id": "5ee21625.170ce8",
-        "type": "function",
-        "z": "50b98762.fa6988",
-        "name": "tick",
-        "func": "//  Display a tick.\nnode.status({\n    //  Fill and shape are cycled by the \"transmit\" node.\n    fill: flow.get('display-fill'),\n    shape: flow.get('display-shape'),\n    text: '✓ Set light_detected to false'\n});\n\n//  Clear the status after 9 seconds.\nsetTimeout(function() {\n    node.status({});\n}, 9000);\n\n//  Pass through the original message.\nreturn msg;\n",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 870,
-        "y": 240,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "46f5ce1a.2bb5e",
-        "type": "function",
-        "z": "50b98762.fa6988",
-        "name": "tick",
-        "func": "//  Display a tick.\nnode.status({\n    //  Fill and shape are cycled by the \"transmit\" node.\n    fill: flow.get('display-fill'),\n    shape: flow.get('display-shape'),\n    text: '✓ Set light_detected to true'\n});\n\n//  Clear the status after 9 seconds.\nsetTimeout(function() {\n    node.status({});\n}, 9000);\n\n//  Pass through the original message.\nreturn msg;\n",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 1050,
-        "y": 200,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "f8d2e8e3.bb6a68",
-        "type": "function",
-        "z": "50b98762.fa6988",
-        "name": "tick",
-        "func": "//  Display a tick.\nnode.status({\n    //  Fill and shape are cycled by the \"transmit\" node.\n    fill: flow.get('display-fill'),\n    shape: flow.get('display-shape'),\n    text: '✓'\n});\n\n//  Clear the status after 9 seconds.\nsetTimeout(function() {\n    node.status({});\n}, 9000);\n\n//  Pass through the original message.\nreturn msg;\n",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 910,
-        "y": 300,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "2b05f174.7b0b6e",
-        "type": "function",
-        "z": "50b98762.fa6988",
-        "name": "tick",
-        "func": "//  Display a tick.\nnode.status({\n    //  Fill and shape are cycled by the \"transmit\" node.\n    fill: flow.get('display-fill'),\n    shape: flow.get('display-shape'),\n    text: '✓'\n});\n\n//  Clear the status after 9 seconds.\nsetTimeout(function() {\n    node.status({});\n}, 9000);\n\n//  Pass through the original message.\nreturn msg;\n",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 1110,
-        "y": 260,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "bd61a569.052858",
-        "type": "function",
-        "z": "50b98762.fa6988",
-        "name": "tick",
-        "func": "//  Display a tick.\nnode.status({\n    //  Fill and shape are cycled by the \"transmit\" node.\n    fill: flow.get('display-fill'),\n    shape: flow.get('display-shape'),\n    text: '✓ Set light_off_timestamp to current time'\n});\n\n//  Clear the status after 9 seconds.\nsetTimeout(function() {\n    node.status({});\n}, 9000);\n\n//  Pass through the original message.\nreturn msg;\n",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 1130,
-        "y": 320,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "75e1aa47.7728c4",
-        "type": "change",
-        "z": "50b98762.fa6988",
-        "name": "light is on",
-        "rules": [
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "{ \"light_detected\": true }",
-                "tot": "json"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 1060,
-        "y": 200,
-        "wires": [
-            [
-                "88e2437d.0b6f"
-            ]
-        ]
-    },
-    {
-        "id": "ba7ada05.af3228",
-        "type": "change",
-        "z": "50b98762.fa6988",
-        "name": "light is off",
-        "rules": [
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "{ \"light_detected\": false }",
-                "tot": "json"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 880,
-        "y": 240,
-        "wires": [
-            [
-                "9618be34.67d29",
-                "f8d2e8e3.bb6a68"
-            ]
-        ]
-    },
-    {
-        "id": "9618be34.67d29",
-        "type": "switch",
-        "z": "50b98762.fa6988",
-        "name": "has light changed?",
-        "property": "payload.light_detected",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "eq",
-                "v": "last_logical_device_state.light_detected",
-                "vt": "flow"
-            },
-            {
-                "t": "else"
-            }
-        ],
-        "checkall": "false",
-        "outputs": 2,
-        "x": 950,
-        "y": 300,
-        "wires": [
-            [
-                "dde7b23.2b9ef5",
-                "2b05f174.7b0b6e"
-            ],
-            [
-                "bccadf7f.d52ef",
-                "bd61a569.052858"
-            ]
-        ]
-    },
-    {
-        "id": "dde7b23.2b9ef5",
-        "type": "change",
-        "z": "50b98762.fa6988",
-        "name": "unchanged",
-        "rules": [],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 1130,
-        "y": 260,
-        "wires": [
-            [
-                "88e2437d.0b6f"
-            ]
-        ]
-    },
-    {
-        "id": "bccadf7f.d52ef",
-        "type": "change",
-        "z": "50b98762.fa6988",
-        "name": "from on to off",
-        "rules": [
-            {
-                "t": "set",
-                "p": "payload.light_off_timestamp",
-                "pt": "msg",
-                "to": "",
-                "tot": "date"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 1150,
-        "y": 320,
-        "wires": [
-            [
-                "88e2437d.0b6f"
-            ]
-        ]
-    },
-    {
-        "id": "c47f1c29.14515",
-        "type": "function",
-        "z": "50b98762.fa6988",
-        "name": "tick",
-        "func": "//  Display a tick.\nnode.status({\n    //  Fill and shape are cycled by the \"transmit\" node.\n    fill: flow.get('display-fill'),\n    shape: flow.get('display-shape'),\n    text: '✓'\n});\n\n//  Clear the status after 9 seconds.\nsetTimeout(function() {\n    node.status({});\n}, 9000);\n\n//  Pass through the original message.\nreturn msg;\n",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 1070,
-        "y": 400,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "2d90b4a5.a33f2c",
-        "type": "function",
-        "z": "50b98762.fa6988",
-        "name": "tick",
-        "func": "//  Display a tick.\nnode.status({\n    //  Fill and shape are cycled by the \"transmit\" node.\n    fill: flow.get('display-fill'),\n    shape: flow.get('display-shape'),\n    text: '✓'\n});\n\n//  Clear the status after 9 seconds.\nsetTimeout(function() {\n    node.status({});\n}, 9000);\n\n//  Pass through the original message.\nreturn msg;\n",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 1090,
-        "y": 460,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "cf5d993d.42cab8",
-        "type": "switch",
-        "z": "50b98762.fa6988",
-        "name": "if light is off",
-        "property": "last_logical_device_state.light_detected",
-        "propertyType": "flow",
-        "rules": [
-            {
-                "t": "false"
-            },
-            {
-                "t": "else"
-            }
-        ],
-        "checkall": "false",
-        "outputs": 2,
-        "x": 1090,
-        "y": 400,
-        "wires": [
-            [
-                "771b7ca2.ba5664",
-                "2d90b4a5.a33f2c"
-            ],
-            []
-        ]
-    },
-    {
-        "id": "771b7ca2.ba5664",
-        "type": "switch",
-        "z": "50b98762.fa6988",
-        "name": "if off for >= 30 secs",
-        "property": "last_logical_device_state.light_off_duration",
-        "propertyType": "flow",
-        "rules": [
-            {
-                "t": "gte",
-                "v": "30000",
-                "vt": "num"
-            },
-            {
-                "t": "else"
-            }
-        ],
-        "checkall": "false",
-        "outputs": 2,
-        "x": 1130,
-        "y": 460,
-        "wires": [
-            [
-                "fdb7c90c.f30888",
-                "ba90d421.82d238"
-            ],
-            []
-        ]
-    },
-    {
-        "id": "46be80c0.81b62",
-        "type": "function",
-        "z": "50b98762.fa6988",
-        "name": "tick",
-        "func": "//  Display a tick.\nnode.status({\n    //  Fill and shape are cycled by the \"transmit\" node.\n    fill: flow.get('display-fill'),\n    shape: flow.get('display-shape'),\n    text: '✓'\n});\n\n//  Clear the status after 9 seconds.\nsetTimeout(function() {\n    node.status({});\n}, 9000);\n\n//  Pass through the original message.\nreturn msg;\n",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 790,
-        "y": 180,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "76b639bd.5b0618",
-        "type": "switch",
-        "z": "50b98762.fa6988",
-        "name": "is light on?",
-        "property": "payload.lig",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "gte",
-                "v": "500",
-                "vt": "num"
-            },
-            {
-                "t": "else"
-            }
-        ],
-        "checkall": "false",
-        "outputs": 2,
-        "x": 810,
-        "y": 180,
-        "wires": [
-            [
-                "75e1aa47.7728c4",
-                "46f5ce1a.2bb5e"
-            ],
-            [
-                "ba7ada05.af3228",
-                "5ee21625.170ce8"
-            ]
-        ]
-    },
-    {
-        "id": "7b955570.8f60cc",
-        "type": "function",
-        "z": "50b98762.fa6988",
-        "name": "compute light off duration",
-        "func": "//  Compute how long the light has been off\n//  and store in the logical device state.\n\n//  Get the logical device state from the flow context.\nvar last_logical_device_state = flow.get('last_logical_device_state');\nif (!last_logical_device_state) return msg;  //  Quit if no state.\n\n//  Get the light off timestamp.\nvar light_off_timestamp = last_logical_device_state.light_off_timestamp;\nif (!light_off_timestamp) return msg;  //  Quit if no timestamp.\n\n//  Compute the time diff in milliseconds and \n//  store in the state.\nvar light_off_duration = Date.now() - light_off_timestamp;\nlast_logical_device_state = Object.assign(\n    //  Object.assign will merge the following objects\n    //  in the order below.\n    {},\n    last_logical_device_state,\n    { light_off_duration: light_off_duration }\n);\n\n//  Display the time diff.\nnode.status({\n    //  Fill and shape are cycled by the \"transmit\" node.\n    fill: flow.get('display-fill'),\n    shape: flow.get('display-shape'),\n    text: 'Set light_off_duration to ' + light_off_duration + ' millisec'\n});\n\n//  Store the state in the flow context.\nflow.set('last_logical_device_state', last_logical_device_state);\nreturn msg;\n",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 890,
-        "y": 420,
-        "wires": [
-            [
-                "c47f1c29.14515",
-                "cf5d993d.42cab8"
-            ]
-        ]
-    },
-    {
-        "id": "b46be269.d5851",
-        "type": "function",
-        "z": "50b98762.fa6988",
-        "name": "connect to \"transmit\"",
-        "func": "//  Display the received payload.\nnode.status({\n    text: 'Sensor value is ' + JSON.stringify(msg.payload)\n});\n\n//  Clear the status after 9 seconds.\nsetTimeout(function() {\n    node.status({});\n}, 9000);\n\n//  Pass through the original message.\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 340,
-        "y": 320,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "3aa8d60a.b952aa",
-        "type": "function",
-        "z": "50b98762.fa6988",
-        "name": "connect to \"transmit\"",
-        "func": "//  Display the received payload.\nnode.status({\n    text: 'Sensor value is ' + JSON.stringify(msg.payload)\n});\n\n//  Clear the status after 9 seconds.\nsetTimeout(function() {\n    node.status({});\n}, 9000);\n\n//  Pass through the original message.\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 360,
-        "y": 500,
-        "wires": [
-            [
-                "d903ad8e.9b886"
-            ]
-        ]
-    },
-    {
-        "id": "c339168c.3762d8",
-        "type": "comment",
-        "z": "50b98762.fa6988",
-        "name": "Version 1.1 (28 Apr 2017)",
-        "info": "",
-        "x": 1434,
-        "y": 321,
-        "wires": []
-    },
-    {
         "id": "4588053d.4d681c",
         "type": "comment",
         "z": "5b03963e.cf84e8",
         "name": "🆕  - Arduino Sketch for sending light sensor data to Sigfox",
-        "info": "- Source code for the Arduino sketch:\n  \nhttps://github.com/UnaBiz/unabiz-arduino/blob/master/examples/send-light-level/send-light-level.ino\n\n- This Arduino sketch reads the sensor data \n  from the Grove light sensor and sends the data\n  to the Sigfox network. \n\n- The sensor value is read every 10 seconds.\n\n- When we write Arduino code, normally we don't\n  write from scratch. We use the code that's\n  provided by the maker of the sensor or\n  communications module (Bluetooth, WiFi, Sigfox etc)\n \n- The Arduino code here was derived from the \n  official sensor specifications and sample code:\n\nhttp://wiki.seeed.cc/Grove-Light_Sensor/\n\nhttps://github.com/Seeed-Studio/Light_Sensor/blob/master/examples/Light_Sensor/Light_Sensor.ino \n\n- Check the above links and compare the\n  similarity of the code\n\n- We will likely be using various Grove sensors \n  for our project because they are easy to connect.\n  Here is the list of Grove sensors available,\n  please choose sensors that are compatible with Arduino:\n\nhttp://wiki.seeed.cc/Grove_System/\n\n- SeeedStudio provides sample Arduino code for Grove Sensors on wiki.seeed.cc, e.g.\n\nhttp://wiki.seeed.cc/Grove-Sound_Sensor/ \n\n- Every Arduino Sketch has 3 sections: **Declarations, Setup, Loop**. Click the nodes to learn more.\n",
+        "info": "- Source code for the Arduino sketch:\n  \nhttps://github.com/UnaBiz/unabiz-arduino/blob/master/examples/send-light-level/send-light-level.ino\n\n- The code here is very similar to Practical 2,\n  except that the Sigfox parts have been\n  filled in.\n\n- This Arduino sketch reads the sensor data \n  from the Grove light sensor and sends the data\n  to the Sigfox network. \n\n- The sensor value is read every 10 seconds.\n\n- When we write Arduino code, normally we don't\n  write from scratch. We use the code that's\n  provided by the maker of the sensor or\n  communications module (Bluetooth, WiFi, Sigfox etc)\n \n- The Arduino code here was derived from the \n  official sensor specifications and sample code:\n\nhttp://wiki.seeed.cc/Grove-Light_Sensor/\n\nhttps://github.com/Seeed-Studio/Light_Sensor/blob/master/examples/Light_Sensor/Light_Sensor.ino \n\n- Check the above links and compare the\n  similarity of the code\n\n- We will likely be using various Grove sensors \n  for our project because they are easy to connect.\n  Here is the list of Grove sensors available,\n  please choose sensors that are compatible with Arduino:\n\nhttp://wiki.seeed.cc/Grove_System/\n\n- SeeedStudio provides sample Arduino code for Grove Sensors on wiki.seeed.cc, e.g.\n\nhttp://wiki.seeed.cc/Grove-Sound_Sensor/ \n\n- Every Arduino Sketch has 3 sections: **Declarations, Setup, Loop**. Click the nodes to learn more.\n",
         "x": 236,
         "y": 46,
         "wires": []
@@ -2110,7 +916,7 @@
         "type": "comment",
         "z": "5b03963e.cf84e8",
         "name": "Setup",
-        "info": "- Click here: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L31-L54\n\n- Every Arduino program has a **Setup** function\n  that is run once upon startup.\n\n- We use this section to initialise the sensor\n\n- When using a Sigfox shield with Arduino, we\n  normally initialise the Sigfox module in the `setup()` function.\n  Some Sigfox modules include a Power Amplifier\n  and may need some time to power up.\n\n\n",
+        "info": "- Click here\n  https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/send-light-level/send-light-level.ino#L25-L39\n\n- Every Arduino program has a **Setup** function\n  that is run once upon startup.\n\n- We use this section to initialise the sensor\n\n- When using a Sigfox shield with Arduino, we\n  normally initialise the Sigfox module in the `setup()` function.\n  Some Sigfox modules include a Power Amplifier\n  and may need some time to power up.\n\n\n",
         "x": 138,
         "y": 270,
         "wires": []
@@ -2120,7 +926,7 @@
         "type": "comment",
         "z": "5b03963e.cf84e8",
         "name": "Loop",
-        "info": "- Click here: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L56-L76\n\n- Every Arduino sketch has a **Loop** function\n  that is run repeatedly after **Setup.**  \n\n- Here we read the sensor value from the Arduino\n  light sensor and display it\n\n- The light sensor should be connected to \n  **Port A0** of the Grove Shield.  This is\n  an **Analog Port,** since the light sensor\n  is an analog sensor.\n\n- The sensor value is read every 10 seconds.\n\n-  When running with a real Sigfox shield,\n   we should insert a delay of 10 seconds \n   at the end of the `loop()` function.\n   We should not send more than 1 message\n   within 10 seconds.\n\n",
+        "info": "- Click here: \n  https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/send-light-level/send-light-level.ino#L69-L117\n\n- Every Arduino sketch has a **Loop** function\n  that is run repeatedly after **Setup.**  \n\n- Here we read the sensor value from the Arduino\n  light sensor and display it\n\n- The light sensor should be connected to \n  **Port A0** of the Grove Shield.  This is\n  an **Analog Port,** since the light sensor\n  is an analog sensor.\n\n- The sensor value is read every 10 seconds.\n\n-  When running with a real Sigfox shield,\n   we should insert a delay of 10 seconds \n   at the end of the `loop()` function.\n   We should not send more than 1 message\n   within 10 seconds.\n\n",
         "x": 135,
         "y": 452,
         "wires": []
@@ -2130,7 +936,7 @@
         "type": "comment",
         "z": "5b03963e.cf84e8",
         "name": "General Setup",
-        "info": "- Click here: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L32-L39\n\n- We declare the **Setup** function as `void setup()`.\n  This means it accepts no parameters and \n  returns no values.  In C++, functions start\n  with `{` and end with `}`.\n\n- When we use the **Serial Monitor** we are\n  actually connecting through our computer's\n  COM serial port to the USB interface to\n  another serial port located on the Arduino board.\n  The Arduino's serial port is also known as \n  **UART - Universal Asynchronous Receiver / Transmitter**\n\nhttps://en.wikipedia.org/wiki/Universal_asynchronous_receiver/transmitter\n\n- In most Arduino sketches we use the serial\n  port to display debug messages. That's why\n  the serial port is connected to the\n  Serial Monitor\n\n- By convention, we use 9,600 bits per second\n  to connect to the serial port.  This is set\n  through `Serial.begin(9600)`\n\n- We use `Serial.println` to output messages\n  to the serial port / Serial Monitor.\n  This section will print `Running setup...`\n  when the sketch starts running.\n\n- Why did we call function `F(...)`? Because\n  RAM is severely limited. By calling `F(...)`\n  we store the `Running setup...` string\n  in **Flash Memory** instead of RAM, \n  so we have more usable memory.  \n\n- When you compile a sketch you may see:\n\n```\nSketch uses 19,168 bytes (59%) of program storage space. Maximum is 32,256 bytes.\nGlobal variables use 1,376 bytes (67%) of dynamic memory, leaving 672 bytes for local variables. Maximum is 2,048 bytes.\n```\n\n- That means the Arduino Uno has only **2KB of usuable RAM**.\n  The sketch occupies 19KB of Flash Memory, which is a lot bigger\n  than available RAM.",
+        "info": "- Click here: \n  https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/send-light-level/send-light-level.ino#L42-L49\n\n- We declare the **Setup** function as `void setup()`.\n  This means it accepts no parameters and \n  returns no values.  In C++, functions start\n  with `{` and end with `}`.\n\n- When we use the **Serial Monitor** we are\n  actually connecting through our computer's\n  COM serial port to the USB interface to\n  another serial port located on the Arduino board.\n  The Arduino's serial port is also known as \n  **UART - Universal Asynchronous Receiver / Transmitter**\n\nhttps://en.wikipedia.org/wiki/Universal_asynchronous_receiver/transmitter\n\n- In most Arduino sketches we use the serial\n  port to display debug messages. That's why\n  the serial port is connected to the\n  Serial Monitor\n\n- By convention, we use 9,600 bits per second\n  to connect to the serial port.  This is set\n  through `Serial.begin(9600)`\n\n- We use `Serial.println` to output messages\n  to the serial port / Serial Monitor.\n  This section will print `Running setup...`\n  when the sketch starts running.\n\n- Why did we call function `F(...)`? Because\n  RAM is severely limited. By calling `F(...)`\n  we store the `Running setup...` string\n  in **Flash Memory** instead of RAM, \n  so we have more usable memory.  \n\n- When you compile a sketch you may see:\n\n```\nSketch uses 19,168 bytes (59%) of program storage space. Maximum is 32,256 bytes.\nGlobal variables use 1,376 bytes (67%) of dynamic memory, leaving 672 bytes for local variables. Maximum is 2,048 bytes.\n```\n\n- That means the Arduino Uno has only **2KB of usuable RAM**.\n  The sketch occupies 19KB of Flash Memory, which is a lot bigger\n  than available RAM.",
         "x": 213,
         "y": 313,
         "wires": []
@@ -2140,7 +946,7 @@
         "type": "comment",
         "z": "5b03963e.cf84e8",
         "name": "Sensor Setup",
-        "info": "- Click here: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L41-L47\n\n- There is no sensor setup needed for the Grove Light Sensor.\n\n- Some smart sensors (e.g. air pressure sensor)\n  may need some time to start up and warm up.\n\n\n",
+        "info": "- Click here: \n  https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/send-light-level/send-light-level.ino#L51-L57\n\n- There is no sensor setup needed for the Grove Light Sensor.\n\n- Some smart sensors (e.g. air pressure sensor)\n  may need some time to start up and warm up.\n\n\n",
         "x": 214,
         "y": 357,
         "wires": []
@@ -2150,7 +956,7 @@
         "type": "comment",
         "z": "5b03963e.cf84e8",
         "name": "🆕  - Sigfox Module Setup",
-        "info": "- Click here: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L41-L47\n\n- This will be used to initialise the Sigfox\n  module before transmitting Sigfox messages\n\n",
+        "info": "- Click here: \n  https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/send-light-level/send-light-level.ino#L59-L66\n\n- This will be used to initialise the Sigfox\n  module before transmitting Sigfox messages\n\n",
         "x": 254,
         "y": 400,
         "wires": []
@@ -2160,7 +966,7 @@
         "type": "comment",
         "z": "5b03963e.cf84e8",
         "name": "Sensor Loop",
-        "info": "- Click here: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L57-L65\n\n- In this section we read the sensor data.\n\n- `int light_level` declares an Integer variable\n  named `light_level` which we will use\n  to save the sensor value\n\n- `light_level = analogRead(LIGHT_SENSOR)` reads\n  the value of Analog Port 0, i.e. A0.\n  We declared `LIGHT_SENSOR` to be `A0`\n  in the **General Declarations** section\n\n- All C++ statements must end with `;`\n\n- Then we print the `light_level` to the\n  serial port / Serial Monitor\n\n- Why didn't we call `F(...)` for `light_level`?\n  Because `light_level` is a variable and\n  can't be stored in Flash Memory, which is\n  read-only. `F(...)` should be called for\n  text strings that never change.\n\n",
+        "info": "- Click here: \n  https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/send-light-level/send-light-level.ino#L70-L78\n\n- In this section we read the sensor data.\n\n- `int light_level` declares an Integer variable\n  named `light_level` which we will use\n  to save the sensor value\n\n- `light_level = analogRead(LIGHT_SENSOR)` reads\n  the value of Analog Port 0, i.e. A0.\n  We declared `LIGHT_SENSOR` to be `A0`\n  in the **General Declarations** section\n\n- All C++ statements must end with `;`\n\n- Then we print the `light_level` to the\n  serial port / Serial Monitor\n\n- Why didn't we call `F(...)` for `light_level`?\n  Because `light_level` is a variable and\n  can't be stored in Flash Memory, which is\n  read-only. `F(...)` should be called for\n  text strings that never change.\n\n",
         "x": 212,
         "y": 501,
         "wires": []
@@ -2170,7 +976,7 @@
         "type": "comment",
         "z": "5b03963e.cf84e8",
         "name": "🆕  - Sigfox Module Loop",
-        "info": "- Click here: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L67-L71\n\n- We'll use this section in the next Practical\n  to send the sensor data via Sigfox\n\n",
+        "info": "- Click here: \n  https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/send-light-level/send-light-level.ino#L80-L112\n\n- We'll use this section in the next Practical\n  to send the sensor data via Sigfox\n\n",
         "x": 254,
         "y": 548,
         "wires": []
@@ -2180,9 +986,9 @@
         "type": "comment",
         "z": "5b03963e.cf84e8",
         "name": "Loop Delay",
-        "info": "- Click here: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L73-L75\n\n- Remember that we are not supposed to send\n  2 Sigfox messages within 10 seconds.  In fact\n  the guideline is that we should only send\n  maximum 140 messages in a day.\n\n- Also we shouldn't read sensors too often. This drains\n  the battery faster.\n\n- By calling `delay(10000)` we introduce a\n  10-second delay into the loop.  We specify\n  10,000 because the unit is milliseconds,\n  so 10 seconds = 10000 milliseconds\n\n- So the program pauses here for 10 seconds\n  before running `loop()` again\n\n- Unlike normal computers, a microcontroller\n  like Arduino doesn't know how to end / exit / quit!\n  It will happily run `loop()` forever\n  until you disconnect the power.\n\n\n",
-        "x": 213,
-        "y": 594,
+        "info": "- Click here: \n  https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/send-light-level/send-light-level.ino#L114-L116\n\n- Remember that we are not supposed to send\n  2 Sigfox messages within 10 seconds.  In fact\n  the guideline is that we should only send\n  maximum 140 messages in a day.\n\n- Also we shouldn't read sensors too often. This drains\n  the battery faster.\n\n- By calling `delay(10000)` we introduce a\n  10-second delay into the loop.  We specify\n  10,000 because the unit is milliseconds,\n  so 10 seconds = 10000 milliseconds\n\n- So the program pauses here for 10 seconds\n  before running `loop()` again\n\n- Unlike normal computers, a microcontroller\n  like Arduino doesn't know how to end / exit / quit!\n  It will happily run `loop()` forever\n  until you disconnect the power.\n\n\n",
+        "x": 215,
+        "y": 808,
         "wires": []
     },
     {
@@ -2190,7 +996,7 @@
         "type": "comment",
         "z": "5b03963e.cf84e8",
         "name": "Declarations",
-        "info": "- Click to see the section: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L1-L29\n\n- All Arduino programs have a **Declarations** section\n  at the beginning to declare any required\n  library functions or global constants / variables\n\n- An Arduino Sketch is a C++ program, so we\n  use `//` and `/* ... */` to denote comments\n\n",
+        "info": "- Click to see the section: \n  https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/send-light-level/send-light-level.ino#L1-L39\n\n- All Arduino programs have a **Declarations** section\n  at the beginning to declare any required\n  library functions or global constants / variables\n\n- An Arduino Sketch is a C++ program, so we\n  use `//` and `/* ... */` to denote comments\n\n",
         "x": 156,
         "y": 94,
         "wires": []
@@ -2200,7 +1006,7 @@
         "type": "comment",
         "z": "5b03963e.cf84e8",
         "name": "Sensor Declarations",
-        "info": "- Click here: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L11-L23\n\n- Here we declare any library functions, constants\n  and variables used by the sensor\n\n- The Grove Light Sensor uses the standard\n  Analog port and doesn't require any libraries\n\n- The `#ifdef ... #endif` is a C++ Preprocessor\n  Directive. During the C++ compilation, the\n  C++ compiler checks whether we are compiling\n  for the Bean Arduino Device, and if so\n  use port A2 instead of the default A0 for\n  connecting to the light sensor.  We are\n  using the Arduino Uno, so `LIGHT_SENSOR`\n  will be set to `A0`.\n\n\n",
+        "info": "- Click here: \n  https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/send-light-level/send-light-level.ino#L11-L23\n\n- Here we declare any library functions, constants\n  and variables used by the sensor\n\n- The Grove Light Sensor uses the standard\n  Analog port and doesn't require any libraries\n\n- The `#ifdef ... #endif` is a C++ Preprocessor\n  Directive. During the C++ compilation, the\n  C++ compiler checks whether we are compiling\n  for the Bean Arduino Device, and if so\n  use port A2 instead of the default A0 for\n  connecting to the light sensor.  We are\n  using the Arduino Uno, so `LIGHT_SENSOR`\n  will be set to `A0`.\n\n\n",
         "x": 235,
         "y": 173,
         "wires": []
@@ -2210,7 +1016,7 @@
         "type": "comment",
         "z": "5b03963e.cf84e8",
         "name": "🆕  - Sigfox Module Declarations",
-        "info": "- Click here: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L25-L29\n\n- This section will be used in the next Practical\n  to declare the library functions, constants\n  and variables needed for the Sigfox transmission\n\n",
+        "info": "- Click here:\n  https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/send-light-level/send-light-level.ino#L25-L39\n\n- This section will be used in the next Practical\n  to declare the library functions, constants\n  and variables needed for the Sigfox transmission\n\n",
         "x": 274,
         "y": 215,
         "wires": []
@@ -2220,9 +1026,59 @@
         "type": "comment",
         "z": "5b03963e.cf84e8",
         "name": "General Declarations",
-        "info": "- Click here: https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/read-light-level/read-light-level.ino#L1-L9\n\n- This is a comment (marked by `//`) that describes the program\n  features. \n\n- The connections for the Arduino Pins is\n  described in Exercise 1",
+        "info": "- Click here: \n  https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/send-light-level/send-light-level.ino#L1-L9\n\n- This is a comment (marked by `//`) that describes the program\n  features. \n\n- The connections for the Arduino Pins is\n  described in Exercise 1",
         "x": 245,
         "y": 133,
+        "wires": []
+    },
+    {
+        "id": "799d5edd.ae994",
+        "type": "comment",
+        "z": "5b03963e.cf84e8",
+        "name": "🆕  - Declarations",
+        "info": "- Click here: \n  https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/send-light-level/send-light-level.ino#L83-L85\n\n- We'll use this section in the next Practical\n  to send the sensor data via Sigfox\n\n",
+        "x": 267,
+        "y": 591,
+        "wires": []
+    },
+    {
+        "id": "84500edc.f57ef",
+        "type": "comment",
+        "z": "5b03963e.cf84e8",
+        "name": "🆕  - Read Sigfox Module temperature",
+        "info": "- Click here: \n  https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/send-light-level/send-light-level.ino#L87-L88\n\n- We'll use this section in the next Practical\n  to send the sensor data via Sigfox\n\n",
+        "x": 337,
+        "y": 636,
+        "wires": []
+    },
+    {
+        "id": "ea5955de.6c6d98",
+        "type": "comment",
+        "z": "5b03963e.cf84e8",
+        "name": "🆕  - Compose structured sensor data message",
+        "info": "- Click here: \n  https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/send-light-level/send-light-level.ino#L90-L95\n\n- We'll use this section in the next Practical\n  to send the sensor data via Sigfox\n\n",
+        "x": 368,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "d84eb2c3.d99fb",
+        "type": "comment",
+        "z": "5b03963e.cf84e8",
+        "name": "🆕  - Send sensor data message",
+        "info": "- Click here: \n  https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/send-light-level/send-light-level.ino#L97-L103\n\n- We'll use this section in the next Practical\n  to send the sensor data via Sigfox\n\n",
+        "x": 317,
+        "y": 722,
+        "wires": []
+    },
+    {
+        "id": "fc937da0.8504e",
+        "type": "comment",
+        "z": "5b03963e.cf84e8",
+        "name": "🆕  - Show updates",
+        "info": "- Click here: \n  https://github.com/UnaBiz/unabiz-arduino/blob/master/examples/send-light-level/send-light-level.ino#L105-L109\n\n- We'll use this section in the next Practical\n  to send the sensor data via Sigfox\n\n",
+        "x": 276,
+        "y": 764,
         "wires": []
     }
 ]
