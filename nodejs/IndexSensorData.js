@@ -17,7 +17,7 @@
 
 //  This lambda function must be run as role lambda_iot.
 //  lambda_iot must be attached to policy LambdaExecuteIoTUpdate,
-//  see github.com/lupyuen/AWSIOT/policy/LambdaExecuteIoTUpdate.json
+//  see github.com/lupyuen/AWSIOT/policy/LambdaExecuteIoTUpdate.txt
 
 console.log('Loading function');
 
@@ -51,6 +51,8 @@ const cloudwatch = new AWS.CloudWatch();
 //  automatically.  This is useful for AWS Lambda because otherwise we need to
 //  upload all the modules as a zipped package and we lose the inline editing capability.
 let autorequire = null;
+let mysql = null;
+let pool = null;
 
 const main = (event, context, callback) => {
   //  This is the main execution scope.  All non-system require(...)
@@ -58,10 +60,10 @@ const main = (event, context, callback) => {
 
   //  This missing module is normally not allowed for inline lambda.  But
   //  autorequire will install the module automatically for us.
-  const mysql = require('mysql2/promise');
+  if (!mysql) mysql = require('mysql2/promise');
 
   //  Create pool of database connections.
-  const pool = mysql.createPool({
+  if (!pool) pool = mysql.createPool({
     host: 'iotdb.culga9y9tfvw.us-west-2.rds.amazonaws.com',
     user: 'root',
     password: 'iotattp4me',
@@ -471,6 +473,8 @@ const main = (event, context, callback) => {
   }
 
   function postLogsToSumoLogic(url, body, tags) {
+    return Promise.resolve('OK');  ////  Disable Sumo Logic logging.
+      
     //  Post the sensor data logs to Sumo Logic via HTTPS.  Body contains an array
     //  of JSON objects.  Returns a promise.
     //  Change timestamp to Sumo Logic format: "timestamp":"2016-02-08T00:19:14.325Z" -->
@@ -794,8 +798,48 @@ const test_input = {
           "ctr": 9,
           "tmp": 36,
           "vlt": 12.3,
-          "device": "g88pi",
+          "device": "temp_pi",
           "data": "920e5a00b051680194597b00",
+          "key3": "value3",
+          "key2": "value2",
+          "key1": "value1",
+          "resource": "/ProcessSIGFOXMessage",
+          "path": "/ProcessSIGFOXMessage",
+          "httpMethod": "GET",
+          "headers": {
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+            "Accept-Encoding": "gzip, deflate, sdch, br",
+            "Accept-Language": "en-US,en;q=0.8",
+            "Cache-Control": "max-age=0",
+            "CloudFront-Forwarded-Proto": "https",
+            "CloudFront-Is-Desktop-Viewer": "true",
+            "CloudFront-Is-Mobile-Viewer": "false",
+            "CloudFront-Is-SmartTV-Viewer": "false",
+            "CloudFront-Is-Tablet-Viewer": "false",
+            "CloudFront-Viewer-Country": "SG",
+            "Host": "l0043j2svc.execute-api.us-west-2.amazonaws.com",
+            "Upgrade-Insecure-Requests": "1",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2925.0 Safari/537.36",
+            "Via": "1.1 c038088d4b94486d7346fd44d03188a0.cloudfront.net (CloudFront)",
+            "X-Amz-Cf-Id": "omfPxBotRHWplmFzvDR6ZNoL720H0B-WtVemWCyLtXPfJLu21BGWDA==",
+            "X-Forwarded-For": "118.200.15.117, 54.240.148.212",
+            "X-Forwarded-Port": "443",
+            "X-Forwarded-Proto": "https"
+          },
+          "requestContext": {
+            "accountId": "595779189490",
+            "resourceId": "s3459w",
+            "stage": "prod",
+            "requestId": "59036929-af32-11e6-97da-112ad8d13953",
+            "identity": {
+              "sourceIp": "118.200.15.117",
+              "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2925.0 Safari/537.36"
+            },
+            "resourcePath": "/ProcessSIGFOXMessage",
+            "httpMethod": "GET",
+            "apiId": "l0043j2svc"
+          },
+          "isBase64Encoded": false,
           "lig": 49
         }
       },
@@ -1027,6 +1071,46 @@ const test_input = {
           "vlt": 12.3,
           "device": "g88pi",
           "data": "920e5a00b051680194597b00",
+          "key3": "value3",
+          "key2": "value2",
+          "key1": "value1",
+          "resource": "/ProcessSIGFOXMessage",
+          "path": "/ProcessSIGFOXMessage",
+          "httpMethod": "GET",
+          "headers": {
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+            "Accept-Encoding": "gzip, deflate, sdch, br",
+            "Accept-Language": "en-US,en;q=0.8",
+            "Cache-Control": "max-age=0",
+            "CloudFront-Forwarded-Proto": "https",
+            "CloudFront-Is-Desktop-Viewer": "true",
+            "CloudFront-Is-Mobile-Viewer": "false",
+            "CloudFront-Is-SmartTV-Viewer": "false",
+            "CloudFront-Is-Tablet-Viewer": "false",
+            "CloudFront-Viewer-Country": "SG",
+            "Host": "l0043j2svc.execute-api.us-west-2.amazonaws.com",
+            "Upgrade-Insecure-Requests": "1",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2925.0 Safari/537.36",
+            "Via": "1.1 c038088d4b94486d7346fd44d03188a0.cloudfront.net (CloudFront)",
+            "X-Amz-Cf-Id": "omfPxBotRHWplmFzvDR6ZNoL720H0B-WtVemWCyLtXPfJLu21BGWDA==",
+            "X-Forwarded-For": "118.200.15.117, 54.240.148.212",
+            "X-Forwarded-Port": "443",
+            "X-Forwarded-Proto": "https"
+          },
+          "requestContext": {
+            "accountId": "595779189490",
+            "resourceId": "s3459w",
+            "stage": "prod",
+            "requestId": "59036929-af32-11e6-97da-112ad8d13953",
+            "identity": {
+              "sourceIp": "118.200.15.117",
+              "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2925.0 Safari/537.36"
+            },
+            "resourcePath": "/ProcessSIGFOXMessage",
+            "httpMethod": "GET",
+            "apiId": "l0043j2svc"
+          },
+          "isBase64Encoded": false,
           "lig": 49
         }
       },
@@ -1246,10 +1330,10 @@ const test_input = {
 
   //  SetDesiredState Lambda Log
   IndexAWSLogs3: {
-  "awslogs": {
-    "data": "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"
-  }
-},
+    "awslogs": {
+      "data": "H4sIAAAAAAAAAO1ZC2/bNhD+K4I3IBsa2yQlkqIwDHAaNy2WtFnsrtviwKUlKtYsi55EJfEC//edHnacJm4TNN0aNAFiSDzqHt/dR/Kky8ZUZZk8Vf35TDW8xm6n3xkedHu9zl63sd3Q54lKYZgKyrnArnAEguFYn+6lOp+BpC3Ps3Ysp6NAtnvK7KosSlXQM9KoamLPpEpOYSZBmLURbWO7ffz9fqff7fVPMA9DR/nEtrnjqICMEOUjMgoVHynb4RRUZPko89NoZiKdvIhio9Ks4R039kuTlfLhqyRQF513vX19mjVOSrPdM5WYYuZlIwrAuk0YEYIK7lKECbMFZbbtYgK3iGLmcPh3McRpC465zSgmjo2QCx6YCDAycgrhYofZmLsIVCC+vcQO1Pf6naO+daT+zmHqq8CzAupICGHUxIK6TYwVa0rqkqa0sSzsSh/71m8QDITlWTUeg6Sx2P48h8UdHb4cNMbGzJpTZcY6GDQ8a9A4fAMuNLbhyqgLU43FKngWxjIbk0oiZ1FzouaVcDkZUhDVOvpI9H7fe/fL3pos0FMZJZUcTEbaXOlaPocvjJiccRpFlSzPVNqUabJuSBU5rQaOlK+iMxV0q6FSm+/rPDErjVd6Vs69LZzr/slQJfPHMklUvBI/R7s7fxw6+79W4kznqa+a0aySUqdFkGgRG7eI4657ebpyqxdLfzLSxsItZP3wrEA489ptCLSVFaKWr6ftVMOM7MdKQ6pqMzNpxpWSdsc3OfBnV51FvnqR6mmpdi2eRE5VnZ58Ns9VUoO9zHsNaZl7LoRoIfgT4krDOkIrD5YwsEkUT+waAwPRVcOztKiT6omyzFcPFLXOlKDrtc58uA1trjDHIK+rx5dxfN36MgdXIZ26rqzj0RNVF0BXPn+dhNPzvSTZJ120M2bP+52XLK29VGkB1SqR2LaJ62DHpnTQWHw+qzD6tlhV1tsTtZ6o9R9QC39b1DqCbf7RM0sak0aj3KgV5F+YcUkex7cRLCi1rop7Fn0NvDuTcV4bWC/Ex0FHcnc6Fsm4FswSfigP6Y+nxQG8kB1fFtk0cT0RugQTJadWULUKVlb0CjVEOtY1lOdAJZj1Ibs9PVPJMIxiNQx1HKjUs4alAm9o3SarjXjDwSAZeufybD4MICXel7ocVg5P00lwngyrNeR4GUAhCSMVBwDLyfpNhVE21mkZpklz9UEhvX//vuifmghK0O4T4hHkIeA04hxTEC45s0J5lUMP6mLb+rT6qlRvUwX0LpRUHkO1j0r+bkylB8YGJc0grYNiYnlfz1kbuWJ4OVb8bo6xkG6Xc+KlkuK3JhhcLRaLpZM10yofv7ti2dpy3FNJ0Nf1UnQ7bwQwixHMkE2QzYAIWCAGbSrjgiHugFwQQWwmBOe2s7Hvoty9K29g2ZrpJKsFevLEpic2PQo27WlTUuloVcAPQCm6sem6Sam66gsoVtBUdx8c3D8CSRlUrILrO/dicevK0XnX2xCkC4Ew4bgQgwv7KSOEIpcJjF2HuwRTQgQnGMGWSwkWhG8IkhDs/H9BQkIhwqt03lydLvOtmZzHWgZbnvUTnA21r1PVWk5qVW/moJx3dDC39Ogv5RtLGgtd8NBl1B0JJTD6edvaWlo5UEYG0kjQd7n1st8/LF4i5tlzHSgYIgiVc+sXbDCyFYa+HwifNcNRyJqO7ePmSLlhk6FAhIFDRtglW2UdP0CeNr0I/JrydFgl5Hq6hrPl6E0XrqKoD8Zf1O+z6m1nIRIAa7my1zn/tNXNri/WTH5k1qJy4tuu4k2nlFuq+D6n+7WTxqletlTXN7eq/7PGMrMyZa7vcVaW+z7YDqHLm9/YMO/x5AMe/1xi2w5nBFEqGIVuj2GXOgy2LNi0COGwVyGGoGUqdiNMNrVNsJ2xBz/+PTq473g+KDAHbAmADj0qcVwO8MKxgLmQCBekgLtNqAPdru0KSjdjfu180H29e98vMw/gHbujd0fdwzf3/3Q0MLt5Kk358QhzglqUWNNsYHaiGJZCa00IJkFiDcyBmup0bvWif+BQiYlrHezAoLywasHbDE6mFqHleAHAyeJfehKfqh4cAAA="
+    }
+  },
 
 };
 
