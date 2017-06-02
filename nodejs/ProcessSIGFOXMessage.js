@@ -12,15 +12,50 @@
 //  Go to AWS API Gateway --> SIGFOX --> Actions --> Deploy API --> prod
 
 //  This lambda function must be run as role lambda_iot.
-//  lambda_iot must be attached to policy LambdaExecuteIoTUpdate, see github.com/lupyuen/AWSIOT/policy/LambdaExecuteIoTUpdate.json
+//  lambda_iot must be attached to policy LambdaExecuteIoTUpdate, defined as:
+// {
+//   "Version": "2012-10-17",
+//   "Statement": [
+//   {
+//     "Effect": "Allow",
+//     "Action": [
+//       "logs:CreateLogGroup",
+//       "logs:CreateLogStream",
+//       "logs:PutLogEvents"
+//     ],
+//     "Resource": "arn:aws:logs:*:*:*"
+//   },
+//   {
+//     "Effect": "Allow",
+//     "Action": [
+//       "iot:GetThingShadow",
+//       "iot:UpdateThingShadow"
+//     ],
+//     "Resource": [
+//       "*"
+//     ]
+//   },
+//   {
+//     "Effect": "Allow",
+//     "Action": [
+//       "kinesis:GetRecords",
+//       "kinesis:GetShardIterator",
+//       "kinesis:DescribeStream",
+//       "kinesis:ListStreams"
+//     ],
+//     "Resource": [
+//       "*"
+//     ]
+//   }
+// ]
+// }
 
 'use strict';
 
 console.log('Loading function');
 
-const AWS = require('aws-sdk');
-
 //  Init the AWS connection.
+const AWS = require('aws-sdk');
 AWS.config.region = 'us-west-2';
 AWS.config.logger = process.stdout;  //  Debug
 
@@ -50,6 +85,13 @@ exports.handler = (input2, context2, callback2) => {
 
   //  For API Gateway, message is in the field "body".
   if (input.body) input = JSON.parse(input.body);
+  
+  //  Skip the duplicate message
+  if (input.duplicate === 'true' || input.duplicate === true) {
+      console.log('Skipping duplicate');
+      return callback2(null, lambdaProxyFormat(200, input));
+  }
+  
   //  Decode the message.
   const decoded_data = decodeMessage(input.data);
   for (const key in input) {
