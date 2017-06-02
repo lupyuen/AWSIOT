@@ -1,5 +1,5 @@
 'use strict';
-
+//  https://github.com/lupyuen/AWSIOT/blob/master/nodejs/IndexAWSLogs.js
 //  Send IoT sensor data and AWS IoT Logs to Sumo Logic and Slack for searching and dashboards
 //  Node.js 4.3 / index.handler / lambda_iot / 512 MB / 1 min / No VPC
 //  This AWS Lambda function accepts a JSON input of sensor values and sends them to Sumo Logic
@@ -17,7 +17,7 @@
 
 //  This lambda function must be run as role lambda_iot.
 //  lambda_iot must be attached to policy LambdaExecuteIoTUpdate,
-//  see github.com/lupyuen/AWSIOT/policy/LambdaExecuteIoTUpdate.json
+//  see github.com/lupyuen/AWSIOT/policy/LambdaExecuteIoTUpdate.txt
 
 console.log('Loading function');
 
@@ -402,10 +402,12 @@ const main = (event, context, callback) => {
       case 'MatchingRuleFound':
         fields.function = fields.matching_rule_found; break;
       case 'PublishOut':
-      case 'PublishEvent': {
-        const topic_split = fields.topic.split('/');
-        fields.function = topic_split[topic_split.length - 1]; break;
-      }
+      case 'PublishEvent': 
+        if (fields.topic) {
+          const topic_split = fields.topic.split('/');
+          fields.function = topic_split[topic_split.length - 1];
+        }
+        break;
       case 'LambdaActionSuccess':
         fields.status2 = fields.status;
         if (fields.status.startsWith('202')) fields.status = 'SUCCESS';
@@ -794,8 +796,48 @@ const test_input = {
           "ctr": 9,
           "tmp": 36,
           "vlt": 12.3,
-          "device": "g88pi",
+          "device": "temp_pi",
           "data": "920e5a00b051680194597b00",
+          "key3": "value3",
+          "key2": "value2",
+          "key1": "value1",
+          "resource": "/ProcessSIGFOXMessage",
+          "path": "/ProcessSIGFOXMessage",
+          "httpMethod": "GET",
+          "headers": {
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+            "Accept-Encoding": "gzip, deflate, sdch, br",
+            "Accept-Language": "en-US,en;q=0.8",
+            "Cache-Control": "max-age=0",
+            "CloudFront-Forwarded-Proto": "https",
+            "CloudFront-Is-Desktop-Viewer": "true",
+            "CloudFront-Is-Mobile-Viewer": "false",
+            "CloudFront-Is-SmartTV-Viewer": "false",
+            "CloudFront-Is-Tablet-Viewer": "false",
+            "CloudFront-Viewer-Country": "SG",
+            "Host": "l0043j2svc.execute-api.us-west-2.amazonaws.com",
+            "Upgrade-Insecure-Requests": "1",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2925.0 Safari/537.36",
+            "Via": "1.1 c038088d4b94486d7346fd44d03188a0.cloudfront.net (CloudFront)",
+            "X-Amz-Cf-Id": "omfPxBotRHWplmFzvDR6ZNoL720H0B-WtVemWCyLtXPfJLu21BGWDA==",
+            "X-Forwarded-For": "118.200.15.117, 54.240.148.212",
+            "X-Forwarded-Port": "443",
+            "X-Forwarded-Proto": "https"
+          },
+          "requestContext": {
+            "accountId": "595779189490",
+            "resourceId": "s3459w",
+            "stage": "prod",
+            "requestId": "59036929-af32-11e6-97da-112ad8d13953",
+            "identity": {
+              "sourceIp": "118.200.15.117",
+              "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2925.0 Safari/537.36"
+            },
+            "resourcePath": "/ProcessSIGFOXMessage",
+            "httpMethod": "GET",
+            "apiId": "l0043j2svc"
+          },
+          "isBase64Encoded": false,
           "lig": 49
         }
       },
@@ -1027,6 +1069,46 @@ const test_input = {
           "vlt": 12.3,
           "device": "g88pi",
           "data": "920e5a00b051680194597b00",
+          "key3": "value3",
+          "key2": "value2",
+          "key1": "value1",
+          "resource": "/ProcessSIGFOXMessage",
+          "path": "/ProcessSIGFOXMessage",
+          "httpMethod": "GET",
+          "headers": {
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+            "Accept-Encoding": "gzip, deflate, sdch, br",
+            "Accept-Language": "en-US,en;q=0.8",
+            "Cache-Control": "max-age=0",
+            "CloudFront-Forwarded-Proto": "https",
+            "CloudFront-Is-Desktop-Viewer": "true",
+            "CloudFront-Is-Mobile-Viewer": "false",
+            "CloudFront-Is-SmartTV-Viewer": "false",
+            "CloudFront-Is-Tablet-Viewer": "false",
+            "CloudFront-Viewer-Country": "SG",
+            "Host": "l0043j2svc.execute-api.us-west-2.amazonaws.com",
+            "Upgrade-Insecure-Requests": "1",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2925.0 Safari/537.36",
+            "Via": "1.1 c038088d4b94486d7346fd44d03188a0.cloudfront.net (CloudFront)",
+            "X-Amz-Cf-Id": "omfPxBotRHWplmFzvDR6ZNoL720H0B-WtVemWCyLtXPfJLu21BGWDA==",
+            "X-Forwarded-For": "118.200.15.117, 54.240.148.212",
+            "X-Forwarded-Port": "443",
+            "X-Forwarded-Proto": "https"
+          },
+          "requestContext": {
+            "accountId": "595779189490",
+            "resourceId": "s3459w",
+            "stage": "prod",
+            "requestId": "59036929-af32-11e6-97da-112ad8d13953",
+            "identity": {
+              "sourceIp": "118.200.15.117",
+              "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2925.0 Safari/537.36"
+            },
+            "resourcePath": "/ProcessSIGFOXMessage",
+            "httpMethod": "GET",
+            "apiId": "l0043j2svc"
+          },
+          "isBase64Encoded": false,
           "lig": 49
         }
       },
