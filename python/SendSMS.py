@@ -1,3 +1,4 @@
+# https://github.com/lupyuen/AWSIOT/blob/master/python/SendSMS.py
 # Send an SMS by calling the Hoiio REST API.  Expects:
 #   phone: 8-digit phone numer
 #   message: Message to be sent
@@ -7,8 +8,8 @@ from urllib import urlencode
 from urllib2 import urlopen
 
 # App ID and access token for Lup Yuen's Hoiio account.
-HOIIO_APP_ID = "YOUR_HOIIO_APP_ID"
-HOIIO_ACCESS_TOKEN = "YOUR_HOIIO_ACCESS_TOKEN"
+HOIIO_APP_ID = "2CZ2EdRbmL0uDDmB"
+HOIIO_ACCESS_TOKEN = "3gDMuaBD1pUkp6qo"
 HOIIO_URL = "https://secure.hoiio.com/open/sms/send?"
 
 # Record the last time we sent to each phone.
@@ -23,6 +24,10 @@ def lambda_handler(event, context):
         raise RuntimeError("Missing parameter for phone")
     if message is None:
         raise RuntimeError("Missing parameter for message")
+        
+    # Don't allow any SMS and calls to 12345.
+    if "12345" in phone:
+        raise RuntimeError("Invalid phone number " + phone)
 
     # Phone must be numeric, 8 digits.
     if len(phone) == 8:
