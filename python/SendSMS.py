@@ -8,8 +8,8 @@ from urllib import urlencode
 from urllib2 import urlopen
 
 # App ID and access token for Lup Yuen's Hoiio account.
-HOIIO_APP_ID = "2CZ2EdRbmL0uDDmB"
-HOIIO_ACCESS_TOKEN = "3gDMuaBD1pUkp6qo"
+HOIIO_APP_ID = "YOUR_HOIIO_APP_ID"
+HOIIO_ACCESS_TOKEN = "YOUR_HOIIO_ACCESS_TOKEN"
 HOIIO_URL = "https://secure.hoiio.com/open/sms/send?"
 
 # Record the last time we sent to each phone.
