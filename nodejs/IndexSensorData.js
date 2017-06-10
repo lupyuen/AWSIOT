@@ -67,7 +67,7 @@ const main = (event, context, callback) => {
   if (!pool) pool = mysql.createPool({
     host: 'iotdb.culga9y9tfvw.us-west-2.rds.amazonaws.com',
     user: 'root',
-    password: 'iotattp4me',
+    password: 'ENTER_ROOT_PASSWORD',
     database: 'iotdb',
   });
 
