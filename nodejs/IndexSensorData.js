@@ -1,5 +1,6 @@
 'use strict';
 
+//  https://github.com/lupyuen/AWSIOT/blob/master/nodejs/IndexSensorData.js
 //  Send IoT sensor data and AWS IoT Logs to Sumo Logic and Slack for searching and dashboards
 //  Node.js 4.3 / index.handler / lambda_iot / 512 MB / 1 min / No VPC
 //  This AWS Lambda function accepts a JSON input of sensor values and sends them to Sumo Logic
@@ -740,7 +741,7 @@ function setupAutoRequire() {
   //  TODO: If script already in /tmp, use it.  Else download from GitHub.
   const fs = require('fs');
   return new Promise((resolve, reject) => {
-    require('https').get('https://raw.githubusercontent.com/lupyuen/AWSIOT/master/nodejs/autorequire.js', (res) => {
+    require('https').get('https://raw.githubusercontent.com/lupyuen/AWSIOT/master/nodejs/autorequire-beta.js', (res) => {
       let body = '';
       res.on('data', (chunk) => { body += chunk; }); // Accumulate the data chunks.
       res.on('end', () => { //  After downloading from GitHub, save to /tmp amd load the module.
