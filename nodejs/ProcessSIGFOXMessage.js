@@ -98,6 +98,16 @@ exports.handler = (input2, context2, callback2) => {
     //  Copy the original input fields into the decoded fields.
     decoded_data[key] = input[key];
   }
+  
+  //  If "hid" is defined, then set the device name to "home1", "home2", etc.
+  //  This will support multiple sensors per home.
+  if (decoded_data.hid) {
+      const hid = decoded_data.hid;
+      const oldDevice = input.device;
+      input.device = 'home' + hid;
+      console.log('Changed device from ' + oldDevice + ' to ' + input.device);
+  }
+  
   //  Update the device/thing state.
   return updateDeviceState(input.device, decoded_data)
     .then(result => callback2(null, lambdaProxyFormat(200, result)))
