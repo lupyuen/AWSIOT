@@ -390,7 +390,6 @@ const main = (event, context, callback) => {
     //  Parse the data field.
     if (fields.data) {
       parseIoTData(fields, fields.data);
-      delete fields.data;
     }
     //  Parse the event field.
     if (fields.event && fields.event.indexOf(':') > 0) {
