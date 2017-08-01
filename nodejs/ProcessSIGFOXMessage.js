@@ -138,41 +138,10 @@ function updateDeviceState(device, state) {
   return iotdata.updateThingShadow(params).promise();
 }
 
-function decodeMessage(msg) { /* eslint-disable no-bitwise, operator-assignment */
-  //  Decode the packed binary SIGFOX message e.g. 920e5a00b051680194597b00
-  //  2 bytes name, 2 bytes float * 10, 2 bytes name, 2 bytes float * 10, ...
-  if (!msg) return {};
-  const result = {};
-  for (let i = 0; i < msg.length; i = i + 8) {
-    const name = msg.substring(i, i + 4);
-    const val = msg.substring(i + 4, i + 8);
-    let name2 =
-      (parseInt(name[2], 16) << 12) +
-      (parseInt(name[3], 16) << 8) +
-      (parseInt(name[0], 16) << 4) +
-      parseInt(name[1], 16);
-    const val2 =
-      (parseInt(val[2], 16) << 12) +
-      (parseInt(val[3], 16) << 8) +
-      (parseInt(val[0], 16) << 4) +
-      parseInt(val[1], 16);
+//  Decode the structured message sent by unabiz-arduino library.
 
-    //  Decode name.
-    const name3 = [0, 0, 0];
-    for (let j = 0; j < 3; j = j + 1) {
-      const code = name2 & 31;
-      const ch = decodeLetter(code);
-      if (ch > 0) name3[2 - j] = ch;
-      name2 = name2 >> 5;
-    }
-    const name4 = String.fromCharCode(name3[0], name3[1], name3[2]);
-    result[name4] = val2 / 10.0;
-  }
-  return result;
-}
-
-const firstLetter = 1;
-const firstDigit = 27;
+const firstLetter = 1;  //  Letters are assigned codes 1 to 26, for A to Z
+const firstDigit = 27;  //  Digits are assigned codes 27 to 36, for 0 to 9
 
 function decodeLetter(code) {
   //  Convert the 5-bit code to a letter.
@@ -181,6 +150,66 @@ function decodeLetter(code) {
   if (code >= firstDigit) return (code - firstDigit) + '0'.charCodeAt(0);
   return 0;
 }
+
+function decodeText(encodedText0) { /* eslint-disable no-bitwise, operator-assignment */
+  //  Decode a text string with packed 5-bit letters.
+  let encodedText = encodedText0;
+  const text = [0, 0, 0];
+  for (let j = 0; j < 3; j = j + 1) {
+    const code = encodedText & 31;
+    const ch = decodeLetter(code);
+    if (ch > 0) text[2 - j] = ch;
+    encodedText = encodedText >> 5;
+  }
+  //  Look for the terminating null and decode name with 1, 2 or 3 letters.
+  //  Skip invalid chars.
+  return [
+    (text[0] >= 48 && text[0] <= 122) ? String.fromCharCode(text[0]) : '',
+    (text[1] >= 48 && text[1] <= 122) ? String.fromCharCode(text[1]) : '',
+    (text[2] >= 48 && text[2] <= 122) ? String.fromCharCode(text[2]) : '',
+  ].join('');
+} /* eslint-enable no-bitwise, operator-assignment */
+
+function decodeMessage(data, textFields) { /* eslint-disable no-bitwise, operator-assignment */
+  //  Decode the packed binary SIGFOX message body data e.g. 920e5a00b051680194597b00
+  //  2 bytes name, 2 bytes float * 10, 2 bytes name, 2 bytes float * 10, ...
+  //  Returns an object with the decoded data e.g. {ctr: 999, lig: 754, tmp: 23}
+  //  If the message contains text fields, provide the field names in textFields as an array,
+  //  e.g. ['d1', 'd2, 'd3'].
+  if (!data) return {};
+  //  Messages must be either 8, 16 or 24 chars (4, 8 or 12 bytes).
+  if (data.length !== 8 && data.length !== 16 && data.length !== 24) return {};
+  try {
+    const result = {};
+    for (let i = 0; i < data.length; i = i + 8) {
+      const name = data.substring(i, i + 4);
+      const val = data.substring(i + 4, i + 8);
+      const encodedName =
+        (parseInt(name[2], 16) << 12) +
+        (parseInt(name[3], 16) << 8) +
+        (parseInt(name[0], 16) << 4) +
+        parseInt(name[1], 16);
+      const encodedVal =
+        (parseInt(val[2], 16) << 12) +
+        (parseInt(val[3], 16) << 8) +
+        (parseInt(val[0], 16) << 4) +
+        parseInt(val[1], 16);
+
+      //  Decode name.
+      const decodedName = decodeText(encodedName);
+      if (textFields && textFields.indexOf(decodedName) >= 0) {
+        //  Decode the text field.
+        result[decodedName] = decodeText(encodedVal);
+      } else {
+        //  Decode the number.
+        result[decodedName] = encodedVal / 10.0;
+      }
+    }
+    return result;
+  } catch (error) {
+    throw error;
+  }
+} /* eslint-enable no-bitwise, operator-assignment */
 
 function lambdaProxyFormat(statusCode, msg) {
   //  Format the message as lambda proxy for returning results.
