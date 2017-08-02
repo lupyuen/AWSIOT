@@ -77,41 +77,49 @@ const iotdata = new AWS.IotData({ endpoint });
 exports.handler = (input2, context2, callback2) => {
   /* eslint-disable no-param-reassign, no-restricted-syntax, guard-for-in */
   //  This is the main program flow.
-  //  Input must contain "device" (thing name e.g. g88pi) and "data", the encoded fields.
-  let input = input2;
-  if (input.domain) delete input.domain;  //  TODO: Contains self-reference loop.
-  console.log('ProcessSIGFOXMessage Input:', JSON.stringify(input, null, 2));
-  console.log('ProcessSIGFOXMessage Context:', context2);
-
-  //  For API Gateway, message is in the field "body".
-  if (input.body) input = JSON.parse(input.body);
-  
-  //  Skip the duplicate message
-  if (input.duplicate === 'true' || input.duplicate === true) {
-      console.log('Skipping duplicate');
-      return callback2(null, lambdaProxyFormat(200, input));
+  try {
+      //  Input must contain "device" (thing name e.g. g88pi) and "data", the encoded fields.
+      let input = input2;
+      if (input.domain) delete input.domain;  //  TODO: Contains self-reference loop.
+      console.log('ProcessSIGFOXMessage Input:', JSON.stringify(input, null, 2));
+      console.log('ProcessSIGFOXMessage Context:', context2);
+    
+      //  For API Gateway, message is in the field "body".
+      if (input.body) input = JSON.parse(input.body);
+      
+      //  Skip the duplicate message
+      if (input.duplicate === 'true' || input.duplicate === true) {
+          console.log('Skipping duplicate');
+          return callback2(null, lambdaProxyFormat(200, input));
+      }
+      
+      //  Decode the message.
+      const decoded_data = decodeMessage(input.data);
+      for (const key in input) {
+        //  Copy the original input fields into the decoded fields.
+        decoded_data[key] = input[key];
+      }
+      
+      //  If "hid" is defined, then set the device name to "home1", "home2", etc.
+      //  This will support multiple sensors per home.
+      if (decoded_data.hid) {
+          const hid = decoded_data.hid;
+          const oldDevice = input.device;
+          input.device = 'home' + hid;
+          console.log('Changed device from ' + oldDevice + ' to ' + input.device);
+      }
+      
+      //  Update the device/thing state.
+      return updateDeviceState(input.device, decoded_data)
+        .then(result => callback2(null, lambdaProxyFormat(200, result)))
+        .catch(err => {
+            console.error(err.message);
+            callback2(lambdaProxyFormat(500, err.message));
+        });
+  } catch (err) {
+      console.error(err.message);
+      callback2(lambdaProxyFormat(500, err.message));
   }
-  
-  //  Decode the message.
-  const decoded_data = decodeMessage(input.data);
-  for (const key in input) {
-    //  Copy the original input fields into the decoded fields.
-    decoded_data[key] = input[key];
-  }
-  
-  //  If "hid" is defined, then set the device name to "home1", "home2", etc.
-  //  This will support multiple sensors per home.
-  if (decoded_data.hid) {
-      const hid = decoded_data.hid;
-      const oldDevice = input.device;
-      input.device = 'home' + hid;
-      console.log('Changed device from ' + oldDevice + ' to ' + input.device);
-  }
-  
-  //  Update the device/thing state.
-  return updateDeviceState(input.device, decoded_data)
-    .then(result => callback2(null, lambdaProxyFormat(200, result)))
-    .catch(err => callback2(lambdaProxyFormat(500, err)));
 };
 
 function updateDeviceState(device, state) {
