@@ -73,33 +73,41 @@ const main = (event, context, callback) => {
 
   function handler(input, context2, callback2) {
     //  This is the main program flow after resolving the missing modules.
-    if (input.domain) delete input.domain;  //  TODO: Contains self-reference loop.
-    console.log('Input:', JSON.stringify(input, null, 2));
-    console.log('Context:', context2);
-    //  Don't index response to set desired state.
-    if (input.state && input.state.desired) {
-      return callback2(null, 'Ignoring response to set desired state');
-    }
-    let device = null;
-    //  Unzip the logs if we are processing CloudWatch logs (IndexAWSLogs).
-    return unzipLogs(input)
-      .then((awslogsData) => {
-        if (awslogsData) return awslogsData;
-        //  Else index the sensor data (IndexSensorData).
-        const ret = processSensorData(input, context2);
-        device = ret.device;
-        return ret.awslogsData;
-      })
-      .then((awslogsData) => {
-        //  This Sumo Logic Collector URL is unique to us: Sensor Data Logs
-        const url = 'https://endpoint1.collection.us2.sumologic.com/receiver/v1/http/ZaVnC4dhaV2spqT2JdXJBek02aporY-ujTTn2eTcc3XfNomF_U94P6-YIpFZ6FIyAJqG9rNtzNK0JmP13upzBiH8FUfaSMyQmXqgfMdfSGazF6czrBHHxw==';
-        //  Process the logs, write to MySQL and Sumo Logic.
-        return processLogs(url, device, awslogsData);
-      })
-      //  If no errors, return the result to AWS.
-      .then(res => callback2(null, res))
-      //  Or return the error to AWS.
-      .catch(err => callback2(err));
+    try {
+        if (input.domain) delete input.domain;  //  TODO: Contains self-reference loop.
+        console.log('Input:', JSON.stringify(input, null, 2));
+        console.log('Context:', context2);
+        //  Don't index response to set desired state.
+        if (input.state && input.state.desired) {
+          return callback2(null, 'Ignoring response to set desired state');
+        }
+        let device = null;
+        //  Unzip the logs if we are processing CloudWatch logs (IndexAWSLogs).
+        return unzipLogs(input)
+          .then((awslogsData) => {
+            if (awslogsData) return awslogsData;
+            //  Else index the sensor data (IndexSensorData).
+            const ret = processSensorData(input, context2);
+            device = ret.device;
+            return ret.awslogsData;
+          })
+          .then((awslogsData) => {
+            //  This Sumo Logic Collector URL is unique to us: Sensor Data Logs
+            const url = 'https://endpoint1.collection.us2.sumologic.com/receiver/v1/http/ZaVnC4dhaV2spqT2JdXJBek02aporY-ujTTn2eTcc3XfNomF_U94P6-YIpFZ6FIyAJqG9rNtzNK0JmP13upzBiH8FUfaSMyQmXqgfMdfSGazF6czrBHHxw==';
+            //  Process the logs, write to MySQL and Sumo Logic.
+            return processLogs(url, device, awslogsData);
+          })
+          //  If no errors, return the result to AWS.
+          .then(res => callback2(null, res))
+          //  Or return the error to AWS.
+          .catch(err => {
+            console.error(err.message);
+            callback2(err);
+          });
+      } catch (err) {
+        console.error(err.message);
+        callback2(err);
+      }
   }
 
   function unzipLogs(input) {
