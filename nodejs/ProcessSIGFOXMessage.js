@@ -105,7 +105,10 @@ exports.handler = (input2, context2, callback2) => {
       if (decoded_data.hid) {
           const hid = decoded_data.hid;
           const oldDevice = input.device;
-          input.device = 'home' + hid;
+          //  Route all hid=2 messages to SmartCanteen device.
+          if (hid + '' === '2') input.device = 'SmartCanteen';
+          //  Else route to home1, home3, home4, ... device.
+          else input.device = 'home' + hid;
           console.log('Changed device from ' + oldDevice + ' to ' + input.device);
       }
       
